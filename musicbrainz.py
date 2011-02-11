@@ -27,7 +27,7 @@ def do_mb_query(entity, id, includes=[]):
 		inc = " ".join(includes)
 		args["inc"] = inc
 	url = urlparse.urlunparse(('http',
-		'test.musicbrainz.org',
+		'echoprint.musicbrainz.org',
 		'/ws/2/%s/%s' % (entity, id),
 		'',
 		urllib.urlencode(args),
@@ -148,6 +148,11 @@ def get_releases_by_discid(id, includes=[]):
 	valid_inc = ["artists", "labels", "recordings", "release-groups"]
 	check_includes(valid_inc, includes)
 	return do_mb_query("discid", id, includes)
+
+def get_recordings_by_echoprint(echoprint, includes=[]):
+	valid_inc = ["artists", "releases"]
+	check_includes(valid_inc, includes)
+	return do_mb_query("echoprint", echoprint, includes)
 
 def get_recordings_by_puid(puid, includes=[]):
 	valid_inc = ["artists", "releases"]

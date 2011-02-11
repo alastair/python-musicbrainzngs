@@ -94,7 +94,8 @@ def parse_message(message):
 	                  "work": parse_work,
 
 	                  "disc": parse_disc,
-	                  "puid": parse_puid
+	                  "puid": parse_puid,
+	                  "echoprint": parse_puid
 	                  }
 	result.update(parse_inner(valid_elements, root))
 	return result
