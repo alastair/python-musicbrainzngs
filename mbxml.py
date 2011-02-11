@@ -86,11 +86,14 @@ def parse_message(message):
 	tree = xml.etree.ElementTree.ElementTree(file=f)
 	root = tree.getroot()
 	result = {}
-	for element in root:
-		t = fixtag(element.tag, NS_MAP)[0]
-		if t == "ws2:artist":
-			result["artist"] = parse_artist(element)
-			
+	valid_elements = {"artist": parse_artist,
+	                  "label": parse_label,
+	                  "release": parse_release,
+	                  "release-group": parse_release_group,
+	                  "recording": parse_recording,
+	                  "work": parse_work
+	                  }
+	result.update(parse_inner(valid_elements, root))
 	return result
 
 def parse_artist_lifespan(lifespan):
@@ -109,5 +112,62 @@ def parse_artist(artist):
 	result.update(parse_attributes(attribs, artist))
 	result.update(parse_elements(elements, artist))
 	result.update(parse_inner(inner_els, artist))
+
+	return result
+
+def parse_label(label):
+	result = {}
+	attribs = ["id", "type"]
+	elements = ["name", "sort-name", "country"]
+	inner_els = {"life-span": parse_artist_lifespan}
+
+	result.update(parse_attributes(attribs, label))
+	result.update(parse_elements(elements, label))
+	result.update(parse_inner(inner_els, label))
+
+	return result
+
+def parse_release(release):
+	result = {}
+	attribs = ["id"]
+	elements = ["title", "status", "quality", "country", "barcode"]
+	inner_els = {"text-representation": parse_text_representation}
+
+	result.update(parse_attributes(attribs, release))
+	result.update(parse_elements(elements, release))
+	result.update(parse_inner(inner_els, release))
+
+	return result
+
+def parse_text_representation(textr):
+	return parse_elements(["language", "script"], textr)
+
+def parse_release_group(rg):
+	result = {}
+	attribs = ["id", "type"]
+	elements = ["title"]
+
+	result.update(parse_attributes(attribs, rg))
+	result.update(parse_elements(elements, rg))
+
+	return result
+
+def parse_recording(recording):
+	result = {}
+	attribs = ["id"]
+	elements = ["title", "length"]
+
+	result.update(parse_attributes(attribs, recording))
+	result.update(parse_elements(elements, recording))
+
+	return result
+
+def parse_work(work):
+	result = {}
+	attribs = ["id"]
+	elements = ["title"]
+
+	result.update(parse_attributes(attribs, work))
+	result.update(parse_elements(elements, work))
 
 	return result

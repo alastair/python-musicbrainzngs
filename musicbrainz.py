@@ -24,7 +24,7 @@ def do_mb_query(entity, id, includes=[]):
 	except urllib2.URLError, e:
 		print "error"
 		raise
-	print mbxml.parse_message(f)
+	return mbxml.parse_message(f)
 
 class InvalidIncludeError(Exception):
 	def __init__(self, msg='Invalid Includes', reason=None):
@@ -44,7 +44,7 @@ def check_includes(valid_inc, inc):
 def get_artist_by_id(id, includes=[]):
 	valid_inc = ["recordings", "releases", "release-groups", "works"]
 	check_includes(valid_inc, includes)
-	do_mb_query("artist", id, includes)
+	return do_mb_query("artist", id, includes)
 
 def search_artist(query, includes):
 	pass
@@ -55,7 +55,7 @@ def browse_artist(filters, includes):
 def get_label_by_id(id, includes=[]):
 	valid_inc = ["releases"]
 	check_includes(valid_inc, includes)
-	do_mb_query("label", id, includes)
+	return do_mb_query("label", id, includes)
 
 def search_label(query, includes):
 	pass
@@ -69,22 +69,22 @@ def browse_release_groups(includes, status, typ):
 def get_recording_by_id(id, includes=[]):
 	valid_inc = ["artists", "releases"]
 	check_includes(valid_inc, includes)
-	do_mb_query("recording", id, includes)
+	return do_mb_query("recording", id, includes)
 
 def get_release_by_id(id, includes=[]):
 	valid_inc = ["artists", "labels", "recordings", "release-groups"]
 	check_includes(valid_inc, includes)
-	do_mb_query("release", id, includes)
+	return do_mb_query("release", id, includes)
 
 def get_release_group_by_id(id, includes=[]):
 	valid_inc = ["artists", "releases"]
 	check_includes(valid_inc, includes)
-	do_mb_query("release-group", id, includes)
+	return do_mb_query("release-group", id, includes)
 
 def get_work_by_id(id, includes=[]):
 	valid_inc = ["artists"]
 	check_includes(valid_inc, includes)
-	do_mb_query("work", id, includes)
+	return do_mb_query("work", id, includes)
 
 ###
 
