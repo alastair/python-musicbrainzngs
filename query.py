@@ -15,8 +15,12 @@ def main():
 	#print m.get_recordings_by_isrc("GBAYE9300106")
 
 	m.auth("", "")
-	m.submit_barcodes({"e94757ff-2655-4690-b369-4012beba6114": "9780262560933"})
+	#m.submit_barcodes({"e94757ff-2655-4690-b369-4012beba6114": "9421021463277"})
 	#m.submit_puids({"cb4d4d70-930c-4d1a-a157-776de18be66a":"e94757ff-2655-4690-b369-4012beba6114"})
+	#m.submit_tags(recording_tags={"cb4d4d70-930c-4d1a-a157-776de18be66a":["these", "are", "my", "tags"]})
+	#m.submit_tags(artist_tags={"952a4205-023d-4235-897c-6fdb6f58dfaa":["NZ", "twee"]})
+
+	m.submit_ratings(recording_ratings={"cb4d4d70-930c-4d1a-a157-776de18be66a":20})
 
 if __name__ == "__main__":
 	main()

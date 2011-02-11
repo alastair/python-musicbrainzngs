@@ -182,12 +182,27 @@ def submit_puids(puids):
 	query = query.replace("ns0:", "")
 	do_mb_post("recording", query)
 
-def submit_isrc():
-	pass
+def submit_isrcs(isrcs):
+	raise NotImplementedError
 
-def submit_tags():
-	pass
+def submit_tags(artist_tags={}, recording_tags={}):
+	""" Submit user tags.
+	    Artist or recording parameters are of the form:
+	    {'entityid': [taglist]}
+	"""
+	query = mbxml.make_tag_request(artist_tags, recording_tags)
+	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	query = query.replace("ns0:", "")
+	do_mb_post("tag", query)
 
-def submit_rating():
-	pass
+def submit_ratings(artist_ratings={}, recording_ratings={}):
+	""" Submit user ratings.
+	    Artist or recording parameters are of the form:
+	    {'entityid': rating}
+	"""
+	query = mbxml.make_rating_request(artist_ratings, recording_ratings)
+	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	query = query.replace("ns0:", "")
+	print query
+	do_mb_post("rating", query)
 

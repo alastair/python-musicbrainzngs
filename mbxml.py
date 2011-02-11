@@ -237,3 +237,49 @@ def make_puid_request(puids):
 			p_xml.set("id", p)
 
 	return ET.tostring(root, "utf-8")
+
+def make_tag_request(artist_tags, recording_tags):
+	NS = "http://musicbrainz.org/ns/mmd-2.0#"
+	root = ET.Element("{%s}metadata" % NS)
+	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+	for rec, tags in recording_tags.items():
+		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+		rec_xml.set("{%s}id" % NS, rec)
+		taglist = ET.SubElement(rec_xml, "{%s}user-tag-list" % NS)
+		for t in tags:
+			usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+			name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+			name_xml.text = t
+	art_list = ET.SubElement(root, "{%s}artist-list" % NS)
+	for art, tags in artist_tags.items():
+		art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
+		art_xml.set("{%s}id" % NS, art)
+		taglist = ET.SubElement(art_xml, "{%s}user-tag-list" % NS)
+		for t in tags:
+			usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+			name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+			name_xml.text = t
+
+	return ET.tostring(root, "utf-8")
+
+def make_rating_request(artist_ratings, recording_ratings):
+	NS = "http://musicbrainz.org/ns/mmd-2.0#"
+	root = ET.Element("{%s}metadata" % NS)
+	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+	for rec, rating in recording_ratings.items():
+		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+		rec_xml.set("{%s}id" % NS, rec)
+		rating_xml = ET.SubElement(rec_xml, "{%s}user-rating" % NS)
+		if isinstance(rating, int):
+			rating = "%d" % rating
+		rating_xml.text = rating
+	art_list = ET.SubElement(root, "{%s}artist-list" % NS)
+	for art, rating in artist_ratings.items():
+		art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
+		art_xml.set("{%s}id" % NS, art)
+		rating_xml = ET.SubElement(rec_xml, "{%s}user-rating" % NS)
+		if isinstance(rating, int):
+			rating = "%d" % rating
+		rating_xml.text = rating
+
+	return ET.tostring(root, "utf-8")
