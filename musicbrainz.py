@@ -173,11 +173,13 @@ def submit_barcodes(barcodes):
 	"""
 	query = mbxml.make_barcode_request(barcodes)
 	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	query = query.replace("ns0:", "")
 	do_mb_post("release", query)
 
 def submit_puids(puids):
 	query = mbxml.make_puid_request(puids)
 	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	query = query.replace("ns0:", "")
 	do_mb_post("recording", query)
 
 def submit_isrc():

@@ -218,7 +218,7 @@ def make_barcode_request(barcodes):
 	for release, barcode in barcodes.items():
 		rel_xml = ET.SubElement(rel_list, "{%s}release" % NS)
 		bar_xml = ET.SubElement(rel_xml, "{%s}barcode" % NS)
-		rel_xml.set("id", release)
+		rel_xml.set("{%s}id" % NS, release)
 		bar_xml.text = barcode
 
 	return ET.tostring(root, "utf-8")
