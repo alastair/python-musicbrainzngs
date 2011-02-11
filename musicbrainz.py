@@ -4,8 +4,17 @@ import urllib2
 import urllib
 import mbxml
 
+# To do:
+# Subqueries
+# Subquery incs
+# Misc incs
+# Browse methods
+# Search methods
+#   http://wiki.musicbrainz.org/Next_Generation_Schema/SearchServerXML
+# Paging
+# Release type, status
+
 def do_mb_query(entity, id, includes=[]):
-	# XXX: Paging
 	args = {}
 	if len(includes) > 1:
 		inc = " ".join(includes)
