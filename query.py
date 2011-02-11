@@ -12,7 +12,11 @@ def main():
 
 	#print m.get_releases_by_discid("BG.iuI50.qn1DOBAWIk8fUYoeHM-")
 	#print m.get_recordings_by_puid("070359fc-8219-e62b-7bfd-5a01e742b490")
-	print m.get_recordings_by_isrc("GBAYE9300106")
+	#print m.get_recordings_by_isrc("GBAYE9300106")
+
+	m.auth("", "")
+	m.submit_barcodes({"e94757ff-2655-4690-b369-4012beba6114": "9780262560933"})
+	#m.submit_puids({"cb4d4d70-930c-4d1a-a157-776de18be66a":"e94757ff-2655-4690-b369-4012beba6114"})
 
 if __name__ == "__main__":
 	main()

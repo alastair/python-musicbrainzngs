@@ -14,6 +14,13 @@ import mbxml
 # Paging
 # Release type, status
 
+user = password = ""
+
+def auth(u, p):
+	global user, password
+	user = u
+	password = p
+
 def do_mb_query(entity, id, includes=[]):
 	args = {}
 	if len(includes) > 1:
@@ -27,13 +34,66 @@ def do_mb_query(entity, id, includes=[]):
 		''))
 	print url
 	f = urllib2.Request(url)
-	f.add_header('User-Agent','pymb3')
+	f.add_header('User-Agent','pythonmusicbrainzngs-0.1')
 	try:
 		f = urllib2.urlopen(f)
 	except urllib2.URLError, e:
 		print "error"
 		raise
 	return mbxml.parse_message(f)
+
+# From pymb2
+class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
+	def __init__(self):
+		self._realms = { }
+
+	def find_user_password(self, realm, uri):
+		# ignoring the uri parameter intentionally
+		try:
+			return self._realms[realm]
+		except KeyError:
+			return (None, None)
+
+	def add_password(self, realm, uri, username, password):
+		# ignoring the uri parameter intentionally
+		self._realms[realm] = (username, password)
+
+class DigestAuthHandler (urllib2.HTTPDigestAuthHandler):
+	def get_authorization (self, req, chal):
+		qop = chal.get ('qop', None)
+		if qop and ',' in qop and 'auth' in qop.split (','):
+			chal['qop'] = 'auth'
+
+		return urllib2.HTTPDigestAuthHandler.get_authorization (self, req, chal)
+
+def do_mb_post(entity, body):
+	if user == "":
+		raise Exception("use musicbrainz.auth(u, p) first")
+	passwordMgr = _RedirectPasswordMgr()
+	authHandler = DigestAuthHandler(passwordMgr)
+        authHandler.add_password("musicbrainz.org", (), # no host set
+                        user, password)
+	opener = urllib2.build_opener()
+        opener.add_handler(authHandler)
+
+	args = {"client": "pythonmusicbrainzngs-0.1"}
+	url = urlparse.urlunparse(('http',
+		'test.musicbrainz.org',
+		'/ws/2/%s' % (entity,),
+		'',
+		urllib.urlencode(args),
+		''))
+	print url
+	f = urllib2.Request(url)
+	f.add_header('User-Agent','pythonmusicbrainzngs-0.1')
+	f.add_header('Content-Type', 'application/xml; charset=UTF-8')
+	try:
+		f = opener.open(f, body)
+	except urllib2.URLError, e:
+		print e.fp.read()
+		raise
+	print f.read()
+	#return mbxml.parse_message(f)
 
 class InvalidIncludeError(Exception):
 	def __init__(self, msg='Invalid Includes', reason=None):
@@ -106,11 +166,19 @@ def get_works_by_iswc(iswc, includes=[]):
 
 # Submission methods
 
-def submit_barcode():
-	pass
+def submit_barcodes(barcodes):
+	"""
+	Submits a set of {release1: barcode1, release2:barcode2}
+	Must call auth(user, pass) first
+	"""
+	query = mbxml.make_barcode_request(barcodes)
+	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	do_mb_post("release", query)
 
-def submit_puid():
-	pass
+def submit_puids(puids):
+	query = mbxml.make_puid_request(puids)
+	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	do_mb_post("recording", query)
 
 def submit_isrc():
 	pass

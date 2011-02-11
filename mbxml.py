@@ -1,14 +1,14 @@
-import xml.etree.ElementTree
+import xml.etree.ElementTree as ET
 import string
 import StringIO
 try:
-	from xml.etree.ElementTree import fixtag
+	from ET import fixtag
 except:
 	# Python < 2.7
 	def fixtag(tag, namespaces):
 		# given a decorated tag (of the form {uri}tag), return prefixed
 		# tag and namespace declaration, if any
-		if isinstance(tag, QName):
+		if isinstance(tag, ET.QName):
 			tag = tag.text
 		namespace_uri, tag = string.split(tag[1:], "}", 1)
 		prefix = namespaces.get(namespace_uri)
@@ -83,7 +83,7 @@ def parse_message(message):
 	s = message.read()
 	print s
 	f = StringIO.StringIO(s)
-	tree = xml.etree.ElementTree.ElementTree(file=f)
+	tree = ET.ElementTree(file=f)
 	root = tree.getroot()
 	result = {}
 	valid_elements = {"artist": parse_artist,
@@ -208,3 +208,32 @@ def parse_recording_list(recs):
 	for r in recs:
 		result.append(parse_recording(r))
 	return result
+
+
+###
+def make_barcode_request(barcodes):
+	NS = "http://musicbrainz.org/ns/mmd-2.0#"
+	root = ET.Element("{%s}metadata" % NS)
+	rel_list = ET.SubElement(root, "{%s}release-list" % NS)
+	for release, barcode in barcodes.items():
+		rel_xml = ET.SubElement(rel_list, "{%s}release" % NS)
+		bar_xml = ET.SubElement(rel_xml, "{%s}barcode" % NS)
+		rel_xml.set("id", release)
+		bar_xml.text = barcode
+
+	return ET.tostring(root, "utf-8")
+
+def make_puid_request(puids):
+	NS = "http://musicbrainz.org/ns/mmd-2.0#"
+	root = ET.Element("{%s}metadata" % NS)
+	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+	for recording, puid_list in puids.items():
+		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+		rec_xml.set("id", recording)
+		p_list_xml = ET.SubElement(rec_xml, "{%s}puid-list" % NS)
+		l = puid_list if isinstance(puid_list, list) else [puid_list]
+		for p in l:
+			p_xml = ET.SubElement(p_list_xml, "{%s}puid" % NS)
+			p_xml.set("id", p)
+
+	return ET.tostring(root, "utf-8")
