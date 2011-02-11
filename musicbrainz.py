@@ -78,7 +78,7 @@ def do_mb_post(entity, body):
 
 	args = {"client": "pythonmusicbrainzngs-0.1"}
 	url = urlparse.urlunparse(('http',
-		'test.musicbrainz.org',
+		'echoprint.musicbrainz.org',
 		'/ws/2/%s' % (entity,),
 		'',
 		urllib.urlencode(args),
@@ -90,7 +90,8 @@ def do_mb_post(entity, body):
 	try:
 		f = opener.open(f, body)
 	except urllib2.URLError, e:
-		print e.fp.read()
+		if e.fp:
+			print e.fp.read()
 		raise
 	print f.read()
 	#return mbxml.parse_message(f)
@@ -183,6 +184,12 @@ def submit_barcodes(barcodes):
 
 def submit_puids(puids):
 	query = mbxml.make_puid_request(puids)
+	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
+	query = query.replace("ns0:", "")
+	do_mb_post("recording", query)
+
+def submit_echoprints(echoprints):
+	query = mbxml.make_echoprint_request(echoprints)
 	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
 	query = query.replace("ns0:", "")
 	do_mb_post("recording", query)

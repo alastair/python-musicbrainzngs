@@ -239,6 +239,21 @@ def make_puid_request(puids):
 
 	return ET.tostring(root, "utf-8")
 
+def make_echoprint_request(echoprints):
+	NS = "http://musicbrainz.org/ns/mmd-2.0#"
+	root = ET.Element("{%s}metadata" % NS)
+	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+	for recording, echoprint_list in echoprints.items():
+		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+		rec_xml.set("id", recording)
+		e_list_xml = ET.SubElement(rec_xml, "{%s}echoprint-list" % NS)
+		l = echoprint_list if isinstance(echoprint_list, list) else [echoprint_list]
+		for e in l:
+			e_xml = ET.SubElement(e_list_xml, "{%s}echoprint" % NS)
+			e_xml.set("id", e)
+
+	return ET.tostring(root, "utf-8")
+
 def make_tag_request(artist_tags, recording_tags):
 	NS = "http://musicbrainz.org/ns/mmd-2.0#"
 	root = ET.Element("{%s}metadata" % NS)
