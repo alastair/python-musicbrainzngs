@@ -91,7 +91,10 @@ def parse_message(message):
 	                  "release": parse_release,
 	                  "release-group": parse_release_group,
 	                  "recording": parse_recording,
-	                  "work": parse_work
+	                  "work": parse_work,
+
+	                  "disc": parse_disc,
+	                  "puid": parse_puid
 	                  }
 	result.update(parse_inner(valid_elements, root))
 	return result
@@ -170,4 +173,38 @@ def parse_work(work):
 	result.update(parse_attributes(attribs, work))
 	result.update(parse_elements(elements, work))
 
+	return result
+
+def parse_disc(disc):
+	result = {}
+	attribs = ["id"]
+	elements = ["sectors"]
+	inner_els = {"release-list": parse_release_list}
+
+	result.update(parse_attributes(attribs, disc))
+	result.update(parse_elements(elements, disc))
+	result.update(parse_inner(inner_els, disc))
+
+	return result
+
+def parse_release_list(rl):
+	result = []
+	for r in rl:
+		result.append(parse_release(r))
+	return result
+
+def parse_puid(puid):
+	result = {}
+	attribs = ["id"]
+	inner_els = {"recording-list": parse_recording_list}
+
+	result.update(parse_attributes(attribs, puid))
+	result.update(parse_inner(inner_els, puid))
+
+	return result
+
+def parse_recording_list(recs):
+	result = []
+	for r in recs:
+		result.append(parse_recording(r))
 	return result
