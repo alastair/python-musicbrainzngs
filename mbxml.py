@@ -110,7 +110,11 @@ def parse_artist(artist):
 	result = {}
 	attribs = ["id", "type"]
 	elements = ["name", "sort-name"]
-	inner_els = {"life-span": parse_artist_lifespan}
+	inner_els = {"life-span": parse_artist_lifespan,
+	             "recording-list": parse_recording_list,
+	             "release-list": parse_release_list,
+	             "release-group-list": parse_release_group_list,
+	             "work-list": parse_work_list}
 
 	result.update(parse_attributes(attribs, artist))
 	result.update(parse_elements(elements, artist))
@@ -122,7 +126,8 @@ def parse_label(label):
 	result = {}
 	attribs = ["id", "type"]
 	elements = ["name", "sort-name", "country"]
-	inner_els = {"life-span": parse_artist_lifespan}
+	inner_els = {"life-span": parse_artist_lifespan,
+	             "release-list": parse_release_list}
 
 	result.update(parse_attributes(attribs, label))
 	result.update(parse_elements(elements, label))
@@ -134,7 +139,11 @@ def parse_release(release):
 	result = {}
 	attribs = ["id"]
 	elements = ["title", "status", "quality", "country", "barcode"]
-	inner_els = {"text-representation": parse_text_representation}
+	inner_els = {"text-representation": parse_text_representation,
+	             "artist-credit": parse_artist_credit,
+	             "label-info-list": parse_label_info_list,
+	             "medium-list": parse_medium_list,
+	             "release-group": parse_release_group}
 
 	result.update(parse_attributes(attribs, release))
 	result.update(parse_elements(elements, release))
@@ -149,9 +158,12 @@ def parse_release_group(rg):
 	result = {}
 	attribs = ["id", "type"]
 	elements = ["title"]
+	inner_els = {"artist-credit": parse_artist_credit,
+	             "release-list": parse_release_list}
 
 	result.update(parse_attributes(attribs, rg))
 	result.update(parse_elements(elements, rg))
+	result.update(parse_inner(inner_els, rg))
 
 	return result
 
@@ -159,10 +171,19 @@ def parse_recording(recording):
 	result = {}
 	attribs = ["id"]
 	elements = ["title", "length"]
+	inner_els = {"artist-credit": parse_artist_credit,
+	             "release-list": parse_release_list}
 
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
+	result.update(parse_inner(inner_els, recording))
 
+	return result
+
+def parse_work_list(wl):
+	result = []
+	for w in wl:
+		result.append(parse_work(w))
 	return result
 
 def parse_work(work):
@@ -193,6 +214,12 @@ def parse_release_list(rl):
 		result.append(parse_release(r))
 	return result
 
+def parse_release_group_list(rgl):
+	result = []
+	for rg in rgl:
+		result.append(parse_release_group(rg))
+	return result
+
 def parse_puid(puid):
 	result = {}
 	attribs = ["id"]
@@ -209,6 +236,70 @@ def parse_recording_list(recs):
 		result.append(parse_recording(r))
 	return result
 
+def parse_artist_credit(ac):
+	result = []
+	for namecredit in ac:
+		result.append(parse_name_credit(namecredit))
+		join = parse_attributes(["joinphrase"], namecredit)
+		if "joinphrase" in join:
+			result.append(join["joinphrase"])
+	return result
+
+def parse_name_credit(nc):
+	result = {}
+	elements = ["name"]
+	inner_els = {"artist": parse_artist}
+
+	result.update(parse_elements(elements, nc))
+	result.update(parse_inner(inner_els, nc))
+
+	return result
+
+def parse_label_info_list(lil):
+	result = []
+
+	for li in lil:
+		result.append(parse_label_info(li))
+	return result
+
+def parse_label_info(li):
+	result = {}
+	elements = ["catalog-number"]
+	inner_els = {"label": parse_label}
+
+	result.update(parse_elements(elements, li))
+	result.update(parse_inner(inner_els, li))
+	return result
+
+def parse_medium_list(ml):
+	result = []
+	for m in ml:
+		result.append(parse_medium(m))
+	return result
+
+def parse_medium(medium):
+	result = {}
+	elements = ["position"]
+	inner_els = {"track-list": parse_track_list}
+
+	result.update(parse_elements(elements, medium))
+	result.update(parse_inner(inner_els, medium))
+	return result
+
+def parse_track_list(tl):
+	result = []
+	for t in tl:
+		result.append(parse_track(t))
+	return result
+
+def parse_track(track):
+	result = {}
+	elements = ["position"]
+	inner_els = {"recording": parse_recording}
+
+	result.update(parse_elements(elements, track))
+	result.update(parse_inner(inner_els, track))
+	return result
 
 ###
 def make_barcode_request(barcodes):
