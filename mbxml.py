@@ -149,12 +149,38 @@ def parse_release(release):
 	             "artist-credit": parse_artist_credit,
 	             "label-info-list": parse_label_info_list,
 	             "medium-list": parse_medium_list,
-	             "release-group": parse_release_group}
+	             "release-group": parse_release_group,
+	             "medium-list": parse_medium_list}
 
 	result.update(parse_attributes(attribs, release))
 	result.update(parse_elements(elements, release))
 	result.update(parse_inner(inner_els, release))
 
+	return result
+
+def parse_medium_list(ml):
+	return [parse_medium(m) for m in ml]
+
+def parse_medium(medium):
+	result = {}
+	elements = ["position", "format"]
+	inner_els = {"disc-list": parse_disc_list,
+	             "track-list": parse_track_list}
+
+	result.update(parse_elements(elements, medium))
+	result.update(parse_inner(inner_els, medium))
+	return result
+
+def parse_disc_list(dl):
+	return [parse_disc(d) for d in dl]
+
+def parse_disc(disc):
+	result = {}
+	attribs = ["id"]
+	elements = ["sectors"]
+
+	result.update(parse_attributes(attribs, disc))
+	result.update(parse_elements(elements, disc))
 	return result
 
 def parse_text_representation(textr):
@@ -180,13 +206,21 @@ def parse_recording(recording):
 	inner_els = {"artist-credit": parse_artist_credit,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
-	             "rating": parse_rating}
+	             "rating": parse_rating,
+	             "puid-list": parse_puid_list,
+	             "isrc-list": parse_isrc_list}
 
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
 	result.update(parse_inner(inner_els, recording))
 
 	return result
+
+def parse_puid_list(pl):
+	return [parse_attributes(["id"], p) for p in pl]
+
+def parse_isrc_list(il):
+	return [parse_attributes(["id"], i) for i in il]
 
 def parse_work_list(wl):
 	result = []
