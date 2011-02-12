@@ -208,8 +208,9 @@ def parse_recording(recording):
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
 	             "rating": parse_rating,
-	             "puid-list": parse_puid_list,
-	             "isrc-list": parse_isrc_list}
+	             "puid-list": parse_external_id_list,
+	             "isrc-list": parse_external_id_list,
+	             "echoprint-list": parse_external_id_list}
 
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
@@ -217,11 +218,8 @@ def parse_recording(recording):
 
 	return result
 
-def parse_puid_list(pl):
-	return [parse_attributes(["id"], p) for p in pl]
-
-def parse_isrc_list(il):
-	return [parse_attributes(["id"], i) for i in il]
+def parse_external_id_list(pl):
+	return [parse_attributes(["id"], p)["id"] for p in pl]
 
 def parse_work_list(wl):
 	result = []

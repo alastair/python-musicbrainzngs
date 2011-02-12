@@ -134,7 +134,7 @@ def get_recording_by_id(id, includes=[]):
 	return do_mb_query("recording", id, includes)
 
 def get_release_by_id(id, includes=[]):
-	valid_inc = ["artists", "labels", "recordings", "release-groups", "media", "discids", "puids", "isrcs"]
+	valid_inc = ["artists", "labels", "recordings", "release-groups", "media", "discids", "puids", "echoprints", "isrcs"]
 	check_includes(valid_inc, includes)
 	return do_mb_query("release", id, includes)
 
@@ -152,7 +152,7 @@ def get_work_by_id(id, includes=[]):
 # Lists of entities
 
 def get_releases_by_discid(id, includes=[]):
-	valid_inc = ["artists", "labels", "recordings", "release-groups", "puids", "isrcs"]
+	valid_inc = ["artists", "labels", "recordings", "release-groups", "puids", "echoprints", "isrcs"]
 	check_includes(valid_inc, includes)
 	return do_mb_query("discid", id, includes)
 
@@ -162,12 +162,12 @@ def get_recordings_by_echoprint(echoprint, includes=[]):
 	return do_mb_query("echoprint", echoprint, includes)
 
 def get_recordings_by_puid(puid, includes=[]):
-	valid_inc = ["artists", "releases", "puids", "isrcs"]
+	valid_inc = ["artists", "releases", "puids", "echoprints", "isrcs"]
 	check_includes(valid_inc, includes)
 	return do_mb_query("puid", puid, includes)
 
 def get_recordings_by_isrc(isrc, includes=[]):
-	valid_inc = ["artists", "releases", "puids", "isrcs"]
+	valid_inc = ["artists", "releases", "puids", "echoprints", "isrcs"]
 	check_includes(valid_inc, includes)
 	return do_mb_query("isrc", isrc, includes)
 
