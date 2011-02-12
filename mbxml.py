@@ -116,7 +116,8 @@ def parse_artist(artist):
 	             "release-group-list": parse_release_group_list,
 	             "work-list": parse_work_list,
 	             "tag-list": parse_tag_list,
-	             "rating": parse_rating}
+	             "rating": parse_rating,
+	             "alias-list": parse_alias_list}
 
 	result.update(parse_attributes(attribs, artist))
 	result.update(parse_elements(elements, artist))
@@ -131,7 +132,8 @@ def parse_label(label):
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
-	             "rating": parse_rating}
+	             "rating": parse_rating,
+	             "alias-list": parse_alias_list}
 
 	result.update(parse_attributes(attribs, label))
 	result.update(parse_elements(elements, label))
@@ -197,7 +199,8 @@ def parse_work(work):
 	attribs = ["id"]
 	elements = ["title"]
 	inner_els = {"tag-list": parse_tag_list,
-	             "rating": parse_rating}
+	             "rating": parse_rating,
+	             "alias-list": parse_alias_list}
 
 	result.update(parse_attributes(attribs, work))
 	result.update(parse_elements(elements, work))
@@ -334,6 +337,13 @@ def parse_rating(rating):
 	result["rating"] = rating.text
 
 	return result
+
+def parse_alias_list(al):
+	result = []
+	for a in al:
+		result.append(a.text)
+	return result
+
 ###
 def make_barcode_request(barcodes):
 	NS = "http://musicbrainz.org/ns/mmd-2.0#"
