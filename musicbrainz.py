@@ -5,9 +5,8 @@ import urllib
 import mbxml
 
 # To do:
-# Subqueries
 # Subquery incs
-# Misc incs
+# User ratings, User tags
 # Browse methods
 # Search methods
 #   http://wiki.musicbrainz.org/Next_Generation_Schema/SearchServerXML
@@ -23,7 +22,7 @@ def auth(u, p):
 
 def do_mb_query(entity, id, includes=[]):
 	args = {}
-	if len(includes) > 1:
+	if len(includes) > 0:
 		inc = " ".join(includes)
 		args["inc"] = inc
 	url = urlparse.urlunparse(('http',
@@ -108,23 +107,25 @@ class InvalidIncludeError(Exception):
 def check_includes(valid_inc, inc):
 	for i in inc:
 		if i not in valid_inc:
-			print i
 			raise InvalidIncludeError("Bad includes", "%s is not a valid include" % i)
 
 # Single entity by ID
 
 def get_artist_by_id(id, includes=[]):
-	valid_inc = ["recordings", "releases", "release-groups", "works"]
+	valid_inc = ["recordings", "releases", "release-groups", "works", # Subqueries
+	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
 	check_includes(valid_inc, includes)
 	return do_mb_query("artist", id, includes)
 
 def get_label_by_id(id, includes=[]):
-	valid_inc = ["releases"]
+	valid_inc = ["releases", # Subqueries
+	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
 	check_includes(valid_inc, includes)
 	return do_mb_query("label", id, includes)
 
 def get_recording_by_id(id, includes=[]):
-	valid_inc = ["artists", "releases"]
+	valid_inc = ["artists", "releases", # Subqueries
+	             "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
 	check_includes(valid_inc, includes)
 	return do_mb_query("recording", id, includes)
 
@@ -139,7 +140,8 @@ def get_release_group_by_id(id, includes=[]):
 	return do_mb_query("release-group", id, includes)
 
 def get_work_by_id(id, includes=[]):
-	valid_inc = ["artists"]
+	valid_inc = ["artists", # Subqueries
+	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
 	check_includes(valid_inc, includes)
 	return do_mb_query("work", id, includes)
 
