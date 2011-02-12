@@ -6,7 +6,7 @@ import mbxml
 
 # To do:
 # Subquery incs
-# Misc incs
+# User ratings, User tags
 # Browse methods
 # Search methods
 #   http://wiki.musicbrainz.org/Next_Generation_Schema/SearchServerXML
@@ -123,7 +123,8 @@ def get_label_by_id(id, includes=[]):
 	return do_mb_query("label", id, includes)
 
 def get_recording_by_id(id, includes=[]):
-	valid_inc = ["artists", "releases"]
+	valid_inc = ["artists", "releases", # Subqueries
+	             "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
 	check_includes(valid_inc, includes)
 	return do_mb_query("recording", id, includes)
 
@@ -138,7 +139,8 @@ def get_release_group_by_id(id, includes=[]):
 	return do_mb_query("release-group", id, includes)
 
 def get_work_by_id(id, includes=[]):
-	valid_inc = ["artists"]
+	valid_inc = ["artists", # Subqueries
+	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
 	check_includes(valid_inc, includes)
 	return do_mb_query("work", id, includes)
 

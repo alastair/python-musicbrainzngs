@@ -114,7 +114,9 @@ def parse_artist(artist):
 	             "recording-list": parse_recording_list,
 	             "release-list": parse_release_list,
 	             "release-group-list": parse_release_group_list,
-	             "work-list": parse_work_list}
+	             "work-list": parse_work_list,
+	             "tag-list": parse_tag_list,
+	             "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, artist))
 	result.update(parse_elements(elements, artist))
@@ -127,7 +129,9 @@ def parse_label(label):
 	attribs = ["id", "type"]
 	elements = ["name", "sort-name", "country"]
 	inner_els = {"life-span": parse_artist_lifespan,
-	             "release-list": parse_release_list}
+	             "release-list": parse_release_list,
+	             "tag-list": parse_tag_list,
+	             "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, label))
 	result.update(parse_elements(elements, label))
@@ -172,7 +176,9 @@ def parse_recording(recording):
 	attribs = ["id"]
 	elements = ["title", "length"]
 	inner_els = {"artist-credit": parse_artist_credit,
-	             "release-list": parse_release_list}
+	             "release-list": parse_release_list,
+	             "tag-list": parse_tag_list,
+	             "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
@@ -190,9 +196,12 @@ def parse_work(work):
 	result = {}
 	attribs = ["id"]
 	elements = ["title"]
+	inner_els = {"tag-list": parse_tag_list,
+	             "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, work))
 	result.update(parse_elements(elements, work))
+	result.update(parse_inner(inner_els, work))
 
 	return result
 
@@ -301,6 +310,30 @@ def parse_track(track):
 	result.update(parse_inner(inner_els, track))
 	return result
 
+def parse_tag_list(tl):
+	result = []
+	for t in tl:
+		result.append(parse_tag(t))
+	return result
+
+def parse_tag(tag):
+	result = {}
+	attribs = ["count"]
+	elements = ["name"]
+
+	result.update(parse_attributes(attribs, tag))
+	result.update(parse_elements(elements, tag))
+
+	return result
+
+def parse_rating(rating):
+	result = {}
+	attribs = ["votes-count"]
+
+	result.update(parse_attributes(attribs, rating))
+	result["rating"] = rating.text
+
+	return result
 ###
 def make_barcode_request(barcodes):
 	NS = "http://musicbrainz.org/ns/mmd-2.0#"
