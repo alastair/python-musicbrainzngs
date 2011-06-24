@@ -15,6 +15,7 @@ import mbxml
 # Release type, status
 
 user = password = ""
+hostname = "musicbrainz.org"
 
 def auth(u, p):
 	global user, password
@@ -27,7 +28,7 @@ def do_mb_query(entity, id, includes=[]):
 		inc = " ".join(includes)
 		args["inc"] = inc
 	url = urlparse.urlunparse(('http',
-		'echoprint.musicbrainz.org',
+		hostname,
 		'/ws/2/%s/%s' % (entity, id),
 		'',
 		urllib.urlencode(args),
@@ -78,12 +79,12 @@ def do_mb_post(entity, body):
 
 	args = {"client": "pythonmusicbrainzngs-0.1"}
 	url = urlparse.urlunparse(('http',
-		'echoprint.musicbrainz.org',
+		hostname,
 		'/ws/2/%s' % (entity,),
 		'',
 		urllib.urlencode(args),
 		''))
-	print url
+	#print url
 	f = urllib2.Request(url)
 	f.add_header('User-Agent','pythonmusicbrainzngs-0.1')
 	f.add_header('Content-Type', 'application/xml; charset=UTF-8')
@@ -93,8 +94,8 @@ def do_mb_post(entity, body):
 		if e.fp:
 			print e.fp.read()
 		raise
-	print f.read()
-	#return mbxml.parse_message(f)
+	#print f.read()
+	return mbxml.parse_message(f)
 
 class InvalidIncludeError(Exception):
 	def __init__(self, msg='Invalid Includes', reason=None):
@@ -184,21 +185,15 @@ def submit_barcodes(barcodes):
 	Must call auth(user, pass) first
 	"""
 	query = mbxml.make_barcode_request(barcodes)
-	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
-	query = query.replace("ns0:", "")
-	do_mb_post("release", query)
+	return do_mb_post("release", query)
 
 def submit_puids(puids):
 	query = mbxml.make_puid_request(puids)
-	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
-	query = query.replace("ns0:", "")
-	do_mb_post("recording", query)
+	return do_mb_post("recording", query)
 
 def submit_echoprints(echoprints):
 	query = mbxml.make_echoprint_request(echoprints)
-	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
-	query = query.replace("ns0:", "")
-	do_mb_post("recording", query)
+	return do_mb_post("recording", query)
 
 def submit_isrcs(isrcs):
 	raise NotImplementedError
@@ -209,9 +204,7 @@ def submit_tags(artist_tags={}, recording_tags={}):
 	    {'entityid': [taglist]}
 	"""
 	query = mbxml.make_tag_request(artist_tags, recording_tags)
-	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
-	query = query.replace("ns0:", "")
-	do_mb_post("tag", query)
+	return do_mb_post("tag", query)
 
 def submit_ratings(artist_ratings={}, recording_ratings={}):
 	""" Submit user ratings.
@@ -219,8 +212,5 @@ def submit_ratings(artist_ratings={}, recording_ratings={}):
 	    {'entityid': rating}
 	"""
 	query = mbxml.make_rating_request(artist_ratings, recording_ratings)
-	query = '<?xml version="1.0" encoding="UTF-8"?>' + query
-	query = query.replace("ns0:", "")
-	print query
-	do_mb_post("rating", query)
+	return do_mb_post("rating", query)
 
