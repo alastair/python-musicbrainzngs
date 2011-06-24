@@ -1,0 +1,18 @@
+## Musicbrainz NGS bindings
+
+This library implements webservice bindings for the Musicbrainz NGS site, commonly known as /ws/2
+
+For more information, see http://wiki.musicbrainz.org/XML_Web_Service
+
+### Usage
+
+    # Import the module
+    import musicbrainz
+
+    # If you plan to submit data, authenticate
+    musicbrainz.auth("user", "password")
+
+    # If you are connecting to a development server
+    musicbrainz.hostname = "echoprint.musicbrainz.org"
+
+See the query.py file for more examples
