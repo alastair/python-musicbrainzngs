@@ -81,7 +81,6 @@ def parse_inner(inner_els, element):
 
 def parse_message(message):
 	s = message.read()
-	print s
 	f = StringIO.StringIO(s)
 	tree = ET.ElementTree(file=f)
 	root = tree.getroot()
@@ -95,10 +94,15 @@ def parse_message(message):
 
 	                  "disc": parse_disc,
 	                  "puid": parse_puid,
-	                  "echoprint": parse_puid
+	                  "echoprint": parse_puid,
+
+	                  "message": parse_response_message
 	                  }
 	result.update(parse_inner(valid_elements, root))
 	return result
+
+def parse_response_message(message):
+    return parse_elements(["text"], message)
 
 def parse_artist_lifespan(lifespan):
 	parts = parse_elements(["begin", "end"], lifespan)
