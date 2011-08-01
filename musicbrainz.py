@@ -82,18 +82,21 @@ def do_mb_query(entity, id, includes=[], params={}):
 
 def do_mb_search(entity, terms, limit=None, offset=None):
 	"""Perform a full-text search on the MusicBrainz search server.
-	The `terms` dictionary should contain search parameters valid
-	for the given entity type.
+	`terms` may be a query string or a dictionary containing search
+	parameters valid for the given entity type.
 	"""
-	# Encode the query terms as a Lucene query string.
-	query_parts = []
-	for key, value in terms.iteritems():
-		# Escape Lucene's special characters.
-		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
-		value = value.replace('\x00', '').strip().lower()
-		if value:
-			query_parts.append(u'%s:(%s)' % (key, value))
-	query = u' '.join(query_parts)
+	if isinstance(terms, basestring): # String.
+		query = terms.replace('\x00', '').strip().lower()
+	else: # Dictionary.
+		# Encode the query terms as a Lucene query string.
+		query_parts = []
+		for key, value in terms.iteritems():
+			# Escape Lucene's special characters.
+			value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
+			value = value.replace('\x00', '').strip().lower()
+			if value:
+				query_parts.append(u'%s:(%s)' % (key, value))
+		query = u' '.join(query_parts)
 
 	# Additional parameters to the search.
 	params = {'query': query}
