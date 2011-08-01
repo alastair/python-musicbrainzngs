@@ -80,7 +80,7 @@ def do_mb_query(entity, id, includes=[], params={}):
 		raise
 	return mbxml.parse_message(f)
 
-def do_mb_search(entity, terms, includes=[]):
+def do_mb_search(entity, terms, limit=None, offset=None):
 	"""Perform a full-text search on the MusicBrainz search server.
 	The `terms` dictionary should contain search parameters valid
 	for the given entity type.
@@ -95,9 +95,14 @@ def do_mb_search(entity, terms, includes=[]):
 			query_parts.append(u'%s:(%s)' % (key, value))
 	query = u' '.join(query_parts)
 
-	return do_mb_query(entity, '', includes, {
-		'query': query,
-	})
+	# Additional parameters to the search.
+	params = {'query': query}
+	if limit:
+		params['limit'] = str(limit)
+	if offset:
+		params['offset'] = str(offset)
+
+	return do_mb_query(entity, '', [], params)
 
 # From pymb2
 class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
@@ -186,6 +191,26 @@ def get_release_group_by_id(id, includes=[]):
 
 def get_work_by_id(id, includes=[]):
 	return do_mb_query("work", id, includes)
+
+# Searching
+
+def artist_search(terms, limit=None, offset=None):
+	return do_mb_search('artist', terms, limit, offset)
+
+def label_search(terms, limit=None, offset=None):
+	return do_mb_search('label', terms, limit, offset)
+
+def recording_search(terms, limit=None, offset=None):
+	return do_mb_search('recording', terms, limit, offset)
+
+def release_search(terms, limit=None, offset=None):
+	return do_mb_search('release', terms, limit, offset)
+
+def release_group_search(terms, limit=None, offset=None):
+	return do_mb_search('release-group', terms, limit, offset)
+
+def work_search(terms, limit=None, offset=None):
+	return do_mb_search('work', terms, limit, offset)
 
 # Lists of entities
 
