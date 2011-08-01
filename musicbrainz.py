@@ -3,6 +3,7 @@ import urlparse
 import urllib2
 import urllib
 import mbxml
+import re
 
 # To do:
 # artist-credits, various-artists
@@ -22,8 +23,8 @@ def auth(u, p):
 	user = u
 	password = p
 
-def do_mb_query(entity, id, includes=[]):
-	args = {}
+def do_mb_query(entity, id, includes=[], params={}):
+	args = dict(params)
 	if len(includes) > 0:
 		inc = " ".join(includes)
 		args["inc"] = inc
@@ -42,6 +43,25 @@ def do_mb_query(entity, id, includes=[]):
 		print "error"
 		raise
 	return mbxml.parse_message(f)
+
+def do_mb_search(entity, terms, includes=[]):
+	"""Perform a full-text search on the MusicBrainz search server.
+	The `terms` dictionary should contain search parameters valid
+	for the given entity type.
+	"""
+	# Encode the query terms as a Lucene query string.
+	query_parts = []
+	for key, value in terms.iteritems():
+		# Escape Lucene's special characters.
+		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
+		value = value.replace('\x00', '').strip().lower()
+		if value:
+			query_parts.append(u'%s:(%s)' % (key, value))
+	query = u' '.join(query_parts)
+
+	return do_mb_query(entity, '', includes, {
+		'query': query,
+	})
 
 # From pymb2
 class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
