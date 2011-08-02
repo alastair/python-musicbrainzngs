@@ -10,8 +10,6 @@ import re
 # User ratings, User tags
 # Relationships
 # Browse methods
-# Search methods
-#   http://wiki.musicbrainz.org/Next_Generation_Schema/SearchServerXML
 # Paging
 # Release type, status, date
 
@@ -49,6 +47,37 @@ VALID_INCLUDES = {
 	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
 	'iswc': ["artists"],
 }
+VALID_SEARCH_FIELDS = {
+	'artist': [
+		'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
+		'alias', 'country', 'gender', 'tag'
+	],
+	'release-group': [
+		'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
+		'artistname', 'creditname', 'type', 'tag'
+	],
+	'release': [
+		'reid', 'release', 'arid', 'artist', 'artistname', 'creditname',
+		'type', 'status', 'tracks', 'tracksmedium', 'discids',
+		'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
+		'country', 'date', 'label', 'catno', 'barcode', 'puid'
+	],
+	'recording': [
+		'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
+		'creditname', 'reid', 'release', 'type', 'status', 'tracks',
+		'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag'
+	],
+	'label': [
+		'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
+		'end', 'comment', 'alias', 'tag'
+	],
+	'work': [
+		'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag'
+	],
+}
+
+class InvalidSearchFieldError(Exception):
+	pass
 
 user = password = ""
 hostname = "musicbrainz.org"
@@ -91,6 +120,12 @@ def do_mb_search(entity, terms, limit=None, offset=None):
 		# Encode the query terms as a Lucene query string.
 		query_parts = []
 		for key, value in terms.iteritems():
+			# Ensure this is a valid search field.
+			if key not in VALID_SEARCH_FIELDS[entity]:
+				raise InvalidSearchFieldError(
+					'%s is not a valid search field for %s' % (key, entity)
+				)
+
 			# Escape Lucene's special characters.
 			value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
 			value = value.replace('\x00', '').strip().lower()
