@@ -3,16 +3,81 @@ import urlparse
 import urllib2
 import urllib
 import mbxml
+import re
 
 # To do:
 # artist-credits, various-artists
 # User ratings, User tags
 # Relationships
 # Browse methods
-# Search methods
-#   http://wiki.musicbrainz.org/Next_Generation_Schema/SearchServerXML
 # Paging
-# Release type, status
+# Release type, status, date
+
+VALID_INCLUDES = {
+	'artist': [
+		"recordings", "releases", "release-groups", "works", # Subqueries
+		"discids", "media",
+		"aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
+	], 
+	'label': [
+		"releases", # Subqueries
+	    "discids", "media",
+	    "aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
+	],
+	'recording': [
+		"artists", "releases", # Subqueries
+	    "discids", "media",
+	    "tags", "user-tags", "ratings", "user-ratings" # misc
+	],
+	'release': [
+		"artists", "labels", "recordings", "release-groups", "media",
+		"discids", "puids", "echoprints", "isrcs"
+	],
+	'release-group': ["artists", "releases", "discids", "media"],
+	'work': [
+		"artists", # Subqueries
+	    "aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
+	],
+	'discid': [
+		"artists", "labels", "recordings", "release-groups", "puids",
+		"echoprints", "isrcs"
+	],
+	'echoprint': ["artists", "releases"],
+	'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
+	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
+	'iswc': ["artists"],
+}
+VALID_SEARCH_FIELDS = {
+	'artist': [
+		'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
+		'alias', 'country', 'gender', 'tag'
+	],
+	'release-group': [
+		'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
+		'artistname', 'creditname', 'type', 'tag'
+	],
+	'release': [
+		'reid', 'release', 'arid', 'artist', 'artistname', 'creditname',
+		'type', 'status', 'tracks', 'tracksmedium', 'discids',
+		'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
+		'country', 'date', 'label', 'catno', 'barcode', 'puid'
+	],
+	'recording': [
+		'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
+		'creditname', 'reid', 'release', 'type', 'status', 'tracks',
+		'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag'
+	],
+	'label': [
+		'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
+		'end', 'comment', 'alias', 'tag'
+	],
+	'work': [
+		'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag'
+	],
+}
+
+class InvalidSearchFieldError(Exception):
+	pass
 
 user = password = ""
 hostname = "musicbrainz.org"
@@ -22,8 +87,9 @@ def auth(u, p):
 	user = u
 	password = p
 
-def do_mb_query(entity, id, includes=[]):
-	args = {}
+def do_mb_query(entity, id, includes=[], params={}):
+	check_includes(entity, includes)
+	args = dict(params)
 	if len(includes) > 0:
 		inc = " ".join(includes)
 		args["inc"] = inc
@@ -42,6 +108,39 @@ def do_mb_query(entity, id, includes=[]):
 		print "error"
 		raise
 	return mbxml.parse_message(f)
+
+def do_mb_search(entity, terms, limit=None, offset=None):
+	"""Perform a full-text search on the MusicBrainz search server.
+	`terms` may be a query string or a dictionary containing search
+	parameters valid for the given entity type.
+	"""
+	if isinstance(terms, basestring): # String.
+		query = terms.replace('\x00', '').strip().lower()
+	else: # Dictionary.
+		# Encode the query terms as a Lucene query string.
+		query_parts = []
+		for key, value in terms.iteritems():
+			# Ensure this is a valid search field.
+			if key not in VALID_SEARCH_FIELDS[entity]:
+				raise InvalidSearchFieldError(
+					'%s is not a valid search field for %s' % (key, entity)
+				)
+
+			# Escape Lucene's special characters.
+			value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
+			value = value.replace('\x00', '').strip().lower()
+			if value:
+				query_parts.append(u'%s:(%s)' % (key, value))
+		query = u' '.join(query_parts)
+
+	# Additional parameters to the search.
+	params = {'query': query}
+	if limit:
+		params['limit'] = str(limit)
+	if offset:
+		params['offset'] = str(offset)
+
+	return do_mb_query(entity, '', [], params)
 
 # From pymb2
 class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
@@ -106,75 +205,66 @@ class InvalidIncludeError(Exception):
 	def __str__(self):
 		return self.msg
 
-def check_includes(valid_inc, inc):
+def check_includes(entity, inc):
 	for i in inc:
-		if i not in valid_inc:
+		if i not in VALID_INCLUDES[entity]:
 			raise InvalidIncludeError("Bad includes", "%s is not a valid include" % i)
 
 # Single entity by ID
 
 def get_artist_by_id(id, includes=[]):
-	valid_inc = ["recordings", "releases", "release-groups", "works", # Subqueries
-	             "discids", "media",
-	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
-	check_includes(valid_inc, includes)
 	return do_mb_query("artist", id, includes)
 
 def get_label_by_id(id, includes=[]):
-	valid_inc = ["releases", # Subqueries
-	             "discids", "media",
-	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
-	check_includes(valid_inc, includes)
 	return do_mb_query("label", id, includes)
 
 def get_recording_by_id(id, includes=[]):
-	valid_inc = ["artists", "releases", # Subqueries
-	             "discids", "media",
-	             "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
-	check_includes(valid_inc, includes)
 	return do_mb_query("recording", id, includes)
 
 def get_release_by_id(id, includes=[]):
-	valid_inc = ["artists", "labels", "recordings", "release-groups", "media", "discids", "puids", "echoprints", "isrcs"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("release", id, includes)
 
 def get_release_group_by_id(id, includes=[]):
-	valid_inc = ["artists", "releases", "discids", "media"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("release-group", id, includes)
 
 def get_work_by_id(id, includes=[]):
-	valid_inc = ["artists", # Subqueries
-	             "aliases", "tags", "user-tags", "ratings", "user-ratings"] # misc arguments
-	check_includes(valid_inc, includes)
 	return do_mb_query("work", id, includes)
+
+# Searching
+
+def artist_search(terms, limit=None, offset=None):
+	return do_mb_search('artist', terms, limit, offset)
+
+def label_search(terms, limit=None, offset=None):
+	return do_mb_search('label', terms, limit, offset)
+
+def recording_search(terms, limit=None, offset=None):
+	return do_mb_search('recording', terms, limit, offset)
+
+def release_search(terms, limit=None, offset=None):
+	return do_mb_search('release', terms, limit, offset)
+
+def release_group_search(terms, limit=None, offset=None):
+	return do_mb_search('release-group', terms, limit, offset)
+
+def work_search(terms, limit=None, offset=None):
+	return do_mb_search('work', terms, limit, offset)
 
 # Lists of entities
 
 def get_releases_by_discid(id, includes=[]):
-	valid_inc = ["artists", "labels", "recordings", "release-groups", "puids", "echoprints", "isrcs"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("discid", id, includes)
 
 def get_recordings_by_echoprint(echoprint, includes=[]):
-	valid_inc = ["artists", "releases"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("echoprint", echoprint, includes)
 
 def get_recordings_by_puid(puid, includes=[]):
-	valid_inc = ["artists", "releases", "puids", "echoprints", "isrcs"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("puid", puid, includes)
 
 def get_recordings_by_isrc(isrc, includes=[]):
-	valid_inc = ["artists", "releases", "puids", "echoprints", "isrcs"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("isrc", isrc, includes)
 
 def get_works_by_iswc(iswc, includes=[]):
-	valid_inc = ["artists"]
-	check_includes(valid_inc, includes)
 	return do_mb_query("iswc", iswc, includes)
 
 # Submission methods

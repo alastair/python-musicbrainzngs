@@ -96,6 +96,13 @@ def parse_message(message):
 	                  "puid": parse_puid,
 	                  "echoprint": parse_puid,
 
+	                  "artist-list": parse_artist_list,
+	                  "label-list": parse_label_list,
+	                  "release-list": parse_release_list,
+	                  "release-group-list": parse_release_group_list,
+	                  "recording-list": parse_recording_list,
+	                  "work-list": parse_work_list,
+
 	                  "message": parse_response_message
 	                  }
 	result.update(parse_inner(valid_elements, root))
@@ -110,6 +117,9 @@ def parse_artist_lifespan(lifespan):
 	endval = parts.get("end", "")
 		
 	return (beginval, endval)
+
+def parse_artist_list(al):
+	return [parse_artist(a) for a in al]
 
 def parse_artist(artist):
 	result = {}
@@ -129,6 +139,9 @@ def parse_artist(artist):
 	result.update(parse_inner(inner_els, artist))
 
 	return result
+
+def parse_label_list(ll):
+	return [parse_label(l) for l in ll]
 
 def parse_label(label):
 	result = {}
