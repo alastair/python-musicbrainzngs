@@ -150,32 +150,32 @@ def _do_mb_query(entity, id, includes=[], params={}):
 		raise
 	return mbxml.parse_message(f)
 
-def _do_mb_search(entity, terms, limit=None, offset=None):
+def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 	"""Perform a full-text search on the MusicBrainz search server.
-	`terms` may be a query string or a dictionary containing search
-	parameters valid for the given entity type.
+	`query` is a free-form query string and `fields` is a dictionary
+	of key/value query parameters. They keys in `fields` must be valid
+	for the given entity type.
 	"""
-	if isinstance(terms, basestring): # String.
-		query = terms.replace('\x00', '').strip().lower()
-	else: # Dictionary.
-		# Encode the query terms as a Lucene query string.
-		query_parts = []
-		for key, value in terms.iteritems():
-			# Ensure this is a valid search field.
-			if key not in VALID_SEARCH_FIELDS[entity]:
-				raise InvalidSearchFieldError(
-					'%s is not a valid search field for %s' % (key, entity)
-				)
+	# Encode the query terms as a Lucene query string.
+	query_parts = [query.replace('\x00', '').strip()]
+	for key, value in fields.iteritems():
+		# Ensure this is a valid search field.
+		if key not in VALID_SEARCH_FIELDS[entity]:
+			raise InvalidSearchFieldError(
+				'%s is not a valid search field for %s' % (key, entity)
+			)
 
-			# Escape Lucene's special characters.
-			value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
-			value = value.replace('\x00', '').strip().lower()
-			if value:
-				query_parts.append(u'%s:(%s)' % (key, value))
-		query = u' '.join(query_parts)
+		# Escape Lucene's special characters.
+		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
+		value = value.replace('\x00', '').strip()
+		if value:
+			query_parts.append(u'%s:(%s)' % (key, value))
+	full_query = u' '.join(query_parts).strip()
+	if not full_query:
+		raise ValueError('at least one query term is required')
 
 	# Additional parameters to the search.
-	params = {'query': query}
+	params = {'query': full_query}
 	if limit:
 		params['limit'] = str(limit)
 	if offset:
@@ -263,23 +263,23 @@ def get_work_by_id(id, includes=[]):
 
 # Searching
 
-def artist_search(terms, limit=None, offset=None):
-	return _do_mb_search('artist', terms, limit, offset)
+def artist_search(query='', limit=None, offset=None, **fields):
+	return _do_mb_search('artist', query, fields, limit, offset)
 
-def label_search(terms, limit=None, offset=None):
-	return _do_mb_search('label', terms, limit, offset)
+def label_search(query='', limit=None, offset=None, **fields):
+	return _do_mb_search('label', query, fields, limit, offset)
 
-def recording_search(terms, limit=None, offset=None):
-	return _do_mb_search('recording', terms, limit, offset)
+def recording_search(query='', limit=None, offset=None, **fields):
+	return _do_mb_search('recording', query, fields, limit, offset)
 
-def release_search(terms, limit=None, offset=None):
-	return _do_mb_search('release', terms, limit, offset)
+def release_search(query='', limit=None, offset=None, **fields):
+	return _do_mb_search('release', query, fields, limit, offset)
 
-def release_group_search(terms, limit=None, offset=None):
-	return _do_mb_search('release-group', terms, limit, offset)
+def release_group_search(query='', limit=None, offset=None, **fields):
+	return _do_mb_search('release-group', query, fields, limit, offset)
 
-def work_search(terms, limit=None, offset=None):
-	return _do_mb_search('work', terms, limit, offset)
+def work_search(query='', limit=None, offset=None, **fields):
+	return _do_mb_search('work', query, fields, limit, offset)
 
 
 # Lists of entities
