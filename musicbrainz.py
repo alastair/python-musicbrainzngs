@@ -264,21 +264,52 @@ def get_work_by_id(id, includes=[]):
 # Searching
 
 def artist_search(query='', limit=None, offset=None, **fields):
+	"""Search for artists by a free-form `query` string and/or any of
+	the following keyword arguments specifying field queries:
+	arid, artist, sortname, type, begin, end, comment, alias, country,
+	gender, tag
+	"""
 	return _do_mb_search('artist', query, fields, limit, offset)
 
 def label_search(query='', limit=None, offset=None, **fields):
+	"""Search for labels by a free-form `query` string and/or any of
+	the following keyword arguments specifying field queries:
+	laid, label, sortname, type, code, country, begin, end, comment,
+	alias, tag
+	"""
 	return _do_mb_search('label', query, fields, limit, offset)
 
 def recording_search(query='', limit=None, offset=None, **fields):
+	"""Search for recordings by a free-form `query` string and/or any of
+	the following keyword arguments specifying field queries:
+	rid, recording, isrc, arid, artist, artistname, creditname, reid,
+	release, type, status, tracks, tracksrelease, dur, qdur, tnum,
+	position, tag
+	"""
 	return _do_mb_search('recording', query, fields, limit, offset)
 
 def release_search(query='', limit=None, offset=None, **fields):
+	"""Search for releases by a free-form `query` string and/or any of
+	the following keyword arguments specifying field queries:
+	reid, release, arid, artist, artistname, creditname, type, status,
+	tracks, tracksmedium, discids, discidsmedium, mediums, date, asin,
+	lang, script, country, date, label, catno, barcode, puid
+	"""
 	return _do_mb_search('release', query, fields, limit, offset)
 
 def release_group_search(query='', limit=None, offset=None, **fields):
+	"""Search for release groups by a free-form `query` string and/or
+	any of the following keyword arguments specifying field queries:
+	rgid, releasegroup, reid, release, arid, artist, artistname,
+	creditname, type, tag
+	"""
 	return _do_mb_search('release-group', query, fields, limit, offset)
 
 def work_search(query='', limit=None, offset=None, **fields):
+	"""Search for works by a free-form `query` string and/or any of
+	the following keyword arguments specifying field queries:
+	wid, work, iswc, type, arid, artist, alias, tag
+	"""
 	return _do_mb_search('work', query, fields, limit, offset)
 
 
