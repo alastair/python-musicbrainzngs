@@ -16,3 +16,12 @@ For more information, see http://wiki.musicbrainz.org/XML_Web_Service
     musicbrainz.hostname = "echoprint.musicbrainz.org"
 
 See the query.py file for more examples
+
+### Authors
+
+These bindings were written by [Alastair Porter](http://github.com/alastair). Contributions have been made
+by [Adrian Sampson](https://github.com/sampsyo)
+
+### License
+
+This library is released under the simplified BSD license. See COPYING for details.
