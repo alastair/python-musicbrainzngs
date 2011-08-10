@@ -138,16 +138,11 @@ def _do_mb_query(entity, id, includes=[], params={}):
 		'',
 		urllib.urlencode(args),
 		''))
-	print url
 
 	# Make the request and parse the response.
-	f = urllib2.Request(url)
-	f.add_header('User-Agent','pythonmusicbrainzngs-0.1')
-	try:
-		f = urllib2.urlopen(f)
-	except urllib2.URLError, e:
-		print "error"
-		raise
+	req = urllib2.Request(url)
+	req.add_header('User-Agent','pythonmusicbrainzngs-0.1')
+	f = urllib2.urlopen(req)
 	return mbxml.parse_message(f)
 
 def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
