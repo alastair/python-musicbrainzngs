@@ -12,6 +12,7 @@ import re
 # Paging
 # Release type, status, date
 
+_useragent = "pythonmusicbrainzngs-0.1"
 
 # Constants for validation.
 
@@ -104,6 +105,7 @@ class InvalidIncludeError(Exception):
 
 user = password = ""
 hostname = "musicbrainz.org"
+_client = ""
 
 def auth(u, p):
 	"""Set the username and password to be used in subsequent queries to
@@ -113,6 +115,12 @@ def auth(u, p):
 	user = u
 	password = p
 
+def set_client(c):
+	""" Set the client to be used in requests. This must be set before any
+	data submissions are made.
+	"""
+	global _client
+	_client = c
 
 # Core functions for calling the MB API.
 
@@ -141,7 +149,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 
 	# Make the request and parse the response.
 	req = urllib2.Request(url)
-	req.add_header('User-Agent','pythonmusicbrainzngs-0.1')
+	req.add_header('User-Agent', _useragent)
 	f = urllib2.urlopen(req)
 	return mbxml.parse_message(f)
 
@@ -209,12 +217,14 @@ def _do_mb_post(entity, body):
 		raise Exception("use musicbrainz.auth(u, p) first")
 	passwordMgr = _RedirectPasswordMgr()
 	authHandler = DigestAuthHandler(passwordMgr)
-        authHandler.add_password("musicbrainz.org", (), # no host set
+	authHandler.add_password("musicbrainz.org", (), # no host set
                         user, password)
 	opener = urllib2.build_opener()
-        opener.add_handler(authHandler)
+	opener.add_handler(authHandler)
 
-	args = {"client": "pythonmusicbrainzngs-0.1"}
+	if _client == "":
+		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
+	args = {"client": _client}
 	url = urlparse.urlunparse(('http',
 		hostname,
 		'/ws/2/%s' % (entity,),
@@ -223,7 +233,7 @@ def _do_mb_post(entity, body):
 		''))
 	#print url
 	f = urllib2.Request(url)
-	f.add_header('User-Agent','pythonmusicbrainzngs-0.1')
+	f.add_header('User-Agent', _useragent)
 	f.add_header('Content-Type', 'application/xml; charset=UTF-8')
 	try:
 		f = opener.open(f, body)
