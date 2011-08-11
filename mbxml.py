@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import string
 import StringIO
+import logging
 try:
 	from ET import fixtag
 except:
@@ -43,6 +44,8 @@ def parse_elements(valid_els, element):
 			t = t.split(":")[1]
 		if t in valid_els:
 			result[t] = sub.text
+		else:
+			logging.debug("in <%s>, uncaught <%s>", fixtag(element.tag, NS_MAP)[0], t)
 	return result
 
 def parse_attributes(attributes, element):
@@ -56,6 +59,8 @@ def parse_attributes(attributes, element):
 	for attr in attributes:
 		if attr in element.attrib:
 			result[attr] = element.attrib[attr]
+		else:
+			logging.debug("in <%s>, uncaught attribute %s", fixtag(element.tag, NS_MAP)[0], attr)
 	return result
 
 def parse_inner(inner_els, element):
@@ -77,6 +82,8 @@ def parse_inner(inner_els, element):
 			t = t.split(":")[1]
 		if t in inner_els.keys():
 			result[t] = inner_els[t](sub)
+		else:
+			logging.debug("in <%s>, not delegating <%s>", fixtag(element.tag, NS_MAP)[0], t)
 	return result
 
 def parse_message(message):
