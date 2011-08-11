@@ -36,7 +36,10 @@ VALID_INCLUDES = {
 		"artists", "labels", "recordings", "release-groups", "media",
 		"discids", "puids", "echoprints", "isrcs"
 	],
-	'release-group': ["artists", "releases", "discids", "media"],
+	'release-group': [
+		"artists", "releases", "discids", "media",
+		"tags", "user-tags", "ratings", "user-ratings" # misc
+	],
 	'work': [
 		"artists", # Subqueries
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings" # misc

@@ -131,13 +131,14 @@ def parse_artist_list(al):
 def parse_artist(artist):
 	result = {}
 	attribs = ["id", "type"]
-	elements = ["name", "sort-name", "country"]
+	elements = ["name", "sort-name", "country", "user-rating"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "recording-list": parse_recording_list,
 	             "release-list": parse_release_list,
 	             "release-group-list": parse_release_group_list,
 	             "work-list": parse_work_list,
 	             "tag-list": parse_tag_list,
+	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
 	             "alias-list": parse_alias_list}
 
@@ -153,10 +154,11 @@ def parse_label_list(ll):
 def parse_label(label):
 	result = {}
 	attribs = ["id", "type"]
-	elements = ["name", "sort-name", "country", "label-code"]
+	elements = ["name", "sort-name", "country", "label-code", "user-rating"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
+	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
 	             "alias-list": parse_alias_list}
 
@@ -214,9 +216,12 @@ def parse_text_representation(textr):
 def parse_release_group(rg):
 	result = {}
 	attribs = ["id", "type"]
-	elements = ["title"]
+	elements = ["title", "user-rating"]
 	inner_els = {"artist-credit": parse_artist_credit,
-	             "release-list": parse_release_list}
+	             "release-list": parse_release_list,
+	             "tag-list": parse_tag_list,
+	             "user-tag-list": parse_tag_list,
+	             "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, rg))
 	result.update(parse_elements(elements, rg))
@@ -227,10 +232,11 @@ def parse_release_group(rg):
 def parse_recording(recording):
 	result = {}
 	attribs = ["id"]
-	elements = ["title", "length"]
+	elements = ["title", "length", "user-rating"]
 	inner_els = {"artist-credit": parse_artist_credit,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
+	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
 	             "puid-list": parse_external_id_list,
 	             "isrc-list": parse_external_id_list,
@@ -254,8 +260,9 @@ def parse_work_list(wl):
 def parse_work(work):
 	result = {}
 	attribs = ["id"]
-	elements = ["title"]
+	elements = ["title", "user-rating"]
 	inner_els = {"tag-list": parse_tag_list,
+	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
 	             "alias-list": parse_alias_list}
 
