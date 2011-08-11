@@ -131,7 +131,7 @@ def parse_artist_list(al):
 def parse_artist(artist):
 	result = {}
 	attribs = ["id", "type"]
-	elements = ["name", "sort-name"]
+	elements = ["name", "sort-name", "country"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "recording-list": parse_recording_list,
 	             "release-list": parse_release_list,
@@ -153,7 +153,7 @@ def parse_label_list(ll):
 def parse_label(label):
 	result = {}
 	attribs = ["id", "type"]
-	elements = ["name", "sort-name", "country"]
+	elements = ["name", "sort-name", "country", "label-code"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
@@ -169,7 +169,7 @@ def parse_label(label):
 def parse_release(release):
 	result = {}
 	attribs = ["id"]
-	elements = ["title", "status", "quality", "country", "barcode"]
+	elements = ["title", "status", "quality", "country", "barcode", "date"]
 	inner_els = {"text-representation": parse_text_representation,
 	             "artist-credit": parse_artist_credit,
 	             "label-info-list": parse_label_info_list,
