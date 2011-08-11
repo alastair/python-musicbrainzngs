@@ -138,6 +138,18 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	if len(includes) > 0:
 		inc = " ".join(includes)
 		args["inc"] = inc
+
+	opener = urllib2.build_opener()
+	
+	# if user contributed entities are requested, we need to authenticate
+	# This test should maybe be up a level, and this just tests "if auth_needed:"
+	if "user-tags" in includes or "user-ratings" in includes:
+		if user == "":
+			raise Exception("use musicbrainz.auth(u, p) first")
+		passwordMgr = _RedirectPasswordMgr()
+		authHandler = DigestAuthHandler(passwordMgr)
+		authHandler.add_password("musicbrainz.org", (), user, password)
+		opener.add_handler(authHandler)
 	
 	# Build the endpoint URL.
 	url = urlparse.urlunparse(('http',
@@ -150,7 +162,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	# Make the request and parse the response.
 	req = urllib2.Request(url)
 	req.add_header('User-Agent', _useragent)
-	f = urllib2.urlopen(req)
+	f = opener.open(req)
 	return mbxml.parse_message(f)
 
 def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
