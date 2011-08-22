@@ -28,6 +28,15 @@ except:
 
 NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2"}
 
+def make_artist_credit(artists):
+	names = []
+	for artist in artists:
+		if isinstance(artist, dict):
+			names.append(artist.get("artist", {}).get("name", ""))
+		else:
+			names.append(artist)
+	return "".join(names)
+
 def parse_elements(valid_els, element):
 	""" Extract single level subelements from an element.
 	    For example, given the element:
@@ -203,6 +212,8 @@ def parse_release(release):
 	result.update(parse_attributes(attribs, release))
 	result.update(parse_elements(elements, release))
 	result.update(parse_inner(inner_els, release))
+	if "artist-credit" in result:
+		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
 	return result
 
@@ -247,6 +258,8 @@ def parse_release_group(rg):
 	result.update(parse_attributes(attribs, rg))
 	result.update(parse_elements(elements, rg))
 	result.update(parse_inner(inner_els, rg))
+	if "artist-credit" in result:
+		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
 	return result
 
@@ -266,6 +279,8 @@ def parse_recording(recording):
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
 	result.update(parse_inner(inner_els, recording))
+	if "artist-credit" in result:
+		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
 	return result
 

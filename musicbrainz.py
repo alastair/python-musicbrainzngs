@@ -4,18 +4,9 @@ import urllib
 import mbxml
 import re
 
-# To do:
-# artist-credits, various-artists
-# User ratings, User tags
-# Relationships
-# Browse methods
-# Paging
-# Release type, status, date
-
 _useragent = "pythonmusicbrainzngs-0.1"
 
 # Constants for validation.
-
 VALID_INCLUDES = {
 	'artist': [
 		"recordings", "releases", "release-groups", "works", # Subqueries
@@ -29,16 +20,16 @@ VALID_INCLUDES = {
 	],
 	'recording': [
 		"artists", "releases", # Subqueries
-	    "discids", "media",
+	    "discids", "media", "artist-credits",
 	    "tags", "user-tags", "ratings", "user-ratings" # misc
 	],
 	'release': [
 		"artists", "labels", "recordings", "release-groups", "media",
-		"discids", "puids", "echoprints", "isrcs"
+		"artist-credits", "discids", "puids", "echoprints", "isrcs"
 	],
 	'release-group': [
 		"artists", "releases", "discids", "media",
-		"tags", "user-tags", "ratings", "user-ratings" # misc
+		"artist-credits", "tags", "user-tags", "ratings", "user-ratings" # misc
 	],
 	'work': [
 		"artists", # Subqueries
