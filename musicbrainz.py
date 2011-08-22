@@ -10,7 +10,7 @@ _useragent = "pythonmusicbrainzngs-0.1"
 VALID_INCLUDES = {
 	'artist': [
 		"recordings", "releases", "release-groups", "works", # Subqueries
-		"discids", "media",
+		"various-artists", "discids", "media",
 		"aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
 	], 
 	'label': [
