@@ -127,6 +127,17 @@ def set_client(c):
 
 # Core functions for calling the MB API.
 
+def _is_auth_required(entity, includes):
+	""" Some calls require authentication. This returns
+	True if a call does, False otherwise
+	"""
+	if "user-tags" in includes or "user-ratings" in includes:
+		return True
+	elif entity.startswith("collection"):
+		return True
+	else:
+		return False
+
 def _do_mb_query(entity, id, includes=[], params={}):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
 	string indicated the type of object to be retrieved. The id may be
@@ -137,23 +148,12 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	"""
 	# Build arguments.
 	_check_includes(entity, includes)
+	auth_required = _is_auth_required(entity, includes)
 	args = dict(params)
 	if len(includes) > 0:
 		inc = " ".join(includes)
 		args["inc"] = inc
 
-	opener = urllib2.build_opener()
-	
-	# if user contributed entities are requested, we need to authenticate
-	# This test should maybe be up a level, and this just tests "if auth_needed:"
-	if "user-tags" in includes or "user-ratings" in includes:
-		if user == "":
-			raise Exception("use musicbrainz.auth(u, p) first")
-		passwordMgr = _RedirectPasswordMgr()
-		authHandler = DigestAuthHandler(passwordMgr)
-		authHandler.add_password("musicbrainz.org", (), user, password)
-		opener.add_handler(authHandler)
-	
 	# Build the endpoint URL.
 	url = urlparse.urlunparse(('http',
 		hostname,
@@ -161,11 +161,9 @@ def _do_mb_query(entity, id, includes=[], params={}):
 		'',
 		urllib.urlencode(args),
 		''))
-
 	# Make the request and parse the response.
-	req = urllib2.Request(url)
-	req.add_header('User-Agent', _useragent)
-	f = opener.open(req)
+
+	f = _make_http_request(url, auth_required, None, None, 'GET')
 	return mbxml.parse_message(f)
 
 def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
@@ -225,18 +223,52 @@ class DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
 
 		return urllib2.HTTPDigestAuthHandler.get_authorization (self, req, chal)
 
-def _do_mb_post(entity, body):
+class MusicbrainzHttpRequest(urllib2.Request):
+	""" A custom request handler that allows DELETE and PUT"""
+	def __init__(self, method, url, data=None):
+		urllib2.Request.__init__(self, url, data)
+		allowed_m = ["GET", "POST", "DELETE", "PUT"]
+		if method not in allowed_m:
+			raise Exception("invalid method: %s" % method)
+		self.method = method
+
+	def get_method(self):
+		return self.method
+
+def _make_http_request(url, auth_req, data, body, method):
+	# Set this to 1 to debug the http transaction
+	httpHandler = urllib2.HTTPHandler(debuglevel=0)
+	handlers = [httpHandler]
+	# if user contributed entities are requested, we need to authenticate
+	# This test should maybe be up a level, and this just tests "if auth_needed:"
+	if auth_req:
+		if user == "":
+			raise Exception("use musicbrainz.auth(u, p) first")
+		passwordMgr = _RedirectPasswordMgr()
+		authHandler = DigestAuthHandler(passwordMgr)
+		authHandler.add_password("musicbrainz.org", (), user, password)
+		handlers.append(authHandler)
+
+	opener = urllib2.build_opener(*handlers)
+
+	req = MusicbrainzHttpRequest(method, url, data)
+	req.add_header('User-Agent', _useragent)
+	if body:
+		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
+	try:
+	    if body:
+		    f = opener.open(req, body)
+	    else:
+	        f = opener.open(req)
+	except urllib2.URLError, e:
+		if e.fp:
+			print e.fp.read()
+		raise
+	return f
+
+def _do_mb_delete(entity):
 	"""Perform a single POST call to the MusicBrainz XML API.
 	"""
-	if user == "":
-		raise Exception("use musicbrainz.auth(u, p) first")
-	passwordMgr = _RedirectPasswordMgr()
-	authHandler = DigestAuthHandler(passwordMgr)
-	authHandler.add_password("musicbrainz.org", (), # no host set
-                        user, password)
-	opener = urllib2.build_opener()
-	opener.add_handler(authHandler)
-
 	if _client == "":
 		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
 	args = {"client": _client}
@@ -247,18 +279,43 @@ def _do_mb_post(entity, body):
 		urllib.urlencode(args),
 		''))
 	#print url
-	f = urllib2.Request(url)
-	f.add_header('User-Agent', _useragent)
-	f.add_header('Content-Type', 'application/xml; charset=UTF-8')
-	try:
-		f = opener.open(f, body)
-	except urllib2.URLError, e:
-		if e.fp:
-			print e.fp.read()
-		raise
-	#print f.read()
+	
+	f = _make_http_request(url, auth_req=True, data=None, body=None, method="DELETE")
 	return mbxml.parse_message(f)
 
+def _do_mb_put(entity):
+	"""Perform a single POST call to the MusicBrainz XML API.
+	"""
+	if _client == "":
+		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
+	args = {"client": _client}
+	url = urlparse.urlunparse(('http',
+		hostname,
+		'/ws/2/%s' % (entity,),
+		'',
+		urllib.urlencode(args),
+		''))
+	#print url
+	
+	f = _make_http_request(url, auth_req=True, data="", body=None, method="PUT")
+	return mbxml.parse_message(f)
+
+def _do_mb_post(entity, body):
+	"""Perform a single POST call to the MusicBrainz XML API.
+	"""
+	if _client == "":
+		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
+	args = {"client": _client}
+	url = urlparse.urlunparse(('http',
+		hostname,
+		'/ws/2/%s' % (entity,),
+		'',
+		urllib.urlencode(args),
+		''))
+	#print url
+	
+	f = _make_http_request(url, auth_req=True, data=None, body=body, method="POST")
+	return mbxml.parse_message(f)
 
 # Single entity by ID
 
