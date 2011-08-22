@@ -407,6 +407,13 @@ def get_recordings_by_isrc(isrc, includes=[]):
 def get_works_by_iswc(iswc, includes=[]):
 	return _do_mb_query("iswc", iswc, includes)
 
+# Collections
+def get_all_collections():
+	# Missing <release-list count="n"> the count in the reply
+	return _do_mb_query("collection", '')
+
+def get_releases_in_collection(collection):
+	return _do_mb_query("collection", "%s/releases" % collection)
 
 # Submission methods
 
@@ -445,3 +452,11 @@ def submit_ratings(artist_ratings={}, recording_ratings={}):
 	query = mbxml.make_rating_request(artist_ratings, recording_ratings)
 	return _do_mb_post("rating", query)
 
+def add_releases_to_collection(collection, releases=[]):
+	# XXX: Maximum URI length of 16kb means we should only allow ~400 releases
+	releaselist = ";".join(releases)
+   	_do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
+
+def remove_releases_from_collection(collection, releases=[]):
+	releaselist = ";".join(releases)
+   	_do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))

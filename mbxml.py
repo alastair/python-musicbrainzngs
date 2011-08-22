@@ -109,6 +109,9 @@ def parse_message(message):
 	                  "release-group-list": parse_release_group_list,
 	                  "recording-list": parse_recording_list,
 	                  "work-list": parse_work_list,
+	
+	                  "collection-list": parse_collection_list,
+	                  "collection": parse_collection,
 
 	                  "message": parse_response_message
 	                  }
@@ -117,6 +120,24 @@ def parse_message(message):
 
 def parse_response_message(message):
     return parse_elements(["text"], message)
+
+def parse_collection_list(cl):
+	return [parse_collection(c) for c in cl]
+
+def parse_collection(collection):
+	result = {}
+	attribs = ["id"]
+	elements = ["name", "editor"]
+	inner_els = {"release-list": parse_release_list}
+	result.update(parse_attributes(attribs, collection))
+	result.update(parse_elements(elements, collection))
+	result.update(parse_inner(inner_els, collection))
+
+	return result
+
+def parse_collection_release_list(rl):
+	attribs = ["count"]
+	return parse_attributes(attribs, rl)
 
 def parse_artist_lifespan(lifespan):
 	parts = parse_elements(["begin", "end"], lifespan)
