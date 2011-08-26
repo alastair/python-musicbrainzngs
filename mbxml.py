@@ -201,7 +201,7 @@ def parse_label(label):
 def parse_release(release):
 	result = {}
 	attribs = ["id"]
-	elements = ["title", "status", "quality", "country", "barcode", "date"]
+	elements = ["title", "status", "quality", "country", "barcode", "date", "packaging", "asin"]
 	inner_els = {"text-representation": parse_text_representation,
 	             "artist-credit": parse_artist_credit,
 	             "label-info-list": parse_label_info_list,
@@ -248,7 +248,7 @@ def parse_text_representation(textr):
 def parse_release_group(rg):
 	result = {}
 	attribs = ["id", "type"]
-	elements = ["title", "user-rating"]
+	elements = ["title", "user-rating", "first-release-date"]
 	inner_els = {"artist-credit": parse_artist_credit,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
