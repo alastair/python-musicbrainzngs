@@ -44,6 +44,9 @@ VALID_INCLUDES = {
 	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
 	'iswc': ["artists"],
 }
+VALID_RELEASE_TYPES = ["nat", "album", "single", "ep", "compilation", "soundtrack",
+                       "spokenword", "interview", "audiobook", "live", "remix", "other"]
+VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
 VALID_SEARCH_FIELDS = {
 	'artist': [
 		'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
@@ -94,6 +97,14 @@ class InvalidIncludeError(Exception):
 	def __str__(self):
 		return self.msg
 
+class InvalidFilterError(Exception):
+	def __init__(self, msg='Invalid Includes', reason=None):
+		Exception.__init__(self)
+		self.msg = msg
+		self.reason = reason
+
+	def __str__(self):
+		return self.msg
 
 # Global authentication and endpoint details.
 
@@ -308,22 +319,52 @@ def _do_mb_post(entity, body):
 	f = _make_http_request(url, auth_req=True, data=None, body=body, method="POST")
 	return mbxml.parse_message(f)
 
+def _check_filter(values, valid):
+	for v in values:
+		if v not in valid:
+			raise InvalidFilterError(v)
+
+def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
+	"""Check that the status or type values are valid. Then, check that
+	the filters can be used with the given includes. Return a params
+	dict that can be passed to _do_mb_query """
+	if isinstance(release_status, str):
+		release_status = [release_status]
+	if isinstance(release_type, str):
+		release_type = [release_type]
+	_check_filter(release_status, VALID_RELEASE_STATUSES)
+	_check_filter(release_type, VALID_RELEASE_TYPES)
+	if len(release_status) and "releases" not in includes:
+		raise InvalidFilterError("Can't have a status with no release include")
+	if len(release_type) and ("release-groups" not in includes and "releases" not in includes):
+		raise InvalidFilterError("Can't have a release type with no release-group include")
+	params = {}
+	if len(release_status):
+		params["status"] = "|".join(release_status)
+	if len(release_type):
+		params["type"] = "|".join(release_type)
+	return params
+
 # Single entity by ID
+def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("artist", id, includes, params)
 
-def get_artist_by_id(id, includes=[]):
-	return _do_mb_query("artist", id, includes)
+def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("label", id, includes, params)
 
-def get_label_by_id(id, includes=[]):
-	return _do_mb_query("label", id, includes)
+def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("recording", id, includes, params)
 
-def get_recording_by_id(id, includes=[]):
-	return _do_mb_query("recording", id, includes)
+def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("release", id, includes, params)
 
-def get_release_by_id(id, includes=[]):
-	return _do_mb_query("release", id, includes)
-
-def get_release_group_by_id(id, includes=[]):
-	return _do_mb_query("release-group", id, includes)
+def get_release_group_by_id(id, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("release-group", id, includes, params)
 
 def get_work_by_id(id, includes=[]):
 	return _do_mb_query("work", id, includes)
@@ -382,18 +423,21 @@ def work_search(query='', limit=None, offset=None, **fields):
 
 
 # Lists of entities
+def get_releases_by_discid(id, includes=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_type=release_type)
+	return _do_mb_query("discid", id, includes, params)
 
-def get_releases_by_discid(id, includes=[]):
-	return _do_mb_query("discid", id, includes)
+def get_recordings_by_echoprint(echoprint, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("echoprint", echoprint, includes, params)
 
-def get_recordings_by_echoprint(echoprint, includes=[]):
-	return _do_mb_query("echoprint", echoprint, includes)
+def get_recordings_by_puid(puid, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("puid", puid, includes, params)
 
-def get_recordings_by_puid(puid, includes=[]):
-	return _do_mb_query("puid", puid, includes)
-
-def get_recordings_by_isrc(isrc, includes=[]):
-	return _do_mb_query("isrc", isrc, includes)
+def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type)
+	return _do_mb_query("isrc", isrc, includes, params)
 
 def get_works_by_iswc(iswc, includes=[]):
 	return _do_mb_query("iswc", iswc, includes)
