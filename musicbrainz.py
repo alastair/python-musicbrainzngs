@@ -163,6 +163,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 		'',
 		urllib.urlencode(args),
 		''))
+	print url
 	# Make the request and parse the response.
 
 	f = _make_http_request(url, auth_required, None, None, 'GET')
@@ -441,6 +442,70 @@ def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]
 
 def get_works_by_iswc(iswc, includes=[]):
 	return _do_mb_query("iswc", iswc, includes)
+
+# Browse methods
+def browse_artist(recording=None, release=None, release_group=None, limit=None, offset=None):
+    # optional parameter work?
+    p = {}
+    if recording: p["recording"] = recording
+    if release: p["release"] = release
+    if release_group: p["release-group"] = release_group
+    #if work: p["work"] = work
+    if len(p) > 1:
+        raise Exception("Can't have more than one of recording, release, release_group, work")
+    if limit: p["limit"] = limit
+    if offset: p["offset"] = offset
+    return _do_mb_query("artist", "", [], p)
+
+def browse_label(release=None, limit=None, offset=None):
+    p = {"release": release}
+    if limit: p["limit"] = limit
+    if offset: p["offset"] = offset
+    return _do_mb_query("label", "", [], p)
+
+def browse_recording(artist=None, release=None, limit=None, offset=None):
+    p = {}
+    if artist: p["artist"] = artist
+    if release: p["release"] = release
+    if len(p) > 1:
+        raise Exception("Can't have more than one of artist, release")
+    if limit: p["limit"] = limit
+    if offset: p["offset"] = offset
+    return _do_mb_query("recording", "", [], p)
+
+def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], limit=None, offset=None):
+    # track_artist param
+    p = {}
+    if artist: p["artist"] = artist
+    #if track_artist: p["track_artist"] = track_artist
+    if label: p["label"] = label
+    if recording: p["recording"] = recording
+    if release_group: p["release-group"] = release_group
+    if len(p) > 1:
+        raise Exception("Can't have more than one of artist, label, recording, release_group")
+    if limit: p["limit"] = limit
+    if offset: p["offset"] = offset
+    filterp = _check_filter_and_make_params("releases", release_status, release_type)
+    p.update(filterp)
+    if len(release_status) == 0 and len(release_type) == 0:
+        raise InvalidFilterError("Need at least one release status or type")
+    return _do_mb_query("release", "", [], p)
+
+def browse_release_group(artist=None, release=None, release_type=[], limit=None, offset=None):
+    p = {}
+    if artist: p["artist"] = artist
+    if release: p["release"] = release
+    if len(p) > 1:
+        raise Exception("Can't have more than one of artist, release")
+    if limit: p["limit"] = limit
+    if offset: p["offset"] = offset
+    filterp = _check_filter_and_make_params("release-groups", [], release_type)
+    p.update(filterp)
+    if len(release_type) == 0:
+        raise InvalidFilterError("Need at least one release type")
+    return _do_mb_query("release-group", "", [], p)
+
+# browse_work is defined in the docs but has no browse criteria
 
 # Collections
 def get_all_collections():
