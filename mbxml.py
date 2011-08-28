@@ -83,6 +83,9 @@ def parse_inner(inner_els, element):
 	    and a dictionary {'subelement': parse_subelement},
 	    call parse_subelement(<subelement>) and
 	    return a dict {'subelement': <result>}
+	    if parse_subelement returns a tuple of the form
+	    ('subelement-key', <result>) then return a dict
+	    {'subelement-key': <result>} instead
 	"""
 	result = {}
 	for sub in element:
@@ -90,7 +93,11 @@ def parse_inner(inner_els, element):
 		if ":" in t:
 			t = t.split(":")[1]
 		if t in inner_els.keys():
-			result[t] = inner_els[t](sub)
+			inner_result = inner_els[t](sub)
+			if isinstance(inner_result, tuple):
+				result[inner_result[0]] = inner_result[1]
+			else:
+				result[t] = inner_result
 		else:
 			logging.debug("in <%s>, not delegating <%s>", fixtag(element.tag, NS_MAP)[0], t)
 	return result
@@ -198,6 +205,36 @@ def parse_label(label):
 
 	return result
 
+def parse_attribute_list(al):
+    return [parse_attribute_tag(a) for a in al]
+
+def parse_attribute_tag(attribute):
+    return attribute.text
+
+def parse_relation_list(rl):
+    attribs = ["target-type"]
+    ttype = parse_attributes(attribs, rl)
+    key = "%s-relation-list" % ttype["target-type"]
+    return (key, [parse_relation(r) for r in rl])
+
+def parse_relation(relation):
+    result = {}
+    attribs = ["type"]
+    elements = ["target", "direction"]
+    inner_els = {"artist": parse_artist,
+                 "label": parse_label,
+                 "recording": parse_recording,
+                 "release": parse_release,
+                 "release-group": parse_release_group,
+                 "attribute-list": parse_attribute_list,
+                 "work": parse_work
+                }
+    result.update(parse_attributes(attribs, relation))
+    result.update(parse_elements(elements, relation))
+    result.update(parse_inner(inner_els, relation))
+
+    return result
+
 def parse_release(release):
 	result = {}
 	attribs = ["id"]
@@ -207,7 +244,8 @@ def parse_release(release):
 	             "label-info-list": parse_label_info_list,
 	             "medium-list": parse_medium_list,
 	             "release-group": parse_release_group,
-	             "medium-list": parse_medium_list}
+	             "medium-list": parse_medium_list,
+	             "relation-list": parse_relation_list}
 
 	result.update(parse_attributes(attribs, release))
 	result.update(parse_elements(elements, release))

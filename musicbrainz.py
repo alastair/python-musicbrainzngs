@@ -11,29 +11,41 @@ VALID_INCLUDES = {
 	'artist': [
 		"recordings", "releases", "release-groups", "works", # Subqueries
 		"various-artists", "discids", "media",
-		"aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
+		"aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
+		"url-rels", "work-rels"
 	], 
 	'label': [
 		"releases", # Subqueries
 	    "discids", "media",
-	    "aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
+	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
+		"url-rels", "work-rels"
 	],
 	'recording': [
 		"artists", "releases", # Subqueries
 	    "discids", "media", "artist-credits",
-	    "tags", "user-tags", "ratings", "user-ratings" # misc
+	    "tags", "user-tags", "ratings", "user-ratings", # misc
+		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
+		"url-rels", "work-rels"
 	],
 	'release': [
 		"artists", "labels", "recordings", "release-groups", "media",
-		"artist-credits", "discids", "puids", "echoprints", "isrcs"
+		"artist-credits", "discids", "puids", "echoprints", "isrcs",
+		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
+		"url-rels", "work-rels", "recording-level-rels", "work-level-rels"
 	],
 	'release-group': [
 		"artists", "releases", "discids", "media",
-		"artist-credits", "tags", "user-tags", "ratings", "user-ratings" # misc
+		"artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
+		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
+		"url-rels", "work-rels"
 	],
 	'work': [
 		"artists", # Subqueries
-	    "aliases", "tags", "user-tags", "ratings", "user-ratings" # misc
+	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
+		"url-rels", "work-rels"
 	],
 	'discid': [
 		"artists", "labels", "recordings", "release-groups", "puids",
