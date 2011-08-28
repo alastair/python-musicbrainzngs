@@ -76,12 +76,12 @@ VALID_SEARCH_FIELDS = {
 	],
 }
 
+def _check_includes_impl(includes, valid_includes):
+    for i in includes:
+        if i not in valid_includes:
+            raise InvalidIncludeError("Bad includes", "%s is not a valid include" % i)
 def _check_includes(entity, inc):
-	for i in inc:
-		if i not in VALID_INCLUDES[entity]:
-			raise InvalidIncludeError("Bad includes",
-									  "%s is not a valid include" % i)
-
+    _check_includes_impl(inc, VALID_INCLUDES[entity])
 
 # Invalid-argument exceptions.
 
@@ -163,7 +163,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 		'',
 		urllib.urlencode(args),
 		''))
-	print url
+	#print url
 	# Make the request and parse the response.
 
 	f = _make_http_request(url, auth_required, None, None, 'GET')
@@ -444,8 +444,11 @@ def get_works_by_iswc(iswc, includes=[]):
 	return _do_mb_query("iswc", iswc, includes)
 
 # Browse methods
-def browse_artist(recording=None, release=None, release_group=None, limit=None, offset=None):
+# Browse include are a subset of regular get includes, so we check them here
+# and the test in _do_mb_query will pass anyway.
+def browse_artist(recording=None, release=None, release_group=None, includes=[], limit=None, offset=None):
     # optional parameter work?
+    _check_includes_impl(includes, ["aliases", "tags", "ratings", "user-tags", "user-ratings"])
     p = {}
     if recording: p["recording"] = recording
     if release: p["release"] = release
@@ -455,15 +458,17 @@ def browse_artist(recording=None, release=None, release_group=None, limit=None, 
         raise Exception("Can't have more than one of recording, release, release_group, work")
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
-    return _do_mb_query("artist", "", [], p)
+    return _do_mb_query("artist", "", includes, p)
 
-def browse_label(release=None, limit=None, offset=None):
+def browse_label(release=None, includes=[], limit=None, offset=None):
+    _check_includes_impl(includes, ["aliases", "tags", "ratings", "user-tags", "user-ratings"])
     p = {"release": release}
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
-    return _do_mb_query("label", "", [], p)
+    return _do_mb_query("label", "", includes, p)
 
-def browse_recording(artist=None, release=None, limit=None, offset=None):
+def browse_recording(artist=None, release=None, includes=[], limit=None, offset=None):
+    _check_includes_impl(includes, ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
     p = {}
     if artist: p["artist"] = artist
     if release: p["release"] = release
@@ -471,10 +476,11 @@ def browse_recording(artist=None, release=None, limit=None, offset=None):
         raise Exception("Can't have more than one of artist, release")
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
-    return _do_mb_query("recording", "", [], p)
+    return _do_mb_query("recording", "", includes, p)
 
-def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], limit=None, offset=None):
-    # track_artist param
+def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
+    # track_artist param doesn't work yet
+    _check_includes_impl(includes, ["artist-credits", "labels", "recordings"])
     p = {}
     if artist: p["artist"] = artist
     #if track_artist: p["track_artist"] = track_artist
@@ -489,9 +495,10 @@ def browse_release(artist=None, label=None, recording=None, release_group=None, 
     p.update(filterp)
     if len(release_status) == 0 and len(release_type) == 0:
         raise InvalidFilterError("Need at least one release status or type")
-    return _do_mb_query("release", "", [], p)
+    return _do_mb_query("release", "", includes, p)
 
-def browse_release_group(artist=None, release=None, release_type=[], limit=None, offset=None):
+def browse_release_group(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
+    _check_includes_impl(includes, ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
     p = {}
     if artist: p["artist"] = artist
     if release: p["release"] = release
@@ -503,7 +510,7 @@ def browse_release_group(artist=None, release=None, release_type=[], limit=None,
     p.update(filterp)
     if len(release_type) == 0:
         raise InvalidFilterError("Need at least one release type")
-    return _do_mb_query("release-group", "", [], p)
+    return _do_mb_query("release-group", "", includes, p)
 
 # browse_work is defined in the docs but has no browse criteria
 
