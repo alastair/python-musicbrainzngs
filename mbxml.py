@@ -270,15 +270,6 @@ def parse_medium(medium):
 def parse_disc_list(dl):
 	return [parse_disc(d) for d in dl]
 
-def parse_disc(disc):
-	result = {}
-	attribs = ["id"]
-	elements = ["sectors"]
-
-	result.update(parse_attributes(attribs, disc))
-	result.update(parse_elements(elements, disc))
-	return result
-
 def parse_text_representation(textr):
 	return parse_elements(["language", "script"], textr)
 
