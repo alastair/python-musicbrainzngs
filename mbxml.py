@@ -14,9 +14,7 @@ except:
 		namespace_uri, tag = string.split(tag[1:], "}", 1)
 		prefix = namespaces.get(namespace_uri)
 		if prefix is None:
-			prefix = _namespace_map.get(namespace_uri)
-			if prefix is None:
-				prefix = "ns%d" % len(namespaces)
+			prefix = "ns%d" % len(namespaces)
 			namespaces[namespace_uri] = prefix
 			if prefix == "xml":
 				xmlns = None
@@ -244,7 +242,6 @@ def parse_release(release):
 	             "label-info-list": parse_label_info_list,
 	             "medium-list": parse_medium_list,
 	             "release-group": parse_release_group,
-	             "medium-list": parse_medium_list,
 	             "relation-list": parse_relation_list}
 
 	result.update(parse_attributes(attribs, release))
@@ -270,15 +267,6 @@ def parse_medium(medium):
 
 def parse_disc_list(dl):
 	return [parse_disc(d) for d in dl]
-
-def parse_disc(disc):
-	result = {}
-	attribs = ["id"]
-	elements = ["sectors"]
-
-	result.update(parse_attributes(attribs, disc))
-	result.update(parse_elements(elements, disc))
-	return result
 
 def parse_text_representation(textr):
 	return parse_elements(["language", "script"], textr)
@@ -419,21 +407,6 @@ def parse_label_info(li):
 
 	result.update(parse_elements(elements, li))
 	result.update(parse_inner(inner_els, li))
-	return result
-
-def parse_medium_list(ml):
-	result = []
-	for m in ml:
-		result.append(parse_medium(m))
-	return result
-
-def parse_medium(medium):
-	result = {}
-	elements = ["position"]
-	inner_els = {"track-list": parse_track_list}
-
-	result.update(parse_elements(elements, medium))
-	result.update(parse_inner(inner_els, medium))
 	return result
 
 def parse_track_list(tl):
