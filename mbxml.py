@@ -14,9 +14,7 @@ except:
 		namespace_uri, tag = string.split(tag[1:], "}", 1)
 		prefix = namespaces.get(namespace_uri)
 		if prefix is None:
-			prefix = _namespace_map.get(namespace_uri)
-			if prefix is None:
-				prefix = "ns%d" % len(namespaces)
+			prefix = "ns%d" % len(namespaces)
 			namespaces[namespace_uri] = prefix
 			if prefix == "xml":
 				xmlns = None
