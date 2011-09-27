@@ -192,63 +192,64 @@ def set_client(c):
 
 # Rate limiting.
 
-request_rate = 1.0 # Seconds.
-initial_rapid_requests = 0
+limit_interval = 1.0
+limit_requests = 1
 
-def set_rate_limit(new_rate=1.0, new_rapid_requests=0):
+def set_rate_limit(new_interval=1.0, new_requests=1):
 	"""Sets the rate limiting behavior of the module. Must be invoked
-	before the first Web service call. `new_rate` is a time interval,
-	in seconds, specifying the minimum delay between requests.
-	`initial_rapid_requests` is an integer specifying the number of "free"
-	(non-limited) requests that are allowed before the rate limiting takes
-	effect.
+	before the first Web service call.  Specify the number of requests
+	(`new_requests`) that may be made per given interval
+	(`new_interval`).
 	"""
-	global request_rate
-	global initial_rapid_requests
-	request_rate = new_rate
-	initial_rapid_requests = new_rapid_requests
+	global limit_interval
+	global limit_requests
+	limit_interval = new_interval
+	limit_requests = new_requests
 
 class _rate_limit(object):
 	"""A decorator that limits the rate at which the function may be
-	called. The rate is controlled by the `request_rate` global
-	variable; set the value to zero to disable rate limiting. The
-	limiting is thread-safe; only one thread may be in the function at a
-	time (acts like a monitor in this sense). The
-	`initial_rapid_requests` global controls the number of times the
-	timing constraint may be violated before it is enforced. The globals
-	must be set before the first call to the limited function.
+	called. The rate is controlled by the `limit_interval` and
+	`limit_requests` global variables.  The limiting is thread-safe;
+	only one thread may be in the function at a time (acts like a
+	monitor in this sense). The globals must be set before the first
+	call to the limited function.
 	"""
 	def __init__(self, fun):
 		self.fun = fun
 		self.last_call = 0.0
 		self.lock = threading.Lock()
-		self.rapid_remaining = None # Set on first invocation.
+		self.remaining_requests = None # Set on first invocation.
+
+	def _update_remaining(self):
+		"""Update remaining requests based on the elapsed time since
+		they were last calculated.
+		"""
+		# On first invocation, we have the maximum number of requests
+		# available.
+		if self.remaining_requests is None:
+			self.remaining_requests = float(limit_requests)
+
+		else:
+			since_last_call = time.time() - self.last_call
+			self.remaining_requests += since_last_call * \
+									   (limit_requests / limit_interval)
+			self.remaining_requests = min(self.remaining_requests,
+										  float(limit_requests))
+
+		self.last_call = time.time()
 
 	def __call__(self, *args, **kwargs):
 		with self.lock:
-			# Get the number of rapid requests on first invocation.
-			if self.rapid_remaining is None:
-				self.rapid_remaining = initial_rapid_requests
+			self._update_remaining()
 
-			# How long has it been since the last request?
-			since_last_call = time.time() - self.last_call
-			if since_last_call < request_rate:
-				# Requests are coming quickly.
+			# Delay if necessary.
+			while self.remaining_requests < 0.999:
+				time.sleep((1.0 - self.remaining_requests) *
+						   (limit_requests / limit_interval))
+				self._update_remaining()
 
-				if self.rapid_remaining:
-					# If we're in the initial period where queries can be
-					# made rapidly, don't perform any rate limiting.
-					# Decrement the number of fast queries we can do.
-					self.rapid_remaining -= 1
-
-				else:
-					# Wait until request_rate time has passed since last_call,
-					# then update last_call.
-					if since_last_call < request_rate:
-						time.sleep(request_rate - since_last_call)
-
-			# Call the original function, marking the time of the call.
-			self.last_call = time.time()
+			# Call the original function, "paying" for this call.
+			self.remaining_requests -= 1.0
 			return self.fun(*args, **kwargs)
 
 
