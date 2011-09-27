@@ -95,6 +95,32 @@ def _check_includes_impl(includes, valid_includes):
 def _check_includes(entity, inc):
     _check_includes_impl(inc, VALID_INCLUDES[entity])
 
+def _check_filter(values, valid):
+	for v in values:
+		if v not in valid:
+			raise InvalidFilterError(v)
+
+def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
+	"""Check that the status or type values are valid. Then, check that
+	the filters can be used with the given includes. Return a params
+	dict that can be passed to _do_mb_query """
+	if isinstance(release_status, str):
+		release_status = [release_status]
+	if isinstance(release_type, str):
+		release_type = [release_type]
+	_check_filter(release_status, VALID_RELEASE_STATUSES)
+	_check_filter(release_type, VALID_RELEASE_TYPES)
+	if len(release_status) and "releases" not in includes:
+		raise InvalidFilterError("Can't have a status with no release include")
+	if len(release_type) and ("release-groups" not in includes and "releases" not in includes):
+		raise InvalidFilterError("Can't have a release type with no release-group include")
+	params = {}
+	if len(release_status):
+		params["status"] = "|".join(release_status)
+	if len(release_type):
+		params["type"] = "|".join(release_type)
+	return params
+
 # Invalid-argument exceptions.
 
 class InvalidSearchFieldError(Exception):
@@ -139,80 +165,7 @@ def set_client(c):
 	global _client
 	_client = c
 
-# Core functions for calling the MB API.
-
-def _is_auth_required(entity, includes):
-	""" Some calls require authentication. This returns
-	True if a call does, False otherwise
-	"""
-	if "user-tags" in includes or "user-ratings" in includes:
-		return True
-	elif entity.startswith("collection"):
-		return True
-	else:
-		return False
-
-def _do_mb_query(entity, id, includes=[], params={}):
-	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
-	string indicated the type of object to be retrieved. The id may be
-	empty, in which case the query is a search. `includes` is a list
-	of strings that must be valid includes for the entity type. `params`
-	is a dictionary of additional parameters for the API call. The
-	response is parsed and returned.
-	"""
-	# Build arguments.
-	_check_includes(entity, includes)
-	auth_required = _is_auth_required(entity, includes)
-	args = dict(params)
-	if len(includes) > 0:
-		inc = " ".join(includes)
-		args["inc"] = inc
-
-	# Build the endpoint URL.
-	url = urlparse.urlunparse(('http',
-		hostname,
-		'/ws/2/%s/%s' % (entity, id),
-		'',
-		urllib.urlencode(args),
-		''))
-	#print url
-	# Make the request and parse the response.
-
-	f = _make_http_request(url, auth_required, None, None, 'GET')
-	return mbxml.parse_message(f)
-
-def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
-	"""Perform a full-text search on the MusicBrainz search server.
-	`query` is a free-form query string and `fields` is a dictionary
-	of key/value query parameters. They keys in `fields` must be valid
-	for the given entity type.
-	"""
-	# Encode the query terms as a Lucene query string.
-	query_parts = [query.replace('\x00', '').strip()]
-	for key, value in fields.iteritems():
-		# Ensure this is a valid search field.
-		if key not in VALID_SEARCH_FIELDS[entity]:
-			raise InvalidSearchFieldError(
-				'%s is not a valid search field for %s' % (key, entity)
-			)
-
-		# Escape Lucene's special characters.
-		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
-		value = value.replace('\x00', '').strip()
-		if value:
-			query_parts.append(u'%s:(%s)' % (key, value))
-	full_query = u' '.join(query_parts).strip()
-	if not full_query:
-		raise ValueError('at least one query term is required')
-
-	# Additional parameters to the search.
-	params = {'query': full_query}
-	if limit:
-		params['limit'] = str(limit)
-	if offset:
-		params['offset'] = str(offset)
-
-	return _do_mb_query(entity, '', [], params)
+# Generic support for making HTTP requests.
 
 # From pymb2
 class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
@@ -281,82 +234,117 @@ def _make_http_request(url, auth_req, data, body, method):
 		raise
 	return f
 
-def _do_mb_delete(entity):
-	"""Perform a single POST call to the MusicBrainz XML API.
+# Core (internal) functions for calling the MB API.
+
+def _mb_request(path, method='GET', auth_required=False, client_required=False,
+				args=None, data=None, body=None):
+	"""Makes a request for the specified `path` (endpoint) on /ws/2 on
+	the globally-specified hostname. Parses the responses and returns
+	the resulting object.  `auth_required` and `client_required` control
+	whether exceptions should be raised if the client and
+	username/password are left unspecified, respectively.
 	"""
-	if _client == "":
-		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
-	args = {"client": _client}
-	url = urlparse.urlunparse(('http',
+	args = args or {}
+	if client_required and _client == "":
+		raise Exception("set a client name with "
+						"musicbrainz.set_client(\"client-version\")")
+	elif client_required:
+		args["client"] = _client
+
+	# Construct the full URL for the request, including hostname and
+	# query string.
+	url = urlparse.urlunparse((
+		'http',
 		hostname,
-		'/ws/2/%s' % (entity,),
+		'/ws/2/%s' % path,
 		'',
 		urllib.urlencode(args),
-		''))
-	#print url
+		''
+	))
+	# TODO: debug log URL
 	
-	f = _make_http_request(url, auth_req=True, data=None, body=None, method="DELETE")
+	f = _make_http_request(url, auth_required, data, body, method)
 	return mbxml.parse_message(f)
 
-def _do_mb_put(entity):
-	"""Perform a single POST call to the MusicBrainz XML API.
+def _is_auth_required(entity, includes):
+	""" Some calls require authentication. This returns
+	True if a call does, False otherwise
 	"""
-	if _client == "":
-		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
-	args = {"client": _client}
-	url = urlparse.urlunparse(('http',
-		hostname,
-		'/ws/2/%s' % (entity,),
-		'',
-		urllib.urlencode(args),
-		''))
-	#print url
-	
-	f = _make_http_request(url, auth_req=True, data="", body=None, method="PUT")
-	return mbxml.parse_message(f)
+	if "user-tags" in includes or "user-ratings" in includes:
+		return True
+	elif entity.startswith("collection"):
+		return True
+	else:
+		return False
 
-def _do_mb_post(entity, body):
-	"""Perform a single POST call to the MusicBrainz XML API.
+def _do_mb_query(entity, id, includes=[], params={}):
+	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
+	string indicated the type of object to be retrieved. The id may be
+	empty, in which case the query is a search. `includes` is a list
+	of strings that must be valid includes for the entity type. `params`
+	is a dictionary of additional parameters for the API call. The
+	response is parsed and returned.
 	"""
-	if _client == "":
-		raise Exception("set a client name with musicbrainz.set_client(\"client-version\")")
-	args = {"client": _client}
-	url = urlparse.urlunparse(('http',
-		hostname,
-		'/ws/2/%s' % (entity,),
-		'',
-		urllib.urlencode(args),
-		''))
-	#print url
-	
-	f = _make_http_request(url, auth_req=True, data=None, body=body, method="POST")
-	return mbxml.parse_message(f)
+	# Build arguments.
+	_check_includes(entity, includes)
+	auth_required = _is_auth_required(entity, includes)
+	args = dict(params)
+	if len(includes) > 0:
+		inc = " ".join(includes)
+		args["inc"] = inc
 
-def _check_filter(values, valid):
-	for v in values:
-		if v not in valid:
-			raise InvalidFilterError(v)
+	# Build the endpoint components.
+	path = '%s/%s' % (entity, id)
+	return _mb_request(path, 'GET', auth_required, args=args)
 
-def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
-	"""Check that the status or type values are valid. Then, check that
-	the filters can be used with the given includes. Return a params
-	dict that can be passed to _do_mb_query """
-	if isinstance(release_status, str):
-		release_status = [release_status]
-	if isinstance(release_type, str):
-		release_type = [release_type]
-	_check_filter(release_status, VALID_RELEASE_STATUSES)
-	_check_filter(release_type, VALID_RELEASE_TYPES)
-	if len(release_status) and "releases" not in includes:
-		raise InvalidFilterError("Can't have a status with no release include")
-	if len(release_type) and ("release-groups" not in includes and "releases" not in includes):
-		raise InvalidFilterError("Can't have a release type with no release-group include")
-	params = {}
-	if len(release_status):
-		params["status"] = "|".join(release_status)
-	if len(release_type):
-		params["type"] = "|".join(release_type)
-	return params
+def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
+	"""Perform a full-text search on the MusicBrainz search server.
+	`query` is a free-form query string and `fields` is a dictionary
+	of key/value query parameters. They keys in `fields` must be valid
+	for the given entity type.
+	"""
+	# Encode the query terms as a Lucene query string.
+	query_parts = [query.replace('\x00', '').strip()]
+	for key, value in fields.iteritems():
+		# Ensure this is a valid search field.
+		if key not in VALID_SEARCH_FIELDS[entity]:
+			raise InvalidSearchFieldError(
+				'%s is not a valid search field for %s' % (key, entity)
+			)
+
+		# Escape Lucene's special characters.
+		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
+		value = value.replace('\x00', '').strip()
+		if value:
+			query_parts.append(u'%s:(%s)' % (key, value))
+	full_query = u' '.join(query_parts).strip()
+	if not full_query:
+		raise ValueError('at least one query term is required')
+
+	# Additional parameters to the search.
+	params = {'query': full_query}
+	if limit:
+		params['limit'] = str(limit)
+	if offset:
+		params['offset'] = str(offset)
+
+	return _do_mb_query(entity, '', [], params)
+
+def _do_mb_delete(path):
+	"""Send a DELETE request for the specified object.
+	"""
+	return _mb_request(path, 'DELETE', True, True)
+
+def _do_mb_put(path):
+	"""Send a PUT request for the specified object.
+	"""
+	return _mb_request(path, 'PUT', True, True)
+
+def _do_mb_post(path, body):
+	"""Perform a single POST call for an endpoint with a specified
+	request body.
+	"""
+	return _mb_request(path, 'PUT', True, True, body=body)
 
 # Single entity by ID
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
