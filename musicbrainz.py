@@ -193,30 +193,64 @@ def set_client(c):
 # Rate limiting.
 
 request_rate = 1.0 # Seconds.
+initial_rapid_requests = 0
+
+def set_rate_limit(new_rate=1.0, new_rapid_requests=0):
+	"""Sets the rate limiting behavior of the module. Must be invoked
+	before the first Web service call. `new_rate` is a time interval,
+	in seconds, specifying the minimum delay between requests.
+	`initial_rapid_requests` is an integer specifying the number of "free"
+	(non-limited) requests that are allowed before the rate limiting takes
+	effect.
+	"""
+	global request_rate
+	global initial_rapid_requests
+	request_rate = new_rate
+	initial_rapid_requests = new_rapid_requests
 
 class _rate_limit(object):
 	"""A decorator that limits the rate at which the function may be
-	called. The rate is controlled by the request_rate global variable;
-	set the value to zero to disable rate limiting. The limiting is
-	thread-safe; only one thread may be in the function at a time (acts
-	like a monitor in this sense).
+	called. The rate is controlled by the `request_rate` global
+	variable; set the value to zero to disable rate limiting. The
+	limiting is thread-safe; only one thread may be in the function at a
+	time (acts like a monitor in this sense). The
+	`initial_rapid_requests` global controls the number of times the
+	timing constraint may be violated before it is enforced. The globals
+	must be set before the first call to the limited function.
 	"""
 	def __init__(self, fun):
 		self.fun = fun
 		self.last_call = 0.0
 		self.lock = threading.Lock()
+		self.rapid_remaining = None # Set on first invocation.
 
 	def __call__(self, *args, **kwargs):
 		with self.lock:
-			# Wait until request_rate time has passed since last_call,
-			# then update last_call.
+			# Get the number of rapid requests on first invocation.
+			if self.rapid_remaining is None:
+				self.rapid_remaining = initial_rapid_requests
+
+			# How long has it been since the last request?
 			since_last_call = time.time() - self.last_call
 			if since_last_call < request_rate:
-				time.sleep(request_rate - since_last_call)
-			self.last_call = time.time()
+				# Requests are coming quickly.
 
-			# Call the original function.
+				if self.rapid_remaining:
+					# If we're in the initial period where queries can be
+					# made rapidly, don't perform any rate limiting.
+					# Decrement the number of fast queries we can do.
+					self.rapid_remaining -= 1
+
+				else:
+					# Wait until request_rate time has passed since last_call,
+					# then update last_call.
+					if since_last_call < request_rate:
+						time.sleep(request_rate - since_last_call)
+
+			# Call the original function, marking the time of the call.
+			self.last_call = time.time()
 			return self.fun(*args, **kwargs)
+
 
 # Generic support for making HTTP requests.
 
