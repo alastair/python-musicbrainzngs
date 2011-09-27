@@ -3,6 +3,8 @@ import urllib2
 import urllib
 import mbxml
 import re
+import threading
+import time
 
 _useragent = "pythonmusicbrainzngs-0.1"
 
@@ -188,6 +190,34 @@ def set_client(c):
 	_client = c
 
 
+# Rate limiting.
+
+request_rate = 1.0 # Seconds.
+
+class _rate_limit(object):
+	"""A decorator that limits the rate at which the function may be
+	called. The rate is controlled by the request_rate global variable;
+	set the value to zero to disable rate limiting. The limiting is
+	thread-safe; only one thread may be in the function at a time (acts
+	like a monitor in this sense).
+	"""
+	def __init__(self, fun):
+		self.fun = fun
+		self.last_call = 0.0
+		self.lock = threading.Lock()
+
+	def __call__(self, *args, **kwargs):
+		with self.lock:
+			# Wait until request_rate time has passed since last_call,
+			# then update last_call.
+			since_last_call = time.time() - self.last_call
+			if since_last_call < request_rate:
+				time.sleep(request_rate - since_last_call)
+			self.last_call = time.time()
+
+			# Call the original function.
+			return self.fun(*args, **kwargs)
+
 # Generic support for making HTTP requests.
 
 # From pymb2
@@ -260,6 +290,7 @@ def _make_http_request(url, auth_req, data, body, method):
 
 # Core (internal) functions for calling the MB API.
 
+@_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
 				args=None, data=None, body=None):
 	"""Makes a request for the specified `path` (endpoint) on /ws/2 on
