@@ -6,46 +6,49 @@ import re
 
 _useragent = "pythonmusicbrainzngs-0.1"
 
+
 # Constants for validation.
+
 VALID_INCLUDES = {
 	'artist': [
 		"recordings", "releases", "release-groups", "works", # Subqueries
 		"various-artists", "discids", "media",
 		"aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
-		"url-rels", "work-rels"
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels"
 	], 
 	'label': [
 		"releases", # Subqueries
 	    "discids", "media",
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
-		"url-rels", "work-rels"
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels"
 	],
 	'recording': [
 		"artists", "releases", # Subqueries
 	    "discids", "media", "artist-credits",
 	    "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
-		"url-rels", "work-rels"
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels"
 	],
 	'release': [
 		"artists", "labels", "recordings", "release-groups", "media",
 		"artist-credits", "discids", "puids", "echoprints", "isrcs",
-		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
-		"url-rels", "work-rels", "recording-level-rels", "work-level-rels"
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels", "recording-level-rels",
+		"work-level-rels"
 	],
 	'release-group': [
 		"artists", "releases", "discids", "media",
 		"artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
-		"url-rels", "work-rels"
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels"
 	],
 	'work': [
 		"artists", # Subqueries
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels", "release-group-rels",
-		"url-rels", "work-rels"
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels"
 	],
 	'discid': [
 		"artists", "labels", "recordings", "release-groups", "puids",
@@ -56,8 +59,10 @@ VALID_INCLUDES = {
 	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
 	'iswc': ["artists"],
 }
-VALID_RELEASE_TYPES = ["nat", "album", "single", "ep", "compilation", "soundtrack",
-                       "spokenword", "interview", "audiobook", "live", "remix", "other"]
+VALID_RELEASE_TYPES = [
+	"nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
+	"interview", "audiobook", "live", "remix", "other"
+]
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
 VALID_SEARCH_FIELDS = {
 	'artist': [
@@ -88,6 +93,39 @@ VALID_SEARCH_FIELDS = {
 	],
 }
 
+
+# Invalid-argument exceptions.
+
+class MusicBrainzError(Exception):
+	pass
+
+class InvalidSearchFieldError(MusicBrainzError):
+	pass
+
+class InvalidIncludeError(MusicBrainzError):
+	def __init__(self, msg='Invalid Includes', reason=None):
+		super(InvalidIncludeError, self).__init__(self)
+		self.msg = msg
+		self.reason = reason
+
+	def __str__(self):
+		return self.msg
+
+class InvalidFilterError(MusicBrainzError):
+	def __init__(self, msg='Invalid Includes', reason=None):
+		super(InvalidFilterError, self).__init__(self)
+		self.msg = msg
+		self.reason = reason
+
+	def __str__(self):
+		return self.msg
+
+class UsageError(MusicBrainzError):
+	pass
+
+
+# Helpers for validating and formatting allowed sets.
+
 def _check_includes_impl(includes, valid_includes):
     for i in includes:
         if i not in valid_includes:
@@ -103,17 +141,23 @@ def _check_filter(values, valid):
 def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
 	"""Check that the status or type values are valid. Then, check that
 	the filters can be used with the given includes. Return a params
-	dict that can be passed to _do_mb_query """
-	if isinstance(release_status, str):
+	dict that can be passed to _do_mb_query.
+	"""
+	if isinstance(release_status, basestring):
 		release_status = [release_status]
-	if isinstance(release_type, str):
+	if isinstance(release_type, basestring):
 		release_type = [release_type]
 	_check_filter(release_status, VALID_RELEASE_STATUSES)
 	_check_filter(release_type, VALID_RELEASE_TYPES)
-	if len(release_status) and "releases" not in includes:
+
+	if release_status and "releases" not in includes:
 		raise InvalidFilterError("Can't have a status with no release include")
-	if len(release_type) and ("release-groups" not in includes and "releases" not in includes):
-		raise InvalidFilterError("Can't have a release type with no release-group include")
+	if release_type and ("release-groups" not in includes and
+					     "releases" not in includes):
+		raise InvalidFilterError("Can't have a release type with no "
+								 "release-group include")
+
+	# Build parameters.
 	params = {}
 	if len(release_status):
 		params["status"] = "|".join(release_status)
@@ -121,28 +165,6 @@ def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
 		params["type"] = "|".join(release_type)
 	return params
 
-# Invalid-argument exceptions.
-
-class InvalidSearchFieldError(Exception):
-	pass
-
-class InvalidIncludeError(Exception):
-	def __init__(self, msg='Invalid Includes', reason=None):
-		Exception.__init__(self)
-		self.msg = msg
-		self.reason = reason
-
-	def __str__(self):
-		return self.msg
-
-class InvalidFilterError(Exception):
-	def __init__(self, msg='Invalid Includes', reason=None):
-		Exception.__init__(self)
-		self.msg = msg
-		self.reason = reason
-
-	def __str__(self):
-		return self.msg
 
 # Global authentication and endpoint details.
 
@@ -165,6 +187,7 @@ def set_client(c):
 	global _client
 	_client = c
 
+
 # Generic support for making HTTP requests.
 
 # From pymb2
@@ -183,7 +206,7 @@ class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
 		# ignoring the uri parameter intentionally
 		self._realms[realm] = (username, password)
 
-class DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
+class _DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
 	def get_authorization (self, req, chal):
 		qop = chal.get ('qop', None)
 		if qop and ',' in qop and 'auth' in qop.split (','):
@@ -191,13 +214,13 @@ class DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
 
 		return urllib2.HTTPDigestAuthHandler.get_authorization (self, req, chal)
 
-class MusicbrainzHttpRequest(urllib2.Request):
+class _MusicbrainzHttpRequest(urllib2.Request):
 	""" A custom request handler that allows DELETE and PUT"""
 	def __init__(self, method, url, data=None):
 		urllib2.Request.__init__(self, url, data)
 		allowed_m = ["GET", "POST", "DELETE", "PUT"]
 		if method not in allowed_m:
-			raise Exception("invalid method: %s" % method)
+			raise ValueError("invalid method: %s" % method)
 		self.method = method
 
 	def get_method(self):
@@ -210,16 +233,16 @@ def _make_http_request(url, auth_req, data, body, method):
 	# if user contributed entities are requested, we need to authenticate
 	# This test should maybe be up a level, and this just tests "if auth_needed:"
 	if auth_req:
-		if user == "":
-			raise Exception("use musicbrainz.auth(u, p) first")
+		if not user:
+			raise UsageError("use musicbrainz.auth(u, p) first")
 		passwordMgr = _RedirectPasswordMgr()
-		authHandler = DigestAuthHandler(passwordMgr)
+		authHandler = _DigestAuthHandler(passwordMgr)
 		authHandler.add_password("musicbrainz.org", (), user, password)
 		handlers.append(authHandler)
 
 	opener = urllib2.build_opener(*handlers)
 
-	req = MusicbrainzHttpRequest(method, url, data)
+	req = _MusicbrainzHttpRequest(method, url, data)
 	req.add_header('User-Agent', _useragent)
 	if body:
 		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
@@ -234,6 +257,7 @@ def _make_http_request(url, auth_req, data, body, method):
 		raise
 	return f
 
+
 # Core (internal) functions for calling the MB API.
 
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
@@ -246,8 +270,8 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	"""
 	args = args or {}
 	if client_required and _client == "":
-		raise Exception("set a client name with "
-						"musicbrainz.set_client(\"client-version\")")
+		raise UsageError("set a client name with "
+						 "musicbrainz.set_client(\"client-version\")")
 	elif client_required:
 		args["client"] = _client
 
@@ -345,6 +369,9 @@ def _do_mb_post(path, body):
 	request body.
 	"""
 	return _mb_request(path, 'PUT', True, True, body=body)
+
+
+# The main interface!
 
 # Single entity by ID
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
