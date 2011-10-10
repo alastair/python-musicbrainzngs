@@ -5,8 +5,10 @@ import mbxml
 import re
 import threading
 import time
+import logging
 
 _useragent = "pythonmusicbrainzngs-0.1"
+_log = logging.getLogger("python-musicbrainz-ngs")
 
 
 # Constants for validation.
@@ -291,37 +293,6 @@ class _MusicbrainzHttpRequest(urllib2.Request):
 	def get_method(self):
 		return self.method
 
-def _make_http_request(url, auth_req, data, body, method):
-	# Set this to 1 to debug the http transaction
-	httpHandler = urllib2.HTTPHandler(debuglevel=0)
-	handlers = [httpHandler]
-	# if user contributed entities are requested, we need to authenticate
-	# This test should maybe be up a level, and this just tests "if auth_needed:"
-	if auth_req:
-		if not user:
-			raise UsageError("use musicbrainz.auth(u, p) first")
-		passwordMgr = _RedirectPasswordMgr()
-		authHandler = _DigestAuthHandler(passwordMgr)
-		authHandler.add_password("musicbrainz.org", (), user, password)
-		handlers.append(authHandler)
-
-	opener = urllib2.build_opener(*handlers)
-
-	req = _MusicbrainzHttpRequest(method, url, data)
-	req.add_header('User-Agent', _useragent)
-	if body:
-		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
-	try:
-	    if body:
-		    f = opener.open(req, body)
-	    else:
-	        f = opener.open(req)
-	except urllib2.URLError, e:
-		if e.fp:
-			print e.fp.read()
-		raise
-	return f
-
 
 # Core (internal) functions for calling the MB API.
 
@@ -334,7 +305,9 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	whether exceptions should be raised if the client and
 	username/password are left unspecified, respectively.
 	"""
-	args = args or {}
+	args = dict(args) or {}
+
+	# Add client if required.
 	if client_required and _client == "":
 		raise UsageError("set a client name with "
 						 "musicbrainz.set_client(\"client-version\")")
@@ -351,9 +324,40 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		urllib.urlencode(args),
 		''
 	))
-	# TODO: debug log URL
+	_log.debug("%s request for %s" % (method, url))
 	
-	f = _make_http_request(url, auth_required, data, body, method)
+	# Set up HTTP request handler and URL opener.
+	httpHandler = urllib2.HTTPHandler(debuglevel=0)
+	handlers = [httpHandler]
+	opener = urllib2.build_opener(*handlers)
+
+	# Add credentials if required.
+	if auth_required:
+		if not user:
+			raise UsageError("authorization required; "
+							 "use musicbrainz.auth(u, p) first")
+		passwordMgr = _RedirectPasswordMgr()
+		authHandler = _DigestAuthHandler(passwordMgr)
+		authHandler.add_password("musicbrainz.org", (), user, password)
+		handlers.append(authHandler)
+	
+	# Make request.
+	req = _MusicbrainzHttpRequest(method, url, data)
+	req.add_header('User-Agent', _useragent)
+	if body:
+		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
+	try:
+	    if body:
+		    f = opener.open(req, body)
+	    else:
+	        f = opener.open(req)
+	except urllib2.URLError, e:
+		# Debug the error.
+		if e.fp:
+			print e.fp.read()
+		raise
+
+	# Parse the response.
 	return mbxml.parse_message(f)
 
 def _is_auth_required(entity, includes):
