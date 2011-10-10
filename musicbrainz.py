@@ -7,6 +7,7 @@ import threading
 import time
 import logging
 import httplib
+import xml.etree.ElementTree as etree
 
 _useragent = "pythonmusicbrainzngs-0.1"
 _log = logging.getLogger("python-musicbrainz-ngs")
@@ -99,15 +100,20 @@ VALID_SEARCH_FIELDS = {
 }
 
 
-# Invalid-argument exceptions.
+# Exceptions.
 
 class MusicBrainzError(Exception):
+	"""Base class for all exceptions related to MusicBrainz."""
 	pass
 
-class InvalidSearchFieldError(MusicBrainzError):
+class UsageError(MusicBrainzError):
+	"""Error related to misuse of the module API."""
 	pass
 
-class InvalidIncludeError(MusicBrainzError):
+class InvalidSearchFieldError(UsageError):
+	pass
+
+class InvalidIncludeError(UsageError):
 	def __init__(self, msg='Invalid Includes', reason=None):
 		super(InvalidIncludeError, self).__init__(self)
 		self.msg = msg
@@ -116,7 +122,7 @@ class InvalidIncludeError(MusicBrainzError):
 	def __str__(self):
 		return self.msg
 
-class InvalidFilterError(MusicBrainzError):
+class InvalidFilterError(UsageError):
 	def __init__(self, msg='Invalid Includes', reason=None):
 		super(InvalidFilterError, self).__init__(self)
 		self.msg = msg
@@ -125,7 +131,29 @@ class InvalidFilterError(MusicBrainzError):
 	def __str__(self):
 		return self.msg
 
-class UsageError(MusicBrainzError):
+class WebServiceError(MusicBrainzError):
+	"""Error related to MusicBrainz API requests."""
+	def __init__(self, message=None, cause=None):
+		"""Pass ``cause`` if this exception was caused by another
+		exception.
+		"""
+		self.message = message
+		self.cause = cause
+	
+	def __str__(self):
+		if self.message:
+			msg = "%s, " % self.message
+		else:
+			msg = ""
+		msg += "caused by: %s" % str(self.cause)
+		return msg
+
+class NetworkError(WebServiceError):
+	"""Problem communicating with the MB server."""
+	pass
+
+class ResponseError(WebServiceError):
+	"""Bad response sent by the MB server."""
 	pass
 
 
@@ -297,31 +325,6 @@ class _MusicbrainzHttpRequest(urllib2.Request):
 
 # Core (internal) functions for calling the MB API.
 
-class MusicBrainzError(Exception):
-	"""Base class for all request exceptions."""
-	def __init__(self, message=None, cause=None):
-		"""Pass ``cause`` if this exception was caused by another
-		exception.
-		"""
-		self.message = message
-		self.cause = cause
-	
-	def __str__(self):
-		if self.message:
-			msg = "%s, " % self.message
-		else:
-			msg = ""
-		msg += "caused by: %s" % str(self.cause)
-		return msg
-
-class NetworkError(MusicBrainzError):
-	"""Problem communicating with the MB server."""
-	pass
-
-class ResponseError(MusicBrainzError):
-	"""Bad response sent by the MB server."""
-	pass
-
 def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 	"""Open an HTTP request with a given URL opener and (optionally) a
 	request body. Transient errors lead to retries.  Permanent errors
@@ -422,7 +425,12 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	f = _safe_open(opener, req, body)
 
 	# Parse the response.
-	return mbxml.parse_message(f)
+	try:
+		return mbxml.parse_message(f)
+	except etree.ParseError, exc:
+		raise ResponseError(cause=exc)
+	except UnicodeError, exc:
+		raise ResponseError(cause=exc)
 
 def _is_auth_required(entity, includes):
 	""" Some calls require authentication. This returns
