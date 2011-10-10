@@ -6,6 +6,7 @@ import re
 import threading
 import time
 import logging
+import httplib
 
 _useragent = "pythonmusicbrainzngs-0.1"
 _log = logging.getLogger("python-musicbrainz-ngs")
@@ -296,6 +297,78 @@ class _MusicbrainzHttpRequest(urllib2.Request):
 
 # Core (internal) functions for calling the MB API.
 
+class MusicBrainzError(Exception):
+	"""Base class for all request exceptions."""
+	def __init__(self, message=None, cause=None):
+		"""Pass ``cause`` if this exception was caused by another
+		exception.
+		"""
+		self.message = message
+		self.cause = cause
+	
+	def __str__(self):
+		if self.message:
+			msg = "%s, " % self.message
+		else:
+			msg = ""
+		msg += "caused by: %s" % str(self.cause)
+		return msg
+
+class NetworkError(MusicBrainzError):
+	"""Problem communicating with the MB server."""
+	pass
+
+class ResponseError(MusicBrainzError):
+	"""Bad response sent by the MB server."""
+	pass
+
+def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
+	"""Open an HTTP request with a given URL opener and (optionally) a
+	request body. Transient errors lead to retries.  Permanent errors
+	and repeated errors are translated into a small set of handleable
+	exceptions. Returns a file-like object.
+	"""
+	last_exc = None
+	for retry_num in range(max_retries):
+		if retry_num: # Not the first try: delay an increasing amount.
+			_log.debug("retrying after delay (#%i)" % retry_num)
+			time.sleep(retry_num * retry_delay_delta)
+
+		try:
+			if body:
+				f = opener.open(req, body)
+			else:
+				f = opener.open(req)
+
+		except urllib2.HTTPError, exc:
+			if exc.code in (400, 404):
+				# Bad request, not found, etc.
+				raise ResponseError(cause=exc)
+			elif exc.code in (503, 502, 500):
+				# Rate limiting, internal overloading...
+				_log.debug("HTTP error %i" % exc.code)
+			else:
+				# Other, unknown error. Should handle more cases, but
+				# retrying for now.
+				_log.debug("unknown HTTP error %i" % exc.code)
+			last_exc = exc
+		except httplib.BadStatusLine, exc:
+			_log.debug("bad status line")
+			last_exc = exc
+		except httplib.HTTPException, exc:
+			_log.debug("miscellaneous HTTP exception: %s" % str(exc))
+			last_exc = exc
+		except urllib2.URLError, exc:
+			raise NetworkError(cause=exc)
+		except IOError, exc:
+			raise NetworkError(cause=exc)
+		else:
+			# No exception! Yay!
+			return f
+	
+	# Out of retries!
+	raise NetworkError("retried %i times" % max_retries, last_exc)
+
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
 				args=None, data=None, body=None):
@@ -346,16 +419,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	req.add_header('User-Agent', _useragent)
 	if body:
 		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
-	try:
-	    if body:
-		    f = opener.open(req, body)
-	    else:
-	        f = opener.open(req)
-	except urllib2.URLError, e:
-		# Debug the error.
-		if e.fp:
-			print e.fp.read()
-		raise
+	f = _safe_open(opener, req, body)
 
 	# Parse the response.
 	return mbxml.parse_message(f)
