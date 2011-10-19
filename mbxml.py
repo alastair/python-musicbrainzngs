@@ -236,7 +236,7 @@ def parse_relation(relation):
 def parse_release(release):
 	result = {}
 	attribs = ["id"]
-	elements = ["title", "status", "quality", "country", "barcode", "date", "packaging", "asin"]
+	elements = ["title", "status", "disambiguation", "quality", "country", "barcode", "date", "packaging", "asin"]
 	inner_els = {"text-representation": parse_text_representation,
 	             "artist-credit": parse_artist_credit,
 	             "label-info-list": parse_label_info_list,
@@ -257,7 +257,7 @@ def parse_medium_list(ml):
 
 def parse_medium(medium):
 	result = {}
-	elements = ["position", "format"]
+	elements = ["position", "format", "title"]
 	inner_els = {"disc-list": parse_disc_list,
 	             "track-list": parse_track_list}
 
