@@ -132,6 +132,9 @@ class Work(_Entity):
         'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag'
         ])
 
+    def get_by_id(klass, id, includes=[]):
+        return _do_mb_query(klass, id, includes)
+
 
 class DiscId(_Entity):
     _entity_name = 'discid'
@@ -650,16 +653,22 @@ def get_releases_by_discid(id, includes=[], release_type=[]):
     params = _check_filter_and_make_params(includes, release_type=release_type)
     return _do_mb_query(DiscId, id, includes, params)
 
-def get_recordings_by_echoprint(echoprint, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
+def get_recordings_by_echoprint(echoprint, includes=[],
+                                release_status=[], release_type=[]):
+    params = _check_filter_and_make_params(includes,
+                                           release_status, release_type)
     return _do_mb_query(EchoPrint, echoprint, includes, params)
 
-def get_recordings_by_puid(puid, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
+def get_recordings_by_puid(puid, includes=[],
+                           release_status=[], release_type=[]):
+    params = _check_filter_and_make_params(includes,
+                                           release_status, release_type)
     return _do_mb_query(PUID, puid, includes, params)
 
-def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
+def get_recordings_by_isrc(isrc, includes=[],
+                           release_status=[], release_type=[]):
+    params = _check_filter_and_make_params(includes,
+                                           release_status, release_type)
     return _do_mb_query(ISRC, isrc, includes, params)
 
 def get_works_by_iswc(iswc, includes=[]):
