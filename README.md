@@ -4,6 +4,8 @@ This library implements webservice bindings for the Musicbrainz NGS site, common
 
 For more information, see http://wiki.musicbrainz.org/XML_Web_Service
 
+Requires Python 2.4 or newer.
+
 ### Usage
 
     # Import the module

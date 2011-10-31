@@ -9,13 +9,6 @@ import logging
 import httplib
 import xml.etree.ElementTree as etree
 
-try:
-    # Python >= 2.4
-    set, frozenset
-except NameError:
-    # Python 2.3
-    from sets import Set as set, ImmutableSet as frozenset
-
 _useragent = "pythonmusicbrainzngs-0.1"
 _log = logging.getLogger("python-musicbrainz-ngs")
 
