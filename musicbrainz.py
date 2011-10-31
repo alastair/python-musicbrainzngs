@@ -9,6 +9,13 @@ import logging
 import httplib
 import xml.etree.ElementTree as etree
 
+try:
+    # Python >= 2.4
+    set, frozenset
+except NameError:
+    # Python 2.3
+    from sets import Set as set, ImmutableSet as frozenset
+
 _useragent = "pythonmusicbrainzngs-0.1"
 _log = logging.getLogger("python-musicbrainz-ngs")
 
@@ -16,88 +23,92 @@ _log = logging.getLogger("python-musicbrainz-ngs")
 # Constants for validation.
 
 VALID_INCLUDES = {
-    'artist': [
+    'artist': frozenset([
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media",
         "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ], 
-    'label': [
+    ]),
+    'label': frozenset([
         "releases", # Subqueries
         "discids", "media",
         "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ],
-    'recording': [
+    ]),
+    'recording': frozenset([
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits",
         "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ],
-    'release': [
+    ]),
+    'release': frozenset([
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "puids", "echoprints", "isrcs",
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels", "recording-level-rels",
         "work-level-rels"
-    ],
-    'release-group': [
+    ]),
+    'release-group': frozenset([
         "artists", "releases", "discids", "media",
         "artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ],
-    'work': [
+    ]),
+    'work': frozenset([
         "artists", # Subqueries
         "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ],
-    'discid': [
+    ]),
+    'discid': frozenset([
         "artists", "labels", "recordings", "release-groups", "puids",
         "echoprints", "isrcs"
-    ],
-    'echoprint': ["artists", "releases"],
-    'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
-    'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
-    'iswc': ["artists"],
-}
-VALID_RELEASE_TYPES = [
+    ]),
+    'echoprint': frozenset(["artists", "releases"]),
+    'puid': frozenset(["artists", "releases", "puids", "echoprints", "isrcs"]),
+    'isrc': frozenset(["artists", "releases", "puids", "echoprints", "isrcs"]),
+    'iswc': frozenset(["artists"]),
+    }
+
+VALID_RELEASE_TYPES = frozenset([
     "nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
     "interview", "audiobook", "live", "remix", "other"
-]
-VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
+    ])
+
+VALID_RELEASE_STATUSES = frozenset(
+    ["official", "promotion", "bootleg", "pseudo-release"])
+
 VALID_SEARCH_FIELDS = {
-    'artist': [
+    'artist': frozenset([
         'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
         'alias', 'country', 'gender', 'tag'
-    ],
-    'release-group': [
+    ]),
+    'release-group': frozenset([
         'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
         'artistname', 'creditname', 'type', 'tag'
-    ],
-    'release': [
+    ]),
+    'release': frozenset([
         'reid', 'release', 'arid', 'artist', 'artistname', 'creditname',
         'type', 'status', 'tracks', 'tracksmedium', 'discids',
         'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
         'country', 'date', 'label', 'catno', 'barcode', 'puid'
-    ],
-    'recording': [
+    ]),
+    'recording': frozenset([
         'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
         'creditname', 'reid', 'release', 'type', 'status', 'tracks',
         'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag'
-    ],
-    'label': [
+    ]),
+    'label': frozenset([
         'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
         'end', 'comment', 'alias', 'tag'
-    ],
-    'work': [
+    ]),
+    'work': frozenset([
         'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag'
-    ],
-}
+    ]),
+    }
 
 
 # Exceptions.
@@ -160,16 +171,20 @@ class ResponseError(WebServiceError):
 # Helpers for validating and formatting allowed sets.
 
 def _check_includes_impl(includes, valid_includes):
-    for i in includes:
-        if i not in valid_includes:
-            raise InvalidIncludeError("Bad includes", "%s is not a valid include" % i)
+    assert isinstance(valid_includes, frozenset)
+    invalid = set(includes) - valid_includes
+    if invalid:
+        raise InvalidIncludeError("Bad includes",
+                  "%s is not a valid include" % invalid.pop())
+
 def _check_includes(entity, inc):
     _check_includes_impl(inc, VALID_INCLUDES[entity])
 
 def _check_filter(values, valid):
-    for v in values:
-        if v not in valid:
-            raise InvalidFilterError(v)
+    assert isinstance(valid, frozenset)
+    invalid = set(values) - valid
+    if invalid:
+        raise InvalidFilterError(invalid.pop())
 
 def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
     """Check that the status or type values are valid. Then, check that
@@ -314,7 +329,7 @@ class _MusicbrainzHttpRequest(urllib2.Request):
     """ A custom request handler that allows DELETE and PUT"""
     def __init__(self, method, url, data=None):
         urllib2.Request.__init__(self, url, data)
-        allowed_m = ["GET", "POST", "DELETE", "PUT"]
+        allowed_m = frozenset(["GET", "POST", "DELETE", "PUT"])
         if method not in allowed_m:
             raise ValueError("invalid method: %s" % method)
         self.method = method
@@ -617,7 +632,7 @@ def get_works_by_iswc(iswc, includes=[]):
 # and the test in _do_mb_query will pass anyway.
 def browse_artist(recording=None, release=None, release_group=None, includes=[], limit=None, offset=None):
     # optional parameter work?
-    _check_includes_impl(includes, ["aliases", "tags", "ratings", "user-tags", "user-ratings"])
+    _check_includes_impl(includes, frozenset(["aliases", "tags", "ratings", "user-tags", "user-ratings"]))
     p = {}
     if recording: p["recording"] = recording
     if release: p["release"] = release
@@ -630,14 +645,14 @@ def browse_artist(recording=None, release=None, release_group=None, includes=[],
     return _do_mb_query("artist", "", includes, p)
 
 def browse_label(release=None, includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, ["aliases", "tags", "ratings", "user-tags", "user-ratings"])
+    _check_includes_impl(includes, frozenset(["aliases", "tags", "ratings", "user-tags", "user-ratings"]))
     p = {"release": release}
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
     return _do_mb_query("label", "", includes, p)
 
 def browse_recording(artist=None, release=None, includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
+    _check_includes_impl(includes, frozenset(["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]))
     p = {}
     if artist: p["artist"] = artist
     if release: p["release"] = release
@@ -649,7 +664,7 @@ def browse_recording(artist=None, release=None, includes=[], limit=None, offset=
 
 def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
     # track_artist param doesn't work yet
-    _check_includes_impl(includes, ["artist-credits", "labels", "recordings"])
+    _check_includes_impl(includes, frozenset(["artist-credits", "labels", "recordings"]))
     p = {}
     if artist: p["artist"] = artist
     #if track_artist: p["track_artist"] = track_artist
@@ -667,7 +682,7 @@ def browse_release(artist=None, label=None, recording=None, release_group=None, 
     return _do_mb_query("release", "", includes, p)
 
 def browse_release_group(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
+    _check_includes_impl(includes, frozenset(["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]))
     p = {}
     if artist: p["artist"] = artist
     if release: p["release"] = release
