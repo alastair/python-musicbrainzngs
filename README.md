@@ -24,7 +24,7 @@ See the query.py file for more examples
 
 These bindings were written by [Alastair
 Porter](http://github.com/alastair). Contributions have been made by
-[Adrian Sampson](https://github.com/sampsyo) and [Hartmut Goebel][https://github.com/htgoebel].
+[Adrian Sampson](https://github.com/sampsyo) and [Hartmut Goebel](https://github.com/htgoebel).
 
 ### License
 
