@@ -12,6 +12,13 @@ def main():
     pprint(m.browse_recording(release=RELEASE, limit=3))
     pprint(m.browse_release_group(release=RELEASE, limit=3,
                                   release_type='album'))
+    try:
+        pprint(m.browse_artist(release=RELEASE, recording='asdhfjkad'))
+    except Exception, e:
+        print 'Okay:', e
+        pass
+    else:
+        print '>>> Error: browse_artist accepted mutal exclusive selectors.'
 
 if __name__ == "__main__":
     main()
