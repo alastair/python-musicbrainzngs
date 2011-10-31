@@ -22,93 +22,145 @@ _log = logging.getLogger("python-musicbrainz-ngs")
 
 # Constants for validation.
 
-VALID_INCLUDES = {
-    'artist': frozenset([
+class _Entity:
+    """Baseclass for querying musicbrainz"""
+
+    _auth_required = False # is authentication required for reading this?
+
+    @classmethod
+    def get_by_id(klass, id, includes=[], release_status=[], release_type=[]):
+        params = _check_filter_and_make_params(includes, release_status,
+                                               release_type)
+        return _do_mb_query(klass, id, includes, params)
+
+class Tag(_Entity): _entity_name = 'tag'
+class Rating(_Entity): _entity_name = 'rating'
+class Collection(_Entity): _entity_name = 'collection'
+
+class Artist(_Entity):
+    _entity_name = 'artist'
+    VALID_INCLUDES = frozenset([
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media",
         "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ]),
-    'label': frozenset([
+        ])
+    VALID_SEARCH_FIELDS = frozenset([
+        'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
+        'alias', 'country', 'gender', 'tag'
+        ])
+
+
+class Label(_Entity):
+    _entity_name = 'label'
+    VALID_INCLUDES = frozenset([
         "releases", # Subqueries
         "discids", "media",
         "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ]),
-    'recording': frozenset([
+        ])
+    VALID_SEARCH_FIELDS = frozenset([
+        'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
+        'end', 'comment', 'alias', 'tag'
+        ])
+
+
+class Recording(_Entity):
+    _entity_name = 'recording'
+    VALID_INCLUDES = frozenset([
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits",
         "tags", "user-tags", "ratings", "user-ratings", # misc
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels"
-    ]),
-    'release': frozenset([
+        ])
+    VALID_SEARCH_FIELDS = frozenset([
+        'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
+        'creditname', 'reid', 'release', 'type', 'status', 'tracks',
+        'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag'
+        ])
+
+
+class Release(_Entity):
+    _entity_name = 'release'
+    VALID_INCLUDES = frozenset([
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "puids", "echoprints", "isrcs",
         "artist-rels", "label-rels", "recording-rels", "release-rels",
         "release-group-rels", "url-rels", "work-rels", "recording-level-rels",
         "work-level-rels"
-    ]),
-    'release-group': frozenset([
-        "artists", "releases", "discids", "media",
-        "artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "artist-rels", "label-rels", "recording-rels", "release-rels",
-        "release-group-rels", "url-rels", "work-rels"
-    ]),
-    'work': frozenset([
-        "artists", # Subqueries
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "artist-rels", "label-rels", "recording-rels", "release-rels",
-        "release-group-rels", "url-rels", "work-rels"
-    ]),
-    'discid': frozenset([
-        "artists", "labels", "recordings", "release-groups", "puids",
-        "echoprints", "isrcs"
-    ]),
-    'echoprint': frozenset(["artists", "releases"]),
-    'puid': frozenset(["artists", "releases", "puids", "echoprints", "isrcs"]),
-    'isrc': frozenset(["artists", "releases", "puids", "echoprints", "isrcs"]),
-    'iswc': frozenset(["artists"]),
-    }
-
-VALID_RELEASE_TYPES = frozenset([
-    "nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
-    "interview", "audiobook", "live", "remix", "other"
-    ])
-
-VALID_RELEASE_STATUSES = frozenset(
-    ["official", "promotion", "bootleg", "pseudo-release"])
-
-VALID_SEARCH_FIELDS = {
-    'artist': frozenset([
-        'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
-        'alias', 'country', 'gender', 'tag'
-    ]),
-    'release-group': frozenset([
-        'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
-        'artistname', 'creditname', 'type', 'tag'
-    ]),
-    'release': frozenset([
+        ])
+    VALID_SEARCH_FIELDS = frozenset([
         'reid', 'release', 'arid', 'artist', 'artistname', 'creditname',
         'type', 'status', 'tracks', 'tracksmedium', 'discids',
         'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
         'country', 'date', 'label', 'catno', 'barcode', 'puid'
-    ]),
-    'recording': frozenset([
-        'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
-        'creditname', 'reid', 'release', 'type', 'status', 'tracks',
-        'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag'
-    ]),
-    'label': frozenset([
-        'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
-        'end', 'comment', 'alias', 'tag'
-    ]),
-    'work': frozenset([
+        ])
+    VALID_TYPES = frozenset([
+        "nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
+        "interview", "audiobook", "live", "remix", "other"
+        ])
+    VALID_STATI = frozenset([
+            "official", "promotion", "bootleg", "pseudo-release"])
+
+
+class ReleaseGroup(_Entity):
+    _entity_name = 'release-group'
+    VALID_INCLUDES = frozenset([
+        "artists", "releases", "discids", "media",
+        "artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
+        "artist-rels", "label-rels", "recording-rels", "release-rels",
+        "release-group-rels", "url-rels", "work-rels"
+        ])
+    VALID_SEARCH_FIELDS = frozenset([
+        'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
+        'artistname', 'creditname', 'type', 'tag'
+        ])
+
+
+class Work(_Entity):
+    _entity_name = 'work'
+    VALID_INCLUDES = frozenset([
+        "artists", # Subqueries
+        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+        "artist-rels", "label-rels", "recording-rels", "release-rels",
+        "release-group-rels", "url-rels", "work-rels"
+        ])
+    VALID_SEARCH_FIELDS = frozenset([
         'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag'
-    ]),
-    }
+        ])
+
+
+class DiscId(_Entity):
+    _entity_name = 'discid'
+    VALID_INCLUDES = frozenset([
+        "artists", "labels", "recordings", "release-groups", "puids",
+        "echoprints", "isrcs"
+        ])
+
+class EchoPrint(_Entity):
+    _entity_name = 'echprint'
+    VALID_INCLUDES = frozenset(["artists", "releases"])
+
+
+class PUID(_Entity):
+    _entity_name = 'puid'
+    VALID_INCLUDES = frozenset(
+        ["artists", "releases", "puids", "echoprints", "isrcs"])
+
+
+class ISRC(_Entity):
+    _entity_name = 'isrc'
+    VALID_INCLUDES = frozenset(
+        ["artists", "releases", "puids", "echoprints", "isrcs"])
+
+class ISWC(_Entity):
+    _entity_name = 'iswc'
+    VALID_INCLUDES = frozenset(["artists"])
+
+class Collection(_Entity): _entity_name = 'collection'
 
 
 # Exceptions.
@@ -178,7 +230,7 @@ def _check_includes_impl(includes, valid_includes):
                   "%s is not a valid include" % invalid.pop())
 
 def _check_includes(entity, inc):
-    _check_includes_impl(inc, VALID_INCLUDES[entity])
+    _check_includes_impl(inc, entity.VALID_INCLUDES)
 
 def _check_filter(values, valid):
     assert isinstance(valid, frozenset)
@@ -195,8 +247,8 @@ def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
         release_status = [release_status]
     if isinstance(release_type, basestring):
         release_type = [release_type]
-    _check_filter(release_status, VALID_RELEASE_STATUSES)
-    _check_filter(release_type, VALID_RELEASE_TYPES)
+    _check_filter(release_status, Release.VALID_STATI)
+    _check_filter(release_type, Release.VALID_TYPES)
 
     if release_status and "releases" not in includes:
         raise InvalidFilterError("Can't have a status with no release include")
@@ -451,7 +503,9 @@ def _is_auth_required(entity, includes):
     """ Some calls require authentication. This returns
     True if a call does, False otherwise
     """
-    if "user-tags" in includes or "user-ratings" in includes:
+    if hasattr(entity, '_auth_required'):
+        return entity._auth_required
+    elif "user-tags" in includes or "user-ratings" in includes:
         return True
     elif entity.startswith("collection"):
         return True
@@ -475,7 +529,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
         args["inc"] = inc
 
     # Build the endpoint components.
-    path = '%s/%s' % (entity, id)
+    path = '%s/%s' % (entity._entity_name, id)
     return _mb_request(path, 'GET', auth_required, args=args)
 
 def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
@@ -488,7 +542,7 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
     query_parts = [query.replace('\x00', '').strip()]
     for key, value in fields.iteritems():
         # Ensure this is a valid search field.
-        if key not in VALID_SEARCH_FIELDS[entity]:
+        if key not in entity.VALID_SEARCH_FIELDS:
             raise InvalidSearchFieldError(
                 '%s is not a valid search field for %s' % (key, entity)
             )
@@ -530,30 +584,14 @@ def _do_mb_post(path, body):
 
 # The main interface!
 
+
 # Single entity by ID
-def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("artist", id, includes, params)
-
-def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("label", id, includes, params)
-
-def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("recording", id, includes, params)
-
-def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("release", id, includes, params)
-
-def get_release_group_by_id(id, includes=[], release_status=[], release_type=[]):
-    params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("release-group", id, includes, params)
-
-def get_work_by_id(id, includes=[]):
-    return _do_mb_query("work", id, includes)
-
+get_artist_by_id = Artist.get_by_id
+get_label_by_id = Label.get_by_id
+get_recording_by_id = Recording.get_by_id
+get_release_by_id = Release.get_by_id
+get_release_group_by_id = ReleaseGroup.get_by_id
+get_work_by_id = Work.get_by_id
 
 # Searching
 
@@ -563,7 +601,7 @@ def artist_search(query='', limit=None, offset=None, **fields):
     arid, artist, sortname, type, begin, end, comment, alias, country,
     gender, tag
     """
-    return _do_mb_search('artist', query, fields, limit, offset)
+    return _do_mb_search(Artist, query, fields, limit, offset)
 
 def label_search(query='', limit=None, offset=None, **fields):
     """Search for labels by a free-form `query` string and/or any of
@@ -571,7 +609,7 @@ def label_search(query='', limit=None, offset=None, **fields):
     laid, label, sortname, type, code, country, begin, end, comment,
     alias, tag
     """
-    return _do_mb_search('label', query, fields, limit, offset)
+    return _do_mb_search(Label, query, fields, limit, offset)
 
 def recording_search(query='', limit=None, offset=None, **fields):
     """Search for recordings by a free-form `query` string and/or any of
@@ -580,7 +618,7 @@ def recording_search(query='', limit=None, offset=None, **fields):
     release, type, status, tracks, tracksrelease, dur, qdur, tnum,
     position, tag
     """
-    return _do_mb_search('recording', query, fields, limit, offset)
+    return _do_mb_search(Recording, query, fields, limit, offset)
 
 def release_search(query='', limit=None, offset=None, **fields):
     """Search for releases by a free-form `query` string and/or any of
@@ -589,7 +627,7 @@ def release_search(query='', limit=None, offset=None, **fields):
     tracks, tracksmedium, discids, discidsmedium, mediums, date, asin,
     lang, script, country, date, label, catno, barcode, puid
     """
-    return _do_mb_search('release', query, fields, limit, offset)
+    return _do_mb_search(Release, query, fields, limit, offset)
 
 def release_group_search(query='', limit=None, offset=None, **fields):
     """Search for release groups by a free-form `query` string and/or
@@ -597,35 +635,35 @@ def release_group_search(query='', limit=None, offset=None, **fields):
     rgid, releasegroup, reid, release, arid, artist, artistname,
     creditname, type, tag
     """
-    return _do_mb_search('release-group', query, fields, limit, offset)
+    return _do_mb_search(ReleaseGroup, query, fields, limit, offset)
 
 def work_search(query='', limit=None, offset=None, **fields):
     """Search for works by a free-form `query` string and/or any of
     the following keyword arguments specifying field queries:
     wid, work, iswc, type, arid, artist, alias, tag
     """
-    return _do_mb_search('work', query, fields, limit, offset)
+    return _do_mb_search(Work, query, fields, limit, offset)
 
 
 # Lists of entities
 def get_releases_by_discid(id, includes=[], release_type=[]):
     params = _check_filter_and_make_params(includes, release_type=release_type)
-    return _do_mb_query("discid", id, includes, params)
+    return _do_mb_query(DiscId, id, includes, params)
 
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[], release_type=[]):
     params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("echoprint", echoprint, includes, params)
+    return _do_mb_query(EchoPrint, echoprint, includes, params)
 
 def get_recordings_by_puid(puid, includes=[], release_status=[], release_type=[]):
     params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("puid", puid, includes, params)
+    return _do_mb_query(PUID, puid, includes, params)
 
 def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]):
     params = _check_filter_and_make_params(includes, release_status, release_type)
-    return _do_mb_query("isrc", isrc, includes, params)
+    return _do_mb_query(ISRC, isrc, includes, params)
 
 def get_works_by_iswc(iswc, includes=[]):
-    return _do_mb_query("iswc", iswc, includes)
+    return _do_mb_query(ISWC, iswc, includes)
 
 # Browse methods
 # Browse include are a subset of regular get includes, so we check them here
@@ -642,14 +680,14 @@ def browse_artist(recording=None, release=None, release_group=None, includes=[],
         raise Exception("Can't have more than one of recording, release, release_group, work")
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
-    return _do_mb_query("artist", "", includes, p)
+    return _do_mb_query(Artist, "", includes, p)
 
 def browse_label(release=None, includes=[], limit=None, offset=None):
     _check_includes_impl(includes, frozenset(["aliases", "tags", "ratings", "user-tags", "user-ratings"]))
     p = {"release": release}
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
-    return _do_mb_query("label", "", includes, p)
+    return _do_mb_query(Label, "", includes, p)
 
 def browse_recording(artist=None, release=None, includes=[], limit=None, offset=None):
     _check_includes_impl(includes, frozenset(["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]))
@@ -660,7 +698,7 @@ def browse_recording(artist=None, release=None, includes=[], limit=None, offset=
         raise Exception("Can't have more than one of artist, release")
     if limit: p["limit"] = limit
     if offset: p["offset"] = offset
-    return _do_mb_query("recording", "", includes, p)
+    return _do_mb_query(Recording, "", includes, p)
 
 def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
     # track_artist param doesn't work yet
@@ -679,7 +717,7 @@ def browse_release(artist=None, label=None, recording=None, release_group=None, 
     p.update(filterp)
     if len(release_status) == 0 and len(release_type) == 0:
         raise InvalidFilterError("Need at least one release status or type")
-    return _do_mb_query("release", "", includes, p)
+    return _do_mb_query(Release, "", includes, p)
 
 def browse_release_group(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
     _check_includes_impl(includes, frozenset(["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]))
@@ -694,17 +732,17 @@ def browse_release_group(artist=None, release=None, release_type=[], includes=[]
     p.update(filterp)
     if len(release_type) == 0:
         raise InvalidFilterError("Need at least one release type")
-    return _do_mb_query("release-group", "", includes, p)
+    return _do_mb_query(ReleaseGroup, "", includes, p)
 
 # browse_work is defined in the docs but has no browse criteria
 
 # Collections
 def get_all_collections():
     # Missing <release-list count="n"> the count in the reply
-    return _do_mb_query("collection", '')
+    return _do_mb_query(Collection, '')
 
 def get_releases_in_collection(collection):
-    return _do_mb_query("collection", "%s/releases" % collection)
+    return _do_mb_query(Collection, "%s/releases" % collection)
 
 # Submission methods
 
@@ -714,15 +752,15 @@ def submit_barcodes(barcodes):
     Must call auth(user, pass) first
     """
     query = mbxml.make_barcode_request(barcodes)
-    return _do_mb_post("release", query)
+    return _do_mb_post(Release, query)
 
 def submit_puids(puids):
     query = mbxml.make_puid_request(puids)
-    return _do_mb_post("recording", query)
+    return _do_mb_post(Recording, query)
 
 def submit_echoprints(echoprints):
     query = mbxml.make_echoprint_request(echoprints)
-    return _do_mb_post("recording", query)
+    return _do_mb_post(Recording, query)
 
 def submit_isrcs(isrcs):
     raise NotImplementedError
@@ -733,7 +771,7 @@ def submit_tags(artist_tags={}, recording_tags={}):
         {'entityid': [taglist]}
     """
     query = mbxml.make_tag_request(artist_tags, recording_tags)
-    return _do_mb_post("tag", query)
+    return _do_mb_post(Tag, query)
 
 def submit_ratings(artist_ratings={}, recording_ratings={}):
     """ Submit user ratings.
@@ -741,7 +779,7 @@ def submit_ratings(artist_ratings={}, recording_ratings={}):
         {'entityid': rating}
     """
     query = mbxml.make_rating_request(artist_ratings, recording_ratings)
-    return _do_mb_post("rating", query)
+    return _do_mb_post(Rating, query)
 
 def add_releases_to_collection(collection, releases=[]):
     # XXX: Maximum URI length of 16kb means we should only allow ~400 releases
