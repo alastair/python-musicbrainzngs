@@ -27,11 +27,29 @@ class _Entity:
 
     _auth_required = False # is authentication required for reading this?
 
+    BROWSE_MUTALS = frozenset()
+
     @classmethod
     def get_by_id(klass, id, includes=[], release_status=[], release_type=[]):
         params = _check_filter_and_make_params(includes, release_status,
                                                release_type)
         return _do_mb_query(klass, id, includes, params)
+
+
+    @staticmethod
+    def _browse(klass, includes, **params):
+        _check_includes_impl(includes, klass.VALID_BROWSE_INCLUDES)
+        # remove empty parameters
+        for name in params.keys():
+            if not params[name]:
+                del params[name]
+        if len(set(params) & klass.BROWSE_MUTALS) > 1:
+            mutals = list(klass.BROWSE_MUTALS)
+            mutals.sort()        
+            raise Exception("Can't have more than one of %s."
+                            % ', '.join(mutals))
+        return _do_mb_query(klass, "", includes, params)
+
 
 class Tag(_Entity): _entity_name = 'tag'
 class Rating(_Entity): _entity_name = 'rating'
@@ -51,6 +69,19 @@ class Artist(_Entity):
         'alias', 'country', 'gender', 'tag'
         ])
 
+    VALID_BROWSE_INCLUDES = frozenset([
+        "aliases", "tags", "ratings", "user-tags", "user-ratings"])
+    BROWSE_MUTALS = frozenset(['recording', 'release', 'release_group']) # work
+
+    @classmethod
+    def browse(klass,
+               recording=None, release=None, release_group=None,
+               includes=[], limit=None, offset=None):
+        return _Entity._browse(klass,
+                               includes=includes, limit=limit, offset=offset,
+                               recording=recording, release=release,
+                               release_group=release_group)
+
 
 class Label(_Entity):
     _entity_name = 'label'
@@ -65,6 +96,15 @@ class Label(_Entity):
         'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
         'end', 'comment', 'alias', 'tag'
         ])
+
+    VALID_BROWSE_INCLUDES = frozenset([
+        "aliases", "tags", "ratings", "user-tags", "user-ratings"])
+
+    @classmethod
+    def browse(klass, release=None, includes=[], limit=None, offset=None):
+        return _Entity._browse(klass,
+                               includes=includes, limit=limit, offset=offset,
+                               release=release)
 
 
 class Recording(_Entity):
@@ -82,6 +122,16 @@ class Recording(_Entity):
         'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag'
         ])
 
+    VALID_BROWSE_INCLUDES = frozenset([
+        "artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
+    BROWSE_MUTALS = frozenset(['artist', 'release'])
+
+    @classmethod
+    def browse(klass, artist=None, release=None,
+               includes=[], limit=None, offset=None):
+        return _Entity._browse(klass,
+                               includes=includes, limit=limit, offset=offset,
+                               artist=artist, release=release)
 
 class Release(_Entity):
     _entity_name = 'release'
@@ -98,6 +148,9 @@ class Release(_Entity):
         'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
         'country', 'date', 'label', 'catno', 'barcode', 'puid'
         ])
+    VALID_BROWSE_INCLUDES = frozenset([
+        "artist-credits", "labels", "recordings"])
+    BROWSE_MUTALS = frozenset(['artist', 'label',' recording', 'release_group'])
     VALID_TYPES = frozenset([
         "nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
         "interview", "audiobook", "live", "remix", "other"
@@ -105,6 +158,21 @@ class Release(_Entity):
     VALID_STATI = frozenset([
             "official", "promotion", "bootleg", "pseudo-release"])
 
+    @classmethod
+    def browse(klass,
+               artist=None, label=None, recording=None, release_group=None,
+               release_status=[], release_type=[],
+               includes=[], limit=None, offset=None):
+        # track_artist param doesn't work yet
+        if not release_status and not release_type:
+            raise InvalidFilterError("Need at least one release status or type")
+        filter = _check_filter_and_make_params("releases",
+                                               release_status, release_type)
+        return _Entity._browse(klass,
+                               includes=includes, limit=limit, offset=offset,
+                               artist=artist, label=label, 
+                               recording=recording, release_group=release_group,
+                               **filter)
 
 class ReleaseGroup(_Entity):
     _entity_name = 'release-group'
@@ -118,7 +186,21 @@ class ReleaseGroup(_Entity):
         'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
         'artistname', 'creditname', 'type', 'tag'
         ])
+    VALID_BROWSE_INCLUDES = frozenset([
+        "artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
+    BROWSE_MUTALS = frozenset(['artist', 'release'])
 
+    @classmethod
+    def browse(klass,
+               artist=None, release=None, release_type=[],
+               includes=[], limit=None, offset=None):
+        if not release_type:
+            raise InvalidFilterError("Need at least one release type")
+        filter = _check_filter_and_make_params("release-groups", [], release_type)
+        return _Entity._browse(klass,
+                               includes=includes, limit=limit, offset=offset,
+                               artist=artist, release=release,
+                               release_type=release_type, **filter)
 
 class Work(_Entity):
     _entity_name = 'work'
@@ -677,73 +759,13 @@ def get_works_by_iswc(iswc, includes=[]):
 # Browse methods
 # Browse include are a subset of regular get includes, so we check them here
 # and the test in _do_mb_query will pass anyway.
-def browse_artist(recording=None, release=None, release_group=None, includes=[], limit=None, offset=None):
-    # optional parameter work?
-    _check_includes_impl(includes, frozenset(["aliases", "tags", "ratings", "user-tags", "user-ratings"]))
-    p = {}
-    if recording: p["recording"] = recording
-    if release: p["release"] = release
-    if release_group: p["release-group"] = release_group
-    #if work: p["work"] = work
-    if len(p) > 1:
-        raise Exception("Can't have more than one of recording, release, release_group, work")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    return _do_mb_query(Artist, "", includes, p)
+browse_artist = Artist.browse
+browse_label = Label.browse
+browse_recording = Recording.browse
+browse_release = Release.browse
+browse_release_group = ReleaseGroup.browse
+#browse_work is defined in the docs but has no browse criteria
 
-def browse_label(release=None, includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, frozenset(["aliases", "tags", "ratings", "user-tags", "user-ratings"]))
-    p = {"release": release}
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    return _do_mb_query(Label, "", includes, p)
-
-def browse_recording(artist=None, release=None, includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, frozenset(["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]))
-    p = {}
-    if artist: p["artist"] = artist
-    if release: p["release"] = release
-    if len(p) > 1:
-        raise Exception("Can't have more than one of artist, release")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    return _do_mb_query(Recording, "", includes, p)
-
-def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
-    # track_artist param doesn't work yet
-    _check_includes_impl(includes, frozenset(["artist-credits", "labels", "recordings"]))
-    p = {}
-    if artist: p["artist"] = artist
-    #if track_artist: p["track_artist"] = track_artist
-    if label: p["label"] = label
-    if recording: p["recording"] = recording
-    if release_group: p["release-group"] = release_group
-    if len(p) > 1:
-        raise Exception("Can't have more than one of artist, label, recording, release_group")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    filterp = _check_filter_and_make_params("releases", release_status, release_type)
-    p.update(filterp)
-    if len(release_status) == 0 and len(release_type) == 0:
-        raise InvalidFilterError("Need at least one release status or type")
-    return _do_mb_query(Release, "", includes, p)
-
-def browse_release_group(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, frozenset(["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]))
-    p = {}
-    if artist: p["artist"] = artist
-    if release: p["release"] = release
-    if len(p) > 1:
-        raise Exception("Can't have more than one of artist, release")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    filterp = _check_filter_and_make_params("release-groups", [], release_type)
-    p.update(filterp)
-    if len(release_type) == 0:
-        raise InvalidFilterError("Need at least one release type")
-    return _do_mb_query(ReleaseGroup, "", includes, p)
-
-# browse_work is defined in the docs but has no browse criteria
 
 # Collections
 def get_all_collections():
