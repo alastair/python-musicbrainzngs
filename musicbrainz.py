@@ -207,6 +207,7 @@ class Work(_Entity):
         'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag'
         ])
 
+    @classmethod
     def get_by_id(klass, id, includes=[]):
         return _do_mb_query(klass, id, includes)
 
