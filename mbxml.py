@@ -119,9 +119,9 @@ def parse_elements(valid_els, inner_els, element):
 
 class _Parser(object):
     def __init__(self, attribs, elements, inner_els):
-        self.attribs = attribs
-        self.elements = elements
-        self.inner_els = inner_els
+        self.attribs = frozenset(attribs)
+        self.elements = frozenset(elements)
+        self.inner_els = frozenset(inner_els)
 
     def __call__(self, element):
         result = {}
