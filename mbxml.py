@@ -40,26 +40,6 @@ def make_artist_credit(artists):
             names.append(artist)
     return "".join(names)
 
-def parse_elements(valid_els, element):
-    """ Extract single level subelements from an element.
-        For example, given the element:
-        <element>
-            <subelement>Text</subelement>
-        </element>
-        and a list valid_els that contains "subelement",
-        return a dict {'subelement': 'Text'}
-    """
-    result = {}
-    for sub in element:
-        t = fixtag(sub.tag, NS_MAP)[0]
-        if ":" in t:
-            t = t.split(":")[1]
-        if t in valid_els:
-            result[t] = sub.text
-        else:
-            logging.debug("in <%s>, uncaught <%s>", fixtag(element.tag, NS_MAP)[0], t)
-    return result
-
 def parse_attributes(attributes, element):
     """ Extract attributes from an element.
         For example, given the element:
@@ -79,8 +59,16 @@ def parse_attributes(attributes, element):
 # are instanciated. Thus they are looked-up (and cached) when used.
 __FUNC_CACHE = {}
 
-def parse_inner(inner_els, element):
-    """ Delegate the parsing of a subelement to another function.
+def parse_elements(valid_els, inner_els, element):
+    """ Extract single level subelements from an element.
+        For example, given the element:
+        <element>
+            <subelement>Text</subelement>
+        </element>
+        and a list valid_els that contains "subelement",
+        return a dict {'subelement': 'Text'}
+
+        Delegate the parsing of a subelement to another function.
         For example, given the element:
         <element>
             <subelement>
@@ -99,16 +87,24 @@ def parse_inner(inner_els, element):
         t = fixtag(sub.tag, NS_MAP)[0]
         if ":" in t:
             t = t.split(":")[1]
+        if t in valid_els:
+            result[t] = sub.text
+            continue
+        elif not t in inner_els:
+            # this is not a valid inner element
+            logging.debug("in <%s>, uncaught <%s>",
+                          fixtag(element.tag, NS_MAP)[0], t)
+            continue
+        
         # find parse_* function for this tag
         func = __FUNC_CACHE.get(t, None)
         if not func:
             # the parse_* function for this tag is not yet in cache
             # find it in the module
-            _module = inspect.getmodule(parse_inner)
+            _module = inspect.getmodule(parse_elements)
             func = getattr(_module, 'parse_' + t.replace('-', '_'), None)
             # anf put it into the cache
             __FUNC_CACHE[t] = func
-        print t, func
         if func:
             inner_result = func(sub)
             if isinstance(inner_result, tuple):
@@ -130,9 +126,7 @@ class _Parser(object):
     def __call__(self, element):
         result = {}
         result.update(parse_attributes(self.attribs, element))
-        result.update(parse_elements(self.elements, element))
-        print '---------__'
-        result.update(parse_inner(self.inner_els, element))
+        result.update(parse_elements(self.elements, self.inner_els, element))
         if "artist-credit" in result:
             result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
         return result
@@ -151,10 +145,10 @@ def parse_message(message):
         "release-group-list", "recording-list", "work-list",
         "collection-list", "collection",
         "message"]
-    return parse_inner(valid_elements, root)
+    return parse_elements([], valid_elements, root)
 
 def parse_response_message(message):
-    return parse_elements(["text"], message)
+    return parse_elements(["text"], [], message)
 
 def parse_collection_list(cl):
     return [parse_collection(c) for c in cl]
@@ -169,7 +163,7 @@ def parse_collection_release_list(rl):
     return parse_attributes(attribs, rl)
 
 def parse_life_span(lifespan):
-    parts = parse_elements(["begin", "end"], lifespan)
+    parts = parse_elements(["begin", "end"], [], lifespan)
     beginval = parts.get("begin", "")
     endval = parts.get("end", "")
     return (beginval, endval)
@@ -235,7 +229,7 @@ def parse_disc_list(dl):
     return [parse_disc(d) for d in dl]
 
 def parse_text_representation(textr):
-    return parse_elements(["language", "script"], textr)
+    return parse_elements(["language", "script"], [], textr)
 
 parse_release_group = _Parser(
     attribs = ["id", "type"],
