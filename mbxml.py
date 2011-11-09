@@ -318,10 +318,7 @@ def parse_external_id_list(pl):
     return [parse_attributes(["id"], p)["id"] for p in pl]
 
 def parse_work_list(wl):
-    result = []
-    for w in wl:
-        result.append(parse_work(w))
-    return result
+    return [parse_work(w) for w in wl]
 
 def parse_work(work):
     result = {}
@@ -351,16 +348,10 @@ def parse_disc(disc):
     return result
 
 def parse_release_list(rl):
-    result = []
-    for r in rl:
-        result.append(parse_release(r))
-    return result
+    return [parse_release(r) for r in rl]
 
 def parse_release_group_list(rgl):
-    result = []
-    for rg in rgl:
-        result.append(parse_release_group(rg))
-    return result
+    return [parse_release_group(rg) for rg in rl]
 
 def parse_puid(puid):
     result = {}
@@ -372,11 +363,8 @@ def parse_puid(puid):
 
     return result
 
-def parse_recording_list(recs):
-    result = []
-    for r in recs:
-        result.append(parse_recording(r))
-    return result
+def parse_recording_list(rl):
+    return [parse_recording(r) for r in rl]
 
 def parse_artist_credit(ac):
     result = []
@@ -398,11 +386,7 @@ def parse_name_credit(nc):
     return result
 
 def parse_label_info_list(lil):
-    result = []
-
-    for li in lil:
-        result.append(parse_label_info(li))
-    return result
+    return [parse_label_info(li) for li in lil]
 
 def parse_label_info(li):
     result = {}
@@ -414,10 +398,7 @@ def parse_label_info(li):
     return result
 
 def parse_track_list(tl):
-    result = []
-    for t in tl:
-        result.append(parse_track(t))
-    return result
+    return [parse_track(t) for t in tl]
 
 def parse_track(track):
     result = {}
@@ -429,10 +410,7 @@ def parse_track(track):
     return result
 
 def parse_tag_list(tl):
-    result = []
-    for t in tl:
-        result.append(parse_tag(t))
-    return result
+    return [parse_tag(t) for t in tl]
 
 def parse_tag(tag):
     result = {}
@@ -454,10 +432,7 @@ def parse_rating(rating):
     return result
 
 def parse_alias_list(al):
-    result = []
-    for a in al:
-        result.append(a.text)
-    return result
+    return [parse_alias(a) for a in al]
 
 ###
 def make_barcode_request(barcodes):
