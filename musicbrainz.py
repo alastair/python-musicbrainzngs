@@ -8,6 +8,7 @@ import time
 import logging
 import httplib
 import xml.etree.ElementTree as etree
+from xml.parsers import expat
 
 _useragent = "pythonmusicbrainzngs-0.1"
 _log = logging.getLogger("python-musicbrainz-ngs")
@@ -371,6 +372,13 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 	
 	# Out of retries!
 	raise NetworkError("retried %i times" % max_retries, last_exc)
+
+# Get the XML parsing exceptions to catch. The behavior chnaged with Python 2.7
+# and ElementTree 1.3.
+if hasattr(etree, 'ParseError'):
+	ETREE_EXCEPTIONS = (etree.ParseError, expat.ExpatError)
+else:
+	ETREE_EXCEPTIONS = (expat.ExpatError)
 
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
