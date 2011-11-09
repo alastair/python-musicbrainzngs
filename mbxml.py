@@ -1,7 +1,11 @@
 import xml.etree.ElementTree as ET
 import string
-import StringIO
+try:
+    import cStringIO as StringIO
+except:
+    import StringIO
 import logging
+
 try:
     from ET import fixtag
 except:
