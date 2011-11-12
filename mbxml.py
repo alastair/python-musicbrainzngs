@@ -155,10 +155,8 @@ def parse_collection_release_list(rl):
 
 def parse_artist_lifespan(lifespan):
 	parts = parse_elements(["begin", "end"], lifespan)
-	beginval = parts.get("begin", "")
-	endval = parts.get("end", "")
-		
-	return (beginval, endval)
+
+	return parts
 
 def parse_artist_list(al):
 	return [parse_artist(a) for a in al]
