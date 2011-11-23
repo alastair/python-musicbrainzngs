@@ -398,6 +398,10 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	elif client_required:
 		args["client"] = _client
 
+	try:
+		args["query"] = args["query"].encode('utf-8')
+	except KeyError:
+		pass
 	# Construct the full URL for the request, including hostname and
 	# query string.
 	url = urlparse.urlunparse((
