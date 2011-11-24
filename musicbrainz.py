@@ -398,6 +398,11 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	elif client_required:
 		args["client"] = _client
 
+	# Encode Unicode arguments using UTF-8.
+	for key, value in args.items():
+		if isinstance(value, unicode):
+			args[key] = value.encode('utf8')
+
 	# Construct the full URL for the request, including hostname and
 	# query string.
 	url = urlparse.urlunparse((
