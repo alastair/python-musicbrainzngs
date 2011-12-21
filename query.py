@@ -3,7 +3,8 @@ import sys
 import musicbrainz as m
 
 def main():
-	#print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
+	m.set_useragent("application", "0.01", "http://example.com")
+	print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
 	#print m.get_label_by_id("aab2e720-bdd2-4565-afc2-460743585f16")
 	#print m.get_release_by_id("e94757ff-2655-4690-b369-4012beba6114")
 	#print m.get_release_group_by_id("9377d65d-ffd5-35d6-b64d-43f86ef9188d")
@@ -23,7 +24,7 @@ def main():
 	#m.submit_ratings(recording_ratings={"cb4d4d70-930c-4d1a-a157-776de18be66a":20})
 
 	#print m.get_recordings_by_echoprint("aryw4bx1187b98dde8")
-	m.submit_echoprints({"e97f805a-ab48-4c52-855e-07049142113d": "anechoprint1234567"})
+	#m.submit_echoprints({"e97f805a-ab48-4c52-855e-07049142113d": "anechoprint1234567"})
 
 if __name__ == "__main__":
 	main()

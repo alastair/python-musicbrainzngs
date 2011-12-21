@@ -11,7 +11,7 @@ import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
 _version = "0.1"
-_useragent = "python-musicbrainz-ngs/%s ( https://github.com/alastair/python-musicbrainz-ngs )" % _version
+_useragent = ""
 _log = logging.getLogger("python-musicbrainz-ngs")
 
 
@@ -398,6 +398,9 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	"""
 	args = dict(args) or {}
 
+	if _useragent == "":
+		raise UsageError("set a user-agent name with "
+						 "musicbrainz.set_useragent(\"application name\", \"application version\", \"URL for application\")")
 	# Add client if required.
 	if client_required and _client == "":
 		raise UsageError("set a client name with "
