@@ -11,7 +11,6 @@ import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
 _version = "0.1"
-_useragent = ""
 _log = logging.getLogger("python-musicbrainz-ngs")
 
 
@@ -206,6 +205,7 @@ def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
 user = password = ""
 hostname = "musicbrainz.org"
 _client = ""
+_useragent = ""
 
 def auth(u, p):
 	"""Set the username and password to be used in subsequent queries to
@@ -215,18 +215,12 @@ def auth(u, p):
 	user = u
 	password = p
 
-def set_client(c):
-	""" Set the client to be used in requests. This must be set before any
-	data submissions are made.
-	"""
-	global _client
-	_client = c
-
 def set_useragent(app, version, url="https://github.com/alastair/python-musicbrainz-ngs"):
     """ Set the User-Agent to be used for requests to the MusicBrainz webservice.
     This should be set before requests are made."""
-    global _useragent
+    global _useragent, _client
     _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, url)
+    _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
 # Rate limiting.
@@ -401,11 +395,8 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	if _useragent == "":
 		raise UsageError("set a user-agent name with "
 						 "musicbrainz.set_useragent(\"application name\", \"application version\", \"URL for application\")")
-	# Add client if required.
-	if client_required and _client == "":
-		raise UsageError("set a client name with "
-						 "musicbrainz.set_client(\"client-version\")")
-	elif client_required:
+
+	if client_required:
 		args["client"] = _client
 
 	# Encode Unicode arguments using UTF-8.
