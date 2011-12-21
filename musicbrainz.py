@@ -215,11 +215,14 @@ def auth(u, p):
 	user = u
 	password = p
 
-def set_useragent(app, version, url="https://github.com/alastair/python-musicbrainz-ngs"):
+def set_useragent(app, version, contact=None):
     """ Set the User-Agent to be used for requests to the MusicBrainz webservice.
     This should be set before requests are made."""
     global _useragent, _client
-    _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, url)
+    if contact is not None:
+        _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, contact)
+    else: 
+        _useragent = "%s/%s python-musicbrainz-ngs/%s" % (app, version, _version)
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
@@ -393,8 +396,8 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	args = dict(args) or {}
 
 	if _useragent == "":
-		raise UsageError("set a user-agent name with "
-						 "musicbrainz.set_useragent(\"application name\", \"application version\", \"URL for application\")")
+		raise UsageError("set a proper user-agent with "
+						 "musicbrainz.set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
 
 	if client_required:
 		args["client"] = _client
