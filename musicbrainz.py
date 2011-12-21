@@ -10,7 +10,8 @@ import httplib
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
-_useragent = "pythonmusicbrainzngs-0.1"
+_version = "0.1"
+_useragent = "python-musicbrainz-ngs/%s ( https://github.com/alastair/python-musicbrainz-ngs )" % _version
 _log = logging.getLogger("python-musicbrainz-ngs")
 
 
@@ -221,6 +222,12 @@ def set_client(c):
 	global _client
 	_client = c
 
+def set_useragent(app, version, url="https://github.com/alastair/python-musicbrainz-ngs"):
+    """ Set the User-Agent to be used for requests to the MusicBrainz webservice.
+    This should be set before requests are made."""
+    global _useragent
+    _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, url)
+    _log.debug("set user-agent to %s" % _useragent)
 
 # Rate limiting.
 
@@ -433,6 +440,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	# Make request.
 	req = _MusicbrainzHttpRequest(method, url, data)
 	req.add_header('User-Agent', _useragent)
+	_log.debug("requesting with UA %s" % _useragent)
 	if body:
 		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
 	f = _safe_open(opener, req, body)
