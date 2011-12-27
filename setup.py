@@ -41,12 +41,12 @@ class test(Command):
         t.run(tests)
 
 setup(
-    name="python-musicbrainz-ngs",
-    version="0.1",
+    name="musicbrainzngs",
+    version="0.2",
     description="python bindings for musicbrainz NGS webservice",
     author="Alastair Porter",
     url="https://github.com/alastair/python-musicbrainz-ngs",
-    py_modules=['mbxml', 'musicbrainz'],
+    packages=['musicbrainzngs'],
     cmdclass={'test': test },
 )
 
