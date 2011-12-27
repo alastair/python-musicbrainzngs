@@ -31,7 +31,7 @@ class RateLimitingTest(unittest.TestCase):
         time1 = time.time()
         self.func()
         time2 = time.time()
-        self.assertGreaterEqual(time2 - time1, 1.0)
+        self.assertTrue((time2 - time1), 1.0)
 
     def test_second_distant_query_does_not_wait(self):
         self.func()
@@ -75,4 +75,4 @@ class BatchedRateLimitingTest(unittest.TestCase):
         self.func()
         self.func()
         time2 = time.time()
-        self.assertGreaterEqual(time2 - time1, 1.0)
+        self.assertTrue((time2 - time1), 1.0)
