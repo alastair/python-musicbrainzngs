@@ -41,13 +41,23 @@ class test(Command):
         t.run(tests)
 
 setup(
-    name="python-musicbrainz-ngs",
+    name="musicbrainzngs",
     version="0.1",
     description="python bindings for musicbrainz NGS webservice",
     author="Alastair Porter",
     url="https://github.com/alastair/python-musicbrainz-ngs",
-    py_modules=['mbxml', 'musicbrainz'],
+    packages=['musicbrainzngs'],
     cmdclass={'test': test },
 )
-
+"""
+Development Status :: 3 - Alpha
+License :: OSI Approved :: BSD License
+Intended Audience :: Developers
+Operating System :: OS Independent
+Programming Language :: Python
+Topic :: Database :: Front-Ends
+Topic :: Multimedia :: Sound/Audio :: CD Audio :: CD Ripping
+Topic :: Software Development :: Libraries :: Python Modules
+Topic :: Text Processing :: Markup :: XML
+"""
 

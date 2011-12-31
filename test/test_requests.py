@@ -3,7 +3,7 @@ import os
 import sys
 import time
 sys.path.append(os.path.abspath(".."))
-import musicbrainz
+from musicbrainzngs import musicbrainz
 from test._common import Timecop
 
 

@@ -1,6 +1,6 @@
 import sys
 
-import musicbrainz as m
+import musicbrainzngs as m
 
 def main():
 	#print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
@@ -23,7 +23,7 @@ def main():
 	#m.submit_ratings(recording_ratings={"cb4d4d70-930c-4d1a-a157-776de18be66a":20})
 
 	#print m.get_recordings_by_echoprint("aryw4bx1187b98dde8")
-	m.submit_echoprints({"e97f805a-ab48-4c52-855e-07049142113d": "anechoprint1234567"})
+    #m.submit_echoprints({"e97f805a-ab48-4c52-855e-07049142113d": "anechoprint1234567"})
 
 if __name__ == "__main__":
 	main()
