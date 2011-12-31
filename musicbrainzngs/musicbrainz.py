@@ -1,3 +1,8 @@
+# This file is part of the musicbrainzngs library
+# Copyright (C) Alastair Porter, Adrian Sampson, and others
+# This file is distributed under a BSD-2-Clause type license.
+# See the COPYING file for more information.
+
 import urlparse
 import urllib2
 import urllib

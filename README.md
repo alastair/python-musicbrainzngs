@@ -19,8 +19,13 @@ See the query.py file for more examples
 
 ### Authors
 
-These bindings were written by [Alastair Porter](http://github.com/alastair). Contributions have been made
-by [Adrian Sampson](https://github.com/sampsyo) and others.
+These bindings were written by [Alastair Porter](http://github.com/alastair). Contributions
+have been made by:
+
+* [Adrian Sampson](https://github.com/sampsyo)
+* [Michael Marineau](https://github.com/marineam)
+* [Thomas Vander Stichele](https://github.com/thomasvs)
+* [Ian McEwen](https://github.com/ianmcorvidae)
 
 ### License
 
