@@ -3,7 +3,8 @@ import sys
 import musicbrainzngs as m
 
 def main():
-	#print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
+	m.set_useragent("application", "0.01", "http://example.com")
+	print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
 	#print m.get_label_by_id("aab2e720-bdd2-4565-afc2-460743585f16")
 	#print m.get_release_by_id("e94757ff-2655-4690-b369-4012beba6114")
 	#print m.get_release_group_by_id("9377d65d-ffd5-35d6-b64d-43f86ef9188d")

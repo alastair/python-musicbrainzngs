@@ -10,7 +10,7 @@ import httplib
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
-_useragent = "pythonmusicbrainzngs-0.1"
+_version = "0.1"
 _log = logging.getLogger("python-musicbrainz-ngs")
 
 
@@ -205,6 +205,7 @@ def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
 user = password = ""
 hostname = "musicbrainz.org"
 _client = ""
+_useragent = ""
 
 def auth(u, p):
 	"""Set the username and password to be used in subsequent queries to
@@ -214,13 +215,16 @@ def auth(u, p):
 	user = u
 	password = p
 
-def set_client(c):
-	""" Set the client to be used in requests. This must be set before any
-	data submissions are made.
-	"""
-	global _client
-	_client = c
-
+def set_useragent(app, version, contact=None):
+    """ Set the User-Agent to be used for requests to the MusicBrainz webservice.
+    This should be set before requests are made."""
+    global _useragent, _client
+    if contact is not None:
+        _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, contact)
+    else: 
+        _useragent = "%s/%s python-musicbrainz-ngs/%s" % (app, version, _version)
+    _client = "%s-%s" % (app, version)
+    _log.debug("set user-agent to %s" % _useragent)
 
 # Rate limiting.
 
@@ -391,11 +395,11 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	"""
 	args = dict(args) or {}
 
-	# Add client if required.
-	if client_required and _client == "":
-		raise UsageError("set a client name with "
-						 "musicbrainz.set_client(\"client-version\")")
-	elif client_required:
+	if _useragent == "":
+		raise UsageError("set a proper user-agent with "
+						 "musicbrainz.set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
+
+	if client_required:
 		args["client"] = _client
 
 	# Encode Unicode arguments using UTF-8.
@@ -433,6 +437,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	# Make request.
 	req = _MusicbrainzHttpRequest(method, url, data)
 	req.add_header('User-Agent', _useragent)
+	_log.debug("requesting with UA %s" % _useragent)
 	if body:
 		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
 	f = _safe_open(opener, req, body)
