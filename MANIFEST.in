@@ -1,0 +1,2 @@
+include COPYING README.md query.py
+recursive-include test *.py

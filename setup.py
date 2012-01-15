@@ -42,22 +42,22 @@ class test(Command):
 
 setup(
     name="musicbrainzngs",
-    version="0.1",
+    version="0.2dev",
     description="python bindings for musicbrainz NGS webservice",
     author="Alastair Porter",
+    author_email="alastair@porter.net.nz",
     url="https://github.com/alastair/python-musicbrainz-ngs",
     packages=['musicbrainzngs'],
     cmdclass={'test': test },
+    license='BSD 2-clause',
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "License :: OSI Approved :: BSD License",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Topic :: Database :: Front-Ends",
+        "Topic :: Software Development :: Libraries :: Python Modules"
+    ]
 )
-"""
-Development Status :: 3 - Alpha
-License :: OSI Approved :: BSD License
-Intended Audience :: Developers
-Operating System :: OS Independent
-Programming Language :: Python
-Topic :: Database :: Front-Ends
-Topic :: Multimedia :: Sound/Audio :: CD Audio :: CD Ripping
-Topic :: Software Development :: Libraries :: Python Modules
-Topic :: Text Processing :: Markup :: XML
-"""
 
