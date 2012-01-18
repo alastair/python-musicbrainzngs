@@ -27,13 +27,15 @@ class RateLimitingTest(unittest.TestCase):
         self.assertAlmostEqual(time1, time2)
 
     def test_second_rapid_query_waits(self):
+        """ Performing 2 queries should force a wait """
         self.func()
         time1 = time.time()
         self.func()
         time2 = time.time()
-        self.assertGreaterEqual(time2 - time1, 1.0)
+        self.assertTrue(time2 - time1 >= 1.0)
 
     def test_second_distant_query_does_not_wait(self):
+        """ If there is a gap between queries, don't force a wait """
         self.func()
         time.sleep(1.0)
         time1 = time.time()
@@ -75,4 +77,4 @@ class BatchedRateLimitingTest(unittest.TestCase):
         self.func()
         self.func()
         time2 = time.time()
-        self.assertGreaterEqual(time2 - time1, 1.0)
+        self.assertTrue(time2 - time1 >= 1.0)
