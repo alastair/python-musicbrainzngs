@@ -15,8 +15,8 @@ import httplib
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
-_version = "0.1"
-_log = logging.getLogger("python-musicbrainz-ngs")
+_version = "0.2dev"
+_log = logging.getLogger("musicbrainzngs")
 
 
 # Constants for validation.
@@ -28,7 +28,7 @@ VALID_INCLUDES = {
 		"aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
 		"release-group-rels", "url-rels", "work-rels"
-	], 
+	],
 	'label': [
 		"releases", # Subqueries
 	    "discids", "media",
@@ -145,7 +145,7 @@ class WebServiceError(MusicBrainzError):
 		"""
 		self.message = message
 		self.cause = cause
-	
+
 	def __str__(self):
 		if self.message:
 			msg = "%s, " % self.message
@@ -177,7 +177,7 @@ def _check_filter(values, valid):
 		if v not in valid:
 			raise InvalidFilterError(v)
 
-def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
+def _check_filter_and_make_params(entity, includes, release_status=[], release_type=[]):
 	"""Check that the status or type values are valid. Then, check that
 	the filters can be used with the given includes. Return a params
 	dict that can be passed to _do_mb_query.
@@ -192,7 +192,8 @@ def _check_filter_and_make_params(includes, release_status=[], release_type=[]):
 	if release_status and "releases" not in includes:
 		raise InvalidFilterError("Can't have a status with no release include")
 	if release_type and ("release-groups" not in includes and
-					     "releases" not in includes):
+					     "releases" not in includes and
+					      entity != "release-group"):
 		raise InvalidFilterError("Can't have a release type with no "
 								 "release-group include")
 
@@ -226,7 +227,7 @@ def set_useragent(app, version, contact=None):
     global _useragent, _client
     if contact is not None:
         _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, contact)
-    else: 
+    else:
         _useragent = "%s/%s python-musicbrainz-ngs/%s" % (app, version, _version)
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
@@ -378,7 +379,7 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 		else:
 			# No exception! Yay!
 			return f
-	
+
 	# Out of retries!
 	raise NetworkError("retried %i times" % max_retries, last_exc)
 
@@ -423,7 +424,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		''
 	))
 	_log.debug("%s request for %s" % (method, url))
-	
+
 	# Set up HTTP request handler and URL opener.
 	httpHandler = urllib2.HTTPHandler(debuglevel=0)
 	handlers = [httpHandler]
@@ -438,7 +439,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		authHandler = _DigestAuthHandler(passwordMgr)
 		authHandler.add_password("musicbrainz.org", (), user, password)
 		handlers.append(authHandler)
-	
+
 	# Make request.
 	req = _MusicbrainzHttpRequest(method, url, data)
 	req.add_header('User-Agent', _useragent)
@@ -565,7 +566,7 @@ def get_work_by_id(id, includes=[]):
 
 # Searching
 
-def artist_search(query='', limit=None, offset=None, **fields):
+def search_artists(query='', limit=None, offset=None, **fields):
 	"""Search for artists by a free-form `query` string and/or any of
 	the following keyword arguments specifying field queries:
 	arid, artist, sortname, type, begin, end, comment, alias, country,
@@ -573,7 +574,7 @@ def artist_search(query='', limit=None, offset=None, **fields):
 	"""
 	return _do_mb_search('artist', query, fields, limit, offset)
 
-def label_search(query='', limit=None, offset=None, **fields):
+def search_labels(query='', limit=None, offset=None, **fields):
 	"""Search for labels by a free-form `query` string and/or any of
 	the following keyword arguments specifying field queries:
 	laid, label, sortname, type, code, country, begin, end, comment,
@@ -581,7 +582,7 @@ def label_search(query='', limit=None, offset=None, **fields):
 	"""
 	return _do_mb_search('label', query, fields, limit, offset)
 
-def recording_search(query='', limit=None, offset=None, **fields):
+def search_recordings(query='', limit=None, offset=None, **fields):
 	"""Search for recordings by a free-form `query` string and/or any of
 	the following keyword arguments specifying field queries:
 	rid, recording, isrc, arid, artist, artistname, creditname, reid,
@@ -590,7 +591,7 @@ def recording_search(query='', limit=None, offset=None, **fields):
 	"""
 	return _do_mb_search('recording', query, fields, limit, offset)
 
-def release_search(query='', limit=None, offset=None, **fields):
+def search_releases(query='', limit=None, offset=None, **fields):
 	"""Search for releases by a free-form `query` string and/or any of
 	the following keyword arguments specifying field queries:
 	reid, release, arid, artist, artistname, creditname, type, status,
@@ -599,7 +600,7 @@ def release_search(query='', limit=None, offset=None, **fields):
 	"""
 	return _do_mb_search('release', query, fields, limit, offset)
 
-def release_group_search(query='', limit=None, offset=None, **fields):
+def search_release_groups(query='', limit=None, offset=None, **fields):
 	"""Search for release groups by a free-form `query` string and/or
 	any of the following keyword arguments specifying field queries:
 	rgid, releasegroup, reid, release, arid, artist, artistname,
@@ -607,7 +608,7 @@ def release_group_search(query='', limit=None, offset=None, **fields):
 	"""
 	return _do_mb_search('release-group', query, fields, limit, offset)
 
-def work_search(query='', limit=None, offset=None, **fields):
+def search_works(query='', limit=None, offset=None, **fields):
 	"""Search for works by a free-form `query` string and/or any of
 	the following keyword arguments specifying field queries:
 	wid, work, iswc, type, arid, artist, alias, tag
@@ -635,79 +636,61 @@ def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]
 def get_works_by_iswc(iswc, includes=[]):
 	return _do_mb_query("iswc", iswc, includes)
 
+def _browse_impl(entity, includes, valid_includes, limit, offset, params, release_status=[], release_type=[]):
+    _check_includes_impl(includes, valid_includes)
+    p = {}
+    for k,v in params.items():
+        if v:
+            p[k] = v
+    if len(p) > 1:
+        raise Exception("Can't have more than one of " + ", ".join(params.keys()))
+    if limit: p["limit"] = limit
+    if offset: p["offset"] = offset
+    filterp = _check_filter_and_make_params(entity, includes, release_status, release_type)
+    p.update(filterp)
+    return _do_mb_query(entity, "", includes, p)
+
 # Browse methods
 # Browse include are a subset of regular get includes, so we check them here
 # and the test in _do_mb_query will pass anyway.
-def browse_artist(recording=None, release=None, release_group=None, includes=[], limit=None, offset=None):
+def browse_artists(recording=None, release=None, release_group=None, includes=[], limit=None, offset=None):
     # optional parameter work?
-    _check_includes_impl(includes, ["aliases", "tags", "ratings", "user-tags", "user-ratings"])
-    p = {}
-    if recording: p["recording"] = recording
-    if release: p["release"] = release
-    if release_group: p["release-group"] = release_group
-    #if work: p["work"] = work
-    if len(p) > 1:
-        raise Exception("Can't have more than one of recording, release, release_group, work")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    return _do_mb_query("artist", "", includes, p)
+    valid_includes = ["aliases", "tags", "ratings", "user-tags", "user-ratings"]
+    params = {"recording": recording,
+              "release": release,
+              "release-group": release_group}
+    return _browse_impl("artist", includes, valid_includes, limit, offset, params)
 
-def browse_label(release=None, includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, ["aliases", "tags", "ratings", "user-tags", "user-ratings"])
-    p = {"release": release}
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    return _do_mb_query("label", "", includes, p)
+def browse_labels(release=None, includes=[], limit=None, offset=None):
+    valid_includes = ["aliases", "tags", "ratings", "user-tags", "user-ratings"]
+    params = {"release": release}
+    return _browse_impl("label", includes, valid_includes, limit, offset, params)
 
-def browse_recording(artist=None, release=None, includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
-    p = {}
-    if artist: p["artist"] = artist
-    if release: p["release"] = release
-    if len(p) > 1:
-        raise Exception("Can't have more than one of artist, release")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    return _do_mb_query("recording", "", includes, p)
+def browse_recordings(artist=None, release=None, includes=[], limit=None, offset=None):
+    valid_includes = ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+    params = {"artist": artist,
+              "release": release}
+    return _browse_impl("recording", includes, valid_includes, limit, offset, params)
 
-def browse_release(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
+def browse_releases(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
     # track_artist param doesn't work yet
-    _check_includes_impl(includes, ["artist-credits", "labels", "recordings"])
-    p = {}
-    if artist: p["artist"] = artist
-    #if track_artist: p["track_artist"] = track_artist
-    if label: p["label"] = label
-    if recording: p["recording"] = recording
-    if release_group: p["release-group"] = release_group
-    if len(p) > 1:
-        raise Exception("Can't have more than one of artist, label, recording, release_group")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    filterp = _check_filter_and_make_params("releases", release_status, release_type)
-    p.update(filterp)
-    if len(release_status) == 0 and len(release_type) == 0:
-        raise InvalidFilterError("Need at least one release status or type")
-    return _do_mb_query("release", "", includes, p)
+    valid_includes = ["artist-credits", "labels", "recordings", "release-groups"]
+    params = {"artist": artist,
+              "label": label,
+              "recording": recording,
+              "release-group": release_group}
+    return _browse_impl("release", includes, valid_includes, limit, offset, params, release_status, release_type)
 
-def browse_release_group(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
-    _check_includes_impl(includes, ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"])
-    p = {}
-    if artist: p["artist"] = artist
-    if release: p["release"] = release
-    if len(p) > 1:
-        raise Exception("Can't have more than one of artist, release")
-    if limit: p["limit"] = limit
-    if offset: p["offset"] = offset
-    filterp = _check_filter_and_make_params("release-groups", [], release_type)
-    p.update(filterp)
-    if len(release_type) == 0:
-        raise InvalidFilterError("Need at least one release type")
-    return _do_mb_query("release-group", "", includes, p)
+def browse_release_groups(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
+    valid_includes = ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+    params = {"artist": artist,
+              "release": release}
+    return _browse_impl("release-group", includes, valid_includes, limit, offset, params, [], release_type)
 
 # browse_work is defined in the docs but has no browse criteria
 
 # Collections
-def get_all_collections():
+def get_collections():
 	# Missing <release-list count="n"> the count in the reply
 	return _do_mb_query("collection", '')
 
