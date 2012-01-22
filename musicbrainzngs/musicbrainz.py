@@ -12,6 +12,7 @@ import threading
 import time
 import logging
 import httplib
+import socket
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
@@ -373,6 +374,10 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 			_log.debug("miscellaneous HTTP exception: %s" % str(exc))
 			last_exc = exc
 		except urllib2.URLError, exc:
+			if isinstance(exc.reason, socket.error):
+				code = exc.reason.errno
+				if code == 104: # "Connection reset by peer."
+					continue
 			raise NetworkError(cause=exc)
 		except IOError, exc:
 			raise NetworkError(cause=exc)
