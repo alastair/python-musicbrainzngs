@@ -408,7 +408,10 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	whether exceptions should be raised if the client and
 	username/password are left unspecified, respectively.
 	"""
-	args = dict(args) or {}
+	if args is None:
+		args = {}
+	else:
+		args = dict(args) or {}
 
 	if _useragent == "":
 		raise UsageError("set a proper user-agent with "
