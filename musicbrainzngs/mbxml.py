@@ -541,7 +541,7 @@ def make_rating_request(artist_ratings, recording_ratings):
 	for art, rating in artist_ratings.items():
 		art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
 		art_xml.set("{%s}id" % NS, art)
-		rating_xml = ET.SubElement(rec_xml, "{%s}user-rating" % NS)
+		rating_xml = ET.SubElement(art_xml, "{%s}user-rating" % NS)
 		if isinstance(rating, int):
 			rating = "%d" % rating
 		rating_xml.text = rating

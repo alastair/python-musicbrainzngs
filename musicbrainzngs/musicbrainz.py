@@ -233,6 +233,10 @@ def set_useragent(app, version, contact=None):
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
+def set_hostname(new_hostname):
+	global hostname
+	hostname = new_hostname
+
 # Rate limiting.
 
 limit_interval = 1.0
@@ -404,7 +408,10 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	whether exceptions should be raised if the client and
 	username/password are left unspecified, respectively.
 	"""
-	args = dict(args) or {}
+	if args is None:
+		args = {}
+	else:
+		args = dict(args) or {}
 
 	if _useragent == "":
 		raise UsageError("set a proper user-agent with "
@@ -433,10 +440,10 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	# Set up HTTP request handler and URL opener.
 	httpHandler = urllib2.HTTPHandler(debuglevel=0)
 	handlers = [httpHandler]
-	opener = urllib2.build_opener(*handlers)
 
 	# Add credentials if required.
 	if auth_required:
+		_log.debug("Auth required for %s" % url)
 		if not user:
 			raise UsageError("authorization required; "
 							 "use musicbrainz.auth(u, p) first")
@@ -444,6 +451,8 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		authHandler = _DigestAuthHandler(passwordMgr)
 		authHandler.add_password("musicbrainz.org", (), user, password)
 		handlers.append(authHandler)
+
+	opener = urllib2.build_opener(*handlers)
 
 	# Make request.
 	req = _MusicbrainzHttpRequest(method, url, data)
@@ -539,7 +548,7 @@ def _do_mb_post(path, body):
 	"""Perform a single POST call for an endpoint with a specified
 	request body.
 	"""
-	return _mb_request(path, 'PUT', True, True, body=body)
+	return _mb_request(path, 'POST', True, True, body=body)
 
 
 # The main interface!
