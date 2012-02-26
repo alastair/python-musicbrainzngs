@@ -539,7 +539,7 @@ def _do_mb_post(path, body):
 	"""Perform a single POST call for an endpoint with a specified
 	request body.
 	"""
-	return _mb_request(path, 'PUT', True, True, body=body)
+	return _mb_request(path, 'POST', True, True, body=body)
 
 
 # The main interface!
