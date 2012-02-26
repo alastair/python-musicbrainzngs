@@ -437,10 +437,10 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	# Set up HTTP request handler and URL opener.
 	httpHandler = urllib2.HTTPHandler(debuglevel=0)
 	handlers = [httpHandler]
-	opener = urllib2.build_opener(*handlers)
 
 	# Add credentials if required.
 	if auth_required:
+		_log.debug("Auth required for %s" % url)
 		if not user:
 			raise UsageError("authorization required; "
 							 "use musicbrainz.auth(u, p) first")
@@ -448,6 +448,8 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		authHandler = _DigestAuthHandler(passwordMgr)
 		authHandler.add_password("musicbrainz.org", (), user, password)
 		handlers.append(authHandler)
+
+	opener = urllib2.build_opener(*handlers)
 
 	# Make request.
 	req = _MusicbrainzHttpRequest(method, url, data)
