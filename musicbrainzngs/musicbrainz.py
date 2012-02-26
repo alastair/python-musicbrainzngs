@@ -233,6 +233,10 @@ def set_useragent(app, version, contact=None):
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
+def set_hostname(new_hostname):
+	global hostname
+	hostname = new_hostname
+
 # Rate limiting.
 
 limit_interval = 1.0

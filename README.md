@@ -13,7 +13,7 @@ For more information on the musicbrainz webservice see http://wiki.musicbrainz.o
     musicbrainzngs.auth("user", "password")
 
     # If you are connecting to a development server
-    musicbrainzngs.hostname = "echoprint.musicbrainz.org"
+    musicbrainzngs.set_hostname("echoprint.musicbrainz.org")
 
 See the query.py file for more examples
 
