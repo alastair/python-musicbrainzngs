@@ -547,3 +547,18 @@ def make_rating_request(artist_ratings, recording_ratings):
 		rating_xml.text = rating
 
 	return ET.tostring(root, "utf-8")
+
+def make_isrc_request(recordings_isrcs):
+	NS = "http://musicbrainz.org/ns/mmd-2.0#"
+	root = ET.Element("{%s}metadata" % NS)
+	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+	for rec, isrcs in recordings_isrcs.items():
+		if len(isrcs) > 0:
+			rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+			rec_xml.set("{%s}id" % NS, rec)
+			isrc_list_xml = ET.SubElement(rec_xml, "{%s}isrc-list" % NS)
+			isrc_list_xml.set("{%s}count" % NS, str(len(isrcs)))
+			for isrc in isrcs:
+				isrc_xml = ET.SubElement(isrc_list_xml, "{%s}isrc" % NS)
+				isrc_xml.set("{%s}id" % NS, isrc)
+	return ET.tostring(root, "utf-8")

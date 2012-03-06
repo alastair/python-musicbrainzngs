@@ -729,8 +729,14 @@ def submit_echoprints(echoprints):
 	query = mbxml.make_echoprint_request(echoprints)
 	return _do_mb_post("recording", query)
 
-def submit_isrcs(isrcs):
-	raise NotImplementedError
+def submit_isrcs(recordings_isrcs):
+    """
+    Submit ISRCs.
+    Submits a set of {recording-id: [isrc1, irc1]}
+    Must call auth(user, pass) first
+    """
+    query = mbxml.make_isrc_request(recordings_isrcs=recordings_isrcs)
+    return _do_mb_post("recording", query)
 
 def submit_tags(artist_tags={}, recording_tags={}):
 	""" Submit user tags.
