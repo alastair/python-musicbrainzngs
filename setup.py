@@ -42,7 +42,7 @@ class test(Command):
 
 setup(
     name="musicbrainzngs",
-    version="0.2dev",
+    version="0.2",
     description="python bindings for musicbrainz NGS webservice",
     author="Alastair Porter",
     author_email="alastair@porter.net.nz",
