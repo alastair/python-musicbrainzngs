@@ -26,6 +26,7 @@ have been made by:
 * [Michael Marineau](https://github.com/marineam)
 * [Thomas Vander Stichele](https://github.com/thomasvs)
 * [Ian McEwen](https://github.com/ianmcorvidae)
+* [Wieland Hoffmann](https://github.com/mineo)
 
 ### License
 
