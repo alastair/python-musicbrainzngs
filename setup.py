@@ -3,6 +3,8 @@
 from distutils.core import setup
 from distutils.core import Command
 
+from musicbrainzngs import musicbrainz
+
 class test(Command):
     description = "run automated tests"
     user_options = [
@@ -42,7 +44,7 @@ class test(Command):
 
 setup(
     name="musicbrainzngs",
-    version="0.3dev",
+    version=musicbrainz._version,
     description="python bindings for musicbrainz NGS webservice",
     author="Alastair Porter",
     author_email="alastair@porter.net.nz",

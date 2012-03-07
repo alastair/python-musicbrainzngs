@@ -16,7 +16,7 @@ import socket
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
-_version = "0.2dev"
+_version = "0.3dev"
 _log = logging.getLogger("musicbrainzngs")
 
 
