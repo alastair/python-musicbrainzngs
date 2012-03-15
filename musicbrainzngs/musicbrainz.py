@@ -64,8 +64,11 @@ VALID_INCLUDES = {
 		"release-group-rels", "url-rels", "work-rels"
 	],
 	'discid': [
-		"artists", "labels", "recordings", "release-groups", "puids",
-		"echoprints", "isrcs"
+		"artists", "labels", "recordings", "release-groups", "media",
+		"artist-credits", "discids", "puids", "echoprints", "isrcs",
+		"artist-rels", "label-rels", "recording-rels", "release-rels",
+		"release-group-rels", "url-rels", "work-rels", "recording-level-rels",
+		"work-level-rels"
 	],
 	'echoprint': ["artists", "releases"],
 	'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
@@ -631,8 +634,8 @@ def search_works(query='', limit=None, offset=None, **fields):
 
 
 # Lists of entities
-def get_releases_by_discid(id, includes=[], release_type=[]):
-	params = _check_filter_and_make_params(includes, release_type=release_type)
+def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
+	params = _check_filter_and_make_params(includes, release_status, release_type=release_type)
 	return _do_mb_query("discid", id, includes, params)
 
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[], release_type=[]):
