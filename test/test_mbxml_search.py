@@ -55,3 +55,53 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.search_recordings("Thief of Hearts")
         self.assertEqual("http://musicbrainz.org/ws/2/recording/?query=Thief+of+Hearts", self.opener.get_url())
 
+class SearchArtistTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(os.path.dirname(__file__), "data", "search-artist.xml")
+        res = mbxml.parse_message(open(fn))
+        self.assertEqual(25, len(res["artist-list"]))
+        one = res["artist-list"][0]
+        self.assertEqual(9, len(one.keys()))
+        # Score is a key that is only in search results -
+        # so check for it here
+        self.assertEqual("100", one["ext:score"])
+
+class SearchReleaseTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(os.path.dirname(__file__), "data", "search-release.xml")
+        res = mbxml.parse_message(open(fn))
+        self.assertEqual(25, len(res["release-list"]))
+        one = res["release-list"][0]
+        self.assertEqual("100", one["ext:score"])
+
+class SearchReleaseGroupTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(os.path.dirname(__file__), "data", "search-release-group.xml")
+        res = mbxml.parse_message(open(fn))
+        self.assertEqual(25, len(res["release-group-list"]))
+        one = res["release-group-list"][0]
+        self.assertEqual("100", one["ext:score"])
+
+class SearchWorkTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(os.path.dirname(__file__), "data", "search-work.xml")
+        res = mbxml.parse_message(open(fn))
+        self.assertEqual(25, len(res["work-list"]))
+        one = res["work-list"][0]
+        self.assertEqual("100", one["ext:score"])
+
+class SearchLabelTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(os.path.dirname(__file__), "data", "search-label.xml")
+        res = mbxml.parse_message(open(fn))
+        self.assertEqual(1, len(res["label-list"]))
+        one = res["label-list"][0]
+        self.assertEqual("100", one["ext:score"])
+
+class SearchRecordingTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(os.path.dirname(__file__), "data", "search-recording.xml")
+        res = mbxml.parse_message(open(fn))
+        self.assertEqual(25, len(res["recording-list"]))
+        one = res["recording-list"][0]
+        self.assertEqual("100", one["ext:score"])

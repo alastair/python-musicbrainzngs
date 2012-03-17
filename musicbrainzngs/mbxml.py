@@ -29,7 +29,8 @@ except:
 			xmlns = None
 		return "%s:%s" % (prefix, tag), xmlns
 
-NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2"}
+NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2",
+          "http://musicbrainz.org/ns/ext#-2.0": "ext"}
 _log = logging.getLogger("python-musicbrainz-ngs")
 
 def make_artist_credit(artists):
@@ -62,19 +63,24 @@ def parse_elements(valid_els, element):
 	return result
 
 def parse_attributes(attributes, element):
-	""" Extract attributes from an element.
-	    For example, given the element:
-	    <element type="Group" />
-	    and a list attributes that contains "type",
-	    return a dict {'type': 'Group'}
-	"""
-	result = {}
-	for attr in attributes:
-		if attr in element.attrib:
-			result[attr] = element.attrib[attr]
-		else:
-			_log.debug("in <%s>, uncaught attribute %s", fixtag(element.tag, NS_MAP)[0], attr)
-	return result
+    """ Extract attributes from an element.
+        For example, given the element:
+        <element type="Group" />
+        and a list attributes that contains "type",
+        return a dict {'type': 'Group'}
+    """
+    result = {}
+    for attr in element.attrib:
+        if "{" in attr:
+            a = fixtag(attr, NS_MAP)[0]
+        else:
+            a = attr
+        if a in attributes:
+            result[a] = element.attrib[attr]
+        else:
+            _log.debug("in <%s>, uncaught attribute %s", fixtag(element.tag, NS_MAP)[0], attr)
+
+    return result
 
 def parse_inner(inner_els, element):
 	""" Delegate the parsing of a subelement to another function.
@@ -129,7 +135,7 @@ def parse_message(message):
 	                  "release-group-list": parse_release_group_list,
 	                  "recording-list": parse_recording_list,
 	                  "work-list": parse_work_list,
-	
+
 	                  "collection-list": parse_collection_list,
 	                  "collection": parse_collection,
 
@@ -169,7 +175,7 @@ def parse_artist_list(al):
 
 def parse_artist(artist):
 	result = {}
-	attribs = ["id", "type"]
+	attribs = ["id", "type", "ext:score"]
 	elements = ["name", "sort-name", "country", "user-rating"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "recording-list": parse_recording_list,
@@ -192,7 +198,7 @@ def parse_label_list(ll):
 
 def parse_label(label):
 	result = {}
-	attribs = ["id", "type"]
+	attribs = ["id", "type", "ext:score"]
 	elements = ["name", "sort-name", "country", "label-code", "user-rating"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "release-list": parse_release_list,
@@ -239,7 +245,7 @@ def parse_relation(relation):
 
 def parse_release(release):
 	result = {}
-	attribs = ["id"]
+	attribs = ["id", "ext:score"]
 	elements = ["title", "status", "disambiguation", "quality", "country", "barcode", "date", "packaging", "asin"]
 	inner_els = {"text-representation": parse_text_representation,
 	             "artist-credit": parse_artist_credit,
@@ -277,7 +283,7 @@ def parse_text_representation(textr):
 
 def parse_release_group(rg):
 	result = {}
-	attribs = ["id", "type"]
+	attribs = ["id", "type", "ext:score"]
 	elements = ["title", "user-rating", "first-release-date"]
 	inner_els = {"artist-credit": parse_artist_credit,
 	             "release-list": parse_release_list,
@@ -295,7 +301,7 @@ def parse_release_group(rg):
 
 def parse_recording(recording):
 	result = {}
-	attribs = ["id"]
+	attribs = ["id", "ext:score"]
 	elements = ["title", "length", "user-rating"]
 	inner_els = {"artist-credit": parse_artist_credit,
 	             "release-list": parse_release_list,
@@ -325,7 +331,7 @@ def parse_work_list(wl):
 
 def parse_work(work):
 	result = {}
-	attribs = ["id"]
+	attribs = ["id", "ext:score"]
 	elements = ["title", "user-rating"]
 	inner_els = {"tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
