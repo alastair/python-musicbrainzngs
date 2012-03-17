@@ -418,7 +418,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 
 	if _useragent == "":
 		raise UsageError("set a proper user-agent with "
-						 "musicbrainz.set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
+						 "set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
 
 	if client_required:
 		args["client"] = _client
@@ -449,7 +449,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		_log.debug("Auth required for %s" % url)
 		if not user:
 			raise UsageError("authorization required; "
-							 "use musicbrainz.auth(u, p) first")
+							 "use auth(user, pass) first")
 		passwordMgr = _RedirectPasswordMgr()
 		authHandler = _DigestAuthHandler(passwordMgr)
 		authHandler.add_password("musicbrainz.org", (), user, password)
