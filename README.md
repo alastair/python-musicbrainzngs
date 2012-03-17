@@ -12,6 +12,11 @@ For more information on the musicbrainz webservice see http://wiki.musicbrainz.o
     # If you plan to submit data, authenticate
     musicbrainzngs.auth("user", "password")
 
+    # Tell musicbrainz what your app is, and how to contact you
+    # (this step is required, as per the webservice access rules
+    # at http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
+    musicbrainzngs.set_useragent("Example music app", "0.1", "http://example.com/music")
+
     # If you are connecting to a development server
     musicbrainzngs.set_hostname("echoprint.musicbrainz.org")
 
