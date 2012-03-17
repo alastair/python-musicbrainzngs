@@ -522,6 +522,7 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 		# Escape Lucene's special characters.
 		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
 		value = value.replace('\x00', '').strip()
+		value = value.lower() # Avoid binary operators like OR.
 		if value:
 			query_parts.append(u'%s:(%s)' % (key, value))
 	full_query = u' '.join(query_parts).strip()
