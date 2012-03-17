@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#" xmlns:ext="http://musicbrainz.org/ns/ext#-2.0">
+  <recording-list offset="0" count="1258">
+    <recording ext:score="100" id="cb4d4d70-930c-4d1a-a157-776de18be66a">
+      <title>Thief of Hearts</title>
+      <length>198586</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b">
+          <title>Folly, Vice &amp; Madness</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2006-11-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>5</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="3" count="5">
+                <track>
+                  <title>Thief of Hearts</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="61972436-c2f3-2803-7275-a7637f361762"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="ac78e2cd-720c-48be-b79f-d6d6ed5a05c4">
+      <title>Waiting My Turn</title>
+      <length>187706</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b">
+          <title>Folly, Vice &amp; Madness</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2006-11-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>5</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="1" count="5">
+                <track>
+                  <title>Waiting My Turn</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="86d41bcb-102a-73a7-8aa6-bbc35725e493"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="fc167a9c-7aca-4e27-a266-7d04b07004d6">
+      <title>Just a Victim</title>
+      <length>226000</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b">
+          <title>Folly, Vice &amp; Madness</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2006-11-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>5</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="0" count="5">
+                <track>
+                  <title>Just a Victim</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="ba1feb58-c113-ee03-183d-4e0e1dfdb03d"/>
+        <puid id="0df4a845-483a-c1b5-8f88-3f8061ac9592"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="35421254-0c57-40d0-a527-76709363f210">
+      <title>Retail Guru</title>
+      <length>114493</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b">
+          <title>Folly, Vice &amp; Madness</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2006-11-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>5</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="4" count="5">
+                <track>
+                  <title>Retail Guru</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="6e4777d8-1576-9cb5-9864-130cecc9becd"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="dc644a8d-6640-4117-8d96-5b9504c40cf1">
+      <title>If this Beard Had Wings</title>
+      <length>253346</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b">
+          <title>Folly, Vice &amp; Madness</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2006-11-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>5</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="2" count="5">
+                <track>
+                  <title>If this Beard Had Wings</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="5604d149-49ab-b67d-e6df-d3536a59c978"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="6f039458-796d-4e04-887c-5e8aa50fccb1">
+      <title>Headrush</title>
+      <length>45973</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="5" count="12">
+                <track>
+                  <title>Headrush</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="e459c762-69b3-433a-8584-0bb88d0a3eb4">
+      <title>Final Reunion</title>
+      <length>193253</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="11" count="12">
+                <track>
+                  <title>Final Reunion</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="f6e5c2f6-fd65-43b5-9e51-5d153d2cba02">
+      <title>Nothing Ever Happens</title>
+      <length>92013</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="9" count="12">
+                <track>
+                  <title>Nothing Ever Happens</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="fba85059-d6c0-49a9-be1f-267fa9d4d614">
+      <title>Johnny the Punk</title>
+      <length>190640</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="6" count="12">
+                <track>
+                  <title>Johnny the Punk</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="7ae51bcb-8a9b-47c9-a06d-19106f7070a5">
+      <title>Already Met Your Mother</title>
+      <length>231706</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="4" count="12">
+                <track>
+                  <title>Already Met Your Mother</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="b547acbc-58c6-4a31-9806-e2348db3a167">
+      <title>Route 17</title>
+      <length>205106</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="2" count="12">
+                <track>
+                  <title>Route 17</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="e4cf738e-699c-4331-880a-3db462a8e91e">
+      <title>Sad Again</title>
+      <length>181053</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="7" count="12">
+                <track>
+                  <title>Sad Again</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="6a47088b-d9e0-4088-868a-394ee3c6cd33">
+      <title>Fountain City</title>
+      <length>172760</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="1" count="12">
+                <track>
+                  <title>Fountain City</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="f70bbd32-2f10-440a-a59a-8cd829078a9f">
+      <title>Crying On My Street</title>
+      <length>144306</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="0" count="12">
+                <track>
+                  <title>Crying On My Street</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="621fcc74-4ab0-45cc-a0a1-9348ccca1f7b">
+      <title>Frozen to the Bone</title>
+      <length>166920</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="3" count="12">
+                <track>
+                  <title>Frozen to the Bone</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="428bffe8-3c84-41d4-a3de-5b7ee5a23061">
+      <title>What Went Wrong?</title>
+      <length>148826</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="10" count="12">
+                <track>
+                  <title>What Went Wrong?</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="5bef501f-c91b-4055-a59f-903fe617d4d2">
+      <title>You Fell From The Sky</title>
+      <length>194826</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="8ec178f4-a8e8-4f22-bcba-1964466ef214">
+          <title>The Fool of Fountain City</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2009-04-03</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>12</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="8" count="12">
+                <track>
+                  <title>You Fell From The Sky</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="93468a09-9662-4886-a227-56a2ad1c5246">
+      <title>Poor Alfred</title>
+      <length>151000</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="c15b2c70-2dc1-4bc6-bbf7-ed05b8cc1d51">
+          <title>Poor Alfred</title>
+          <status>Official</status>
+          <release-group type="Single"/>
+          <date>2010</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>2</track-count>
+            <medium>
+              <position>1</position>
+              <format>Digital Media</format>
+              <track-list offset="0" count="2">
+                <track>
+                  <title>Poor Alfred</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="1ae48879-48e6-4be8-a80c-0cf673c70734">
+      <title>Talk Quickly</title>
+      <length>120000</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="c15b2c70-2dc1-4bc6-bbf7-ed05b8cc1d51">
+          <title>Poor Alfred</title>
+          <status>Official</status>
+          <release-group type="Single"/>
+          <date>2010</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>2</track-count>
+            <medium>
+              <position>1</position>
+              <format>Digital Media</format>
+              <track-list offset="1" count="2">
+                <track>
+                  <title>Talk Quickly</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+    </recording>
+    <recording ext:score="41" id="91af2b87-e048-4415-92c0-2b7a396298be">
+      <title>Sad Again</title>
+      <length>275426</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="e94757ff-2655-4690-b369-4012beba6114">
+          <title>Affordable Pop Music</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2008-07-04</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>4</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="1" count="4">
+                <track>
+                  <title>Sad Again</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="801e346c-f9c4-9dbc-8cd6-4815e5fbe423"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="ad5a48b4-c304-4080-85a8-dd2b0d96c359">
+      <title>Dead By Morning</title>
+      <length>115933</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="e94757ff-2655-4690-b369-4012beba6114">
+          <title>Affordable Pop Music</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2008-07-04</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>4</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="2" count="4">
+                <track>
+                  <title>Dead By Morning</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="9885b669-c49d-a222-548d-a662854a121c"/>
+        <puid id="6afcd09c-c47f-f887-fa6f-708704d835ce"/>
+        <puid id="5f13504e-e464-fe45-17c6-e63fd81cd1e6"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="b073a71e-493e-421a-b6ff-1cbf5fe3a616">
+      <title>New Bed Science</title>
+      <length>204613</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="e94757ff-2655-4690-b369-4012beba6114">
+          <title>Affordable Pop Music</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2008-07-04</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>4</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="3" count="4">
+                <track>
+                  <title>New Bed Science</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="0ac4f4e8-a1a7-cecf-3769-bc97f7cdea3f"/>
+        <puid id="2457cbdd-a40e-72f3-a1b5-56e70064b399"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="41" id="103e3fd2-e1cf-4f24-9fb1-c34f7a9fe3c1">
+      <title>Middle Class</title>
+      <length>200360</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="e94757ff-2655-4690-b369-4012beba6114">
+          <title>Affordable Pop Music</title>
+          <status>Official</status>
+          <release-group type="EP"/>
+          <date>2008-07-04</date>
+          <country>NZ</country>
+          <medium-list>
+            <track-count>4</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="0" count="4">
+                <track>
+                  <title>Middle Class</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="65389b84-2e3f-e6ff-b219-14db1ee2a83c"/>
+        <puid id="cc1e8ced-a696-825a-147b-a1c1f70a4f78"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="16" id="5d93c09f-e20c-4518-a94a-cb91207c6a3c">
+      <title>Thief</title>
+      <length>294826</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="93585c1b-ec0f-4d47-9cae-bd8ebcc52e9f">
+            <name>Third Day</name>
+            <sort-name>Third Day</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="853888ce-714b-4310-886e-ae133dbacbb1">
+          <title>Offerings</title>
+          <status>Official</status>
+          <release-group type="Album"/>
+          <date>2000-07-11</date>
+          <country>US</country>
+          <medium-list>
+            <track-count>11</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="7" count="11">
+                <track>
+                  <title>Thief</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="247db580-6841-073e-1cd8-136e8584245a"/>
+        <puid id="a60042b9-0d71-9360-443b-ea0911539390"/>
+        <puid id="1962ea02-bbdf-a0f0-b3eb-e1c6b04c6d4d"/>
+        <puid id="1ad283e2-a541-0e47-3835-8bdbc1808777"/>
+        <puid id="d4b46938-cb74-c8fd-1103-1852aa3f2ef0"/>
+        <puid id="50e47ce0-7934-e5f7-8b5c-bc2260f41c22"/>
+      </puid-list>
+    </recording>
+    <recording ext:score="16" id="b47c4a38-a130-484a-83cd-810e7b627ddf">
+      <title>Thief</title>
+      <length>306333</length>
+      <artist-credit>
+        <name-credit>
+          <artist id="13501c7d-d181-45ba-af52-5f101d8516a0">
+            <name>CAN</name>
+            <sort-name>CAN</sort-name>
+            <disambiguation>German rock band</disambiguation>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-list>
+        <release id="11dc3456-3d5d-43ea-a061-8fd1f5612e44">
+          <title>Delay 1968</title>
+          <status>Official</status>
+          <release-group type="Compilation"/>
+          <date>1981</date>
+          <country>US</country>
+          <medium-list>
+            <track-count>7</track-count>
+            <medium>
+              <position>1</position>
+              <track-list offset="3" count="7">
+                <track>
+                  <title>Thief</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+        <release id="4ccb5e95-90dd-3b4c-9a3e-57f866dbf10d">
+          <title>Delay 1968</title>
+          <status>Official</status>
+          <release-group type="Compilation"/>
+          <date>2006-05-29</date>
+          <country>GB</country>
+          <medium-list>
+            <track-count>7</track-count>
+            <medium>
+              <position>1</position>
+              <format>SACD</format>
+              <track-list offset="3" count="7">
+                <track>
+                  <title>Thief</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+        <release id="297f494a-8e80-349e-bae4-61fa32079ec6">
+          <title>Delay 1968</title>
+          <status>Official</status>
+          <release-group type="Compilation"/>
+          <date>1981</date>
+          <country>DE</country>
+          <medium-list>
+            <track-count>7</track-count>
+            <medium>
+              <position>1</position>
+              <format>Vinyl</format>
+              <track-list offset="3" count="7">
+                <track>
+                  <title>Thief</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+        <release id="2508e4a2-7149-3e93-91d9-46e0f6ea2206">
+          <title>Delay 1968</title>
+          <status>Official</status>
+          <release-group type="Compilation"/>
+          <date>1989</date>
+          <country>CH</country>
+          <medium-list>
+            <track-count>7</track-count>
+            <medium>
+              <position>1</position>
+              <format>CD</format>
+              <track-list offset="3" count="7">
+                <track>
+                  <title>Thief</title>
+                </track>
+              </track-list>
+            </medium>
+          </medium-list>
+        </release>
+      </release-list>
+      <puid-list>
+        <puid id="5bc5f6e3-6b35-fec0-cc4a-6b2adcaa4381"/>
+        <puid id="15a57d44-729c-dcf5-ceaa-8653cde232f5"/>
+      </puid-list>
+      <tag-list>
+        <tag count="1">
+          <name>to radiohead stop ruining can</name>
+        </tag>
+      </tag-list>
+    </recording>
+  </recording-list>
+</metadata>

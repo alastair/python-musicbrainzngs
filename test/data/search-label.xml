@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#" xmlns:ext="http://musicbrainz.org/ns/ext#-2.0">
+  <label-list offset="0" count="1">
+    <label ext:score="100" type="Original Production" id="aab2e720-bdd2-4565-afc2-460743585f16">
+      <name>Waysafe</name>
+      <sort-name>Waysafe</sort-name>
+      <country>NZ</country>
+      <life-span>
+        <begin>2001</begin>
+      </life-span>
+    </label>
+  </label-list>
+</metadata>

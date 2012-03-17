@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#" xmlns:ext="http://musicbrainz.org/ns/ext#-2.0">
+  <work-list offset="0" count="174">
+    <work ext:score="100" id="94321b2f-d71d-320a-a44c-c1f1769c0515">
+      <title>My Best Friend</title>
+      <alias-list>
+        <alias>My Best Friend (short cut)</alias>
+      </alias-list>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="f72a79cd-4ded-49ae-88b3-dad39d11f64b">
+            <name>Marusha</name>
+            <sort-name>Marusha</sort-name>
+          </artist>
+        </relation>
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="f72a79cd-4ded-49ae-88b3-dad39d11f64b">
+            <name>Marusha</name>
+            <sort-name>Marusha</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="91" id="4b99c181-da5e-357d-9781-a2e9dee7eb42">
+      <title>The Girl of My Best Friend</title>
+      <alias-list>
+        <alias>Girl of My Best Friend</alias>
+      </alias-list>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="d7a509f9-593b-4ce6-b978-0d4470375ad7">
+            <name>Sam Bobrick</name>
+            <sort-name>Bobrick, Sam</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="6539c07b-5337-468f-be6c-9a70c8246a9b">
+            <name>Ross Butler</name>
+            <sort-name>Butler, Ross</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="81" id="5b7278a8-0033-3352-89ea-3f3b1ab6b992">
+      <title>(At Your Best) You Are Love</title>
+      <alias-list>
+        <alias>At Your Best (You Are Love)</alias>
+      </alias-list>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="4a76400d-283f-492e-9754-18ef41755f81">
+            <name>The Isley Brothers</name>
+            <sort-name>Isley Brothers, The</sort-name>
+          </artist>
+        </relation>
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="4a76400d-283f-492e-9754-18ef41755f81">
+            <name>The Isley Brothers</name>
+            <sort-name>Isley Brothers, The</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="70" id="de8db806-5789-3d6d-93b9-11558bc804ee">
+      <title>Best</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="7c1cdfab-b962-401a-883d-0ce1bcfb94df">
+            <name>양정승</name>
+            <sort-name>Yang, Jung-Seung</sort-name>
+          </artist>
+        </relation>
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="7c1cdfab-b962-401a-883d-0ce1bcfb94df">
+            <name>양정승</name>
+            <sort-name>Yang, Jung-Seung</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="49" id="3511c7ea-e919-38e2-bd44-7f0670b130a9">
+      <title>Best Guess at Best</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="acf39956-d2b5-4caa-a9f8-7f0c67325e8b">
+            <name>Stephen Rippy</name>
+            <sort-name>Rippy, Stephen</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="eb43355d-db84-352e-b880-90a3dcf11e94">
+      <title>Best Believe</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="1f1f6737-b930-46fc-8d25-110bb99f7490">
+            <name>Redman</name>
+            <sort-name>Redman</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="39a973f2-0785-4ef6-90d9-551378864f89">
+            <name>Pete Rock</name>
+            <sort-name>Rock, Pete</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="fdbbb8d2-f814-32a8-82f0-27bd3f6bb0c5">
+      <title>The Best</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="fa4461c1-518c-4046-bb71-7b8fcab47c10">
+            <name>Holly Knight</name>
+            <sort-name>Knight, Holly</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="97ad1a53-c037-41c5-998e-2085e923bcb2">
+            <name>Michael Chapman</name>
+            <sort-name>Chapman, Michael</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="3331ea41-adbd-3485-9e1f-9130856fb6d0">
+      <title>Best Forgotten</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="714b8d4f-673a-47cd-a0fc-cc001f67c7fd">
+            <name>Minco Eggersman</name>
+            <sort-name>Eggersman, Minco</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="1b2fe240-cf3b-3499-b448-762883d52e91">
+      <title>Best Pain</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="3edb52fd-1472-40db-a30f-abdcf1fb1f62">
+            <name>[K]</name>
+            <sort-name>[K]</sort-name>
+          </artist>
+        </relation>
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="3edb52fd-1472-40db-a30f-abdcf1fb1f62">
+            <name>[K]</name>
+            <sort-name>[K]</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="aba937fc-87ce-3e70-a580-8d4fe1c6e287">
+      <title>Best Friend</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="9ea64d8d-8216-4ca4-95b0-4c19cc82dc04">
+            <name>HIRO</name>
+            <sort-name>HIRO</sort-name>
+          </artist>
+        </relation>
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="9ea64d8d-8216-4ca4-95b0-4c19cc82dc04">
+            <name>HIRO</name>
+            <sort-name>HIRO</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="e86b8a5b-02ed-333f-ad27-8d76c0a2b61f">
+      <title>Best Friends</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="e6de1f3b-6484-491c-88dd-6d619f142abc">
+            <name>Hans Zimmer</name>
+            <sort-name>Zimmer, Hans</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="00a1afe3-79c6-44a5-a666-c77e281ee7fe">
+            <name>Heitor Pereira</name>
+            <sort-name>Pereira, Heitor</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="6f460841-9917-451d-838d-0d8bb19c3ea8">
+            <name>Ryeland Allison</name>
+            <sort-name>Allison, Ryeland</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="505604ee-556c-402a-b5eb-0441fd153037">
+            <name>James S. Levine</name>
+            <sort-name>Levine, James S.</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="4bba5bff-d2bc-32f6-9028-29c1869d0ee0">
+      <title>Sunday Best</title>
+    </work>
+    <work ext:score="43" id="9bda30cc-57e3-3a73-abbe-c382812678c2">
+      <title>Best Friend</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="3c8a8696-e176-4c46-a2d3-48b6b1525c7f">
+            <name>Toni Braxton</name>
+            <sort-name>Braxton, Toni</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="e88c77f7-a6db-4a1e-91e1-ee3d4c5134f8">
+            <name>Vance Taylor</name>
+            <sort-name>Taylor, Vance</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="7f64f048-2ada-3933-9691-937b16545f98">
+      <title>Best Man</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="fe73aa73-4e0f-439e-97dc-3bf0bfaecbe2">
+            <name>Bryan-Michael Cox</name>
+            <sort-name>Cox, Bryan-Michael</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="1a3c7caa-d2e3-3adb-98aa-a6ca2a35dfb2">
+      <title>Best Thing</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="1ea11cd7-08ce-4324-b35a-1788e0e4d43e">
+            <name>James Young</name>
+            <sort-name>Young, James</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="9da87628-95a0-4820-93c7-7b1609d9bce7">
+            <name>Dennis DeYoung</name>
+            <sort-name>DeYoung, Dennis</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="7a52b1a4-8150-3813-8a66-9776abef6778">
+      <title>Best Friends</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="2361b5da-e1a9-402b-8f8d-fd216df1bc16">
+            <name>Timothy Mosley</name>
+            <sort-name>Mosley, Timothy</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="4f9c5a19-68b2-4d89-b3d1-d52581e69af3">
+            <name>Melissa Elliott</name>
+            <sort-name>Elliott, Melissa</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="e1c38a1a-02ab-334e-a067-32f63d275c46">
+      <title>Best Dress</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="31930c85-3e0e-488e-8407-46a0d73fa816">
+            <name>Jann Arden</name>
+            <sort-name>Arden, Jann</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="4bbc0a25-cb3c-4d95-b4f9-2612caacce82">
+            <name>Russell Broom</name>
+            <sort-name>Broom, Russell</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="eeba3a6c-a6dc-328d-aad1-199dc521fe48">
+      <title>Best Defense</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="41195b8a-14be-4f94-a5d3-66cb52c99c9d">
+            <name>James Gulotta</name>
+            <sort-name>Gulotta, James</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="b4a0b93a-eca8-4df0-b512-8de7169ee7ec">
+            <name>Chris Lykins</name>
+            <sort-name>Lykins, Chris</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="ca75a578-346c-3798-b9ef-84001179e0d8">
+      <title>Best Future</title>
+      <relation-list target-type="artist">
+        <relation type="writer">
+          <direction>backward</direction>
+          <artist id="ce56d216-e136-408d-9aa0-30e7dda4bac5">
+            <name>Brad Laner</name>
+            <sort-name>Laner, Brad</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" type="Song" id="24e012aa-1a03-4a2f-b90d-01842c12dec4">
+      <title>My Best</title>
+      <iswc>T-702.448.462-8</iswc>
+      <relation-list target-type="artist">
+        <relation type="writer">
+          <direction>backward</direction>
+          <artist id="41956707-262a-41c5-b89f-c60145a95d51">
+            <name>Nili Hadida</name>
+            <sort-name>Hadida, Nili</sort-name>
+          </artist>
+        </relation>
+        <relation type="writer">
+          <direction>backward</direction>
+          <artist id="880ede4d-ae19-48f2-b2d8-72203ca29c27">
+            <name>Benjamin Cotto</name>
+            <sort-name>Cotto, Benjamin</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="80877850-7b9a-3ce3-90ef-7d958ad30a46">
+      <title>2nd Best</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="df037292-4455-45fd-b24a-52d2a81bce5e">
+            <name>Mark Charles Heidinger</name>
+            <sort-name>Heidinger, Mark Charles</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="29b91280-49d3-4361-aee7-9d3c858e5de2">
+      <title>Best Friend</title>
+      <iswc>T-101.813.896-8</iswc>
+      <relation-list target-type="artist">
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="c3c8a5b8-3b41-46c7-9e11-2a7d00c69676">
+            <name>玉城千春</name>
+            <sort-name>Tamashiro, Chiharu</sort-name>
+          </artist>
+        </relation>
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="c3c8a5b8-3b41-46c7-9e11-2a7d00c69676">
+            <name>玉城千春</name>
+            <sort-name>Tamashiro, Chiharu</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" id="a801092e-418b-378b-8d37-8e6d45f6926a">
+      <title>Best friends</title>
+      <relation-list target-type="artist">
+        <relation type="composer">
+          <direction>backward</direction>
+          <artist id="431766ed-4f4c-47f6-a903-66e65385341c">
+            <name>齋藤真也</name>
+            <sort-name>Saito, Shinya</sort-name>
+          </artist>
+        </relation>
+        <relation type="lyricist">
+          <direction>backward</direction>
+          <artist id="7b8c4e81-9ec7-400f-abf5-7be8da80487b">
+            <name>黒崎真音</name>
+            <sort-name>Kurosaki, Maon</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+    <work ext:score="43" type="Song" id="e5125980-40b8-43f9-a0be-3da9236b99f4">
+      <title>Best Friends</title>
+      <disambiguation>Adam WarRock song</disambiguation>
+    </work>
+    <work ext:score="43" type="Song" id="ee02ef6a-90e8-4364-a6e3-3651827e197b">
+      <title>Second Best</title>
+      <relation-list target-type="artist">
+        <relation type="writer">
+          <direction>backward</direction>
+          <artist id="42cdf49d-3c50-4596-95bb-23e48dca050f">
+            <name>Kevin Hearn</name>
+            <sort-name>Hearn, Kevin</sort-name>
+          </artist>
+        </relation>
+        <relation type="writer">
+          <direction>backward</direction>
+          <artist id="6837f020-f677-4438-ae4e-24467811d309">
+            <name>Steven Page</name>
+            <sort-name>Page, Steven</sort-name>
+          </artist>
+        </relation>
+        <relation type="writer">
+          <direction>backward</direction>
+          <artist id="ac560686-5bdc-4101-aa97-6f4f4993edaa">
+            <name>Ed Robertson</name>
+            <sort-name>Robertson, Ed</sort-name>
+          </artist>
+        </relation>
+      </relation-list>
+    </work>
+  </work-list>
+</metadata>

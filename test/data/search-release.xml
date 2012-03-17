@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#" xmlns:ext="http://musicbrainz.org/ns/ext#-2.0">
+  <release-list offset="0" count="16739">
+    <release ext:score="100" id="e94757ff-2655-4690-b369-4012beba6114">
+      <title>Affordable Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+            <name>Dynamo Go</name>
+            <sort-name>Dynamo Go</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="EP" id="6561c223-18e6-3b88-9adc-a701700fc91e"/>
+      <date>2008-07-04</date>
+      <country>NZ</country>
+      <barcode>9421021463277</barcode>
+      <label-info-list>
+        <label-info>
+          <catalog-number>WS06</catalog-number>
+          <label id="aab2e720-bdd2-4565-afc2-460743585f16">
+            <name>Waysafe</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>4</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="1"/>
+          <track-list count="4"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="29" id="ae8106f8-6ec6-476e-a7b3-56cb1d06dd53">
+      <title>Affordable Luxury</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="4ee34d2b-97d0-4854-b7ee-4e96d343ad7c">
+            <name>Spielerfrau</name>
+            <sort-name>Spielerfrau</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="EP" id="23e02d55-522e-36a7-9b7c-3b47b3282609"/>
+      <date>2005</date>
+      <country>US</country>
+      <medium-list count="1">
+        <track-count>5</track-count>
+        <medium>
+          <disc-list count="0"/>
+          <track-list count="5"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="29" id="89637b55-1b5c-4943-bf7f-08a47da20d3d">
+      <title>Affordable Art</title>
+      <text-representation>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="6dcf3c49-6293-4bd3-bcff-ddaefc967089">
+            <name>Steve Goodman</name>
+            <sort-name>Goodman, Steve</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group id="a02d29b6-a05e-358b-9d95-dede07717949"/>
+      <date>1983</date>
+      <asin>B000000DLV</asin>
+      <medium-list count="1">
+        <track-count>12</track-count>
+        <medium>
+          <disc-list count="1"/>
+          <track-list count="12"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="25" id="07e7cc34-21f8-4aba-b287-9766f60834bd">
+      <title>Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>fra</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="425c778c-88ba-4bca-bb1e-d170b77d0047">
+            <name>Thierry Hazard</name>
+            <sort-name>Hazard, Thierry</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="7faef577-d60c-3edc-a48c-37e0e074ee29"/>
+      <date>1990-11</date>
+      <country>FR</country>
+      <barcode>5099746735425</barcode>
+      <asin>B00004UI3D</asin>
+      <label-info-list>
+        <label-info>
+          <catalog-number>467354 2</catalog-number>
+          <label id="ad6f8706-c95e-443b-8579-8e3ecd27126c">
+            <name>Columbia Records</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>12</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="1"/>
+          <track-list count="12"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="25" id="aaa6e088-ef43-3809-bffa-b771ed6b25c2">
+      <title>Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>fra</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="425c778c-88ba-4bca-bb1e-d170b77d0047">
+            <name>Thierry Hazard</name>
+            <sort-name>Hazard, Thierry</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="7faef577-d60c-3edc-a48c-37e0e074ee29"/>
+      <date>1990-11</date>
+      <country>FR</country>
+      <barcode>5099746735449</barcode>
+      <label-info-list>
+        <label-info>
+          <catalog-number>467354 4</catalog-number>
+          <label id="ad6f8706-c95e-443b-8579-8e3ecd27126c">
+            <name>Columbia Records</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>12</track-count>
+        <medium>
+          <format>Cassette</format>
+          <disc-list count="0"/>
+          <track-list count="12"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="25" id="83703bdb-2df3-4883-a536-5a073b2ec80f">
+      <title>Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="5a244dd8-546d-4ab4-9651-90c974737ad2">
+            <name>Todor Kobakov</name>
+            <sort-name>Kobakov, Todor</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="69e9d2a9-65e2-422b-a6fb-c295265772d8"/>
+      <date>2009-10-13</date>
+      <country>CA</country>
+      <asin>B002MED6QW</asin>
+      <medium-list count="1">
+        <track-count>11</track-count>
+        <medium>
+          <disc-list count="0"/>
+          <track-list count="11"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="25" id="d7519ee9-ed66-4573-a8d8-814e729e1ea3">
+      <title>Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="f37b3f31-b1f8-4b88-8cb5-b34f709b17d7">
+            <name>Iggy Pop</name>
+            <sort-name>Pop, Iggy</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="a839cc6e-e5a7-3659-91d9-73d05cc41445"/>
+      <asin>B0000072ZP</asin>
+      <medium-list count="1">
+        <track-count>20</track-count>
+        <medium>
+          <disc-list count="2"/>
+          <track-list count="20"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="25" id="e0aec712-3893-4b2a-ab59-d57927dbd949">
+      <title>Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>srp</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="bd2d100b-aecd-4639-8c9a-5581a63ec64f">
+            <name>Eva Braun</name>
+            <sort-name>Eva Braun</sort-name>
+            <disambiguation>Serbian pop-rock band</disambiguation>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="3f2c2479-5582-390a-8038-b48c979c0e16"/>
+      <date>1995</date>
+      <country>CS</country>
+      <label-info-list>
+        <label-info>
+          <label id="ca119df7-ebdf-4a31-a829-bd2c37f39103">
+            <name>B92</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>15</track-count>
+        <medium>
+          <format>Cassette</format>
+          <disc-list count="0"/>
+          <track-list count="15"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="9bb15c41-fbfd-4b5b-a563-67ac5c85a11b">
+      <title>This Is Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="75806efb-b691-4472-8484-e44e7f5d4770">
+            <name>Espen Lind</name>
+            <sort-name>Lind, Espen</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="25cdc194-9d11-3dfd-a127-54d0200bc539"/>
+      <date>2000</date>
+      <country>NO</country>
+      <asin>B00005L90U</asin>
+      <label-info-list>
+        <label-info>
+          <label id="7a37872d-8ead-432a-ab7e-40725fcb943c">
+            <name>Universal Music A/S</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>10</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="0"/>
+          <track-list count="10"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="411d64dc-075a-4802-96b1-42eae17935b1">
+      <title>Pop The Music</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="38370358-9813-491c-af5a-df9087f9664b">
+            <name>Triim</name>
+            <sort-name>Triim</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Single" id="27f59a9a-3c94-3e64-9cee-19956b3ffcae"/>
+      <date>2005</date>
+      <country>FR</country>
+      <medium-list count="1">
+        <track-count>1</track-count>
+        <medium>
+          <disc-list count="0"/>
+          <track-list count="1"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="3f7e7a1f-8a1a-459c-83fd-fe99080b9dff">
+      <title>This Is Pop Music</title>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="75806efb-b691-4472-8484-e44e7f5d4770">
+            <name>Espen Lind</name>
+            <sort-name>Lind, Espen</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="25cdc194-9d11-3dfd-a127-54d0200bc539"/>
+      <date>2001</date>
+      <country>JP</country>
+      <asin>B00005L90U</asin>
+      <medium-list count="1">
+        <track-count>11</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="0"/>
+          <track-list count="11"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="2d502144-81be-4eb5-a977-cf82063499b7">
+      <title>Stereophonic Pop Art Music</title>
+      <status>Official</status>
+      <text-representation>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="797d927d-c4e8-4908-932a-238b8a09294b">
+            <name>Alpha Stone</name>
+            <sort-name>Alpha Stone</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group id="324c318d-4fde-3389-a3cc-fc6b82099085"/>
+      <asin>B000003JGG</asin>
+      <medium-list count="1">
+        <track-count>8</track-count>
+        <medium>
+          <disc-list count="0"/>
+          <track-list count="8"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="11220cf7-32df-40e2-9dfe-bb37b4387770">
+      <title>Pepsi Pop Music</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="3bbb7210-3548-464e-b775-06d904ec5626"/>
+      <medium-list count="1">
+        <track-count>8</track-count>
+        <medium>
+          <disc-list count="0"/>
+          <track-list count="8"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="97a19cfd-022c-46b8-8651-00766a1719a0">
+      <title>Swedish Pop Music</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="b1611666-e997-49c1-94b5-dabcc0551db9"/>
+      <date>2009</date>
+      <country>SE</country>
+      <medium-list count="1">
+        <track-count>20</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="1"/>
+          <track-list count="20"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="a5406591-fa42-45e0-87e2-84a7b17a49b3">
+      <title>Better Pop Music</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="144bd616-38ad-4b48-8433-fd96f4e2da31"/>
+      <date>2010-05-20</date>
+      <country>GB</country>
+      <label-info-list>
+        <label-info>
+          <label id="e66c5203-0c79-4ea1-9395-535097b87ca9">
+            <name>Something in Construction</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>19</track-count>
+        <medium>
+          <format>Digital Media</format>
+          <disc-list count="0"/>
+          <track-list count="19"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="a568035c-3f4c-4c74-96f7-95b99e47c281">
+      <title>Kellogg's Pop Music</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="50cfc374-4912-4de8-9a1d-db41a6b4f54c"/>
+      <date>1998</date>
+      <country>US</country>
+      <barcode>634133052492</barcode>
+      <label-info-list>
+        <label-info>
+          <catalog-number>DPSM 5249</catalog-number>
+          <label id="dd9b460c-c27b-424c-8e25-7bb441ed8618">
+            <name>PolyGram Records Inc.</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>2</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="1"/>
+          <track-list count="2"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="eb7e6de0-8da8-4739-b9e5-7267c194b92e">
+      <title>This Is Pop Music.</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group id="2a3f93f7-5dd7-3982-b111-e638d35b2685"/>
+      <medium-list count="1">
+        <track-count>5</track-count>
+        <medium>
+          <disc-list count="1"/>
+          <track-list count="5"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="d923e7b5-6f31-4da4-9f23-22a9b3fc2607">
+      <title>Pop Music United</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="530d045f-5517-4be8-99d9-683dc30b3271">
+            <name>Paul Avion</name>
+            <sort-name>Avion, Paul</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="EP" id="2547fafe-a82c-49a7-bf4f-c1690badc196"/>
+      <date>2006</date>
+      <country>US</country>
+      <barcode>837101239905</barcode>
+      <asin>B000K97S8I</asin>
+      <label-info-list>
+        <label-info>
+          <label id="157afde4-4bf5-4039-8ad2-5a15acc85176">
+            <name>[no label]</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>8</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="0"/>
+          <track-list count="8"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="c466130c-c286-49b8-b7ae-e868ac1e7042">
+      <title>Dance / Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit joinphrase=" &amp; ">
+          <artist id="d5d5c3e5-2976-4ac7-acd7-b8bdb9ec7559">
+            <name>Neil Watson</name>
+            <sort-name>Watson, Neil</sort-name>
+          </artist>
+        </name-credit>
+        <name-credit>
+          <artist id="a57ae220-e088-47d1-83ec-fda2c963d14a">
+            <name>Mark Sandell</name>
+            <sort-name>Sandell, Mark</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Other" id="9b4d7297-289a-4542-9828-2dccea7b3bd4"/>
+      <country>US</country>
+      <label-info-list>
+        <label-info>
+          <catalog-number>CHAPAV 47</catalog-number>
+          <label id="fe50ac68-115f-4377-9dd8-124ec3fc1dbd">
+            <name>Chappell AV</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>17</track-count>
+        <medium>
+          <format>Digital Media</format>
+          <disc-list count="0"/>
+          <track-list count="17"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="20" id="52900377-39bd-4c31-9c85-d05b71eaf1a7">
+      <title>Pop Music for Dancing</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="acb19bfc-0a7c-49ab-910c-c3d915dd082e">
+            <name>Ted Atking &amp; His Orchestra</name>
+            <sort-name>Ted Atking &amp; His Orchestra</sort-name>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Album" id="9a5d1c34-e96f-3951-b308-25a3d4853d34"/>
+      <date>1970</date>
+      <country>FR</country>
+      <label-info-list>
+        <label-info>
+          <catalog-number>SPS 1311</catalog-number>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>12</track-count>
+        <medium>
+          <format>Vinyl</format>
+          <disc-list count="0"/>
+          <track-list count="12"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="19" id="1f08c98d-7bfe-43f9-82d3-74c9ac139d62">
+      <title>Pop! Justice: 100% Solid Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="855075e5-3ace-3e28-b3eb-902f4db8aa2a"/>
+      <date>2006-10-23</date>
+      <country>GB</country>
+      <asin>B000JCESCU</asin>
+      <medium-list count="1">
+        <track-count>23</track-count>
+        <medium>
+          <disc-list count="1"/>
+          <track-list count="23"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="17" id="3fcc4cf7-bed8-49d8-ae78-e06483e9b2a6">
+      <title>Proiect Special OMV: Pop Music</title>
+      <status>Promotion</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="ea43c228-8956-3e32-968c-645b04dc7491"/>
+      <date>2007</date>
+      <country>RO</country>
+      <label-info-list>
+        <label-info>
+          <label id="8b16b66c-18b7-4e61-956c-cbae64b41f3c">
+            <name>Roton</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>16</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="1"/>
+          <track-list count="16"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="17" id="b922ff57-9289-4ea4-999e-cd4ddb986614">
+      <title>20 Years of Pop Music</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="c15656d6-c322-3565-a5d2-9ef695d9907a"/>
+      <date>2001-07-03</date>
+      <country>US</country>
+      <asin>B00005LNIL</asin>
+      <medium-list count="1">
+        <track-count>15</track-count>
+        <medium>
+          <disc-list count="1"/>
+          <track-list count="15"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="17" id="1a65b888-d398-44ef-a812-61e1edd9f49f">
+      <title>Cairo Cafe: Arabic Pop Music</title>
+      <text-representation>
+        <language>ara</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="125ec42a-7229-4250-afc5-e057484327fe">
+            <name>[unknown]</name>
+            <sort-name>[unknown]</sort-name>
+            <disambiguation>Special Purpose Artist - Do not add releases here, if possible.</disambiguation>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Compilation" id="6f03e007-9e9d-44e3-b703-23968051c674"/>
+      <date>2008</date>
+      <label-info-list>
+        <label-info>
+          <label id="c37dfc99-794e-43f7-b7ea-6d65261c69d6">
+            <name>Pyramedia</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>12</track-count>
+        <medium>
+          <format>CD</format>
+          <disc-list count="0"/>
+          <track-list count="12"/>
+        </medium>
+      </medium-list>
+    </release>
+    <release ext:score="17" id="da721dd5-5e5f-4733-b785-8b230c6982f6">
+      <title>Dance / Pop Music 4</title>
+      <status>Official</status>
+      <text-representation>
+        <language>eng</language>
+        <script>Latn</script>
+      </text-representation>
+      <artist-credit>
+        <name-credit>
+          <artist id="89ad4ac3-39f7-470e-963a-56509c546377">
+            <name>Various Artists</name>
+            <sort-name>Various Artists</sort-name>
+            <disambiguation>add compilations to this artist</disambiguation>
+            <alias-list>
+              <alias>Various Artists</alias>
+            </alias-list>
+          </artist>
+        </name-credit>
+      </artist-credit>
+      <release-group type="Other" id="476821e8-ba85-4f91-8b1f-9662a473d3a7"/>
+      <country>US</country>
+      <label-info-list>
+        <label-info>
+          <catalog-number>CHAPAV 102</catalog-number>
+          <label id="fe50ac68-115f-4377-9dd8-124ec3fc1dbd">
+            <name>Chappell AV</name>
+          </label>
+        </label-info>
+      </label-info-list>
+      <medium-list count="1">
+        <track-count>44</track-count>
+        <medium>
+          <format>Digital Media</format>
+          <disc-list count="0"/>
+          <track-list count="44"/>
+        </medium>
+      </medium-list>
+    </release>
+  </release-list>
+</metadata>

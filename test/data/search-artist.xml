@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#" xmlns:ext="http://musicbrainz.org/ns/ext#-2.0">
+  <artist-list offset="0" count="349">
+    <artist ext:score="100" type="Group" id="952a4205-023d-4235-897c-6fdb6f58dfaa">
+      <name>Dynamo Go</name>
+      <sort-name>Dynamo Go</sort-name>
+      <country>NZ</country>
+      <life-span>
+        <begin>2005-06</begin>
+      </life-span>
+      <alias-list>
+        <alias>Dynamo Go</alias>
+      </alias-list>
+      <tag-list>
+        <tag count="1">
+          <name>testfoo</name>
+        </tag>
+      </tag-list>
+    </artist>
+    <artist ext:score="44" type="Group" id="af51cc9a-43f5-4be4-ac1a-a24ae12ff8f1">
+      <name>Dynamo</name>
+      <sort-name>Dynamo</sort-name>
+      <alias-list>
+        <alias>Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="44" type="Group" id="ee768530-0582-41ff-b461-f52a9d81ba14">
+      <name>Dynamo</name>
+      <sort-name>Dynamo</sort-name>
+      <country>FI</country>
+      <disambiguation>Finnish punk band</disambiguation>
+      <alias-list>
+        <alias>Dynamo</alias>
+      </alias-list>
+      <tag-list>
+        <tag count="1">
+          <name>punk</name>
+        </tag>
+        <tag count="1">
+          <name>finland</name>
+        </tag>
+      </tag-list>
+    </artist>
+    <artist ext:score="44" type="Person" id="4e7d4d87-88bb-43c5-b6ef-e6b4b263f490">
+      <name>Dynamo</name>
+      <sort-name>Dynamo</sort-name>
+      <country>DE</country>
+      <disambiguation>german DIN label owner Torsten Pröfrock</disambiguation>
+      <alias-list>
+        <alias>Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="35" id="779c8b5a-9401-40ec-a73d-d545875ffec8">
+      <name>Dynamo</name>
+      <sort-name>Dynamo</sort-name>
+      <disambiguation>designer</disambiguation>
+    </artist>
+    <artist ext:score="35" id="beaeda13-4d65-423b-97fe-4bcac28fa837">
+      <name>Dynamo Productions</name>
+      <sort-name>Dynamo Productions</sort-name>
+      <alias-list>
+        <alias>Dynamo Producions</alias>
+        <alias>Dynamo Productions</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" type="Group" id="7d30b5fa-3579-464d-a5dc-2f577bf0c200">
+      <name>Dynamo City</name>
+      <sort-name>Dynamo City</sort-name>
+      <alias-list>
+        <alias>Dynamo City</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" id="3d0a456a-2880-4e9f-a4eb-2fa3e3c9314b">
+      <name>Dynamo 5</name>
+      <sort-name>Dynamo 5</sort-name>
+      <alias-list>
+        <alias>Dynamo 5</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" type="Group" id="462e7bbd-10a3-4d81-b457-82fc8733e5f5">
+      <name>Kruunuhaan Dynamo</name>
+      <sort-name>Kruunuhaan Dynamo</sort-name>
+      <alias-list>
+        <alias>Kruunuhaan Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" id="9ddd1b83-bdba-4a07-923a-ba0000b73885">
+      <name>Kidd Dynamo</name>
+      <sort-name>Kidd Dynamo</sort-name>
+      <alias-list>
+        <alias>Kidd Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" type="Group" id="9cccafc8-d488-4c2d-b18b-40326b620253">
+      <name>Onslaught Dynamo</name>
+      <sort-name>Onslaught Dynamo</sort-name>
+      <alias-list>
+        <alias>Onslaught Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" id="fdf1914e-6dce-4c74-b37c-e85750418488">
+      <name>Dynamo Electrix</name>
+      <sort-name>Dynamo Electrix</sort-name>
+      <alias-list>
+        <alias>Dynamo Electrix</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" id="4ecd84db-9f81-4ddd-9515-474187697cea">
+      <name>Dynamo Ska</name>
+      <sort-name>Dynamo Ska</sort-name>
+      <alias-list>
+        <alias>Dynamo Ska</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" id="ed0c313b-d380-4663-b312-5a94a2c02375">
+      <name>Dynamo Chapel</name>
+      <sort-name>Dynamo Chapel</sort-name>
+      <alias-list>
+        <alias>Dynamo Chapel</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" type="Person" id="78190fd1-cc51-4d0c-a9f1-07446e493a59">
+      <name>Johnny Dynamo</name>
+      <sort-name>Dynamo, Johnny</sort-name>
+      <alias-list>
+        <alias>Johnny Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="31" type="Group" id="80ec2075-07f6-469d-adda-09f7cd656c29">
+      <name>Dynamo Früchtebonus</name>
+      <sort-name>Dynamo Früchtebonus</sort-name>
+      <country>AT</country>
+      <alias-list>
+        <alias>Dynamo Früchtebonus</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" id="8b35216f-e33e-4b35-bdfd-fae8ba5d60dc">
+      <name>Dynamo and JP</name>
+      <sort-name>Dynamo and JP</sort-name>
+      <alias-list>
+        <alias>Dynamo and JP</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" type="Group" id="623b808a-7876-4b46-a3db-379c20e30886">
+      <name>The Driven Dynamo</name>
+      <sort-name>Driven Dynamo, The</sort-name>
+      <alias-list>
+        <alias>The Driven Dynamo</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" id="efa2f94a-9556-49d9-a61c-69f3469fa01b">
+      <name>Tuttle &amp; Dynamo Laboratory</name>
+      <sort-name>Tuttle &amp; Laboratory, Dynamo</sort-name>
+      <alias-list>
+        <alias>Tuttle &amp; Dynamo Laboratory</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" id="65206b6b-fc2a-4c13-8e2a-3f82240592c2">
+      <name>The Dynamo Hymn</name>
+      <sort-name>Dynamo Hymn, The</sort-name>
+      <alias-list>
+        <alias>The Dynamo Hymn</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" type="Group" id="33d6d86a-6337-48ff-9dff-7c0ce0a3d895">
+      <name>Go!</name>
+      <sort-name>Go!</sort-name>
+      <country>US</country>
+      <alias-list>
+        <alias>Go!</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" type="Group" id="bda37da8-f7b8-43f8-8ef8-b4cf2c74188d">
+      <name>Go</name>
+      <sort-name>Go</sort-name>
+      <alias-list>
+        <alias>Go</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="26" type="Group" id="b87963a8-451b-4b19-b200-e6e91113bd0f">
+      <name>GO!GO!7188</name>
+      <sort-name>GO!GO!7188</sort-name>
+      <country>JP</country>
+      <life-span>
+        <begin>1998-06</begin>
+        <end>2012-02-10</end>
+      </life-span>
+      <alias-list>
+        <alias>GOGO7188</alias>
+        <alias>GO! GO! 7188</alias>
+        <alias>GO!GO!7188</alias>
+        <alias>GOGO 7188</alias>
+      </alias-list>
+      <tag-list>
+        <tag count="1">
+          <name>rock</name>
+        </tag>
+        <tag count="1">
+          <name>japanese</name>
+        </tag>
+      </tag-list>
+    </artist>
+    <artist ext:score="22" id="ec62f0af-b02d-4de7-82e8-7523c65bc481">
+      <name>Go Robot, Go!</name>
+      <sort-name>Go Robot, Go!</sort-name>
+      <alias-list>
+        <alias>Go Robot, Go!</alias>
+      </alias-list>
+    </artist>
+    <artist ext:score="22" id="cbf817d4-171d-4c0a-af12-82569607b5fb">
+      <name>Gaijin A Go Go</name>
+      <sort-name>Gaijin A Go Go</sort-name>
+      <alias-list>
+        <alias>Gaijin A Go Go</alias>
+      </alias-list>
+    </artist>
+  </artist-list>
+</metadata>
