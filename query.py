@@ -4,7 +4,7 @@ import musicbrainzngs as m
 
 def main():
 	m.set_useragent("application", "0.01", "http://example.com")
-	print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
+	#print m.get_artist_by_id("952a4205-023d-4235-897c-6fdb6f58dfaa", [])
 	#print m.get_label_by_id("aab2e720-bdd2-4565-afc2-460743585f16")
 	#print m.get_release_by_id("e94757ff-2655-4690-b369-4012beba6114")
 	#print m.get_release_group_by_id("9377d65d-ffd5-35d6-b64d-43f86ef9188d")
@@ -14,6 +14,29 @@ def main():
 	#print m.get_releases_by_discid("BG.iuI50.qn1DOBAWIk8fUYoeHM-")
 	#print m.get_recordings_by_puid("070359fc-8219-e62b-7bfd-5a01e742b490")
 	#print m.get_recordings_by_isrc("GBAYE9300106")
+
+	def print_releases(result):
+		for release in result["release-list"]:
+			artistcredit = release["artist-credit"][0]["artist"]
+			artist = artistcredit["name"][:13]
+			title = release["title"][:35]
+			print "\tartist: %s \t release: %s" % (artist, title)
+
+	#simple queries:
+	print_releases(m.search_releases("Big in Japan",
+	artist="Guano Apes", limit=5))
+	#print_releases(m.search_releases(release="Big in Japan",
+	#	artist="Guano Apes", limit=5))
+
+	#phrase query:
+	#print_releases(m.search_releases('"Big in Japan"',
+	#	artist="Guano Apes", limit=5))
+
+	# direct queries
+	#print_releases(m.search_releases(
+	#	'"Big in Japan" AND artist:"Guano Apes"', limit=5))
+	#print_releases(m.search_releases(
+	#	'"Big in Japan" OR artist:"Guano Apes"', limit=5))
 
 	m.auth("", "")
 	#m.submit_barcodes({"e94757ff-2655-4690-b369-4012beba6114": "9421021463277"})
