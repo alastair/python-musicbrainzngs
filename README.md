@@ -1,8 +1,8 @@
 ## Musicbrainz NGS bindings
 
-This library implements webservice bindings for the Musicbrainz NGS site, also known as /ws/2
+This library implements webservice bindings for the Musicbrainz NGS site, also known as /ws/2.
 
-For more information on the musicbrainz webservice see http://wiki.musicbrainz.org/XML_Web_Service
+For more information on the musicbrainz webservice see <http://wiki.musicbrainz.org/XML_Web_Service>.
 
 ### Usage
 
@@ -20,7 +20,14 @@ For more information on the musicbrainz webservice see http://wiki.musicbrainz.o
     # If you are connecting to a development server
     musicbrainzngs.set_hostname("echoprint.musicbrainz.org")
 
-See the query.py file for more examples
+See the query.py file for more examples.
+
+### Contribute
+
+1. Fork the [repository](https://github.com/alastair/python-musicbrainz-ngs) on Github.
+2. Make and test whatever changes you desire.
+3. Signoff and commit your changes using `git commit -s`.
+4. Send a pull request.
 
 ### Authors
 
