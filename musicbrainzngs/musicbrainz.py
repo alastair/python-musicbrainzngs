@@ -3,18 +3,16 @@
 # This file is distributed under a BSD-2-Clause type license.
 # See the COPYING file for more information.
 
-import urlparse
-import urllib2
-import urllib
-import mbxml
 import re
 import threading
 import time
 import logging
-import httplib
 import socket
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
+from . import mbxml
+from . import compat
+
 
 _version = "0.3dev"
 _log = logging.getLogger("musicbrainzngs")
@@ -187,9 +185,9 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
 	the filters can be used with the given includes. Return a params
 	dict that can be passed to _do_mb_query.
 	"""
-	if isinstance(release_status, basestring):
+	if isinstance(release_status, compat.basestring):
 		release_status = [release_status]
-	if isinstance(release_type, basestring):
+	if isinstance(release_type, compat.basestring):
 		release_type = [release_type]
 	_check_filter(release_status, VALID_RELEASE_STATUSES)
 	_check_filter(release_type, VALID_RELEASE_TYPES)
@@ -307,7 +305,7 @@ class _rate_limit(object):
 # Generic support for making HTTP requests.
 
 # From pymb2
-class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
+class _RedirectPasswordMgr(compat.HTTPPasswordMgr):
 	def __init__(self):
 		self._realms = { }
 
@@ -322,18 +320,18 @@ class _RedirectPasswordMgr(urllib2.HTTPPasswordMgr):
 		# ignoring the uri parameter intentionally
 		self._realms[realm] = (username, password)
 
-class _DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
+class _DigestAuthHandler(compat.HTTPDigestAuthHandler):
 	def get_authorization (self, req, chal):
 		qop = chal.get ('qop', None)
 		if qop and ',' in qop and 'auth' in qop.split (','):
 			chal['qop'] = 'auth'
 
-		return urllib2.HTTPDigestAuthHandler.get_authorization (self, req, chal)
+		return compat.HTTPDigestAuthHandler.get_authorization (self, req, chal)
 
-class _MusicbrainzHttpRequest(urllib2.Request):
+class _MusicbrainzHttpRequest(compat.Request):
 	""" A custom request handler that allows DELETE and PUT"""
 	def __init__(self, method, url, data=None):
-		urllib2.Request.__init__(self, url, data)
+		compat.Request.__init__(self, url, data)
 		allowed_m = ["GET", "POST", "DELETE", "PUT"]
 		if method not in allowed_m:
 			raise ValueError("invalid method: %s" % method)
@@ -363,7 +361,7 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 			else:
 				f = opener.open(req)
 
-		except urllib2.HTTPError, exc:
+		except compat.HTTPError as exc:
 			if exc.code in (400, 404, 411):
 				# Bad request, not found, etc.
 				raise ResponseError(cause=exc)
@@ -375,19 +373,19 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 				# retrying for now.
 				_log.debug("unknown HTTP error %i" % exc.code)
 			last_exc = exc
-		except httplib.BadStatusLine, exc:
+		except compat.BadStatusLine as exc:
 			_log.debug("bad status line")
 			last_exc = exc
-		except httplib.HTTPException, exc:
+		except compat.HTTPException as exc:
 			_log.debug("miscellaneous HTTP exception: %s" % str(exc))
 			last_exc = exc
-		except urllib2.URLError, exc:
+		except compat.URLError as exc:
 			if isinstance(exc.reason, socket.error):
 				code = exc.reason.errno
 				if code == 104: # "Connection reset by peer."
 					continue
 			raise NetworkError(cause=exc)
-		except IOError, exc:
+		except IOError as exc:
 			raise NetworkError(cause=exc)
 		else:
 			# No exception! Yay!
@@ -426,23 +424,23 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 
 	# Encode Unicode arguments using UTF-8.
 	for key, value in args.items():
-		if isinstance(value, unicode):
+		if isinstance(value, compat.unicode):
 			args[key] = value.encode('utf8')
 
 	# Construct the full URL for the request, including hostname and
 	# query string.
-	url = urlparse.urlunparse((
+	url = compat.urlunparse((
 		'http',
 		hostname,
 		'/ws/2/%s' % path,
 		'',
-		urllib.urlencode(args),
+		compat.urlencode(args),
 		''
 	))
 	_log.debug("%s request for %s" % (method, url))
 
 	# Set up HTTP request handler and URL opener.
-	httpHandler = urllib2.HTTPHandler(debuglevel=0)
+	httpHandler = compat.HTTPHandler(debuglevel=0)
 	handlers = [httpHandler]
 
 	# Add credentials if required.
@@ -456,7 +454,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		authHandler.add_password("musicbrainz.org", (), user, password)
 		handlers.append(authHandler)
 
-	opener = urllib2.build_opener(*handlers)
+	opener = compat.build_opener(*handlers)
 
 	# Make request.
 	req = _MusicbrainzHttpRequest(method, url, data)
@@ -520,7 +518,7 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 	"""
 	# Encode the query terms as a Lucene query string.
 	query_parts = [query.replace('\x00', '').strip()]
-	for key, value in fields.iteritems():
+	for key, value in fields.items():
 		# Ensure this is a valid search field.
 		if key not in VALID_SEARCH_FIELDS[entity]:
 			raise InvalidSearchFieldError(
@@ -532,8 +530,8 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 		value = value.replace('\x00', '').strip()
 		value = value.lower() # Avoid binary operators like OR.
 		if value:
-			query_parts.append(u'%s:(%s)' % (key, value))
-	full_query = u' '.join(query_parts).strip()
+			query_parts.append('%s:(%s)' % (key, value))
+	full_query = ' '.join(query_parts).strip()
 	if not full_query:
 		raise ValueError('at least one query term is required')
 
@@ -769,8 +767,8 @@ def submit_ratings(artist_ratings={}, recording_ratings={}):
 def add_releases_to_collection(collection, releases=[]):
 	# XXX: Maximum URI length of 16kb means we should only allow ~400 releases
 	releaselist = ";".join(releases)
-   	_do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
+	_do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
 
 def remove_releases_from_collection(collection, releases=[]):
 	releaselist = ";".join(releases)
-   	_do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
+	_do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
