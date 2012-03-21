@@ -176,7 +176,7 @@ def parse_artist_list(al):
 def parse_artist(artist):
 	result = {}
 	attribs = ["id", "type", "ext:score"]
-	elements = ["name", "sort-name", "country", "user-rating", "disambiguation"]
+	elements = ["name", "sort-name", "country", "user-rating"]
 	inner_els = {"life-span": parse_artist_lifespan,
 	             "recording-list": parse_recording_list,
 	             "release-list": parse_release_list,
