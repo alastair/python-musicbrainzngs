@@ -468,10 +468,13 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	# Parse the response.
 	try:
 		return mbxml.parse_message(f)
-	except etree.ParseError, exc:
+	except UnicodeError as exc:
 		raise ResponseError(cause=exc)
-	except UnicodeError, exc:
-		raise ResponseError(cause=exc)
+	except Exception as exc:
+		if isinstance(ETREE_EXCEPTIONS):
+			raise ResponseError(cause=exc)
+		else:
+			raise
 
 def _is_auth_required(entity, includes):
 	""" Some calls require authentication. This returns
