@@ -471,7 +471,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	except UnicodeError as exc:
 		raise ResponseError(cause=exc)
 	except Exception as exc:
-		if isinstance(ETREE_EXCEPTIONS):
+		if isinstance(exc, ETREE_EXCEPTIONS):
 			raise ResponseError(cause=exc)
 		else:
 			raise
