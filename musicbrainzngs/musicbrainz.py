@@ -6,7 +6,6 @@
 import urlparse
 import urllib2
 import urllib
-import mbxml
 import re
 import threading
 import time
@@ -15,6 +14,9 @@ import httplib
 import socket
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
+
+import mbxml
+import util
 
 _version = "0.3dev"
 _log = logging.getLogger("musicbrainzngs")
@@ -519,7 +521,10 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 	for the given entity type.
 	"""
 	# Encode the query terms as a Lucene query string.
-	query_parts = [query.replace('\x00', '').strip()]
+	query_parts = []
+	if query:
+		clean_query = util._unicode(query)
+		query_parts.append(clean_query)
 	for key, value in fields.iteritems():
 		# Ensure this is a valid search field.
 		if key not in VALID_SEARCH_FIELDS[entity]:
@@ -528,12 +533,12 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 			)
 
 		# Escape Lucene's special characters.
+		value = util._unicode(value)
 		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
-		value = value.replace('\x00', '').strip()
 		value = value.lower() # Avoid binary operators like OR.
 		if value:
-			query_parts.append(u'%s:(%s)' % (key, value))
-	full_query = u' '.join(query_parts).strip()
+			query_parts.append('%s:(%s)' % (key, value))
+	full_query = ' '.join(query_parts).strip()
 	if not full_query:
 		raise ValueError('at least one query term is required')
 
