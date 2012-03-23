@@ -15,6 +15,13 @@ To show the releases in a collection:
     Releases in My Collection:
     None Shall Pass (b0885908-cbe2-4e51-95d8-c4f3b9721ad6)
     ...
+
+To add a release to a collection or remove one:
+
+    $ ./collection.py USERNAME 4137a646-a104-4031-b549-da4e1f36a463
+        --add 0d432d8b-8865-4ae9-8479-3a197620a37b
+    $ ./collection.py USERNAME 4137a646-a104-4031-b549-da4e1f36a463
+        --remove 0d432d8b-8865-4ae9-8479-3a197620a37b
 """
 from __future__ import print_function
 import musicbrainzngs
@@ -46,6 +53,10 @@ def show_collection(collection_id):
 
 if __name__ == '__main__':
     parser = OptionParser(usage="%prog [options] USERNAME [COLLECTION-ID]")
+    parser.add_option('-a', '--add', metavar="RELEASE-ID",
+                      help="add a release to the collection")
+    parser.add_option('-r', '--remove', metavar="RELEASE-ID",
+                      help="remove a release from the collection")
     options, args = parser.parse_args()
 
     if not args:
@@ -60,8 +71,21 @@ if __name__ == '__main__':
     musicbrainzngs.auth(username, password)
 
     if args:
-        # Show a specific collection.
-        show_collection(args[0])
+        # Actions for a specific collction.
+        collection_id = args[0]
+        if options.add:
+            # Add a release to the collection.
+            musicbrainzngs.add_releases_to_collection(
+                collection_id, [options.add]
+            )
+        elif options.remove:
+            # Remove a release from the collection.
+            musicbrainzngs.remove_releases_from_collection(
+                collection_id, [options.remove]
+            )
+        else:
+            # Print out the collection's contents.
+            show_collection(collection_id)
     else:
         # Show all collections.
         show_collections()

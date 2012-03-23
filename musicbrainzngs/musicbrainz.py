@@ -464,6 +464,10 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	_log.debug("requesting with UA %s" % _useragent)
 	if body:
 		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
+	elif not data and not req.has_header('Content-Length'):
+		# Explicitly indicate zero content length if no request data
+		# will be sent (avoids HTTP 411 error).
+		req.add_header('Content-Length', '0')
 	f = _safe_open(opener, req, body)
 
 	# Parse the response.
