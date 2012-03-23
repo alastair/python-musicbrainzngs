@@ -364,7 +364,7 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 				f = opener.open(req)
 
 		except urllib2.HTTPError, exc:
-			if exc.code in (400, 404):
+			if exc.code in (400, 404, 411):
 				# Bad request, not found, etc.
 				raise ResponseError(cause=exc)
 			elif exc.code in (503, 502, 500):
