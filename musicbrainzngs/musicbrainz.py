@@ -74,6 +74,7 @@ VALID_INCLUDES = {
 	'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
 	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
 	'iswc': ["artists"],
+	'collection': ['releases'],
 }
 VALID_RELEASE_TYPES = [
 	"nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
