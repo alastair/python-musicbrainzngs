@@ -24,6 +24,7 @@ To add a release to a collection or remove one:
         --remove 0d432d8b-8865-4ae9-8479-3a197620a37b
 """
 from __future__ import print_function
+from __future__ import unicode_literals
 import musicbrainzngs
 import getpass
 from optparse import OptionParser
@@ -41,9 +42,9 @@ def show_collections():
     print('All collections for this user:')
     for collection in result['collection-list']:
         print('{name} by {editor} ({mbid})'.format(
-			name=collection['name'], editor=collection['editor'],
-			mbid=collection['id']
-		))
+            name=collection['name'], editor=collection['editor'],
+            mbid=collection['id']
+        ))
 
 def show_collection(collection_id):
     """Show the list of releases in a given collection.
@@ -53,8 +54,8 @@ def show_collection(collection_id):
     print('Releases in {}:'.format(collection['name']))
     for release in collection['release-list']:
         print('{title} ({mbid})'.format(
-			title=release['title'], mbid=release['id']
-		))
+            title=release['title'], mbid=release['id']
+        ))
 
 if __name__ == '__main__':
     parser = OptionParser(usage="%prog [options] USERNAME [COLLECTION-ID]")

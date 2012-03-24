@@ -8,6 +8,7 @@ database and prints out a few details about the first matching release.
     MusicBrainz ID: b4b04cbf-118a-3944-9545-38a0a88ff1a2
 """
 from __future__ import print_function
+from __future__ import unicode_literals
 import musicbrainzngs
 import sys
 
@@ -22,7 +23,8 @@ def show_release_details(rel):
     """
     artist_names = [c['artist']['name'] for c in rel['artist-credit']]
     print("{}, by {}".format(rel['title'], ', '.join(artist_names)))
-    print("Released {} ({})".format(rel['date'], rel['status']))
+    if 'date' in rel:
+        print("Released {} ({})".format(rel['date'], rel['status']))
     print("MusicBrainz ID: {}".format(rel['id']))
 
 def fail(message):
