@@ -10,8 +10,8 @@ import logging
 import socket
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
-from . import mbxml
-from . import compat
+
+from musicbrainzngs import compat, mbxml
 
 
 _version = "0.3dev"

@@ -6,7 +6,7 @@
 import xml.etree.ElementTree as ET
 import logging
 
-from . import compat
+from musicbrainzngs import compat
 
 try:
 	from ET import fixtag
