@@ -5,6 +5,7 @@
 
 import sys
 import locale
+import xml.etree.ElementTree as ET
 
 from . import compat
 
@@ -25,3 +26,12 @@ def _unicode(string, encoding=None):
     else:
         unicode_string = string.decode()
     return unicode_string.replace('\x00', '').strip()
+
+def bytes_to_elementtree(_bytes):
+    if compat.is_py3:
+        s = _unicode(_bytes.read(), "utf-8")
+    else:
+        s = _bytes.read()
+    f = compat.StringIO(s)
+    tree = ET.ElementTree(file=f)
+    return tree

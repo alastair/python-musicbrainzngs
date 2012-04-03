@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 import logging
 
 from . import compat
+from . import util
 
 try:
 	from ET import fixtag
@@ -115,9 +116,7 @@ def parse_inner(inner_els, element):
 	return result
 
 def parse_message(message):
-	s = message.read()
-	f = compat.StringIO(s)
-	tree = ET.ElementTree(file=f)
+	tree = util.bytes_to_elementtree(message)
 	root = tree.getroot()
 	result = {}
 	valid_elements = {"artist": parse_artist,
