@@ -24,7 +24,7 @@ def _unicode(string, encoding=None):
             encoding = locale.getpreferredencoding()
         unicode_string = string.decode(encoding, "ignore")
     else:
-        unicode_string = string.decode()
+        unicode_string = compat.unicode(string)
     return unicode_string.replace('\x00', '').strip()
 
 def bytes_to_elementtree(_bytes):
