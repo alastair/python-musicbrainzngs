@@ -4,9 +4,11 @@
 # See the COPYING file for more information.
 
 import xml.etree.ElementTree as ET
-import string
-import StringIO
 import logging
+
+from . import compat
+from . import util
+
 try:
 	from ET import fixtag
 except:
@@ -16,7 +18,7 @@ except:
 		# tag and namespace declaration, if any
 		if isinstance(tag, ET.QName):
 			tag = tag.text
-		namespace_uri, tag = string.split(tag[1:], "}", 1)
+		namespace_uri, tag = tag[1:].split("}", 1)
 		prefix = namespaces.get(namespace_uri)
 		if prefix is None:
 			prefix = "ns%d" % len(namespaces)
@@ -28,6 +30,7 @@ except:
 		else:
 			xmlns = None
 		return "%s:%s" % (prefix, tag), xmlns
+
 
 NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2",
           "http://musicbrainz.org/ns/ext#-2.0": "ext"}
@@ -113,9 +116,7 @@ def parse_inner(inner_els, element):
 	return result
 
 def parse_message(message):
-	s = message.read()
-	f = StringIO.StringIO(s)
-	tree = ET.ElementTree(file=f)
+	tree = util.bytes_to_elementtree(message)
 	root = tree.getroot()
 	result = {}
 	valid_elements = {"artist": parse_artist,

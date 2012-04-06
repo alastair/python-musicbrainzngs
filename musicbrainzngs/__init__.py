@@ -1,1 +1,1 @@
-from musicbrainz import *
+from .musicbrainz import *
