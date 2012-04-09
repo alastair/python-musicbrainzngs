@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 
 from distutils.core import setup
 from distutils.core import Command
@@ -40,7 +41,8 @@ class test(Command):
                 names.append("test." + name)
         tests = unittest.defaultTestLoader.loadTestsFromNames(names)
         t = unittest.TextTestRunner(verbosity=self.verbosity)
-        t.run(tests)
+        result = t.run(tests)
+        sys.exit(not result.wasSuccessful())
 
 setup(
     name="musicbrainzngs",
