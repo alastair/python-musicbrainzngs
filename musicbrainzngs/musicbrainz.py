@@ -535,7 +535,7 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 		value = value.lower() # Avoid binary operators like OR.
 		if value:
 			query_parts.append('%s:(%s)' % (key, value))
-	full_query = ' '.join(query_parts).strip()
+	full_query = ' AND '.join(query_parts).strip()
 	if not full_query:
 		raise ValueError('at least one query term is required')
 
