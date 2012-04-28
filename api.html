@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API &mdash; musicbrainzngs 0.3dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="musicbrainzngs 0.3dev documentation" href="index.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">musicbrainzngs 0.3dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="musicbrainzngs.auth">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">auth</tt><big>(</big><em>u</em>, <em>p</em><big>)</big><a class="headerlink" href="#musicbrainzngs.auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the username and password to be used in subsequent queries to
+the MusicBrainz XML API that require authentication.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.set_rate_limit">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">set_rate_limit</tt><big>(</big><em>new_interval=1.0</em>, <em>new_requests=1</em><big>)</big><a class="headerlink" href="#musicbrainzngs.set_rate_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the rate limiting behavior of the module. Must be invoked
+before the first Web service call.  Specify the number of requests
+(<cite>new_requests</cite>) that may be made per given interval
+(<cite>new_interval</cite>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.set_hostname">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">set_hostname</tt><big>(</big><em>new_hostname</em><big>)</big><a class="headerlink" href="#musicbrainzngs.set_hostname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getting-data">
+<h2>Getting data<a class="headerlink" href="#getting-data" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="musicbrainzngs.get_artist_by_id">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_artist_by_id</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_artist_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_label_by_id">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_label_by_id</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_label_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_recording_by_id">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_recording_by_id</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_recording_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_recordings_by_echoprint">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_recordings_by_echoprint</tt><big>(</big><em>echoprint</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_recordings_by_echoprint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_recordings_by_puid">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_recordings_by_puid</tt><big>(</big><em>puid</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_recordings_by_puid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_recordings_by_isrc">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_recordings_by_isrc</tt><big>(</big><em>isrc</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_recordings_by_isrc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_release_group_by_id">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_release_group_by_id</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_release_group_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_release_by_id">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_release_by_id</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_release_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_releases_by_discid">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_releases_by_discid</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_releases_by_discid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_work_by_id">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_work_by_id</tt><big>(</big><em>id</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_work_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_works_by_iswc">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_works_by_iswc</tt><big>(</big><em>iswc</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.get_works_by_iswc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_collections">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_collections</tt><big>(</big><big>)</big><a class="headerlink" href="#musicbrainzngs.get_collections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.get_releases_in_collection">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">get_releases_in_collection</tt><big>(</big><em>collection</em><big>)</big><a class="headerlink" href="#musicbrainzngs.get_releases_in_collection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="searching">
+<span id="search-api"></span><h2>Searching<a class="headerlink" href="#searching" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="musicbrainzngs.search_artists">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_artists</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_artists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for artists by a free-form <cite>query</cite> string and/or any of
+the following keyword arguments specifying field queries:
+arid, artist, sortname, type, begin, end, comment, alias, country,
+gender, tag</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.search_labels">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_labels</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for labels by a free-form <cite>query</cite> string and/or any of
+the following keyword arguments specifying field queries:
+laid, label, sortname, type, code, country, begin, end, comment,
+alias, tag</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.search_recordings">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_recordings</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_recordings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for recordings by a free-form <cite>query</cite> string and/or any of
+the following keyword arguments specifying field queries:
+rid, recording, isrc, arid, artist, artistname, creditname, reid,
+release, type, status, tracks, tracksrelease, dur, qdur, tnum,
+position, tag</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.search_release_groups">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_release_groups</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_release_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for release groups by a free-form <cite>query</cite> string and/or
+any of the following keyword arguments specifying field queries:
+rgid, releasegroup, reid, release, arid, artist, artistname,
+creditname, type, tag</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.search_releases">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_releases</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_releases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for releases by a free-form <cite>query</cite> string and/or any of
+the following keyword arguments specifying field queries:
+reid, release, arid, artist, artistname, creditname, type, status,
+tracks, tracksmedium, discids, discidsmedium, mediums, date, asin,
+lang, script, country, date, label, catno, barcode, puid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="musicbrainzngs.musicbrainz.VALID_INCLUDES">
+<tt class="descclassname">musicbrainz.</tt><tt class="descname">VALID_INCLUDES</tt><em class="property"> = {'echoprint': ['artists', 'releases'], 'collection': ['releases'], 'isrc': ['artists', 'releases', 'puids', 'echoprints', 'isrcs'], 'discid': ['artists', 'labels', 'recordings', 'release-groups', 'media', 'artist-credits', 'discids', 'puids', 'echoprints', 'isrcs', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels', 'recording-level-rels', 'work-level-rels'], 'artist': ['recordings', 'releases', 'release-groups', 'works', 'various-artists', 'discids', 'media', 'aliases', 'tags', 'user-tags', 'ratings', 'user-ratings', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels'], 'iswc': ['artists'], 'work': ['artists', 'aliases', 'tags', 'user-tags', 'ratings', 'user-ratings', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels'], 'label': ['releases', 'discids', 'media', 'aliases', 'tags', 'user-tags', 'ratings', 'user-ratings', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels'], 'recording': ['artists', 'releases', 'discids', 'media', 'artist-credits', 'tags', 'user-tags', 'ratings', 'user-ratings', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels'], 'puid': ['artists', 'releases', 'puids', 'echoprints', 'isrcs'], 'release': ['artists', 'labels', 'recordings', 'release-groups', 'media', 'artist-credits', 'discids', 'puids', 'echoprints', 'isrcs', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels', 'recording-level-rels', 'work-level-rels'], 'release-group': ['artists', 'releases', 'discids', 'media', 'artist-credits', 'tags', 'user-tags', 'ratings', 'user-ratings', 'artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels']}</em><a class="headerlink" href="#musicbrainzngs.musicbrainz.VALID_INCLUDES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="musicbrainzngs.musicbrainz.VALID_SEARCH_FIELDS">
+<tt class="descclassname">musicbrainz.</tt><tt class="descname">VALID_SEARCH_FIELDS</tt><em class="property"> = {'artist': ['arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment', 'alias', 'country', 'gender', 'tag', 'ipi', 'artistaccent'], 'work': ['wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag', 'comment', 'workaccent'], 'label': ['laid', 'label', 'sortname', 'type', 'code', 'country', 'begin', 'end', 'comment', 'alias', 'tag', 'ipi', 'labelaccent'], 'recording': ['rid', 'recording', 'isrc', 'arid', 'artist', 'artistname', 'creditname', 'reid', 'release', 'type', 'status', 'tracks', 'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag', 'comment', 'country', 'dateformat', 'recordingaccent'], 'release': ['reid', 'release', 'arid', 'artist', 'artistname', 'creditname', 'type', 'status', 'tracks', 'tracksmedium', 'discids', 'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script', 'country', 'date', 'label', 'catno', 'barcode', 'puid', 'comment', 'format', 'releaseaccent', 'rgid'], 'release-group': ['rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist', 'artistname', 'creditname', 'type', 'tag', 'releasegroupaccent', 'releases', 'comment']}</em><a class="headerlink" href="#musicbrainzngs.musicbrainz.VALID_SEARCH_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="browsing">
+<h2>Browsing<a class="headerlink" href="#browsing" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="musicbrainzngs.browse_artists">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">browse_artists</tt><big>(</big><em>recording=None</em>, <em>release=None</em>, <em>release_group=None</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>limit=None</em>, <em>offset=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.browse_artists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.browse_labels">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">browse_labels</tt><big>(</big><em>release=None</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>limit=None</em>, <em>offset=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.browse_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.browse_recordings">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">browse_recordings</tt><big>(</big><em>artist=None</em>, <em>release=None</em>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>limit=None</em>, <em>offset=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.browse_recordings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.browse_release_groups">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">browse_release_groups</tt><big>(</big><em>artist=None</em>, <em>release=None</em>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>limit=None</em>, <em>offset=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.browse_release_groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.browse_releases">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">browse_releases</tt><big>(</big><em>artist=None</em>, <em>label=None</em>, <em>recording=None</em>, <em>release_group=None</em>, <em>release_status=</em><span class="optional">[</span><span class="optional">]</span>, <em>release_type=</em><span class="optional">[</span><span class="optional">]</span>, <em>includes=</em><span class="optional">[</span><span class="optional">]</span>, <em>limit=None</em>, <em>offset=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.browse_releases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="submitting">
+<h2>Submitting<a class="headerlink" href="#submitting" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="musicbrainzngs.submit_barcodes">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_barcodes</tt><big>(</big><em>barcodes</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_barcodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits a set of {release1: barcode1, release2:barcode2}
+Must call auth(user, pass) first</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.submit_puids">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_puids</tt><big>(</big><em>puids</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_puids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.submit_echoprints">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_echoprints</tt><big>(</big><em>echoprints</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_echoprints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.submit_isrcs">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_isrcs</tt><big>(</big><em>recordings_isrcs</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_isrcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit ISRCs.
+Submits a set of {recording-id: [isrc1, isrc1, ...]}
+Must call auth(user, pass) first</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.submit_tags">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_tags</tt><big>(</big><em>artist_tags={}</em>, <em>recording_tags={}</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit user tags.
+Artist or recording parameters are of the form:
+{&#8216;entityid&#8217;: [taglist]}</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.submit_ratings">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_ratings</tt><big>(</big><em>artist_ratings={}</em>, <em>recording_ratings={}</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_ratings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit user ratings.
+Artist or recording parameters are of the form:
+{&#8216;entityid&#8217;: rating}</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.add_releases_to_collection">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">add_releases_to_collection</tt><big>(</big><em>collection</em>, <em>releases=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.add_releases_to_collection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.remove_releases_from_collection">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">remove_releases_from_collection</tt><big>(</big><em>collection</em>, <em>releases=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.remove_releases_from_collection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#general">General</a></li>
+<li><a class="reference internal" href="#getting-data">Getting data</a></li>
+<li><a class="reference internal" href="#searching">Searching</a></li>
+<li><a class="reference internal" href="#browsing">Browsing</a></li>
+<li><a class="reference internal" href="#submitting">Submitting</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="previous chapter">Usage</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             >previous</a> |</li>
+        <li><a href="index.html">musicbrainzngs 0.3dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Alastair Porter et. al.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
