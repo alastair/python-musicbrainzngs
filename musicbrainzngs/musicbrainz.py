@@ -230,7 +230,7 @@ def auth(u, p):
 	password = p
 
 def set_useragent(app, version, contact=None):
-    """ Set the User-Agent to be used for requests to the MusicBrainz webservice.
+    """Set the User-Agent to be used for requests to the MusicBrainz webservice.
     This must be set before requests are made."""
     global _useragent, _client
     if contact is not None:
@@ -241,6 +241,8 @@ def set_useragent(app, version, contact=None):
     _log.debug("set user-agent to %s" % _useragent)
 
 def set_hostname(new_hostname):
+    """Set the base hostname for MusicBrainz webservice requests. 
+    Defaults to 'musicbrainz.org'."""
 	global hostname
 	hostname = new_hostname
 
