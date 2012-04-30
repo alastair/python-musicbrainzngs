@@ -8,6 +8,8 @@ General
 
 .. autofunction:: musicbrainzngs.set_rate_limit
 
+.. autofunction:: musicbrainzngs.set_useragent
+
 .. autofunction:: musicbrainzngs.set_hostname
 
 Getting data
