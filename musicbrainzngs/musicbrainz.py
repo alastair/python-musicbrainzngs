@@ -735,18 +735,21 @@ def get_releases_in_collection(collection):
 
 def submit_barcodes(barcodes):
 	"""Submits a set of {release1: barcode1, release2:barcode2}
+
 	Must call auth(user, pass) first"""
 	query = mbxml.make_barcode_request(barcodes)
 	return _do_mb_post("release", query)
 
 def submit_puids(puids):
     """Submit PUIDs.
+
     Must call auth(user, pass) first"""
     query = mbxml.make_puid_request(puids)
     return _do_mb_post("recording", query)
 
 def submit_echoprints(echoprints):
     """Submit echoprints.
+
     Must call auth(user, pass) first"""
     query = mbxml.make_echoprint_request(echoprints)
     return _do_mb_post("recording", query)
@@ -754,6 +757,7 @@ def submit_echoprints(echoprints):
 def submit_isrcs(recordings_isrcs):
     """Submit ISRCs.
     Submits a set of {recording-id: [isrc1, isrc1, ...]}
+
     Must call auth(user, pass) first"""
     query = mbxml.make_isrc_request(recordings_isrcs=recordings_isrcs)
     return _do_mb_post("recording", query)
@@ -762,6 +766,7 @@ def submit_tags(artist_tags={}, recording_tags={}):
     """Submit user tags.
     Artist or recording parameters are of the form:
     {'entityid': [taglist]}
+
     Must call auth(user, pass) first"""
     query = mbxml.make_tag_request(artist_tags, recording_tags)
     return _do_mb_post("tag", query)
@@ -770,6 +775,7 @@ def submit_ratings(artist_ratings={}, recording_ratings={}):
     """ Submit user ratings.
     Artist or recording parameters are of the form:
     {'entityid': rating}
+
     Must call auth(user, pass) first"""
     query = mbxml.make_rating_request(artist_ratings, recording_ratings)
     return _do_mb_post("rating", query)
@@ -777,6 +783,7 @@ def submit_ratings(artist_ratings={}, recording_ratings={}):
 def add_releases_to_collection(collection, releases=[]):
     """Add releases to a collection.
     Collection and releases should be identified by their MBIDs
+
     Must call auth(user, pass) first"""
     # XXX: Maximum URI length of 16kb means we should only allow ~400 releases
     releaselist = ";".join(releases)
@@ -785,6 +792,7 @@ def add_releases_to_collection(collection, releases=[]):
 def remove_releases_from_collection(collection, releases=[]):
     """Remove releases from a collection.
     Collection and releases should be identified by their MBIDs
+
     Must call auth(user, pass) first"""
     releaselist = ";".join(releases)
     _do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
