@@ -1,30 +1,13 @@
 import unittest
 import os
 import sys
-sys.path.append(os.path.abspath(".."))
+# Insert .. at the beginning of path so we use this version instead
+# of something that's already been installed
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import musicbrainzngs
 from musicbrainzngs import mbxml
 
-try:
-    import StringIO
-    from urllib2 import OpenerDirector
-except ImportError:
-    import io as StringIO
-    from urllib.request import OpenerDirector
-
-class FakeOpener(OpenerDirector):
-    """ A URL Opener that saves the URL requested and
-    returns a dummy response """
-    def open(self, request, body=None):
-        self.myurl = request.get_full_url()
-        return StringIO.StringIO("<response/>")
-
-    def get_url(self):
-        return self.myurl
-
-opener = FakeOpener()
-
-musicbrainzngs.compat.build_opener = lambda args: opener
+import _common
 
 class UrlTest(unittest.TestCase):
     """ Test that the correct URL is generated when a search query is made """
@@ -35,27 +18,27 @@ class UrlTest(unittest.TestCase):
 
     def testSearchArtist(self):
         musicbrainzngs.search_artists("Dynamo Go")
-        self.assertEqual("http://musicbrainz.org/ws/2/artist/?query=Dynamo+Go", opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/artist/?query=Dynamo+Go", _common.opener.get_url())
 
     def testSearchWork(self):
         musicbrainzngs.search_works("Fountain City")
-        self.assertEqual("http://musicbrainz.org/ws/2/work/?query=Fountain+City", opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/work/?query=Fountain+City", _common.opener.get_url())
 
     def testSearchLabel(self):
         musicbrainzngs.search_labels("Waysafe")
-        self.assertEqual("http://musicbrainz.org/ws/2/label/?query=Waysafe", opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/label/?query=Waysafe", _common.opener.get_url())
 
     def testSearchRelease(self):
         musicbrainzngs.search_releases("Affordable Pop Music")
-        self.assertEqual("http://musicbrainz.org/ws/2/release/?query=Affordable+Pop+Music", opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/release/?query=Affordable+Pop+Music", _common.opener.get_url())
 
     def testSearchReleaseGroup(self):
         musicbrainzngs.search_release_groups("Affordable Pop Music")
-        self.assertEqual("http://musicbrainz.org/ws/2/release-group/?query=Affordable+Pop+Music", opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/release-group/?query=Affordable+Pop+Music", _common.opener.get_url())
 
     def testSearchRecording(self):
         musicbrainzngs.search_recordings("Thief of Hearts")
-        self.assertEqual("http://musicbrainz.org/ws/2/recording/?query=Thief+of+Hearts", opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/recording/?query=Thief+of+Hearts", _common.opener.get_url())
 
 class SearchArtistTest(unittest.TestCase):
     def testFields(self):

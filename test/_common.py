@@ -1,6 +1,34 @@
 """Common support for the test cases."""
 import time
 
+import musicbrainzngs
+from musicbrainzngs import compat
+
+try:
+    from urllib2 import OpenerDirector
+except ImportError:
+    from urllib.request import OpenerDirector
+try:
+    import StringIO
+except ImportError:
+    import io as StringIO
+
+class FakeOpener(OpenerDirector):
+    """ A URL Opener that saves the URL requested and
+    returns a dummy response """
+    def __init__(self):
+        self.myurl = None
+
+    def open(self, request, body=None):
+        self.myurl = request.get_full_url()
+        return StringIO.StringIO("<response/>")
+
+    def get_url(self):
+        return self.myurl
+
+opener = FakeOpener()
+musicbrainzngs.compat.build_opener = lambda args: opener
+
 # Mock timing.
 class Timecop(object):
     """Mocks the timing system (namely time() and sleep()) for testing.
@@ -11,7 +39,7 @@ class Timecop(object):
 
     def time(self):
         return self.now
-    
+
     def sleep(self, amount):
         self.now += amount
 
