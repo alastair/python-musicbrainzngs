@@ -8,6 +8,34 @@ from musicbrainzngs import musicbrainz
 from test._common import Timecop
 
 
+class ArgumentTest(unittest.TestCase):
+    def test_invalid_args(self):
+        """ Passing invalid arguments to set_rate_limit should throw
+            an exception """
+        try:
+            musicbrainzngs.set_rate_limit(True, 1, 0)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_requests" in e.message)
+
+        try:
+            musicbrainzngs.set_rate_limit(True, 0, 1)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_interval" in e.message)
+
+        try:
+            musicbrainzngs.set_rate_limit(True, 1, -1)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_requests" in e.message)
+
+        try:
+            musicbrainzngs.set_rate_limit(True, 0, -1)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_interval" in e.message)
+
 class RateLimitingTest(unittest.TestCase):
     def setUp(self):
         self.cop = Timecop()
@@ -20,19 +48,6 @@ class RateLimitingTest(unittest.TestCase):
 
     def tearDown(self):
         self.cop.restore()
-
-    def test_invalid_args(self):
-        try:
-            musicbrainzngs.set_rate_limit(True, 1, 0)
-            self.fail("Required exception wasn't raised")
-        except ValueError, e:
-            self.assertTrue("new_requests" in e.message)
-
-        try:
-            musicbrainzngs.set_rate_limit(True, 0, 1)
-            self.fail("Required exception wasn't raised")
-        except ValueError, e:
-            self.assertTrue("new_interval" in e.message)
 
     def test_do_not_wait_initially(self):
         time1 = time.time()

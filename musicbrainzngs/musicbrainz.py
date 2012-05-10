@@ -263,10 +263,10 @@ def set_rate_limit(rate_limit=True, new_interval=1.0, new_requests=1):
     global limit_interval
     global limit_requests
     global do_rate_limit
-    if new_interval == 0.0:
-        raise ValueError("new_interval can't be 0")
-    if new_requests == 0:
-        raise ValueError("new_requests can't be 0")
+    if new_interval <= 0.0:
+        raise ValueError("new_interval can't be less than 0")
+    if new_requests <= 0:
+        raise ValueError("new_requests can't be less than 0")
     limit_interval = new_interval
     limit_requests = new_requests
     do_rate_limit = rate_limit
