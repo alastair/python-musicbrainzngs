@@ -505,6 +505,8 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	response is parsed and returned.
 	"""
 	# Build arguments.
+	if not isinstance(includes, list):
+		includes = [includes]
 	_check_includes(entity, includes)
 	auth_required = _is_auth_required(entity, includes)
 	args = dict(params)
@@ -592,23 +594,23 @@ def _do_mb_post(path, body):
 
 # Single entity by ID
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params(includes, release_status, release_type)
+	params = _check_filter_and_make_params("artist", includes, release_status, release_type)
 	return _do_mb_query("artist", id, includes, params)
 
 def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params(includes, release_status, release_type)
+	params = _check_filter_and_make_params("label", includes, release_status, release_type)
 	return _do_mb_query("label", id, includes, params)
 
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params(includes, release_status, release_type)
+	params = _check_filter_and_make_params("recording", includes, release_status, release_type)
 	return _do_mb_query("recording", id, includes, params)
 
 def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params(includes, release_status, release_type)
+	params = _check_filter_and_make_params("release", includes, release_status, release_type)
 	return _do_mb_query("release", id, includes, params)
 
 def get_release_group_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params(includes, release_status, release_type)
+	params = _check_filter_and_make_params("release-group", includes, release_status, release_type)
 	return _do_mb_query("release-group", id, includes, params)
 
 def get_work_by_id(id, includes=[]):
