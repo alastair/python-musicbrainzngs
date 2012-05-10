@@ -516,18 +516,28 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	path = '%s/%s' % (entity, id)
 	return _mb_request(path, 'GET', auth_required, args=args)
 
-def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
+def _do_mb_search(entity, query='', fields={},
+		  limit=None, offset=None, strict=False):
 	"""Perform a full-text search on the MusicBrainz search server.
-	`query` is a free-form query string and `fields` is a dictionary
+	`query` is a lucene query string when no fields are set,
+	but is escaped when any fields are given. `fields` is a dictionary
 	of key/value query parameters. They keys in `fields` must be valid
 	for the given entity type.
 	"""
 	# Encode the query terms as a Lucene query string.
 	query_parts = []
 	if query:
-		clean_query = util._unicode(query)
-		query_parts.append(clean_query)
-	for key, value in fields.items():
+		clean_query = query.replace('\x00', '').strip()
+		if fields:
+			clean_query = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])',
+					r'\\\1', clean_query)
+			if strict:
+				query_parts.append(u'"%s"' % clean_query)
+			else:
+				query_parts.append(clean_query.lower())
+		else:
+			query_parts.append(clean_query)
+	for key, value in fields.iteritems():
 		# Ensure this is a valid search field.
 		if key not in VALID_SEARCH_FIELDS[entity]:
 			raise InvalidSearchFieldError(
@@ -537,10 +547,18 @@ def _do_mb_search(entity, query='', fields={}, limit=None, offset=None):
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
 		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
-		value = value.lower() # Avoid binary operators like OR.
+		value = value.replace('\x00', '').strip()
 		if value:
-			query_parts.append('%s:(%s)' % (key, value))
-	full_query = ' '.join(query_parts).strip()
+			if strict:
+				query_parts.append(u'%s:"%s"' % (key, value))
+			else:
+				value = value.lower() # avoid AND / OR
+				query_parts.append(u'%s:(%s)' % (key, value))
+	if strict:
+		full_query = u' AND '.join(query_parts).strip()
+	else:
+		full_query = u' '.join(query_parts).strip()
+
 	if not full_query:
 		raise ValueError('at least one query term is required')
 
@@ -599,54 +617,68 @@ def get_work_by_id(id, includes=[]):
 
 # Searching
 
-def search_artists(query='', limit=None, offset=None, **fields):
-	"""Search for artists by a free-form `query` string and/or any of
+def search_artists(query='', limit=None, offset=None, strict=False, **fields):
+	"""Search for artists by a free-form `query` string or any of
 	the following keyword arguments specifying field queries:
 	arid, artist, sortname, type, begin, end, comment, alias, country,
 	gender, tag
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
 	"""
-	return _do_mb_search('artist', query, fields, limit, offset)
+	return _do_mb_search('artist', query, fields, limit, offset, strict)
 
-def search_labels(query='', limit=None, offset=None, **fields):
-	"""Search for labels by a free-form `query` string and/or any of
+def search_labels(query='', limit=None, offset=None, strict=False, **fields):
+	"""Search for labels by a free-form `query` string or any of
 	the following keyword arguments specifying field queries:
 	laid, label, sortname, type, code, country, begin, end, comment,
 	alias, tag
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
 	"""
-	return _do_mb_search('label', query, fields, limit, offset)
+	return _do_mb_search('label', query, fields, limit, offset, strict)
 
-def search_recordings(query='', limit=None, offset=None, **fields):
-	"""Search for recordings by a free-form `query` string and/or any of
+def search_recordings(query='', limit=None, offset=None, strict=False, **fields):
+	"""Search for recordings by a free-form `query` string or any of
 	the following keyword arguments specifying field queries:
 	rid, recording, isrc, arid, artist, artistname, creditname, reid,
 	release, type, status, tracks, tracksrelease, dur, qdur, tnum,
 	position, tag
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
 	"""
-	return _do_mb_search('recording', query, fields, limit, offset)
+	return _do_mb_search('recording', query, fields, limit, offset, strict)
 
-def search_releases(query='', limit=None, offset=None, **fields):
-	"""Search for releases by a free-form `query` string and/or any of
+def search_releases(query='', limit=None, offset=None, strict=False, **fields):
+	"""Search for releases by a free-form `query` string or any of
 	the following keyword arguments specifying field queries:
 	reid, release, arid, artist, artistname, creditname, type, status,
 	tracks, tracksmedium, discids, discidsmedium, mediums, date, asin,
 	lang, script, country, date, label, catno, barcode, puid
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
 	"""
-	return _do_mb_search('release', query, fields, limit, offset)
+	return _do_mb_search('release', query, fields, limit, offset, strict)
 
-def search_release_groups(query='', limit=None, offset=None, **fields):
-	"""Search for release groups by a free-form `query` string and/or
+def search_release_groups(query='', limit=None, offset=None,
+			  strict=False, **fields):
+	"""Search for release groups by a free-form `query` string or
 	any of the following keyword arguments specifying field queries:
 	rgid, releasegroup, reid, release, arid, artist, artistname,
 	creditname, type, tag
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
 	"""
-	return _do_mb_search('release-group', query, fields, limit, offset)
+	return _do_mb_search('release-group', query, fields,
+			     limit, offset, strict)
 
-def search_works(query='', limit=None, offset=None, **fields):
-	"""Search for works by a free-form `query` string and/or any of
+def search_works(query='', limit=None, offset=None, strict=False, **fields):
+	"""Search for works by a free-form `query` string or any of
 	the following keyword arguments specifying field queries:
 	wid, work, iswc, type, arid, artist, alias, tag
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
 	"""
-	return _do_mb_search('work', query, fields, limit, offset)
+	return _do_mb_search('work', query, fields, limit, offset, strict)
 
 
 # Lists of entities
