@@ -241,7 +241,7 @@ def set_useragent(app, version, contact=None):
     _log.debug("set user-agent to %s" % _useragent)
 
 def set_hostname(new_hostname):
-    """Set the base hostname for MusicBrainz webservice requests. 
+    """Set the base hostname for MusicBrainz webservice requests.
     Defaults to 'musicbrainz.org'."""
     global hostname
     hostname = new_hostname
@@ -250,66 +250,73 @@ def set_hostname(new_hostname):
 
 limit_interval = 1.0
 limit_requests = 1
+do_rate_limit = True
 
-def set_rate_limit(new_interval=1.0, new_requests=1):
-	"""Sets the rate limiting behavior of the module. Must be invoked
-	before the first Web service call.  Specify the number of requests
-	(`new_requests`) that may be made per given interval
-	(`new_interval`).
-	"""
-	global limit_interval
-	global limit_requests
-	limit_interval = new_interval
-	limit_requests = new_requests
+def set_rate_limit(rate_limit=True, new_interval=1.0, new_requests=1):
+    """Sets the rate limiting behavior of the module. Must be invoked
+    before the first Web service call.
+    If the `rate_limit` parameter is set to True, then only a set number
+    of requests (`new_requests`) will be made per given interval
+    (`new_interval`). If `rate_limit` is False, then no rate limiting
+    will occur.
+    """
+    global limit_interval
+    global limit_requests
+    global do_rate_limit
+    if new_interval == 0.0:
+        raise ValueError("new_interval can't be 0")
+    if new_requests == 0:
+        raise ValueError("new_requests can't be 0")
+    limit_interval = new_interval
+    limit_requests = new_requests
+    do_rate_limit = rate_limit
 
 class _rate_limit(object):
-	"""A decorator that limits the rate at which the function may be
-	called. The rate is controlled by the `limit_interval` and
-	`limit_requests` global variables.  The limiting is thread-safe;
-	only one thread may be in the function at a time (acts like a
-	monitor in this sense). The globals must be set before the first
-	call to the limited function.
-	"""
-	def __init__(self, fun):
-		self.fun = fun
-		self.last_call = 0.0
-		self.lock = threading.Lock()
-		self.remaining_requests = None # Set on first invocation.
+    """A decorator that limits the rate at which the function may be
+    called. The rate is controlled by the `limit_interval` and
+    `limit_requests` global variables.  The limiting is thread-safe;
+    only one thread may be in the function at a time (acts like a
+    monitor in this sense). The globals must be set before the first
+    call to the limited function.
+    """
+    def __init__(self, fun):
+        self.fun = fun
+        self.last_call = 0.0
+        self.lock = threading.Lock()
+        self.remaining_requests = None # Set on first invocation.
 
-	def _update_remaining(self):
-		"""Update remaining requests based on the elapsed time since
-		they were last calculated.
-		"""
-		# On first invocation, we have the maximum number of requests
-		# available.
-		if self.remaining_requests is None:
-			self.remaining_requests = float(limit_requests)
+    def _update_remaining(self):
+        """Update remaining requests based on the elapsed time since
+        they were last calculated.
+        """
+        # On first invocation, we have the maximum number of requests
+        # available.
+        if self.remaining_requests is None:
+            self.remaining_requests = float(limit_requests)
 
-		else:
-			since_last_call = time.time() - self.last_call
-			self.remaining_requests += since_last_call * \
-									   (limit_requests / limit_interval)
-			self.remaining_requests = min(self.remaining_requests,
-										  float(limit_requests))
+        else:
+            since_last_call = time.time() - self.last_call
+            self.remaining_requests += since_last_call * \
+                                       (limit_requests / limit_interval)
+            self.remaining_requests = min(self.remaining_requests,
+                                          float(limit_requests))
 
-		self.last_call = time.time()
+        self.last_call = time.time()
 
-	def __call__(self, *args, **kwargs):
-		with self.lock:
-			self._update_remaining()
+    def __call__(self, *args, **kwargs):
+        with self.lock:
+            if do_rate_limit:
+                self._update_remaining()
 
-			# Delay if necessary.
-			while self.remaining_requests < 0.999:
-				time.sleep((1.0 - self.remaining_requests) *
-						   (limit_requests / limit_interval))
-				self._update_remaining()
+                # Delay if necessary.
+                while self.remaining_requests < 0.999:
+                    time.sleep((1.0 - self.remaining_requests) *
+                               (limit_requests / limit_interval))
+                    self._update_remaining()
 
-			# Call the original function, "paying" for this call.
-			self.remaining_requests -= 1.0
-			return self.fun(*args, **kwargs)
-
-
-# Generic support for making HTTP requests.
+                # Call the original function, "paying" for this call.
+                self.remaining_requests -= 1.0
+            return self.fun(*args, **kwargs)
 
 # From pymb2
 class _RedirectPasswordMgr(compat.HTTPPasswordMgr):
