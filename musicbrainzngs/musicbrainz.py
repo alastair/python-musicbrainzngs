@@ -10,10 +10,9 @@ import logging
 import socket
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
-from . import mbxml
-from . import compat
-from . import util
 
+from musicbrainzngs import mbxml
+from musicbrainzngs import compat
 
 _version = "0.3dev"
 _log = logging.getLogger("musicbrainzngs")
@@ -241,7 +240,7 @@ def set_useragent(app, version, contact=None):
     _log.debug("set user-agent to %s" % _useragent)
 
 def set_hostname(new_hostname):
-    """Set the base hostname for MusicBrainz webservice requests. 
+    """Set the base hostname for MusicBrainz webservice requests.
     Defaults to 'musicbrainz.org'."""
     global hostname
     hostname = new_hostname
