@@ -12,6 +12,7 @@ import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
 from musicbrainzngs import mbxml
+from musicbrainzngs import util
 from musicbrainzngs import compat
 
 _version = "0.3dev"
