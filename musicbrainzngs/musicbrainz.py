@@ -529,17 +529,17 @@ def _do_mb_search(entity, query='', fields={},
 	# Encode the query terms as a Lucene query string.
 	query_parts = []
 	if query:
-		clean_query = query.replace('\x00', '').strip()
+		clean_query = util._unicode(query)
 		if fields:
 			clean_query = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])',
 					r'\\\1', clean_query)
 			if strict:
-				query_parts.append(u'"%s"' % clean_query)
+				query_parts.append('"%s"' % clean_query)
 			else:
 				query_parts.append(clean_query.lower())
 		else:
 			query_parts.append(clean_query)
-	for key, value in fields.iteritems():
+	for key, value in fields.items():
 		# Ensure this is a valid search field.
 		if key not in VALID_SEARCH_FIELDS[entity]:
 			raise InvalidSearchFieldError(
@@ -549,17 +549,16 @@ def _do_mb_search(entity, query='', fields={},
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
 		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
-		value = value.replace('\x00', '').strip()
 		if value:
 			if strict:
-				query_parts.append(u'%s:"%s"' % (key, value))
+				query_parts.append('%s:"%s"' % (key, value))
 			else:
 				value = value.lower() # avoid AND / OR
-				query_parts.append(u'%s:(%s)' % (key, value))
+				query_parts.append('%s:(%s)' % (key, value))
 	if strict:
-		full_query = u' AND '.join(query_parts).strip()
+		full_query = ' AND '.join(query_parts).strip()
 	else:
-		full_query = u' '.join(query_parts).strip()
+		full_query = ' '.join(query_parts).strip()
 
 	if not full_query:
 		raise ValueError('at least one query term is required')
