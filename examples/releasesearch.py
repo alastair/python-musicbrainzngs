@@ -21,8 +21,10 @@ musicbrainzngs.set_useragent(
 def show_release_details(rel):
     """Print some details about a release dictionary to stdout.
     """
-    artist_names = [c['artist']['name'] for c in rel['artist-credit']]
-    print("{}, by {}".format(rel['title'], ', '.join(artist_names)))
+    # "artist-credit-phrase" is a flat string of the credited artists
+    # joined with " + " or whatever is given by the server.
+    # You can also work with the "artist-credit" list manually.
+    print("{}, by {}".format(rel['title'], rel["artist-credit-phrase"]))
     if 'date' in rel:
         print("Released {} ({})".format(rel['date'], rel['status']))
     print("MusicBrainz ID: {}".format(rel['id']))
