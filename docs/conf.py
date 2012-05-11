@@ -43,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'musicbrainzngs'
-copyright = u'2012, Alastair Porter et. al'
+copyright = u'2012, Alastair Porter et al'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -141,7 +141,7 @@ html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-#html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
