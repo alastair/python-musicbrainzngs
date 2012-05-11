@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """A simple script that searches for a release in the MusicBrainz
-database and prints out a few details about each matching release.
+database and prints out a few details about the first 5 matching release.
 
     $ ./releasesearch.py "the beatles" revolver
     Revolver, by The Beatles
@@ -43,7 +43,8 @@ if __name__ == '__main__':
     # specific fields. The "limit" keyword argument is special (like as
     # "offset", not shown here) and specifies the number of results to
     # return.
-    result = musicbrainzngs.search_releases(artist=artist, release=album)
+    result = musicbrainzngs.search_releases(artist=artist, release=album,
+                                            limit=5)
     # On success, result is a dictionary with a single key:
     # "release-list", which is a list of dictionaries.
     if not result['release-list']:
