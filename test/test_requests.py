@@ -15,25 +15,25 @@ class ArgumentTest(unittest.TestCase):
         try:
             musicbrainzngs.set_rate_limit(True, 1, 0)
             self.fail("Required exception wasn't raised")
-        except ValueError, e:
+        except ValueError as e:
             self.assertTrue("new_requests" in e.message)
 
         try:
             musicbrainzngs.set_rate_limit(True, 0, 1)
             self.fail("Required exception wasn't raised")
-        except ValueError, e:
+        except ValueError as e:
             self.assertTrue("new_interval" in e.message)
 
         try:
             musicbrainzngs.set_rate_limit(True, 1, -1)
             self.fail("Required exception wasn't raised")
-        except ValueError, e:
+        except ValueError as e:
             self.assertTrue("new_requests" in e.message)
 
         try:
             musicbrainzngs.set_rate_limit(True, 0, -1)
             self.fail("Required exception wasn't raised")
-        except ValueError, e:
+        except ValueError as e:
             self.assertTrue("new_interval" in e.message)
 
 class RateLimitingTest(unittest.TestCase):
