@@ -2,10 +2,39 @@ import unittest
 import os
 import sys
 import time
-sys.path.append(os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import musicbrainzngs
 from musicbrainzngs import musicbrainz
 from test._common import Timecop
 
+
+class ArgumentTest(unittest.TestCase):
+    def test_invalid_args(self):
+        """ Passing invalid arguments to set_rate_limit should throw
+            an exception """
+        try:
+            musicbrainzngs.set_rate_limit(True, 1, 0)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_requests" in e.message)
+
+        try:
+            musicbrainzngs.set_rate_limit(True, 0, 1)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_interval" in e.message)
+
+        try:
+            musicbrainzngs.set_rate_limit(True, 1, -1)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_requests" in e.message)
+
+        try:
+            musicbrainzngs.set_rate_limit(True, 0, -1)
+            self.fail("Required exception wasn't raised")
+        except ValueError, e:
+            self.assertTrue("new_interval" in e.message)
 
 class RateLimitingTest(unittest.TestCase):
     def setUp(self):
@@ -45,8 +74,7 @@ class RateLimitingTest(unittest.TestCase):
 
 class BatchedRateLimitingTest(unittest.TestCase):
     def setUp(self):
-        musicbrainz.limit_requests = 3
-        musicbrainz.limit_interval = 3.0
+        musicbrainzngs.set_rate_limit(True, 3, 3)
 
         self.cop = Timecop()
         self.cop.install()
@@ -57,8 +85,7 @@ class BatchedRateLimitingTest(unittest.TestCase):
         self.func = limited
 
     def tearDown(self):
-        musicbrainz.limit_requests = 1
-        musicbrainz.limit_interval = 1.0
+        musicbrainzngs.set_rate_limit(True, 1, 1)
 
         self.cop.restore()
 
@@ -78,3 +105,29 @@ class BatchedRateLimitingTest(unittest.TestCase):
         self.func()
         time2 = time.time()
         self.assertTrue(time2 - time1 >= 1.0)
+
+class NoRateLimitingTest(unittest.TestCase):
+    """ Disable rate limiting """
+    def setUp(self):
+        musicbrainzngs.set_rate_limit(False)
+
+        self.cop = Timecop()
+        self.cop.install()
+
+        @musicbrainz._rate_limit
+        def limited():
+            pass
+        self.func = limited
+
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
+        self.cop.restore()
+
+    def test_initial_rapid_queries_not_delayed(self):
+        time1 = time.time()
+        self.func()
+        self.func()
+        self.func()
+        time2 = time.time()
+        self.assertAlmostEqual(time1, time2)
