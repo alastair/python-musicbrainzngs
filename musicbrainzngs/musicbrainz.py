@@ -399,6 +399,10 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 				if code == 104: # "Connection reset by peer."
 					continue
 			raise NetworkError(cause=exc)
+		except socket.error as exc:
+			if exc.errno == 104:
+				continue
+			raise NetworkError(cause=exc)
 		except IOError as exc:
 			raise NetworkError(cause=exc)
 		else:
