@@ -40,7 +40,11 @@ def make_artist_credit(artists):
 	names = []
 	for artist in artists:
 		if isinstance(artist, dict):
-			names.append(artist.get("artist", {}).get("name", ""))
+			if "name" in artist:
+				names.append(artist.get("name", ""))
+			else:
+				names.append(artist.get("artist", {}).get("name", ""))
+
 		else:
 			names.append(artist)
 	return "".join(names)
@@ -313,7 +317,8 @@ def parse_recording(recording):
 	             "rating": parse_rating,
 	             "puid-list": parse_external_id_list,
 	             "isrc-list": parse_external_id_list,
-	             "echoprint-list": parse_external_id_list}
+	             "echoprint-list": parse_external_id_list,
+	             "relation-list": parse_relation_list}
 
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
@@ -339,7 +344,8 @@ def parse_work(work):
 	inner_els = {"tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
-	             "alias-list": parse_alias_list}
+	             "alias-list": parse_alias_list,
+	             "relation-list": parse_relation_list}
 
 	result.update(parse_attributes(attribs, work))
 	result.update(parse_elements(elements, work))
