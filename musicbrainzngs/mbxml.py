@@ -40,7 +40,11 @@ def make_artist_credit(artists):
 	names = []
 	for artist in artists:
 		if isinstance(artist, dict):
-			names.append(artist.get("artist", {}).get("name", ""))
+			if "name" in artist:
+				names.append(artist.get("name", ""))
+			else:
+				names.append(artist.get("artist", {}).get("name", ""))
+
 		else:
 			names.append(artist)
 	return "".join(names)
