@@ -800,7 +800,7 @@ def submit_echoprints(echoprints):
 
 def submit_isrcs(recordings_isrcs):
     """Submit ISRCs.
-    Submits a set of {recording-id: [isrc1, isrc1, ...]}
+    Submits a set of {recording-id: [isrc1, isrc2, ...]}
 
     Must call auth(user, pass) first"""
     query = mbxml.make_isrc_request(recordings_isrcs=recordings_isrcs)
