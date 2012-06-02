@@ -22,13 +22,12 @@ If a request is made without setting the useragent beforehand, a
 Authentication
 --------------
 
-Certain calls to the webservice (link to submitting) require user
-authentication prior to the call itself. The affected functions state this
-requirement in their documentation. The user and password used for
-authentication are the same as for the MusicBrainz website itself and can be
-set with the :meth:`musicbrainzngs.auth` method. After calling this function,
-the credentials will be saved and automaticall used by all functions requiring
-them.
+Certain calls to the webservice require user authentication prior to the call
+itself. The affected functions state this requirement in their documentation.
+The user and password used for authentication are the same as for the
+MusicBrainz website itself and can be set with the :meth:`musicbrainzngs.auth`
+method. After calling this function, the credentials will be saved and
+automaticall used by all functions requiring them.
 
 If a method requiring authentication is called without authenticating, a
 :class:`musicbrainzngs.UsageError` will be raised.
