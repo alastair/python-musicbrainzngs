@@ -6,7 +6,6 @@
 import xml.etree.ElementTree as ET
 import logging
 
-from musicbrainzngs import compat
 from musicbrainzngs import util
 
 try:
@@ -436,7 +435,7 @@ def parse_track_list(tl):
 
 def parse_track(track):
 	result = {}
-	elements = ["position", "title"]
+	elements = ["number", "position", "title"]
 	inner_els = {"recording": parse_recording}
 
 	result.update(parse_elements(elements, track))
