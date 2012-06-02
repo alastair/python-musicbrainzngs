@@ -33,6 +33,9 @@ them.
 If a method requiring authentication is called without authenticating, a
 :class:`musicbrainzngs.UsageError` will be raised.
 
+If the credentials provided are wrong and the server returns a status code of
+401, a :class:`musicbrainzngs.AuthenticationError` will be raised.
+
 Getting data
 ------------
 

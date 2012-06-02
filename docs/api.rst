@@ -95,4 +95,6 @@ Submitting
 Exceptions
 ----------
 
+.. autoclass:: musicbrainzngs.AuthenticationError
+
 .. autoclass:: musicbrainzngs.UsageError

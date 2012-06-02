@@ -170,6 +170,10 @@ class ResponseError(WebServiceError):
 	"""Bad response sent by the MB server."""
 	pass
 
+class AuthenticationError(WebServiceError):
+	"""Received a HTTP 401 response while accessing a protected resource."""
+	pass
+
 
 # Helpers for validating and formatting allowed sets.
 
@@ -382,6 +386,8 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 			elif exc.code in (503, 502, 500):
 				# Rate limiting, internal overloading...
 				_log.debug("HTTP error %i" % exc.code)
+			elif exc.code in (401, ):
+				raise AuthenticationError(cause=exc)
 			else:
 				# Other, unknown error. Should handle more cases, but
 				# retrying for now.
