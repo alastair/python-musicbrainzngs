@@ -14,7 +14,7 @@ class UrlTest(unittest.TestCase):
 
     def setUp(self):
         musicbrainzngs.set_useragent("a", "1")
-        musicbrainzngs.set_rate_limit(1, 100)
+        musicbrainzngs.set_rate_limit(rate_limit=False)
 
     def testSearchArtist(self):
         musicbrainzngs.search_artists("Dynamo Go")

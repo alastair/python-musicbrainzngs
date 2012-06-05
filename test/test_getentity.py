@@ -13,7 +13,7 @@ class UrlTest(unittest.TestCase):
 
     def setUp(self):
         musicbrainzngs.set_useragent("a", "1")
-        musicbrainzngs.set_rate_limit(1, 100)
+        musicbrainzngs.set_rate_limit(rate_limit=False)
 
     def testGetArtist(self):
         artistid = "952a4205-023d-4235-897c-6fdb6f58dfaa"
