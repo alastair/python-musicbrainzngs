@@ -435,7 +435,7 @@ def parse_track_list(tl):
 
 def parse_track(track):
 	result = {}
-	elements = ["number", "position", "title"]
+	elements = ["number", "position", "title", "length"]
 	inner_els = {"recording": parse_recording}
 
 	result.update(parse_elements(elements, track))
