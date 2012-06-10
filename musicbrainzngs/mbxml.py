@@ -339,7 +339,7 @@ def parse_work_list(wl):
 def parse_work(work):
 	result = {}
 	attribs = ["id", "ext:score"]
-	elements = ["title", "user-rating", "language"]
+	elements = ["title", "user-rating", "language", "iswc"]
 	inner_els = {"tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
