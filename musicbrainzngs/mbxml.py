@@ -190,7 +190,7 @@ def parse_artist(artist):
 	             "tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
-	             "alias-list": parse_alias_list}
+	             "alias-list": parse_element_list}
 
 	result.update(parse_attributes(attribs, artist))
 	result.update(parse_elements(elements, artist))
@@ -211,19 +211,13 @@ def parse_label(label):
 	             "tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
-	             "alias-list": parse_alias_list}
+	             "alias-list": parse_element_list}
 
 	result.update(parse_attributes(attribs, label))
 	result.update(parse_elements(elements, label))
 	result.update(parse_inner(inner_els, label))
 
 	return result
-
-def parse_attribute_list(al):
-    return [parse_attribute_tag(a) for a in al]
-
-def parse_attribute_tag(attribute):
-    return attribute.text
 
 def parse_relation_list(rl):
     attribs = ["target-type"]
@@ -240,7 +234,7 @@ def parse_relation(relation):
                  "recording": parse_recording,
                  "release": parse_release,
                  "release-group": parse_release_group,
-                 "attribute-list": parse_attribute_list,
+                 "attribute-list": parse_element_list,
                  "work": parse_work
                 }
     result.update(parse_attributes(attribs, relation))
@@ -330,27 +324,28 @@ def parse_recording(recording):
 def parse_external_id_list(pl):
 	return [parse_attributes(["id"], p)["id"] for p in pl]
 
+def parse_element_list(el):
+    return [e.text for e in el]
+
 def parse_work_list(wl):
-	result = []
-	for w in wl:
-		result.append(parse_work(w))
-	return result
+    return [parse_work(w) for w in wl]
 
 def parse_work(work):
-	result = {}
-	attribs = ["id", "ext:score"]
-	elements = ["title", "user-rating", "language", "iswc"]
-	inner_els = {"tag-list": parse_tag_list,
-	             "user-tag-list": parse_tag_list,
-	             "rating": parse_rating,
-	             "alias-list": parse_alias_list,
-	             "relation-list": parse_relation_list}
+    result = {}
+    attribs = ["id", "ext:score"]
+    elements = ["title", "user-rating", "language", "iswc"]
+    inner_els = {"tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
+                 "rating": parse_rating,
+                 "alias-list": parse_element_list,
+                 "iswc-list": parse_element_list,
+                 "relation-list": parse_relation_list}
 
-	result.update(parse_attributes(attribs, work))
-	result.update(parse_elements(elements, work))
-	result.update(parse_inner(inner_els, work))
+    result.update(parse_attributes(attribs, work))
+    result.update(parse_elements(elements, work))
+    result.update(parse_inner(inner_els, work))
 
-	return result
+    return result
 
 def parse_disc(disc):
 	result = {}
@@ -443,10 +438,7 @@ def parse_track(track):
 	return result
 
 def parse_tag_list(tl):
-	result = []
-	for t in tl:
-		result.append(parse_tag(t))
-	return result
+    return [parse_tag(t) for t in tl]
 
 def parse_tag(tag):
 	result = {}
@@ -465,12 +457,6 @@ def parse_rating(rating):
 	result.update(parse_attributes(attribs, rating))
 	result["rating"] = rating.text
 
-	return result
-
-def parse_alias_list(al):
-	result = []
-	for a in al:
-		result.append(a.text)
 	return result
 
 ###
