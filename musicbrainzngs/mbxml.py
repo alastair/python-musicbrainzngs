@@ -118,6 +118,11 @@ def parse_inner(inner_els, element):
 			_log.debug("in <%s>, not delegating <%s>", fixtag(element.tag, NS_MAP)[0], t)
 	return result
 
+def _log_unmatched(parsed, elem, func):
+    unmatched = [fixtag(i.tag,NS_MAP)[0] for i in elem if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in parsed]
+    if len(unmatched) > 0:
+        _log.debug("Didn't handle %s in %s", unmatched, func)
+
 def parse_message(message):
 	tree = util.bytes_to_elementtree(message)
 	root = tree.getroot()
@@ -146,6 +151,7 @@ def parse_message(message):
 	                  "message": parse_response_message
 	                  }
 	result.update(parse_inner(valid_elements, root))
+	_log_unmatched(valid_elements.keys(), root, 'parse_message')
 	return result
 
 def parse_response_message(message):
@@ -163,6 +169,8 @@ def parse_collection(collection):
 	result.update(parse_elements(elements, collection))
 	result.update(parse_inner(inner_els, collection))
 
+
+	_log_unmatched((elements + inner_els.keys()), collection, 'parse_collection')
 	return result
 
 def parse_collection_release_list(rl):
@@ -197,6 +205,7 @@ def parse_artist(artist):
     result.update(parse_elements(elements, artist))
     result.update(parse_inner(inner_els, artist))
 
+    _log_unmatched((elements + inner_els.keys()), artist, 'parse_artist')
     return result
 
 def parse_label_list(ll):
@@ -219,6 +228,7 @@ def parse_label(label):
     result.update(parse_elements(elements, label))
     result.update(parse_inner(inner_els, label))
 
+    _log_unmatched((elements + inner_els.keys()), label, 'parse_label')
     return result
 
 def parse_relation_list(rl):
@@ -243,6 +253,7 @@ def parse_relation(relation):
     result.update(parse_elements(elements, relation))
     result.update(parse_inner(inner_els, relation))
 
+    _log_unmatched((elements + inner_els.keys()), relation, 'parse_relation')
     return result
 
 def parse_release(release):
@@ -262,6 +273,7 @@ def parse_release(release):
 	if "artist-credit" in result:
 		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
+	_log_unmatched((elements + inner_els.keys()), release, 'parse_release')
 	return result
 
 def parse_medium_list(ml):
@@ -275,6 +287,7 @@ def parse_medium(medium):
 
 	result.update(parse_elements(elements, medium))
 	result.update(parse_inner(inner_els, medium))
+	_log_unmatched((elements + inner_els.keys()), medium, 'parse_medium')
 	return result
 
 def parse_disc_list(dl):
@@ -299,6 +312,7 @@ def parse_release_group(rg):
 	if "artist-credit" in result:
 		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
+	_log_unmatched((elements + inner_els.keys()), rg, 'parse_release_group')
 	return result
 
 def parse_recording(recording):
@@ -321,6 +335,7 @@ def parse_recording(recording):
 	if "artist-credit" in result:
 		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
+	_log_unmatched((elements + inner_els.keys()), recording, 'parse_recording')
 	return result
 
 def parse_external_id_list(pl):
@@ -347,6 +362,7 @@ def parse_work(work):
     result.update(parse_elements(elements, work))
     result.update(parse_inner(inner_els, work))
 
+    _log_unmatched((elements + inner_els.keys()), work, 'parse_work')
     return result
 
 def parse_disc(disc):
@@ -359,6 +375,7 @@ def parse_disc(disc):
 	result.update(parse_elements(elements, disc))
 	result.update(parse_inner(inner_els, disc))
 
+	_log_unmatched((elements + inner_els.keys()), disc, 'parse_disc')
 	return result
 
 def parse_release_list(rl):
@@ -381,6 +398,7 @@ def parse_puid(puid):
 	result.update(parse_attributes(attribs, puid))
 	result.update(parse_inner(inner_els, puid))
 
+	_log_unmatched(inner_els.keys(), puid, 'parse_puid')
 	return result
 
 def parse_recording_list(recs):
@@ -406,6 +424,7 @@ def parse_name_credit(nc):
 	result.update(parse_elements(elements, nc))
 	result.update(parse_inner(inner_els, nc))
 
+	_log_unmatched((elements + inner_els.keys()), nc, 'parse_name_credit')
 	return result
 
 def parse_label_info_list(lil):
@@ -422,6 +441,7 @@ def parse_label_info(li):
 
 	result.update(parse_elements(elements, li))
 	result.update(parse_inner(inner_els, li))
+	_log_unmatched((elements + inner_els.keys()), li, 'parse_label_info')
 	return result
 
 def parse_track_list(tl):
@@ -437,6 +457,7 @@ def parse_track(track):
 
 	result.update(parse_elements(elements, track))
 	result.update(parse_inner(inner_els, track))
+	_log_unmatched((elements + inner_els.keys()), track, 'parse_track')
 	return result
 
 def parse_tag_list(tl):
@@ -450,6 +471,7 @@ def parse_tag(tag):
 	result.update(parse_attributes(attribs, tag))
 	result.update(parse_elements(elements, tag))
 
+	_log_unmatched(elements, tag, 'parse_tag')
 	return result
 
 def parse_rating(rating):
