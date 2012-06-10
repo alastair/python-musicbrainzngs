@@ -146,6 +146,9 @@ def parse_message(message):
 	                  "message": parse_response_message
 	                  }
 	result.update(parse_inner(valid_elements, root))
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in root if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in valid_elements.keys()]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_message", unmatched)
 	return result
 
 def parse_response_message(message):
@@ -163,6 +166,9 @@ def parse_collection(collection):
 	result.update(parse_elements(elements, collection))
 	result.update(parse_inner(inner_els, collection))
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in collection if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_collection", unmatched)
 	return result
 
 def parse_collection_release_list(rl):
@@ -197,6 +203,9 @@ def parse_artist(artist):
     result.update(parse_elements(elements, artist))
     result.update(parse_inner(inner_els, artist))
 
+    unmatched = [fixtag(i.tag,NS_MAP)[0] for i in artist if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+    if len(unmatched) > 0:
+        _log.debug("Didn't handle %s in parse_artist", unmatched)
     return result
 
 def parse_label_list(ll):
@@ -219,6 +228,9 @@ def parse_label(label):
     result.update(parse_elements(elements, label))
     result.update(parse_inner(inner_els, label))
 
+    unmatched = [fixtag(i.tag,NS_MAP)[0] for i in label if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+    if len(unmatched) > 0:
+        _log.debug("Didn't handle %s in parse_label", unmatched)
     return result
 
 def parse_relation_list(rl):
@@ -243,6 +255,9 @@ def parse_relation(relation):
     result.update(parse_elements(elements, relation))
     result.update(parse_inner(inner_els, relation))
 
+    unmatched = [fixtag(i.tag,NS_MAP)[0] for i in relation if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+    if len(unmatched) > 0:
+        _log.debug("Didn't handle %s in parse_relation", unmatched)
     return result
 
 def parse_release(release):
@@ -262,6 +277,9 @@ def parse_release(release):
 	if "artist-credit" in result:
 		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in release if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_release", unmatched)
 	return result
 
 def parse_medium_list(ml):
@@ -275,6 +293,9 @@ def parse_medium(medium):
 
 	result.update(parse_elements(elements, medium))
 	result.update(parse_inner(inner_els, medium))
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in medium if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_medium", unmatched)
 	return result
 
 def parse_disc_list(dl):
@@ -299,6 +320,9 @@ def parse_release_group(rg):
 	if "artist-credit" in result:
 		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in rg if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_release_group", unmatched)
 	return result
 
 def parse_recording(recording):
@@ -321,6 +345,9 @@ def parse_recording(recording):
 	if "artist-credit" in result:
 		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in recording if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_recording", unmatched)
 	return result
 
 def parse_external_id_list(pl):
@@ -347,6 +374,9 @@ def parse_work(work):
     result.update(parse_elements(elements, work))
     result.update(parse_inner(inner_els, work))
 
+    unmatched = [fixtag(i.tag,NS_MAP)[0] for i in work if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+    if len(unmatched) > 0:
+        _log.debug("Didn't handle %s in parse_work", unmatched)
     return result
 
 def parse_disc(disc):
@@ -359,6 +389,9 @@ def parse_disc(disc):
 	result.update(parse_elements(elements, disc))
 	result.update(parse_inner(inner_els, disc))
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in disc if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_disc", unmatched)
 	return result
 
 def parse_release_list(rl):
@@ -381,6 +414,9 @@ def parse_puid(puid):
 	result.update(parse_attributes(attribs, puid))
 	result.update(parse_inner(inner_els, puid))
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in puid if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in inner_els.keys()]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_puid", unmatched)
 	return result
 
 def parse_recording_list(recs):
@@ -406,6 +442,9 @@ def parse_name_credit(nc):
 	result.update(parse_elements(elements, nc))
 	result.update(parse_inner(inner_els, nc))
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in nc if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_name_credit", unmatched)
 	return result
 
 def parse_label_info_list(lil):
@@ -422,6 +461,9 @@ def parse_label_info(li):
 
 	result.update(parse_elements(elements, li))
 	result.update(parse_inner(inner_els, li))
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in li if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_label_info", unmatched)
 	return result
 
 def parse_track_list(tl):
@@ -437,6 +479,9 @@ def parse_track(track):
 
 	result.update(parse_elements(elements, track))
 	result.update(parse_inner(inner_els, track))
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in track if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in (elements + inner_els.keys())]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_track", unmatched)
 	return result
 
 def parse_tag_list(tl):
@@ -450,6 +495,9 @@ def parse_tag(tag):
 	result.update(parse_attributes(attribs, tag))
 	result.update(parse_elements(elements, tag))
 
+	unmatched = [fixtag(i.tag,NS_MAP)[0] for i in tag if fixtag(i.tag,NS_MAP)[0].split(':')[1] not in elements]
+	if len(unmatched) > 0:
+		_log.debug("Didn't handle %s in parse_tag", unmatched)
 	return result
 
 def parse_rating(rating):
