@@ -178,46 +178,48 @@ def parse_artist_list(al):
 	return [parse_artist(a) for a in al]
 
 def parse_artist(artist):
-	result = {}
-	attribs = ["id", "type", "ext:score"]
-	elements = ["name", "sort-name", "country", "user-rating",
-				"disambiguation", "gender", "ipi"]
-	inner_els = {"life-span": parse_artist_lifespan,
-	             "recording-list": parse_recording_list,
-	             "release-list": parse_release_list,
-	             "release-group-list": parse_release_group_list,
-	             "work-list": parse_work_list,
-	             "tag-list": parse_tag_list,
-	             "user-tag-list": parse_tag_list,
-	             "rating": parse_rating,
-	             "alias-list": parse_element_list}
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "sort-name", "country", "user-rating",
+                "disambiguation", "gender", "ipi"]
+    inner_els = {"life-span": parse_artist_lifespan,
+                 "recording-list": parse_recording_list,
+                 "release-list": parse_release_list,
+                 "release-group-list": parse_release_group_list,
+                 "work-list": parse_work_list,
+                 "tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
+                 "rating": parse_rating,
+                 "ipi-list": parse_element_list,
+                 "alias-list": parse_element_list}
 
-	result.update(parse_attributes(attribs, artist))
-	result.update(parse_elements(elements, artist))
-	result.update(parse_inner(inner_els, artist))
+    result.update(parse_attributes(attribs, artist))
+    result.update(parse_elements(elements, artist))
+    result.update(parse_inner(inner_els, artist))
 
-	return result
+    return result
 
 def parse_label_list(ll):
-	return [parse_label(l) for l in ll]
+    return [parse_label(l) for l in ll]
 
 def parse_label(label):
-	result = {}
-	attribs = ["id", "type", "ext:score"]
-	elements = ["name", "sort-name", "country", "label-code", "user-rating",
-				"ipi", "disambiguation"]
-	inner_els = {"life-span": parse_artist_lifespan,
-	             "release-list": parse_release_list,
-	             "tag-list": parse_tag_list,
-	             "user-tag-list": parse_tag_list,
-	             "rating": parse_rating,
-	             "alias-list": parse_element_list}
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "sort-name", "country", "label-code", "user-rating",
+                "ipi", "disambiguation"]
+    inner_els = {"life-span": parse_artist_lifespan,
+                 "release-list": parse_release_list,
+                 "tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
+                 "rating": parse_rating,
+                 "ipi-list": parse_element_list,
+                 "alias-list": parse_element_list}
 
-	result.update(parse_attributes(attribs, label))
-	result.update(parse_elements(elements, label))
-	result.update(parse_inner(inner_els, label))
+    result.update(parse_attributes(attribs, label))
+    result.update(parse_elements(elements, label))
+    result.update(parse_inner(inner_els, label))
 
-	return result
+    return result
 
 def parse_relation_list(rl):
     attribs = ["target-type"]
