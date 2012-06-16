@@ -256,24 +256,27 @@ limit_interval = 1.0
 limit_requests = 1
 do_rate_limit = True
 
-def set_rate_limit(rate_limit=True, new_interval=1.0, new_requests=1):
+def set_rate_limit(limit_or_interval=1.0, new_requests=1):
     """Sets the rate limiting behavior of the module. Must be invoked
     before the first Web service call.
-    If the `rate_limit` parameter is set to True, then only a set number
-    of requests (`new_requests`) will be made per given interval
-    (`new_interval`). If `rate_limit` is False, then no rate limiting
-    will occur.
+    If the `rate_or_limit` parameter is set to False then
+    rate limiting will be disabled. If it is a number then only
+    a set number of requests (`new_requests`) will be made per
+    given interval (`limit_or_interval`).
     """
     global limit_interval
     global limit_requests
     global do_rate_limit
-    if new_interval <= 0.0:
-        raise ValueError("new_interval can't be less than 0")
-    if new_requests <= 0:
-        raise ValueError("new_requests can't be less than 0")
-    limit_interval = new_interval
-    limit_requests = new_requests
-    do_rate_limit = rate_limit
+    if isinstance(limit_or_interval, bool):
+        do_rate_limit = limit_or_interval
+    else:
+        if limit_or_interval <= 0.0:
+            raise ValueError("limit_or_interval can't be less than 0")
+        if new_requests <= 0:
+            raise ValueError("new_requests can't be less than 0")
+        do_rate_limit = True
+        limit_interval = limit_or_interval
+        limit_requests = new_requests
 
 class _rate_limit(object):
     """A decorator that limits the rate at which the function may be

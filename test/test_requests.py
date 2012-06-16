@@ -13,28 +13,28 @@ class ArgumentTest(unittest.TestCase):
         """ Passing invalid arguments to set_rate_limit should throw
             an exception """
         try:
-            musicbrainzngs.set_rate_limit(True, 1, 0)
+            musicbrainzngs.set_rate_limit(1, 0)
             self.fail("Required exception wasn't raised")
         except ValueError as e:
             self.assertTrue("new_requests" in str(e))
 
         try:
-            musicbrainzngs.set_rate_limit(True, 0, 1)
+            musicbrainzngs.set_rate_limit(0, 1)
             self.fail("Required exception wasn't raised")
         except ValueError as e:
-            self.assertTrue("new_interval" in str(e))
+            self.assertTrue("limit_or_interval" in str(e))
 
         try:
-            musicbrainzngs.set_rate_limit(True, 1, -1)
+            musicbrainzngs.set_rate_limit(1, -1)
             self.fail("Required exception wasn't raised")
         except ValueError as e:
             self.assertTrue("new_requests" in str(e))
 
         try:
-            musicbrainzngs.set_rate_limit(True, 0, -1)
+            musicbrainzngs.set_rate_limit(0, -1)
             self.fail("Required exception wasn't raised")
         except ValueError as e:
-            self.assertTrue("new_interval" in str(e))
+            self.assertTrue("limit_or_interval" in str(e))
 
 class RateLimitingTest(unittest.TestCase):
     def setUp(self):
@@ -74,7 +74,7 @@ class RateLimitingTest(unittest.TestCase):
 
 class BatchedRateLimitingTest(unittest.TestCase):
     def setUp(self):
-        musicbrainzngs.set_rate_limit(True, 3, 3)
+        musicbrainzngs.set_rate_limit(3, 3)
 
         self.cop = Timecop()
         self.cop.install()
@@ -85,7 +85,7 @@ class BatchedRateLimitingTest(unittest.TestCase):
         self.func = limited
 
     def tearDown(self):
-        musicbrainzngs.set_rate_limit(True, 1, 1)
+        musicbrainzngs.set_rate_limit(1, 1)
 
         self.cop.restore()
 
