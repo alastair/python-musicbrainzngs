@@ -433,10 +433,14 @@ def parse_track_list(tl):
 def parse_track(track):
 	result = {}
 	elements = ["number", "position", "title", "length"]
-	inner_els = {"recording": parse_recording}
+	inner_els = {"recording": parse_recording,
+	             "artist-credit": parse_artist_credit}
 
 	result.update(parse_elements(elements, track))
 	result.update(parse_inner(inner_els, track))
+	if "artist-credit" in result:
+		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
+
 	return result
 
 def parse_tag_list(tl):
