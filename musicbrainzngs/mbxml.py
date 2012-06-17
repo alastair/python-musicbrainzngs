@@ -63,7 +63,7 @@ def parse_elements(valid_els, element):
 		if ":" in t:
 			t = t.split(":")[1]
 		if t in valid_els:
-			result[t] = sub.text
+			result[t] = sub.text or ""
 		else:
 			_log.debug("in <%s>, uncaught <%s>", fixtag(element.tag, NS_MAP)[0], t)
 	return result
