@@ -431,17 +431,26 @@ def parse_track_list(tl):
 	return result
 
 def parse_track(track):
-	result = {}
-	elements = ["number", "position", "title", "length"]
-	inner_els = {"recording": parse_recording,
-	             "artist-credit": parse_artist_credit}
+    result = {}
+    elements = ["number", "position", "title", "length"]
+    inner_els = {"recording": parse_recording,
+                 "artist-credit": parse_artist_credit}
 
-	result.update(parse_elements(elements, track))
-	result.update(parse_inner(inner_els, track))
-	if "artist-credit" in result:
-		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
-
-	return result
+    result.update(parse_elements(elements, track))
+    result.update(parse_inner(inner_els, track))
+    if "artist-credit" in result.get("recording", {}) and "artist-credit" not in result:
+        result["artist-credit"] = result["recording"]["artist-credit"]
+    if "artist-credit" in result:
+        result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
+    # Make a length field that contains track length or recording length
+    track_or_recording = None
+    if "length" in result:
+        track_or_recording = result["length"]
+    elif result.get("recording", {}).get("length"):
+        track_or_recording = result.get("recording", {}).get("length")
+    if track_or_recording:
+        result["track_or_recording_length"] = track_or_recording
+    return result
 
 def parse_tag_list(tl):
     return [parse_tag(t) for t in tl]

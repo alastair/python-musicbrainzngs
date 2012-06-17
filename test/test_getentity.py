@@ -24,6 +24,11 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.get_artist_by_id(artistid, "recordings")
         self.assertEqual("http://musicbrainz.org/ws/2/artist/952a4205-023d-4235-897c-6fdb6f58dfaa?inc=recordings", _common.opener.get_url())
 
+        # More than one include
+        musicbrainzngs.get_artist_by_id(artistid, ["recordings", "aliases"])
+        expected ="http://musicbrainz.org/ws/2/artist/952a4205-023d-4235-897c-6fdb6f58dfaa?inc=recordings+aliases"
+        self.assertEqual(expected, _common.opener.get_url())
+
     def testGetLabel(self):
         musicbrainzngs.get_label_by_id("aab2e720-bdd2-4565-afc2-460743585f16")
         self.assertEqual("http://musicbrainz.org/ws/2/label/aab2e720-bdd2-4565-afc2-460743585f16", _common.opener.get_url())
@@ -40,13 +45,6 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.get_recording_by_id("93468a09-9662-4886-a227-56a2ad1c5246", includes=["artists"])
         self.assertEqual("http://musicbrainz.org/ws/2/recording/93468a09-9662-4886-a227-56a2ad1c5246?inc=artists", _common.opener.get_url())
 
-    def testGetRelease(self):
-        musicbrainzngs.get_release_by_id("5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b")
-        self.assertEqual("http://musicbrainz.org/ws/2/release/5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b", _common.opener.get_url())
-
-        # one include
-        musicbrainzngs.get_release_by_id("5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b", includes=["artists"])
-        self.assertEqual("http://musicbrainz.org/ws/2/release/5e3524ca-b4a1-4e51-9ba5-63ea2de8f49b?inc=artists", _common.opener.get_url())
 
     def testGetReleasegroup(self):
         musicbrainzngs.get_release_group_by_id("9377d65d-ffd5-35d6-b64d-43f86ef9188d")
