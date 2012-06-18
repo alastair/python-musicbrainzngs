@@ -259,7 +259,7 @@ do_rate_limit = True
 def set_rate_limit(limit_or_interval=1.0, new_requests=1):
     """Sets the rate limiting behavior of the module. Must be invoked
     before the first Web service call.
-    If the `rate_or_limit` parameter is set to False then
+    If the `limit_or_interval` parameter is set to False then
     rate limiting will be disabled. If it is a number then only
     a set number of requests (`new_requests`) will be made per
     given interval (`limit_or_interval`).
