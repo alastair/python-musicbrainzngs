@@ -286,11 +286,12 @@ def parse_text_representation(textr):
 def parse_release_group(rg):
 	result = {}
 	attribs = ["id", "type", "ext:score"]
-	elements = ["title", "user-rating", "first-release-date"]
+	elements = ["title", "user-rating", "first-release-date", "primary-type"]
 	inner_els = {"artist-credit": parse_artist_credit,
 	             "release-list": parse_release_list,
 	             "tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
+                 "secondary-type-list": parse_element_list,
 	             "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, rg))
