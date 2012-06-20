@@ -284,14 +284,15 @@ def parse_text_representation(textr):
 	return parse_elements(["language", "script"], textr)
 
 def parse_release_group(rg):
-	result = {}
-	attribs = ["id", "type", "ext:score"]
-	elements = ["title", "user-rating", "first-release-date"]
-	inner_els = {"artist-credit": parse_artist_credit,
-	             "release-list": parse_release_list,
-	             "tag-list": parse_tag_list,
-	             "user-tag-list": parse_tag_list,
-	             "rating": parse_rating}
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["title", "user-rating", "first-release-date", "primary-type"]
+    inner_els = {"artist-credit": parse_artist_credit,
+                 "release-list": parse_release_list,
+                 "tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
+                 "secondary-type-list": parse_element_list,
+                 "rating": parse_rating}
 
 	result.update(parse_attributes(attribs, rg))
 	result.update(parse_elements(elements, rg))
