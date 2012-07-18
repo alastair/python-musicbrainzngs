@@ -27,5 +27,5 @@ class GetReleaseGroupTest(unittest.TestCase):
                           "f52bc6a1-c848-49e6-85de-f8f53459a624.xml")
         res = mbxml.parse_message(open(fn))["release-group"]
         self.assertEqual("Soundtrack", res["type"])
-        self.assertTrue("Album", res["primary-type"])
-        self.assertTrue("Soundtrack", res["secondary-type-list"])
+        self.assertEqual("Album", res["primary-type"])
+        self.assertEqual(["Soundtrack"], res["secondary-type-list"])
