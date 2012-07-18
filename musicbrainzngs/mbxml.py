@@ -294,13 +294,13 @@ def parse_release_group(rg):
                  "secondary-type-list": parse_element_list,
                  "rating": parse_rating}
 
-	result.update(parse_attributes(attribs, rg))
-	result.update(parse_elements(elements, rg))
-	result.update(parse_inner(inner_els, rg))
-	if "artist-credit" in result:
-		result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
+    result.update(parse_attributes(attribs, rg))
+    result.update(parse_elements(elements, rg))
+    result.update(parse_inner(inner_els, rg))
+    if "artist-credit" in result:
+        result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
 
-	return result
+    return result
 
 def parse_recording(recording):
 	result = {}
