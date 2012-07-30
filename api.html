@@ -60,17 +60,28 @@ the MusicBrainz XML API that require authentication.</p>
 
 <dl class="function">
 <dt id="musicbrainzngs.set_rate_limit">
-<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">set_rate_limit</tt><big>(</big><em>new_interval=1.0</em>, <em>new_requests=1</em><big>)</big><a class="headerlink" href="#musicbrainzngs.set_rate_limit" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">set_rate_limit</tt><big>(</big><em>limit_or_interval=1.0</em>, <em>new_requests=1</em><big>)</big><a class="headerlink" href="#musicbrainzngs.set_rate_limit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the rate limiting behavior of the module. Must be invoked
-before the first Web service call.  Specify the number of requests
-(<cite>new_requests</cite>) that may be made per given interval
-(<cite>new_interval</cite>).</p>
+before the first Web service call.
+If the <cite>limit_or_interval</cite> parameter is set to False then
+rate limiting will be disabled. If it is a number then only
+a set number of requests (<cite>new_requests</cite>) will be made per
+given interval (<cite>limit_or_interval</cite>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="musicbrainzngs.set_useragent">
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">set_useragent</tt><big>(</big><em>app</em>, <em>version</em>, <em>contact=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.set_useragent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the User-Agent to be used for requests to the MusicBrainz webservice.
+This must be set before requests are made.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.set_hostname">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">set_hostname</tt><big>(</big><em>new_hostname</em><big>)</big><a class="headerlink" href="#musicbrainzngs.set_hostname" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set the base hostname for MusicBrainz webservice requests.
+Defaults to &#8216;musicbrainz.org&#8217;.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="getting-data">
@@ -145,49 +156,59 @@ before the first Web service call.  Specify the number of requests
 <span id="search-api"></span><h2>Searching<a class="headerlink" href="#searching" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="musicbrainzngs.search_artists">
-<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_artists</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_artists" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for artists by a free-form <cite>query</cite> string and/or any of
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_artists</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>strict=False</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_artists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for artists by a free-form <cite>query</cite> string or any of
 the following keyword arguments specifying field queries:
 arid, artist, sortname, type, begin, end, comment, alias, country,
-gender, tag</p>
+gender, tag
+When <cite>fields</cite> are set, special lucene characters are escaped
+in the <cite>query</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.search_labels">
-<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_labels</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for labels by a free-form <cite>query</cite> string and/or any of
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_labels</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>strict=False</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for labels by a free-form <cite>query</cite> string or any of
 the following keyword arguments specifying field queries:
 laid, label, sortname, type, code, country, begin, end, comment,
-alias, tag</p>
+alias, tag
+When <cite>fields</cite> are set, special lucene characters are escaped
+in the <cite>query</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.search_recordings">
-<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_recordings</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_recordings" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for recordings by a free-form <cite>query</cite> string and/or any of
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_recordings</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>strict=False</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_recordings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for recordings by a free-form <cite>query</cite> string or any of
 the following keyword arguments specifying field queries:
 rid, recording, isrc, arid, artist, artistname, creditname, reid,
 release, type, status, tracks, tracksrelease, dur, qdur, tnum,
-position, tag</p>
+position, tag
+When <cite>fields</cite> are set, special lucene characters are escaped
+in the <cite>query</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.search_release_groups">
-<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_release_groups</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_release_groups" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for release groups by a free-form <cite>query</cite> string and/or
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_release_groups</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>strict=False</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_release_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for release groups by a free-form <cite>query</cite> string or
 any of the following keyword arguments specifying field queries:
 rgid, releasegroup, reid, release, arid, artist, artistname,
-creditname, type, tag</p>
+creditname, type, tag
+When <cite>fields</cite> are set, special lucene characters are escaped
+in the <cite>query</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.search_releases">
-<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_releases</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_releases" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for releases by a free-form <cite>query</cite> string and/or any of
+<tt class="descclassname">musicbrainzngs.</tt><tt class="descname">search_releases</tt><big>(</big><em>query=''</em>, <em>limit=None</em>, <em>offset=None</em>, <em>strict=False</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#musicbrainzngs.search_releases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for releases by a free-form <cite>query</cite> string or any of
 the following keyword arguments specifying field queries:
 reid, release, arid, artist, artistname, creditname, type, status,
 tracks, tracksmedium, discids, discidsmedium, mediums, date, asin,
-lang, script, country, date, label, catno, barcode, puid</p>
+lang, script, country, date, label, catno, barcode, puid
+When <cite>fields</cite> are set, special lucene characters are escaped
+in the <cite>query</cite>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -234,26 +255,30 @@ lang, script, country, date, label, catno, barcode, puid</p>
 <dl class="function">
 <dt id="musicbrainzngs.submit_barcodes">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_barcodes</tt><big>(</big><em>barcodes</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_barcodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits a set of {release1: barcode1, release2:barcode2}
-Must call auth(user, pass) first</p>
+<dd><p>Submits a set of {release1: barcode1, release2:barcode2}</p>
+<p>Must call auth(user, pass) first</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.submit_puids">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_puids</tt><big>(</big><em>puids</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_puids" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Submit PUIDs.</p>
+<p>Must call auth(user, pass) first</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.submit_echoprints">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_echoprints</tt><big>(</big><em>echoprints</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_echoprints" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Submit echoprints.</p>
+<p>Must call auth(user, pass) first</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.submit_isrcs">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">submit_isrcs</tt><big>(</big><em>recordings_isrcs</em><big>)</big><a class="headerlink" href="#musicbrainzngs.submit_isrcs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submit ISRCs.
-Submits a set of {recording-id: [isrc1, isrc1, ...]}
-Must call auth(user, pass) first</p>
+Submits a set of {recording-id: [isrc1, isrc2, ...]}</p>
+<p>Must call auth(user, pass) first</p>
 </dd></dl>
 
 <dl class="function">
@@ -262,6 +287,7 @@ Must call auth(user, pass) first</p>
 <dd><p>Submit user tags.
 Artist or recording parameters are of the form:
 {&#8216;entityid&#8217;: [taglist]}</p>
+<p>Must call auth(user, pass) first</p>
 </dd></dl>
 
 <dl class="function">
@@ -270,17 +296,39 @@ Artist or recording parameters are of the form:
 <dd><p>Submit user ratings.
 Artist or recording parameters are of the form:
 {&#8216;entityid&#8217;: rating}</p>
+<p>Must call auth(user, pass) first</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.add_releases_to_collection">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">add_releases_to_collection</tt><big>(</big><em>collection</em>, <em>releases=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.add_releases_to_collection" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add releases to a collection.
+Collection and releases should be identified by their MBIDs</p>
+<p>Must call auth(user, pass) first</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="musicbrainzngs.remove_releases_from_collection">
 <tt class="descclassname">musicbrainzngs.</tt><tt class="descname">remove_releases_from_collection</tt><big>(</big><em>collection</em>, <em>releases=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#musicbrainzngs.remove_releases_from_collection" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Remove releases from a collection.
+Collection and releases should be identified by their MBIDs</p>
+<p>Must call auth(user, pass) first</p>
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="musicbrainzngs.AuthenticationError">
+<em class="property">class </em><tt class="descclassname">musicbrainzngs.</tt><tt class="descname">AuthenticationError</tt><big>(</big><em>message=None</em>, <em>cause=None</em><big>)</big><a class="headerlink" href="#musicbrainzngs.AuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Received a HTTP 401 response while accessing a protected resource.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="musicbrainzngs.UsageError">
+<em class="property">class </em><tt class="descclassname">musicbrainzngs.</tt><tt class="descname">UsageError</tt><a class="headerlink" href="#musicbrainzngs.UsageError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error related to misuse of the module API.</p>
+</dd></dl>
 
 </div>
 </div>
@@ -299,6 +347,7 @@ Artist or recording parameters are of the form:
 <li><a class="reference internal" href="#searching">Searching</a></li>
 <li><a class="reference internal" href="#browsing">Browsing</a></li>
 <li><a class="reference internal" href="#submitting">Submitting</a></li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
 </ul>
 </li>
 </ul>
@@ -306,11 +355,6 @@ Artist or recording parameters are of the form:
   <h4>Previous topic</h4>
   <p class="topless"><a href="usage.html"
                         title="previous chapter">Usage</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/api.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -341,7 +385,8 @@ Artist or recording parameters are of the form:
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Alastair Porter et. al.
+        &copy; Copyright 2012, Alastair Porter et al.
+      Last updated on Jul 30, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

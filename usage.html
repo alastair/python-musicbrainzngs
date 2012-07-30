@@ -53,8 +53,31 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="identification">
+<h2>Identification<a class="headerlink" href="#identification" title="Permalink to this headline">¶</a></h2>
+<p>To access the MusicBrainz webservice through this library, you <a class="reference external" href="http://musicbrainz.org/doc/XML_Web_Service/Version_2#Identifying_your_application_to_the_MusicBrainz_Web_Service">need to
+identify your application</a>
+by setting the useragent header made in HTTP requests to one that is unique to
+your application.</p>
+<p>To ease this, the convenience function <a class="reference internal" href="api.html#musicbrainzngs.set_useragent" title="musicbrainzngs.set_useragent"><tt class="xref py py-meth docutils literal"><span class="pre">musicbrainzngs.set_useragent()</span></tt></a> is
+provided which automatically sets the useragent based on information about the
+application name, version and contact information to the format <a class="reference external" href="http://musicbrainz.org/doc/XML_Web_Service/Rate_Limiting#Provide_meaningful_User-Agent_strings">recommended by
+MusicBrainz</a>.</p>
+<p>If a request is made without setting the useragent beforehand, a
+<a class="reference internal" href="api.html#musicbrainzngs.UsageError" title="musicbrainzngs.UsageError"><tt class="xref py py-class docutils literal"><span class="pre">musicbrainzngs.UsageError</span></tt></a> will be raised.</p>
+</div>
 <div class="section" id="authentication">
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>Certain calls to the webservice require user authentication prior to the call
+itself. The affected functions state this requirement in their documentation.
+The user and password used for authentication are the same as for the
+MusicBrainz website itself and can be set with the <a class="reference internal" href="api.html#musicbrainzngs.auth" title="musicbrainzngs.auth"><tt class="xref py py-meth docutils literal"><span class="pre">musicbrainzngs.auth()</span></tt></a>
+method. After calling this function, the credentials will be saved and
+automaticall used by all functions requiring them.</p>
+<p>If a method requiring authentication is called without authenticating, a
+<a class="reference internal" href="api.html#musicbrainzngs.UsageError" title="musicbrainzngs.UsageError"><tt class="xref py py-class docutils literal"><span class="pre">musicbrainzngs.UsageError</span></tt></a> will be raised.</p>
+<p>If the credentials provided are wrong and the server returns a status code of
+401, a <a class="reference internal" href="api.html#musicbrainzngs.AuthenticationError" title="musicbrainzngs.AuthenticationError"><tt class="xref py py-class docutils literal"><span class="pre">musicbrainzngs.AuthenticationError</span></tt></a> will be raised.</p>
 </div>
 <div class="section" id="getting-data">
 <h2>Getting data<a class="headerlink" href="#getting-data" title="Permalink to this headline">¶</a></h2>
@@ -79,6 +102,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#identification">Identification</a></li>
 <li><a class="reference internal" href="#authentication">Authentication</a></li>
 <li><a class="reference internal" href="#getting-data">Getting data</a></li>
 <li><a class="reference internal" href="#searching">Searching</a></li>
@@ -94,11 +118,6 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="api.html"
                         title="next chapter">API</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/usage.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -132,7 +151,8 @@
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, Alastair Porter et. al.
+        &copy; Copyright 2012, Alastair Porter et al.
+      Last updated on Jul 30, 2012.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
