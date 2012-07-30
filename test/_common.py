@@ -21,13 +21,14 @@ class FakeOpener(OpenerDirector):
 
     def open(self, request, body=None):
         self.myurl = request.get_full_url()
+        self.request = request
         return StringIO.StringIO("<response/>")
 
     def get_url(self):
         return self.myurl
 
 opener = FakeOpener()
-musicbrainzngs.compat.build_opener = lambda args: opener
+musicbrainzngs.compat.build_opener = lambda *args: opener
 
 # Mock timing.
 class Timecop(object):
