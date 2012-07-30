@@ -237,6 +237,8 @@ def set_useragent(app, version, contact=None):
     """Set the User-Agent to be used for requests to the MusicBrainz webservice.
     This must be set before requests are made."""
     global _useragent, _client
+    if not app or not version:
+        raise ValueError("App and version can not be empty")
     if contact is not None:
         _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, contact)
     else:
