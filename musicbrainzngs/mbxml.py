@@ -184,6 +184,7 @@ def parse_artist(artist):
                 "disambiguation", "gender", "ipi"]
     inner_els = {"life-span": parse_artist_lifespan,
                  "recording-list": parse_recording_list,
+                 "relation-list": parse_relation_list,
                  "release-list": parse_release_list,
                  "release-group-list": parse_release_group_list,
                  "work-list": parse_work_list,
