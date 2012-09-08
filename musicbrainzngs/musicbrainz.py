@@ -763,7 +763,7 @@ def browse_recordings(artist=None, release=None, includes=[], limit=None, offset
 
 def browse_releases(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
     # track_artist param doesn't work yet
-    valid_includes = ["artist-credits", "labels", "recordings", "release-groups"]
+    valid_includes = ["artist-credits", "labels", "recordings", "release-groups","media"]
     params = {"artist": artist,
               "label": label,
               "recording": recording,
