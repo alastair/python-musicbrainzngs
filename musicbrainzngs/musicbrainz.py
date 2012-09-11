@@ -75,6 +75,18 @@ VALID_INCLUDES = {
 	'iswc': ["artists"],
 	'collection': ['releases'],
 }
+VALID_BROWSE_INCLUDES = {
+    'releases': ["artist-credits", "labels", "recordings",
+                "release-groups", "media", "discids", "artist-rels",
+                "label-rels", "recording-rels", "release-rels",
+                "release-group-rels", "url-rels", "work-rels"],
+    'recordings': ["artist-credits", "tags", "ratings", "user-tags",
+                  "user-ratings"],
+    'labels': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
+    'artists': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
+    'release-groups': ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+}
+
 VALID_RELEASE_TYPES = [
 	"nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
 	"interview", "audiobook", "live", "remix", "other"
@@ -744,26 +756,26 @@ def _browse_impl(entity, includes, valid_includes, limit, offset, params, releas
 # and the test in _do_mb_query will pass anyway.
 def browse_artists(recording=None, release=None, release_group=None, includes=[], limit=None, offset=None):
     # optional parameter work?
-    valid_includes = ["aliases", "tags", "ratings", "user-tags", "user-ratings"]
+    valid_includes = VALID_BROWSE_INCLUDES['artists']
     params = {"recording": recording,
               "release": release,
               "release-group": release_group}
     return _browse_impl("artist", includes, valid_includes, limit, offset, params)
 
 def browse_labels(release=None, includes=[], limit=None, offset=None):
-    valid_includes = ["aliases", "tags", "ratings", "user-tags", "user-ratings"]
+    valid_includes = VALID_BROWSE_INCLUDES['labels']
     params = {"release": release}
     return _browse_impl("label", includes, valid_includes, limit, offset, params)
 
 def browse_recordings(artist=None, release=None, includes=[], limit=None, offset=None):
-    valid_includes = ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+    valid_includes = VALID_BROWSE_INCLUDES['recordings']
     params = {"artist": artist,
               "release": release}
     return _browse_impl("recording", includes, valid_includes, limit, offset, params)
 
 def browse_releases(artist=None, label=None, recording=None, release_group=None, release_status=[], release_type=[], includes=[], limit=None, offset=None):
     # track_artist param doesn't work yet
-    valid_includes = ["artist-credits", "labels", "recordings", "release-groups","media"]
+    valid_includes = VALID_BROWSE_INCLUDES['releases']
     params = {"artist": artist,
               "label": label,
               "recording": recording,
@@ -771,7 +783,7 @@ def browse_releases(artist=None, label=None, recording=None, release_group=None,
     return _browse_impl("release", includes, valid_includes, limit, offset, params, release_status, release_type)
 
 def browse_release_groups(artist=None, release=None, release_type=[], includes=[], limit=None, offset=None):
-    valid_includes = ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+    valid_includes = VALID_BROWSE_INCLUDES['release-groups']
     params = {"artist": artist,
               "release": release}
     return _browse_impl("release-group", includes, valid_includes, limit, offset, params, [], release_type)
