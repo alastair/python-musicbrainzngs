@@ -27,40 +27,40 @@ VALID_INCLUDES = {
 		"various-artists", "discids", "media",
 		"aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels"
+		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
 	'label': [
 		"releases", # Subqueries
 	    "discids", "media",
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels"
+		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
 	'recording': [
 		"artists", "releases", # Subqueries
 	    "discids", "media", "artist-credits",
 	    "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels"
+		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
 	'release': [
 		"artists", "labels", "recordings", "release-groups", "media",
 		"artist-credits", "discids", "puids", "echoprints", "isrcs",
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
 		"release-group-rels", "url-rels", "work-rels", "recording-level-rels",
-		"work-level-rels"
+		"work-level-rels", "annotation"
 	],
 	'release-group': [
 		"artists", "releases", "discids", "media",
 		"artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels"
+		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
 	'work': [
 		"artists", # Subqueries
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels"
+		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
 	'discid': [
 		"artists", "labels", "recordings", "release-groups", "media",

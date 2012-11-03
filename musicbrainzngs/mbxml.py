@@ -169,6 +169,9 @@ def parse_collection_release_list(rl):
 	attribs = ["count"]
 	return parse_attributes(attribs, rl)
 
+def parse_annotation(annotation):
+    return parse_elements(["entity", "name", "text"], annotation)
+
 def parse_artist_lifespan(lifespan):
 	parts = parse_elements(["begin", "end"], lifespan)
 
@@ -192,7 +195,8 @@ def parse_artist(artist):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
-                 "alias-list": parse_element_list}
+                 "alias-list": parse_element_list,
+                 "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, artist))
     result.update(parse_elements(elements, artist))
@@ -214,7 +218,8 @@ def parse_label(label):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
-                 "alias-list": parse_element_list}
+                 "alias-list": parse_element_list,
+                 "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, label))
     result.update(parse_elements(elements, label))
@@ -255,7 +260,8 @@ def parse_release(release):
 	             "label-info-list": parse_label_info_list,
 	             "medium-list": parse_medium_list,
 	             "release-group": parse_release_group,
-	             "relation-list": parse_relation_list}
+	             "relation-list": parse_relation_list,
+	             "annotation": parse_annotation}
 
 	result.update(parse_attributes(attribs, release))
 	result.update(parse_elements(elements, release))
@@ -293,7 +299,8 @@ def parse_release_group(rg):
                  "tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "secondary-type-list": parse_element_list,
-                 "rating": parse_rating}
+                 "rating": parse_rating,
+                 "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, rg))
     result.update(parse_elements(elements, rg))
@@ -315,7 +322,8 @@ def parse_recording(recording):
 	             "puid-list": parse_external_id_list,
 	             "isrc-list": parse_external_id_list,
 	             "echoprint-list": parse_external_id_list,
-	             "relation-list": parse_relation_list}
+	             "relation-list": parse_relation_list,
+	             "annotation": parse_annotation}
 
 	result.update(parse_attributes(attribs, recording))
 	result.update(parse_elements(elements, recording))
@@ -343,7 +351,8 @@ def parse_work(work):
                  "rating": parse_rating,
                  "alias-list": parse_element_list,
                  "iswc-list": parse_element_list,
-                 "relation-list": parse_relation_list}
+                 "relation-list": parse_relation_list,
+                 "annotation": parse_response_message}
 
     result.update(parse_attributes(attribs, work))
     result.update(parse_elements(elements, work))
