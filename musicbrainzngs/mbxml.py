@@ -349,7 +349,7 @@ def parse_work(work):
     inner_els = {"tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
-                 "alias-list": parse_element_list,
+                 "alias-list": parse_alias_list,
                  "iswc-list": parse_element_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_response_message}
