@@ -195,7 +195,7 @@ def parse_artist(artist):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
-                 "alias-list": parse_element_list,
+                 "alias-list": parse_alias_list,
                  "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, artist))
@@ -218,7 +218,7 @@ def parse_label(label):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
-                 "alias-list": parse_element_list,
+                 "alias-list": parse_alias_list,
                  "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, label))
@@ -349,7 +349,7 @@ def parse_work(work):
     inner_els = {"tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
-                 "alias-list": parse_element_list,
+                 "alias-list": parse_alias_list,
                  "iswc-list": parse_element_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_response_message}
@@ -484,6 +484,18 @@ def parse_rating(rating):
 	result["rating"] = rating.text
 
 	return result
+
+def parse_alias_list(al):
+    return [parse_alias(a) for a in al]
+
+def parse_alias(alias):
+    result = {}
+    attribs = ["locale", "sort-name", "type", "primary", "begin-date", "end-date"]
+
+    result.update(parse_attributes(attribs, alias))
+    result["alias"] = alias.text
+
+    return result
 
 ###
 def make_barcode_request(barcodes):
