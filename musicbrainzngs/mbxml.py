@@ -218,7 +218,7 @@ def parse_label(label):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
-                 "alias-list": parse_element_list,
+                 "alias-list": parse_alias_list,
                  "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, label))
