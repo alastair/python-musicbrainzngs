@@ -41,20 +41,20 @@ VALID_INCLUDES = {
 	    "discids", "media", "artist-credits",
 	    "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation"
+		"release-group-rels", "url-rels", "work-rels", "annotation", "aliases"
 	],
 	'release': [
 		"artists", "labels", "recordings", "release-groups", "media",
 		"artist-credits", "discids", "puids", "echoprints", "isrcs",
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
 		"release-group-rels", "url-rels", "work-rels", "recording-level-rels",
-		"work-level-rels", "annotation"
+		"work-level-rels", "annotation", "aliases"
 	],
 	'release-group': [
 		"artists", "releases", "discids", "media",
 		"artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation"
+		"release-group-rels", "url-rels", "work-rels", "annotation", "aliases"
 	],
 	'work': [
 		"artists", # Subqueries
