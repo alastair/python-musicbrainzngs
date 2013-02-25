@@ -46,6 +46,8 @@ Getting data
 Searching
 ---------
 
+.. autofunction:: musicbrainzngs.search_annotations
+
 .. autofunction:: musicbrainzngs.search_artists
 
 .. autofunction:: musicbrainzngs.search_labels

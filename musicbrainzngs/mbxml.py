@@ -133,6 +133,7 @@ def parse_message(message):
 	                  "puid": parse_puid,
 	                  "echoprint": parse_puid,
 
+	                  "annotation-list": parse_annotation_list,
 	                  "artist-list": parse_artist_list,
 	                  "label-list": parse_label_list,
 	                  "release-list": parse_release_list,
@@ -169,8 +170,16 @@ def parse_collection_release_list(rl):
 	attribs = ["count"]
 	return parse_attributes(attribs, rl)
 
+def parse_annotation_list(al):
+	return [parse_annotation(a) for a in al]
+
 def parse_annotation(annotation):
-    return parse_elements(["entity", "name", "text"], annotation)
+	result = {}
+	attribs = ["type", "ext:score"]
+	elements = ["entity", "name", "text"]
+	result.update(parse_attributes(attribs, annotation))
+	result.update(parse_elements(elements, annotation))
+	return result
 
 def parse_artist_lifespan(lifespan):
 	parts = parse_elements(["begin", "end"], lifespan)

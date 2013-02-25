@@ -29,6 +29,9 @@ VALID_INCLUDES = {
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
 		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
+	'annotation': [
+
+	],
 	'label': [
 		"releases", # Subqueries
 	    "discids", "media",
@@ -96,6 +99,9 @@ VALID_SEARCH_FIELDS = {
 	'artist': [
 		'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
 		'alias', 'country', 'gender', 'tag', 'ipi', 'artistaccent'
+	],
+	'annotation': [
+		'entity', 'name', 'text', 'type'
 	],
 	'release-group': [
 		'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
@@ -655,6 +661,14 @@ def get_work_by_id(id, includes=[]):
 
 
 # Searching
+def search_annotations(query='', limit=None, offset=None, strict=False, **fields):
+	"""Search for annotations by a free-form `query` string or any of
+	the following keyword arguments specifying field queries:
+	entity, name, text, type
+	When `fields` are set, special lucene characters are escaped
+	in the `query`.
+	"""
+	return _do_mb_search('annotation', query, fields, limit, offset, strict)
 
 def search_artists(query='', limit=None, offset=None, strict=False, **fields):
 	"""Search for artists by a free-form `query` string or any of
