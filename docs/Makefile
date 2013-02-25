@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build2 || sphinx-build
+SPHINXBUILD   = $(shell command -v sphinx-build || command -v sphinx-build2)
 PAPER         =
 BUILDDIR      = _build
 
