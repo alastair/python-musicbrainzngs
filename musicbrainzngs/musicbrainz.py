@@ -384,11 +384,11 @@ class _MusicbrainzHttpRequest(compat.Request):
 
 # Core (internal) functions for calling the MB API.
 
-def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
+def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 	"""Open an HTTP request with a given URL opener and (optionally) a
 	request body. Transient errors lead to retries.  Permanent errors
 	and repeated errors are translated into a small set of handleable
-	exceptions. Returns a file-like object.
+	exceptions. Return a bytestring.
 	"""
 	last_exc = None
 	for retry_num in range(max_retries):
@@ -401,6 +401,7 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 				f = opener.open(req, body)
 			else:
 				f = opener.open(req)
+			return f.read()
 
 		except compat.HTTPError as exc:
 			if exc.code in (400, 404, 411):
@@ -437,9 +438,6 @@ def _safe_open(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 			raise NetworkError(cause=exc)
 		except IOError as exc:
 			raise NetworkError(cause=exc)
-		else:
-			# No exception! Yay!
-			return f
 
 	# Out of retries!
 	raise NetworkError("retried %i times" % max_retries, last_exc)
@@ -516,11 +514,11 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		# Explicitly indicate zero content length if no request data
 		# will be sent (avoids HTTP 411 error).
 		req.add_header('Content-Length', '0')
-	f = _safe_open(opener, req, body)
+	resp = _safe_read(opener, req, body)
 
 	# Parse the response.
 	try:
-		return mbxml.parse_message(f)
+		return mbxml.parse_message(resp)
 	except UnicodeError as exc:
 		raise ResponseError(cause=exc)
 	except Exception as exc:
