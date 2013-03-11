@@ -1,5 +1,7 @@
+0.4-dev:
+
 0.3 (2013-03-11):
-    * Lots of bug fixes! also,
+    * Lots of bug fixes! also:
     * Catch network errors when reading data (Adrian Sampson, #78)
     * Get and search annotations (Wieland Hoffmann)
     * Better alias support (Sam Doshi, #83, #86)
