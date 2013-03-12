@@ -734,19 +734,19 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 
 # Lists of entities
 def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("release", includes, release_status, release_type=release_type)
+	params = _check_filter_and_make_params("discid", includes, release_status, release_type=release_type)
 	return _do_mb_query("discid", id, includes, params)
 
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("recording", includes, release_status, release_type)
+	params = _check_filter_and_make_params("echoprint", includes, release_status, release_type)
 	return _do_mb_query("echoprint", echoprint, includes, params)
 
 def get_recordings_by_puid(puid, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("recording", includes, release_status, release_type)
+	params = _check_filter_and_make_params("puid", includes, release_status, release_type)
 	return _do_mb_query("puid", puid, includes, params)
 
 def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("recording", includes, release_status, release_type)
+	params = _check_filter_and_make_params("isrc", includes, release_status, release_type)
 	return _do_mb_query("isrc", isrc, includes, params)
 
 def get_works_by_iswc(iswc, includes=[]):
