@@ -9,6 +9,8 @@ import time
 import logging
 import socket
 import xml.etree.ElementTree as etree
+import urllib
+import json
 from xml.parsers import expat
 
 from musicbrainzngs import mbxml
@@ -236,12 +238,60 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
 	return params
 
 
+# OAuth support
+
+
+def auth_request(client_id, redirect_uri, scope, state=None,
+    access_type='online', approval_prompt='auto'):
+    fields = {
+        'response_type': 'code',
+        'client_id': client_id,
+        'redirect_uri': redirect_uri,
+        'scope': scope,
+        'state': state,
+        'access_type': access_type,
+        'approval_prompt': approval_prompt
+    }
+
+    return u'https://musicbrainz.org/oauth2/authorize?{0}'.format(
+        urllib.urlencode(fields))
+
+
+def access_token(code, client_id, client_secret, redirect_uri):
+    fields = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_uri
+    }
+    response = json.load(urllib.urlopen('https://musicbrainz.org/oauth2/token',
+        urllib.urlencode(fields)))
+    return response['access_token'], response['expires_in'],
+        response['refresh_token']
+
+
+def refresh_token(refresh_token, client_id, client_secret):
+    fields = {
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token,
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_uri
+    }
+    response = json.load(urllib.urlopen('https://musicbrainz.org/oauth2/token',
+        urllib.urlencode(fields)))
+    return response['access_token'], response['expires_in'],
+        response['refresh_token']
+
+
 # Global authentication and endpoint details.
 
 user = password = ""
 hostname = "musicbrainz.org"
 _client = ""
 _useragent = ""
+
 
 def auth(u, p):
 	"""Set the username and password to be used in subsequent queries to
