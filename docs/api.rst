@@ -97,6 +97,19 @@ Submitting
 Exceptions
 ----------
 
-.. autoclass:: musicbrainzngs.AuthenticationError
+.. autoclass:: musicbrainzngs.MusicBrainzError
 
 .. autoclass:: musicbrainzngs.UsageError
+   :show-inheritance:
+
+.. autoclass:: musicbrainzngs.WebServiceError
+   :show-inheritance:
+
+.. autoclass:: musicbrainzngs.AuthenticationError
+   :show-inheritance:
+
+.. autoclass:: musicbrainzngs.NetworkError
+   :show-inheritance:
+
+.. autoclass:: musicbrainzngs.ResponseError
+   :show-inheritance:
