@@ -8,7 +8,5 @@ python:
 install: python setup.py build
 script: python setup.py test
 branches:
-  exclude:
-    - gh-pagees
+  except:
     - examples
-    - ratelimit
