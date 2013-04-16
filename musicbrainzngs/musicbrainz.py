@@ -96,39 +96,43 @@ VALID_RELEASE_TYPES = [
 ]
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
 VALID_SEARCH_FIELDS = {
-	'artist': [
-		'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
-		'alias', 'country', 'gender', 'tag', 'ipi', 'artistaccent'
-	],
-	'annotation': [
-		'entity', 'name', 'text', 'type'
-	],
-	'release-group': [
-		'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
-		'artistname', 'creditname', 'type', 'tag', 'releasegroupaccent',
-		'releases', 'comment'
-	],
-	'release': [
-		'reid', 'release', 'arid', 'artist', 'artistname', 'creditname',
-		'type', 'status', 'tracks', 'tracksmedium', 'discids',
-		'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
-		'country', 'date', 'label', 'catno', 'barcode', 'puid', 'comment',
-		'format', 'releaseaccent', 'rgid'
-	],
-	'recording': [
-		'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
-		'creditname', 'reid', 'release', 'type', 'status', 'tracks',
-		'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag', 'comment',
-		'country', 'date' 'format', 'recordingaccent'
-	],
-	'label': [
-		'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
-		'end', 'comment', 'alias', 'tag', 'ipi', 'labelaccent'
-	],
-	'work': [
-		'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag',
-		'comment', 'workaccent'
-	],
+    'annotation': [
+        'entity', 'name', 'text', 'type'
+    ],
+    'artist': [
+        'arid', 'artist', 'artistaccent', 'alias', 'begin', 'comment',
+        'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type'
+    ],
+    'label': [
+        'alias', 'begin', 'code', 'comment', 'country', 'end', 'ended',
+        'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag'
+    ],
+    'recording': [
+        'arid', 'artist', 'artistname', 'creditname', 'comment',
+        'country', 'date', 'dur', 'format', 'isrc', 'number',
+        'position', 'primarytype', 'puid', 'qdur', 'recording',
+        'recordingaccent', 'reid', 'release', 'rgid', 'rid',
+        'secondarytype', 'status', 'tnum', 'tracks', 'tracksrelease',
+        'tag', 'type'
+    ],
+    'release-group': [
+        'arid', 'artist', 'artistname', 'comment', 'creditname',
+        'primarytype', 'rgid', 'releasegroup', 'releasegroupaccent',
+        'releases', 'release', 'reid', 'secondarytype', 'status',
+        'tag', 'type'
+    ],
+    'release': [
+        'arid', 'artist', 'artistname', 'asin', 'barcode', 'creditname',
+        'catno', 'comment', 'country', 'creditname', 'date', 'discids',
+        'discidsmedium', 'format', 'laid', 'label', 'lang', 'mediums',
+        'primarytype', 'puid', 'reid', 'release', 'releaseaccent',
+        'rgid', 'script', 'secondarytype', 'status', 'tag', 'tracks',
+        'tracksmedium', 'type'
+    ],
+    'work': [
+        'alias', 'arid', 'artist', 'comment', 'iswc', 'lang', 'tag',
+        'type', 'wid', 'work', 'workaccent'
+    ],
 }
 
 
