@@ -1,6 +1,11 @@
 API
 ~~~
 
+This is a shallow python binding of the MusicBrainz web service
+so you should read
+:musicbrainz:`Development/XML Web Service/Version 2`
+to understand how that web service works in general.
+
 General
 -------
 
@@ -48,6 +53,9 @@ Searching
 
 For all of these search functions you can use any of the allowed search fields
 as parameter names.
+The documentation of what these fields do is on
+:musicbrainz:`Development/XML Web Service/Version 2/Search`.
+
 You can also set the `query` parameter to any lucene query you like.
 When you use any of the search fields as parameters,
 special characters are escaped in the `query`.
