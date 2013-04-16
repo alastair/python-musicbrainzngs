@@ -69,19 +69,47 @@ you have to set `strict=True`.
 
 .. autofunction:: musicbrainzngs.search_annotations
 
+   Available search fields:
+.. literalinclude:: ../musicbrainzngs/musicbrainz.py
+   :start-after: SEARCH_FIELDS_ANNOTATION
+   :end-before: ],
+
 .. autofunction:: musicbrainzngs.search_artists
+
+   Available search fields:
+.. literalinclude:: ../musicbrainzngs/musicbrainz.py
+   :start-after: SEARCH_FIELDS_ARTIST
+   :end-before: ],
 
 .. autofunction:: musicbrainzngs.search_labels
 
+   Available search fields:
+.. literalinclude:: ../musicbrainzngs/musicbrainz.py
+   :start-after: SEARCH_FIELDS_LABEL
+   :end-before: ],
+
 .. autofunction:: musicbrainzngs.search_recordings
+
+   Available search fields:
+.. literalinclude:: ../musicbrainzngs/musicbrainz.py
+   :start-after: SEARCH_FIELDS_RECORDING
+   :end-before: ],
 
 .. autofunction:: musicbrainzngs.search_release_groups
 
+   Available search fields:
+.. literalinclude:: ../musicbrainzngs/musicbrainz.py
+   :start-after: SEARCH_FIELDS_RELEASE_GROUP
+   :end-before: ],
+
 .. autofunction:: musicbrainzngs.search_releases
 
-.. autoattribute:: musicbrainzngs.musicbrainz.VALID_INCLUDES
+   Available search fields:
+.. literalinclude:: ../musicbrainzngs/musicbrainz.py
+   :start-after: SEARCH_FIELDS_RELEASE
+   :end-before: ],
 
-.. autoattribute:: musicbrainzngs.musicbrainz.VALID_SEARCH_FIELDS
+.. autoattribute:: musicbrainzngs.musicbrainz.VALID_INCLUDES
 
 Browsing
 --------

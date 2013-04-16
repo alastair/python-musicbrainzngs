@@ -97,18 +97,22 @@ VALID_RELEASE_TYPES = [
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
 VALID_SEARCH_FIELDS = {
 	'artist': [
+                # SEARCH_FIELDS_ARTIST
 		'arid', 'artist', 'sortname', 'type', 'begin', 'end', 'comment',
 		'alias', 'country', 'gender', 'tag', 'ipi', 'artistaccent'
 	],
 	'annotation': [
+                # SEARCH_FIELDS_ANNOTATION
 		'entity', 'name', 'text', 'type'
 	],
 	'release-group': [
+                # SEARCH_FIELDS_RELEASE_GROUP
 		'rgid', 'releasegroup', 'reid', 'release', 'arid', 'artist',
 		'artistname', 'creditname', 'type', 'tag', 'releasegroupaccent',
 		'releases', 'comment'
 	],
 	'release': [
+                # SEARCH_FIELDS_RELEASE
 		'reid', 'release', 'arid', 'artist', 'artistname', 'creditname',
 		'type', 'status', 'tracks', 'tracksmedium', 'discids',
 		'discidsmedium', 'mediums', 'date', 'asin', 'lang', 'script',
@@ -116,16 +120,19 @@ VALID_SEARCH_FIELDS = {
 		'format', 'releaseaccent', 'rgid'
 	],
 	'recording': [
+                # SEARCH_FIELDS_RECORDING
 		'rid', 'recording', 'isrc', 'arid', 'artist', 'artistname',
 		'creditname', 'reid', 'release', 'type', 'status', 'tracks',
 		'tracksrelease', 'dur', 'qdur', 'tnum', 'position', 'tag', 'comment',
 		'country', 'date' 'format', 'recordingaccent'
 	],
 	'label': [
+                # SEARCH_FIELDS_LABEL
 		'laid', 'label', 'sortname', 'type', 'code', 'country', 'begin',
 		'end', 'comment', 'alias', 'tag', 'ipi', 'labelaccent'
 	],
 	'work': [
+                # SEARCH_FIELDS_WORK
 		'wid', 'work', 'iswc', 'type', 'arid', 'artist', 'alias', 'tag',
 		'comment', 'workaccent'
 	],
@@ -662,75 +669,26 @@ def get_work_by_id(id, includes=[]):
 
 # Searching
 def search_annotations(query='', limit=None, offset=None, strict=False, **fields):
-	"""Search for annotations by a free-form `query` string or any of
-	the following keyword arguments specifying field queries:
-	entity, name, text, type
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('annotation', query, fields, limit, offset, strict)
 
 def search_artists(query='', limit=None, offset=None, strict=False, **fields):
-	"""Search for artists by a free-form `query` string or any of
-	the following keyword arguments specifying field queries:
-	arid, artist, sortname, type, begin, end, comment, alias, country,
-	gender, tag
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('artist', query, fields, limit, offset, strict)
 
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
-	"""Search for labels by a free-form `query` string or any of
-	the following keyword arguments specifying field queries:
-	laid, label, sortname, type, code, country, begin, end, comment,
-	alias, tag
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('label', query, fields, limit, offset, strict)
 
 def search_recordings(query='', limit=None, offset=None, strict=False, **fields):
-	"""Search for recordings by a free-form `query` string or any of
-	the following keyword arguments specifying field queries:
-	rid, recording, isrc, arid, artist, artistname, creditname, reid,
-	release, type, status, tracks, tracksrelease, dur, qdur, tnum,
-	position, tag
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('recording', query, fields, limit, offset, strict)
 
 def search_releases(query='', limit=None, offset=None, strict=False, **fields):
-	"""Search for releases by a free-form `query` string or any of
-	the following keyword arguments specifying field queries:
-	reid, release, arid, artist, artistname, creditname, type, status,
-	tracks, tracksmedium, discids, discidsmedium, mediums, date, asin,
-	lang, script, country, date, label, catno, barcode, puid
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('release', query, fields, limit, offset, strict)
 
 def search_release_groups(query='', limit=None, offset=None,
 			  strict=False, **fields):
-	"""Search for release groups by a free-form `query` string or
-	any of the following keyword arguments specifying field queries:
-	rgid, releasegroup, reid, release, arid, artist, artistname,
-	creditname, type, tag
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('release-group', query, fields,
 			     limit, offset, strict)
 
 def search_works(query='', limit=None, offset=None, strict=False, **fields):
-	"""Search for works by a free-form `query` string or any of
-	the following keyword arguments specifying field queries:
-	wid, work, iswc, type, arid, artist, alias, tag
-	When `fields` are set, special lucene characters are escaped
-	in the `query`.
-	"""
 	return _do_mb_search('work', query, fields, limit, offset, strict)
 
 
