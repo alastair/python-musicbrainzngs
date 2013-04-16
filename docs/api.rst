@@ -46,6 +46,19 @@ Getting data
 Searching
 ---------
 
+For all of these search functions you can use any of the allowed search fields
+as parameter names.
+You can also set the `query` parameter to any lucene query you like.
+When you use any of the search fields as parameters,
+special characters are escaped in the `query`.
+
+By default the elements are concatenated with spaces in between,
+so lucene essentially does a fuzzy search.
+That search might include results that don't match the complete query,
+though these will be ranked lower than the ones that do.
+If you want all query elements to match for all results,
+you have to set `strict=True`.
+
 .. autofunction:: musicbrainzngs.search_annotations
 
 .. autofunction:: musicbrainzngs.search_artists
