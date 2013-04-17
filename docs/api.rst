@@ -6,6 +6,10 @@ so you should read
 :musicbrainz:`Development/XML Web Service/Version 2`
 to understand how that web service works in general.
 
+All requests that fetch data return the data in the form of a :class:`dict`.
+Attributes and elements both map to keys in the dict.
+List entities are of type :class:`list`.
+
 General
 -------
 
