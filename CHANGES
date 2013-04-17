@@ -1,8 +1,15 @@
-0.3-dev:
+0.4-dev:
+
+0.3 (2013-03-11):
+    * Lots of bug fixes! also:
+    * Catch network errors when reading data (Adrian Sampson, #78)
+    * Get and search annotations (Wieland Hoffmann)
+    * Better alias support (Sam Doshi, #83, #86)
+    * Parse track artist-credit if present (Galen Hazelwood, #75)
     * Show relevancy scores on search results (Alastair Porter, #37)
     * Perform searches in lower case (Adrian Sampson, #36)
     * Use AND instead of OR by default in searches (Johannes Dewender)
-    * Parse artist disambiguation field (Payl Bailey, #48)
+    * Parse artist disambiguation field (Paul Bailey, #48)
     * Send zero-length body requests correctly (Adrian Sampson)
     * Fix bug in get methods when includes, release status, or release type
       are included (Alastair Porter, reported by palli81)

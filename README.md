@@ -22,6 +22,8 @@ For more information on the musicbrainz webservice see <http://wiki.musicbrainz.
 
 See the query.py file for more examples.
 
+More documentation is available at https://python-musicbrainz-ngs.readthedocs.org
+
 ### Contribute
 
 1. Fork the [repository](https://github.com/alastair/python-musicbrainz-ngs) on Github.
