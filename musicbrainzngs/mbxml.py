@@ -130,6 +130,7 @@ def parse_message(message):
 	                  "work": parse_work,
 
 	                  "disc": parse_disc,
+	                  "cdstub": parse_cdstub,
 	                  "puid": parse_puid,
 	                  "echoprint": parse_puid,
 
@@ -378,6 +379,18 @@ def parse_disc(disc):
 	result.update(parse_attributes(attribs, disc))
 	result.update(parse_elements(elements, disc))
 	result.update(parse_inner(inner_els, disc))
+
+	return result
+
+def parse_cdstub(cdstub):
+	result = {}
+	attribs = ["id"]
+	elements = ["title", "artist", "barcode"]
+	inner_els = {"track-list": parse_track_list}
+
+	result.update(parse_attributes(attribs, cdstub))
+	result.update(parse_elements(elements, cdstub))
+	result.update(parse_inner(inner_els, cdstub))
 
 	return result
 
