@@ -23,6 +23,14 @@ General
 Getting data
 ------------
 
+All of these functions will fetch a MusicBrainz entity or a list of entities
+as a dict.
+You can specify a list of `includes` to get more data
+and you can filter on `release_status` and `release_type`.
+See :const:`musicbrainz.VALID_RELEASE_STATUSES`
+and :const:`musicbrainz.VALID_RELEASE_TYPES`.
+The valid includes are listed for each function.
+
 .. autofunction:: get_artist_by_id
 .. autofunction:: get_label_by_id
 .. autofunction:: get_recording_by_id

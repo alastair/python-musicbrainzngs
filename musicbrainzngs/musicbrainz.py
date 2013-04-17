@@ -643,31 +643,50 @@ def _do_mb_post(path, body):
 # The main interface!
 
 # Single entity by ID
+
+@_docstring('artist')
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("artist", includes, release_status, release_type)
-	return _do_mb_query("artist", id, includes, params)
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("artist", includes,
+                                           release_status, release_type)
+    return _do_mb_query("artist", id, includes, params)
 
+@_docstring('label')
 def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("label", includes, release_status, release_type)
-	return _do_mb_query("label", id, includes, params)
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("label", includes,
+                                           release_status, release_type)
+    return _do_mb_query("label", id, includes, params)
 
+@_docstring('recording')
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("recording", includes, release_status, release_type)
-	return _do_mb_query("recording", id, includes, params)
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("recording", includes,
+                                           release_status, release_type)
+    return _do_mb_query("recording", id, includes, params)
 
+@_docstring('release')
 def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("release", includes, release_status, release_type)
-	return _do_mb_query("release", id, includes, params)
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("release", includes,
+                                           release_status, release_type)
+    return _do_mb_query("release", id, includes, params)
 
+@_docstring('release-group')
 def get_release_group_by_id(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("release-group", includes, release_status, release_type)
-	return _do_mb_query("release-group", id, includes, params)
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("release-group", includes,
+                                           release_status, release_type)
+    return _do_mb_query("release-group", id, includes, params)
 
+@_docstring('work')
 def get_work_by_id(id, includes=[]):
-	return _do_mb_query("work", id, includes)
+    """*Available includes*: {includes}"""
+    return _do_mb_query("work", id, includes)
 
 
 # Searching
+
 @_docstring('annotation')
 def search_annotations(query='', limit=None, offset=None, strict=False, **fields):
     """*Available search fields*: {fields}
@@ -721,24 +740,42 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 
 
 # Lists of entities
+@_docstring('release')
 def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("discid", includes, release_status, release_type=release_type)
-	return _do_mb_query("discid", id, includes, params)
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("discid", includes, release_status,
+                                           release_type=release_type)
+    return _do_mb_query("discid", id, includes, params)
 
-def get_recordings_by_echoprint(echoprint, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("echoprint", includes, release_status, release_type)
-	return _do_mb_query("echoprint", echoprint, includes, params)
+@_docstring('recording')
+def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
+                                release_type=[]):
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("echoprint", includes,
+                                           release_status, release_type)
+    return _do_mb_query("echoprint", echoprint, includes, params)
 
-def get_recordings_by_puid(puid, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("puid", includes, release_status, release_type)
-	return _do_mb_query("puid", puid, includes, params)
+@_docstring('recording')
+def get_recordings_by_puid(puid, includes=[], release_status=[],
+                           release_type=[]):
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("puid", includes,
+                                           release_status, release_type)
+    return _do_mb_query("puid", puid, includes, params)
 
-def get_recordings_by_isrc(isrc, includes=[], release_status=[], release_type=[]):
-	params = _check_filter_and_make_params("isrc", includes, release_status, release_type)
-	return _do_mb_query("isrc", isrc, includes, params)
+@_docstring('recording')
+def get_recordings_by_isrc(isrc, includes=[], release_status=[],
+                           release_type=[]):
+    """*Available includes*: {includes}"""
+    params = _check_filter_and_make_params("isrc", includes,
+                                           release_status, release_type)
+    return _do_mb_query("isrc", isrc, includes, params)
 
+@_docstring('work')
 def get_works_by_iswc(iswc, includes=[]):
-	return _do_mb_query("iswc", iswc, includes)
+    """*Available includes*: {includes}"""
+    return _do_mb_query("iswc", iswc, includes)
+
 
 def _browse_impl(entity, includes, valid_includes, limit, offset, params, release_status=[], release_type=[]):
     _check_includes_impl(includes, valid_includes)
