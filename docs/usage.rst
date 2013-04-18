@@ -17,7 +17,7 @@ MusicBrainz
 <http://musicbrainz.org/doc/XML_Web_Service/Rate_Limiting#Provide_meaningful_User-Agent_strings>`_.
 
 If a request is made without setting the useragent beforehand, a
-:class:`musicbrainzngs.UsageError` will be raised.
+:exc:`musicbrainzngs.UsageError` will be raised.
 
 Authentication
 --------------
@@ -30,13 +30,43 @@ method. After calling this function, the credentials will be saved and
 automaticall used by all functions requiring them.
 
 If a method requiring authentication is called without authenticating, a
-:class:`musicbrainzngs.UsageError` will be raised.
+:exc:`musicbrainzngs.UsageError` will be raised.
 
 If the credentials provided are wrong and the server returns a status code of
-401, a :class:`musicbrainzngs.AuthenticationError` will be raised.
+401, a :exc:`musicbrainzngs.AuthenticationError` will be raised.
 
 Getting data
 ------------
+
+You can get MusicBrainz entities as a :class:`dict`
+when retrieving them with some form of identifier.
+An example using :func:`musicbrainzngs.get_artist_by_id`::
+
+  artist_id = "c5c2ea1c-4bde-4f4d-bd0b-47b200bf99d6"
+  try:
+      musicbrainzngs.get_artist_by_id(artist_id)
+  except WebServiceError as exc:
+      print("Something went wrong with the request: %s" % exc)
+  else:
+      artist = result["artist"]
+      print("name:\t\t%s" % artist["name"])
+      print("sort name:\t%s" % artist["sort-name"])
+
+You can get more information about entities connected to the artist
+with adding `includes` and you filter releases and release_groups::
+
+  result = musicbrainzngs.get_artist_by_id(artist_id,
+                includes=["release-groups"], release_type=["album", "ep"])
+  for release_group in result["artist"]["release-group-list"]:
+      print("{title} ({type})".format(title=release_group["title"],
+                                      type=release_group["type"]))
+
+.. tip:: Compilations are also of primary type "album".
+   You have to filter these out manually if you don't want them.
+
+.. note:: You can only get at most 25 release groups using this method.
+   If you want to fetch all release groups you will have to
+   `browse <browsing>`_.
 
 Searching
 ---------
