@@ -1,6 +1,5 @@
 API
 ~~~
-
 .. module:: musicbrainzngs
 
 This is a shallow python binding of the MusicBrainz web service
@@ -75,8 +74,6 @@ you have to set `strict=True`.
 .. autofunction:: search_recordings
 .. autofunction:: search_release_groups
 .. autofunction:: search_releases
-
-.. autoattribute:: musicbrainz.VALID_INCLUDES
 
 Browsing
 --------
