@@ -71,6 +71,25 @@ with adding `includes` and you filter releases and release_groups::
 Searching
 ---------
 
+When you don't know the MusicBrainz IDs yet, you have to start a search.
+Using :func:`musicbrainzngs.search_artist`::
+
+  result = musicbrainzngs.search_artists(artist="xx", type="group",
+                                         country="GB")
+  for artist in result['artist-list']:
+      print(u"{id}: {name}".format(id=artist['id'], name=artist["name"]))
+
+.. tip:: Musicbrainzngs returns unicode strings.
+   It's up to you to make sure Python (2) doesn't try to convert these
+   to ascii again. In the example we force a unicode literal for print.
+   Python 3 works without fixes like these.
+
+You can also use the query without specifying the search fields::
+
+  musicbrainzngs.search_release_groups("the clash london calling")
+
+The query and the search fields can also be used at the same time.
+
 Browsing
 --------
 
