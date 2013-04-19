@@ -90,10 +90,12 @@ VALID_BROWSE_INCLUDES = {
     'release-groups': ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
 }
 
+#: These can be used to filter whenever releases are includes or browsed
 VALID_RELEASE_TYPES = [
 	"nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
 	"interview", "audiobook", "live", "remix", "other"
 ]
+#: These can be used to filter whenever releases or release-groups are involved
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
 VALID_SEARCH_FIELDS = {
 	'artist': [

@@ -44,8 +44,8 @@ The valid includes are listed for each function.
 .. autofunction:: get_collections
 .. autofunction:: get_releases_in_collection
 
-.. autoattribute:: musicbrainz.VALID_RELEASE_TYPES
-.. autoattribute:: musicbrainz.VALID_RELEASE_STATUSES
+.. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_TYPES
+.. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_STATUSES
 
 .. _search_api:
 
