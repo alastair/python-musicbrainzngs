@@ -93,5 +93,44 @@ The query and the search fields can also be used at the same time.
 Browsing
 --------
 
+When you want to fetch a list of entities greater than 25,
+you have to use one of the browse functions.
+Not only can you specify a `limit` as high as 100,
+but you can also specify an `offset` to get the complete list
+in multiple requests.
+
+An example would be using :func:`musicbrainzngs.browse_release_groups`
+to get all releases for a label::
+
+  label = "71247f6b-fd24-4a56-89a2-23512f006f0c"
+  limit = 100
+  offset = 0
+  releases = []
+  page = 0
+  while True:
+      page += 1
+      print("fetching page number %d.." % page)
+      result = musicbrainzngs.browse_releases(label=label, includes=["labels"],
+                          release_type=["album"], limit=limit, offset=offset)
+      page_releases = result['release-list']
+      releases += page_releases
+      offset += limit
+      if len(page_releases) < limit:
+          break
+  print("")
+  for release in releases:
+      for label_info in release['label-info-list']:
+          catnum = label_info.get('catalog-number')
+          if label_info['label']['id'] == label and catnum:
+              print("{catnum:>17}: {date:10} {title}".format(catnum=catnum,
+                          date=release['date'], title=release['title']))
+  print("\n%d releases on  %d pages" % (len(releases), page))
+
+.. tip:: You should always try to filter in the query, when possible,
+   rather than fetching everything and filtering afterwards.
+   This will make your application faster
+   since web service requests are throttled.
+   In the example we filter by `release_type`.
+
 Submitting
 ----------
