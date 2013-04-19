@@ -134,3 +134,22 @@ to get all releases for a label::
 
 Submitting
 ----------
+
+You can also submit data using musicbrainzngs.
+Please use :func:`musicbrainzngs.set_hostname` to set the host to
+test.musicbrainz.org when testing the submission part of your application.
+
+`Authentication`_ is necessary to submit any data to MusicBrainz.
+
+An example using :func:`musicbrainzngs.submit_barcodes` looks like this::
+
+  musicbrainzngs.set_hostname("test.musicbrainz.org")
+  musicbrainzngs.auth("test", "mb")
+
+  barcodes = {
+      "174a5513-73d1-3c9d-a316-3c1c179e35f8": "5099749534728",
+      "838952af-600d-3f51-84d5-941d15880400": "602517737280"
+  }
+  musicbrainzngs.submit_barcodes(barcodes)
+
+See `Submitting`_ in the API for other possibilites.
