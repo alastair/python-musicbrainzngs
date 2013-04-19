@@ -11,6 +11,9 @@ All requests that fetch data return the data in the form of a :class:`dict`.
 Attributes and elements both map to keys in the dict.
 List entities are of type :class:`list`.
 
+This part will give an overview of available functions.
+Have a look at :doc:`usage` for examples on how to use them.
+
 General
 -------
 

@@ -1,6 +1,19 @@
 Usage
 ~~~~~
 
+In general you need to set a useragent for your application,
+start searches to get to know corresponding MusicBrainz IDs
+and then retrieve information about these entities.
+
+The data is returned in form of a :class:`dict`.
+
+If you also want to submit data,
+then you must authenticate as a MusicBrainz user.
+
+This part of the documentation will give you usage examples.
+For an overview of available functions you can have a look at
+the :doc:`api`.
+
 Identification
 --------------
 
