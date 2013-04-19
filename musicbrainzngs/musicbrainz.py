@@ -208,32 +208,33 @@ def _check_filter(values, valid):
 			raise InvalidFilterError(v)
 
 def _check_filter_and_make_params(entity, includes, release_status=[], release_type=[]):
-	"""Check that the status or type values are valid. Then, check that
-	the filters can be used with the given includes. Return a params
-	dict that can be passed to _do_mb_query.
-	"""
-	if isinstance(release_status, compat.basestring):
-		release_status = [release_status]
-	if isinstance(release_type, compat.basestring):
-		release_type = [release_type]
-	_check_filter(release_status, VALID_RELEASE_STATUSES)
-	_check_filter(release_type, VALID_RELEASE_TYPES)
+    """Check that the status or type values are valid. Then, check that
+    the filters can be used with the given includes. Return a params
+    dict that can be passed to _do_mb_query.
+    """
+    if isinstance(release_status, compat.basestring):
+        release_status = [release_status]
+    if isinstance(release_type, compat.basestring):
+        release_type = [release_type]
+    _check_filter(release_status, VALID_RELEASE_STATUSES)
+    _check_filter(release_type, VALID_RELEASE_TYPES)
 
-	if release_status and "releases" not in includes:
-		raise InvalidFilterError("Can't have a status with no release include")
-	if release_type and ("release-groups" not in includes and
-					     "releases" not in includes and
-					      entity != "release-group"):
-		raise InvalidFilterError("Can't have a release type with no "
-								 "release-group include")
+    if (release_status
+            and "releases" not in includes and entity != "release"):
+        raise InvalidFilterError("Can't have a status with no release include")
+    if (release_type
+            and "release-groups" not in includes and "releases" not in includes
+            and entity not in ["release-group", "release"]):
+        raise InvalidFilterError("Can't have a release type"
+                "with no releases or release-groups involved")
 
-	# Build parameters.
-	params = {}
-	if len(release_status):
-		params["status"] = "|".join(release_status)
-	if len(release_type):
-		params["type"] = "|".join(release_type)
-	return params
+    # Build parameters.
+    params = {}
+    if len(release_status):
+        params["status"] = "|".join(release_status)
+    if len(release_type):
+        params["type"] = "|".join(release_type)
+    return params
 
 def _docstring(entity, browse=False):
     def _decorator(func):
