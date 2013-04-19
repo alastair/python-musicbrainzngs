@@ -152,4 +152,4 @@ An example using :func:`musicbrainzngs.submit_barcodes` looks like this::
   }
   musicbrainzngs.submit_barcodes(barcodes)
 
-See `Submitting`_ in the API for other possibilites.
+See :ref:`api_submitting` in the API for other possibilites.

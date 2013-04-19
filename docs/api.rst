@@ -84,6 +84,8 @@ Browsing
 .. autofunction:: browse_release_groups
 .. autofunction:: browse_releases
 
+.. _api_submitting:
+
 Submitting
 ----------
 
