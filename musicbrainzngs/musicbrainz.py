@@ -8,6 +8,9 @@ import threading
 import time
 import logging
 import socket
+import hashlib
+import locale
+import sys
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 
@@ -362,12 +365,36 @@ class _RedirectPasswordMgr(compat.HTTPPasswordMgr):
 		self._realms[realm] = (username, password)
 
 class _DigestAuthHandler(compat.HTTPDigestAuthHandler):
-	def get_authorization (self, req, chal):
-		qop = chal.get ('qop', None)
-		if qop and ',' in qop and 'auth' in qop.split (','):
-			chal['qop'] = 'auth'
+    def get_authorization (self, req, chal):
+        qop = chal.get ('qop', None)
+        if qop and ',' in qop and 'auth' in qop.split (','):
+            chal['qop'] = 'auth'
 
-		return compat.HTTPDigestAuthHandler.get_authorization (self, req, chal)
+        return compat.HTTPDigestAuthHandler.get_authorization (self, req, chal)
+
+    def encode_8559(self, msg):
+        """The MusicBrainz server also accepts
+        latin1/iso-8559-1 encoded passwords."""
+        encoding = sys.stdin.encoding or locale.getpreferredencoding()
+        try:
+            # This works on Python 2 (msg in bytes)
+            msg = msg.decode(encoding)
+        except AttributeError:
+            # on Python 3 (msg is already unicode)
+            pass
+        return msg.encode("iso-8859-1")
+
+    def get_algorithm_impls(self, algorithm):
+        # algorithm should be case-insensitive according to RFC2617
+        algorithm = algorithm.upper()
+        # lambdas assume digest modules are imported at the top level
+        if algorithm == 'MD5':
+            H = lambda x: hashlib.md5(self.encode_8559(x)).hexdigest()
+        elif algorithm == 'SHA':
+            H = lambda x: hashlib.sha1(self.encode_8559(x)).hexdigest()
+        # XXX MD5-sess
+        KD = lambda s, d: H("%s:%s" % (s, d))
+        return H, KD
 
 class _MusicbrainzHttpRequest(compat.Request):
 	""" A custom request handler that allows DELETE and PUT"""
