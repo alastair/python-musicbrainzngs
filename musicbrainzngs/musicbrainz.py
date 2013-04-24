@@ -372,26 +372,25 @@ class _DigestAuthHandler(compat.HTTPDigestAuthHandler):
 
         return compat.HTTPDigestAuthHandler.get_authorization (self, req, chal)
 
-    def encode_8559(self, msg):
-        """The MusicBrainz server also accepts
-        latin1/iso-8559-1 encoded passwords."""
+    def _encode_utf8(self, msg):
+        """The MusicBrainz server also accepts UTF-8 encoded passwords."""
         encoding = sys.stdin.encoding or locale.getpreferredencoding()
         try:
             # This works on Python 2 (msg in bytes)
             msg = msg.decode(encoding)
         except AttributeError:
-            # on Python 3 (msg is already unicode)
+            # on Python 3 (msg is already in unicode)
             pass
-        return msg.encode("iso-8859-1")
+        return msg.encode("utf-8")
 
     def get_algorithm_impls(self, algorithm):
         # algorithm should be case-insensitive according to RFC2617
         algorithm = algorithm.upper()
         # lambdas assume digest modules are imported at the top level
         if algorithm == 'MD5':
-            H = lambda x: hashlib.md5(self.encode_8559(x)).hexdigest()
+            H = lambda x: hashlib.md5(self._encode_utf8(x)).hexdigest()
         elif algorithm == 'SHA':
-            H = lambda x: hashlib.sha1(self.encode_8559(x)).hexdigest()
+            H = lambda x: hashlib.sha1(self._encode_utf8(x)).hexdigest()
         # XXX MD5-sess
         KD = lambda s, d: H("%s:%s" % (s, d))
         return H, KD
