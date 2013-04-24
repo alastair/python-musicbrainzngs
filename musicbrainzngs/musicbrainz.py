@@ -815,51 +815,65 @@ def get_releases_in_collection(collection):
 
 # Submission methods
 
-def submit_barcodes(barcodes):
-	"""Submits a set of {release1: barcode1, release2:barcode2}
+def submit_barcodes(release2barcode):
+    """Submits a set of {release_id1: barcode, ...}
 
-	Must call auth(user, pass) first"""
-	query = mbxml.make_barcode_request(barcodes)
-	return _do_mb_post("release", query)
+    Must call auth(user, pass) first"""
+    query = mbxml.make_barcode_request(release2barcode)
+    return _do_mb_post("release", query)
 
-def submit_puids(puids):
+def submit_puids(recording2puids):
     """Submit PUIDs.
+    Submits a set of {recording_id1: [puid1, ...], ...}
+    or {recording_id1: puid, ...}.
 
     Must call auth(user, pass) first"""
-    query = mbxml.make_puid_request(puids)
+    rec2puids = dict()
+    for (rec, puids) in recording2puids.items():
+        rec2puids[rec] = puids if isinstance(rec, list) else [puids]
+    query = mbxml.make_puid_request(rec2puids)
     return _do_mb_post("recording", query)
 
-def submit_echoprints(echoprints):
+def submit_echoprints(recording2echoprints):
     """Submit echoprints.
+    Submits a set of {recording_id1: [echoprint1, ...], ...}
+    or {recording_id1: echoprint, ...}.
 
     Must call auth(user, pass) first"""
-    query = mbxml.make_echoprint_request(echoprints)
+    rec2echos = dict()
+    for (rec, echos) in recording2echoprints.items():
+        rec2echos[rec] = echos if isinstance(rec, list) else [echos]
+    query = mbxml.make_echoprint_request(rec2echos)
     return _do_mb_post("recording", query)
 
-def submit_isrcs(recordings_isrcs):
+def submit_isrcs(recording2isrcs):
     """Submit ISRCs.
-    Submits a set of {recording-id: [isrc1, isrc2, ...]}
+    Submits a set of {recording-id1: [isrc1, ...], ...}
+    or {recording_id1: isrc, ...}.
 
     Must call auth(user, pass) first"""
-    query = mbxml.make_isrc_request(recordings_isrcs=recordings_isrcs)
+    rec2isrcs = dict()
+    for (rec, isrcs) in recording2isrcs.items():
+        rec2isrcs[rec] = isrcs if isinstance(rec, list) else [isrcs]
+    query = mbxml.make_isrc_request(rec2isrcs)
     return _do_mb_post("recording", query)
 
-def submit_tags(artist_tags={}, recording_tags={}):
+def submit_tags(artist2tags={}, recording2tags={}):
     """Submit user tags.
     Artist or recording parameters are of the form:
-    {'entityid': [taglist]}
+    {entity_id1: [tag1, ...], ...}
 
     Must call auth(user, pass) first"""
-    query = mbxml.make_tag_request(artist_tags, recording_tags)
+    query = mbxml.make_tag_request(artist2tags, recording2tags)
     return _do_mb_post("tag", query)
 
-def submit_ratings(artist_ratings={}, recording_ratings={}):
+def submit_ratings(artist2rating={}, recording2rating={}):
     """ Submit user ratings.
     Artist or recording parameters are of the form:
-    {'entityid': rating}
+    {entity_id1: rating, ...}
 
     Must call auth(user, pass) first"""
-    query = mbxml.make_rating_request(artist_ratings, recording_ratings)
+    query = mbxml.make_rating_request(artist2rating, recording2rating)
     return _do_mb_post("rating", query)
 
 def add_releases_to_collection(collection, releases=[]):

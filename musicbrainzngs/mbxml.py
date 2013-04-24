@@ -507,106 +507,99 @@ def parse_alias(alias):
     return result
 
 ###
-def make_barcode_request(barcodes):
-	NS = "http://musicbrainz.org/ns/mmd-2.0#"
-	root = ET.Element("{%s}metadata" % NS)
-	rel_list = ET.SubElement(root, "{%s}release-list" % NS)
-	for release, barcode in barcodes.items():
-		rel_xml = ET.SubElement(rel_list, "{%s}release" % NS)
-		bar_xml = ET.SubElement(rel_xml, "{%s}barcode" % NS)
-		rel_xml.set("{%s}id" % NS, release)
-		bar_xml.text = barcode
+def make_barcode_request(release2barcode):
+    NS = "http://musicbrainz.org/ns/mmd-2.0#"
+    root = ET.Element("{%s}metadata" % NS)
+    rel_list = ET.SubElement(root, "{%s}release-list" % NS)
+    for release, barcode in release2barcode.items():
+        rel_xml = ET.SubElement(rel_list, "{%s}release" % NS)
+        bar_xml = ET.SubElement(rel_xml, "{%s}barcode" % NS)
+        rel_xml.set("{%s}id" % NS, release)
+        bar_xml.text = barcode
 
-	return ET.tostring(root, "utf-8")
+    return ET.tostring(root, "utf-8")
 
-def make_puid_request(puids):
-	NS = "http://musicbrainz.org/ns/mmd-2.0#"
-	root = ET.Element("{%s}metadata" % NS)
-	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-	for recording, puid_list in puids.items():
-		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-		rec_xml.set("id", recording)
-		p_list_xml = ET.SubElement(rec_xml, "{%s}puid-list" % NS)
-		l = puid_list if isinstance(puid_list, list) else [puid_list]
-		for p in l:
-			p_xml = ET.SubElement(p_list_xml, "{%s}puid" % NS)
-			p_xml.set("id", p)
-
-	return ET.tostring(root, "utf-8")
-
-def make_echoprint_request(echoprints):
-	NS = "http://musicbrainz.org/ns/mmd-2.0#"
-	root = ET.Element("{%s}metadata" % NS)
-	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-	for recording, echoprint_list in echoprints.items():
-		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-		rec_xml.set("id", recording)
-		e_list_xml = ET.SubElement(rec_xml, "{%s}echoprint-list" % NS)
-		l = echoprint_list if isinstance(echoprint_list, list) else [echoprint_list]
-		for e in l:
-			e_xml = ET.SubElement(e_list_xml, "{%s}echoprint" % NS)
-			e_xml.set("id", e)
-
-	return ET.tostring(root, "utf-8")
-
-def make_tag_request(artist_tags, recording_tags):
-	NS = "http://musicbrainz.org/ns/mmd-2.0#"
-	root = ET.Element("{%s}metadata" % NS)
-	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-	for rec, tags in recording_tags.items():
-		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-		rec_xml.set("{%s}id" % NS, rec)
-		taglist = ET.SubElement(rec_xml, "{%s}user-tag-list" % NS)
-		for t in tags:
-			usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
-			name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
-			name_xml.text = t
-	art_list = ET.SubElement(root, "{%s}artist-list" % NS)
-	for art, tags in artist_tags.items():
-		art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
-		art_xml.set("{%s}id" % NS, art)
-		taglist = ET.SubElement(art_xml, "{%s}user-tag-list" % NS)
-		for t in tags:
-			usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
-			name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
-			name_xml.text = t
-
-	return ET.tostring(root, "utf-8")
-
-def make_rating_request(artist_ratings, recording_ratings):
-	NS = "http://musicbrainz.org/ns/mmd-2.0#"
-	root = ET.Element("{%s}metadata" % NS)
-	rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-	for rec, rating in recording_ratings.items():
-		rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-		rec_xml.set("{%s}id" % NS, rec)
-		rating_xml = ET.SubElement(rec_xml, "{%s}user-rating" % NS)
-		if isinstance(rating, int):
-			rating = "%d" % rating
-		rating_xml.text = rating
-	art_list = ET.SubElement(root, "{%s}artist-list" % NS)
-	for art, rating in artist_ratings.items():
-		art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
-		art_xml.set("{%s}id" % NS, art)
-		rating_xml = ET.SubElement(art_xml, "{%s}user-rating" % NS)
-		if isinstance(rating, int):
-			rating = "%d" % rating
-		rating_xml.text = rating
-
-	return ET.tostring(root, "utf-8")
-
-def make_isrc_request(recordings_isrcs):
+def make_puid_request(recording2puids):
     NS = "http://musicbrainz.org/ns/mmd-2.0#"
     root = ET.Element("{%s}metadata" % NS)
     rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-    for rec, isrcs in recordings_isrcs.items():
+    for recording, puid_list in recording2puids.items():
+        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+        rec_xml.set("id", recording)
+        puid_list_xml = ET.SubElement(rec_xml, "{%s}puid-list" % NS)
+        for puid in puid_list:
+            puid_xml = ET.SubElement(puid_list_xml, "{%s}puid" % NS)
+            puid_xml.set("id", puid)
+
+    return ET.tostring(root, "utf-8")
+
+def make_echoprint_request(recording2echoprints):
+    NS = "http://musicbrainz.org/ns/mmd-2.0#"
+    root = ET.Element("{%s}metadata" % NS)
+    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+    for recording, echoprint_list in recording2echoprints.items():
+        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+        rec_xml.set("id", recording)
+        echoprint_list_xml = ET.SubElement(rec_xml, "{%s}echoprint-list" % NS)
+        for echoprint in echoprint_list:
+            echo_xml = ET.SubElement(echoprint_list_xml, "{%s}echoprint" % NS)
+            echo_xml.set("id", echoprint)
+
+    return ET.tostring(root, "utf-8")
+
+def make_tag_request(artist2tags, recording2tags):
+    NS = "http://musicbrainz.org/ns/mmd-2.0#"
+    root = ET.Element("{%s}metadata" % NS)
+    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+    for rec, tags in recording2tags.items():
+        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+        rec_xml.set("{%s}id" % NS, rec)
+        taglist = ET.SubElement(rec_xml, "{%s}user-tag-list" % NS)
+        for tag in tags:
+            usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+            name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+            name_xml.text = tag
+    art_list = ET.SubElement(root, "{%s}artist-list" % NS)
+    for art, tags in artist2tags.items():
+        art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
+        art_xml.set("{%s}id" % NS, art)
+        taglist = ET.SubElement(art_xml, "{%s}user-tag-list" % NS)
+        for tag in tags:
+            usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+            name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+            name_xml.text = tag
+
+    return ET.tostring(root, "utf-8")
+
+def make_rating_request(artist2rating, recording2rating):
+    NS = "http://musicbrainz.org/ns/mmd-2.0#"
+    root = ET.Element("{%s}metadata" % NS)
+    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+    for rec, rating in recording2rating.items():
+        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
+        rec_xml.set("{%s}id" % NS, rec)
+        rating_xml = ET.SubElement(rec_xml, "{%s}user-rating" % NS)
+        rating_xml.text = str(rating)
+    art_list = ET.SubElement(root, "{%s}artist-list" % NS)
+    for art, rating in artist2rating.items():
+        art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
+        art_xml.set("{%s}id" % NS, art)
+        rating_xml = ET.SubElement(art_xml, "{%s}user-rating" % NS)
+        rating_xml.text = str(rating)
+
+    return ET.tostring(root, "utf-8")
+
+def make_isrc_request(recording2isrcs):
+    NS = "http://musicbrainz.org/ns/mmd-2.0#"
+    root = ET.Element("{%s}metadata" % NS)
+    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
+    for rec, isrcs in recording2isrcs.items():
         if len(isrcs) > 0:
             rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
             rec_xml.set("{%s}id" % NS, rec)
-            isrc_list = isrcs if isinstance(isrcs, list) else [isrcs]
             isrc_list_xml = ET.SubElement(rec_xml, "{%s}isrc-list" % NS)
-            isrc_list_xml.set("{%s}count" % NS, str(len(isrc_list)))
-            for isrc in isrc_list:
+            isrc_list_xml.set("{%s}count" % NS, str(len(isrcs)))
+            for isrc in isrcs:
                 isrc_xml = ET.SubElement(isrc_list_xml, "{%s}isrc" % NS)
                 isrc_xml.set("{%s}id" % NS, isrc)
     return ET.tostring(root, "utf-8")
