@@ -696,53 +696,39 @@ def get_work_by_id(id, includes=[]):
 
 @_docstring('annotation')
 def search_annotations(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('annotation', query, fields, limit, offset, strict)
 
 @_docstring('artist')
 def search_artists(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('artist', query, fields, limit, offset, strict)
 
 @_docstring('label')
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('label', query, fields, limit, offset, strict)
 
 @_docstring('recording')
 def search_recordings(query='', limit=None, offset=None,
                       strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('recording', query, fields, limit, offset, strict)
 
 @_docstring('release')
 def search_releases(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('release', query, fields, limit, offset, strict)
 
 @_docstring('release-group')
 def search_release_groups(query='', limit=None, offset=None,
 			  strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('release-group', query, fields, limit, offset, strict)
 
 @_docstring('work')
 def search_works(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}
-
-    *Available includes*: {includes}"""
+    """*Available search fields*: {fields}"""
     return _do_mb_search('work', query, fields, limit, offset, strict)
 
 
