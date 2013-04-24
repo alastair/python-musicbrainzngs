@@ -105,6 +105,12 @@ You have to provide exactly one MusicBrainz ID to these functions.
 Submitting
 ----------
 
+These are the only functions that write to the MusicBrainz database.
+They take one or more dicts with multiple entities as keys,
+which take certain values or a list of values.
+
+You have to use :func:`auth` before using any of these functions.
+
 .. autofunction:: submit_barcodes
 .. autofunction:: submit_puids
 .. autofunction:: submit_echoprints
@@ -116,6 +122,11 @@ Submitting
 
 Exceptions
 ----------
+
+These are the main exceptions that are raised by functions in musicbrainzngs.
+You might want to catch some of these at an appropriate point in your code.
+
+Some of these might have subclasses that are not listed here.
 
 .. autoclass:: MusicBrainzError
 
