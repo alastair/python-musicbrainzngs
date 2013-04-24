@@ -31,16 +31,10 @@ def show_release_details(rel):
         if info.get('catalog-number'):
             print("\t\tcat#: {}".format(info['catalog-number']))
 
-def fail(message):
-    """Print a message to stderr and then exit with an error status.
-    """
-    sys.stderr.write(message + "\n")
-    sys.exit(1)
-
 if __name__ == '__main__':
     args = sys.argv[1:]
     if len(args) != 1:
-        fail("usage: {} DISC_ID".format(sys.argv[0]))
+        sys.exit("usage: {} DISC_ID".format(sys.argv[0]))
     discid = args[0]
 
     try:
@@ -49,9 +43,9 @@ if __name__ == '__main__':
                 includes=["labels"])
     except musicbrainzngs.ResponseError as err:
         if err.cause.code == 404:
-            fail("disc not found")
+            sys.exit("disc not found")
         else:
-            fail("received bad response from the MB server")
+            sys.exit("received bad response from the MB server")
 
     # The result can either be a "disc" or a "cdstub"
     if result.get('disc'):
@@ -67,4 +61,4 @@ if __name__ == '__main__':
         if result['cdstub'].get('barcode'):
             print("\tBarcode: {}".format(result['cdstub']['barcode']))
     else:
-        fail("no valid results")
+        sys.exit("no valid results")
