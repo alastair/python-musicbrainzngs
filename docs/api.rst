@@ -22,7 +22,7 @@ General
 .. autofunction:: set_useragent
 .. autofunction:: set_hostname
 
-Getting data
+Getting Data
 ------------
 
 All of these functions will fetch a MusicBrainz entity or a list of entities
@@ -71,6 +71,11 @@ though these will be ranked lower than the ones that do.
 If you want all query elements to match for all results,
 you have to set `strict=True`.
 
+By default the web service returns 25 results per request and you can set
+a `limit` of up to 100.
+You have to use the `offset` parameter to set how many results you have
+already seen so the web service doesn't give you the same results again.
+
 .. autofunction:: search_annotations
 .. autofunction:: search_artists
 .. autofunction:: search_labels
@@ -80,6 +85,14 @@ you have to set `strict=True`.
 
 Browsing
 --------
+
+These functions can be used to to include more than the maximum of 25 linked
+entities returned by the functions in `Getting Data`_.
+You can set a `limit` as high as 100. The default is still 25.
+Similar to the functions in `Searching`_, you have to specify
+an `offset` to see the results you haven't seen yet.
+
+You have to provide exactly one MusicBrainz ID to these functions.
 
 .. autofunction:: browse_artists
 .. autofunction:: browse_labels
