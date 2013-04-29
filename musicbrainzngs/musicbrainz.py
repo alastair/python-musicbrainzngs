@@ -765,7 +765,13 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 # Lists of entities
 @_docstring('release')
 def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
-    """*Available includes*: {includes}"""
+    """Search for releases with a :musicbrainz:`Disc ID`.
+
+    The result is a dict with either a 'disc' or a 'cdstub' key.
+    A 'disc' has a 'release-list' and a 'cdstub' key has direct 'artist'
+    and 'title' keys.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("discid", includes, release_status,
                                            release_type=release_type)
     return _do_mb_query("discid", id, includes, params)
@@ -773,7 +779,13 @@ def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
 @_docstring('recording')
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
                                 release_type=[]):
-    """*Available includes*: {includes}"""
+    """Search for recordings with an `echoprint <http://echoprint.me>`_.
+    The result is a dict with an 'echoprint' key,
+    which again includes a 'recording-list'.
+
+    The preferred fingerprint method is :musicbrainz:`AcoustID`.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("echoprint", includes,
                                            release_status, release_type)
     return _do_mb_query("echoprint", echoprint, includes, params)
@@ -781,7 +793,13 @@ def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
 @_docstring('recording')
 def get_recordings_by_puid(puid, includes=[], release_status=[],
                            release_type=[]):
-    """*Available includes*: {includes}"""
+    """Search for recordings with a :musicbrainz:`PUID`.
+    The result is a dict with a 'puid' key,
+    which again includes a 'recording-list'.
+
+    The preferred fingerprint method is :musicbrainz:`AcoustID`.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("puid", includes,
                                            release_status, release_type)
     return _do_mb_query("puid", puid, includes, params)
@@ -789,14 +807,21 @@ def get_recordings_by_puid(puid, includes=[], release_status=[],
 @_docstring('recording')
 def get_recordings_by_isrc(isrc, includes=[], release_status=[],
                            release_type=[]):
-    """*Available includes*: {includes}"""
+    """Search for recordings with a :musicbrainz:`ISRC`.
+    The result is a dict with an 'isrc' key,
+    which again includes a 'recording-list'.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("isrc", includes,
                                            release_status, release_type)
     return _do_mb_query("isrc", isrc, includes, params)
 
 @_docstring('work')
 def get_works_by_iswc(iswc, includes=[]):
-    """*Available includes*: {includes}"""
+    """Search for works with a :musicbrainz:`ISWC`.
+    The result is a dict with a `work-list`.
+
+    *Available includes*: {includes}"""
     return _do_mb_query("iswc", iswc, includes)
 
 
