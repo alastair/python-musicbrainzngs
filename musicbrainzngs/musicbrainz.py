@@ -653,42 +653,57 @@ def _do_mb_post(path, body):
 
 @_docstring('artist')
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
-    """*Available includes*: {includes}"""
+    """Get the artist with the MusicBrainz `id` as a dict with an 'artist' key.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("artist", includes,
                                            release_status, release_type)
     return _do_mb_query("artist", id, includes, params)
 
 @_docstring('label')
 def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
-    """*Available includes*: {includes}"""
+    """Get the label with the MusicBrainz `id` as a dict with a 'label' key.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("label", includes,
                                            release_status, release_type)
     return _do_mb_query("label", id, includes, params)
 
 @_docstring('recording')
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
-    """*Available includes*: {includes}"""
+    """Get the recording with the MusicBrainz `id` as a dict
+    with a 'recording' key.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("recording", includes,
                                            release_status, release_type)
     return _do_mb_query("recording", id, includes, params)
 
 @_docstring('release')
 def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
-    """*Available includes*: {includes}"""
+    """Get the release with the MusicBrainz `id` as a dict with a 'release' key.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("release", includes,
                                            release_status, release_type)
     return _do_mb_query("release", id, includes, params)
 
 @_docstring('release-group')
-def get_release_group_by_id(id, includes=[], release_status=[], release_type=[]):
-    """*Available includes*: {includes}"""
+def get_release_group_by_id(id, includes=[],
+                            release_status=[], release_type=[]):
+    """Get the release group with the MusicBrainz `id` as a dict
+    with a 'release-group' key.
+
+    *Available includes*: {includes}"""
     params = _check_filter_and_make_params("release-group", includes,
                                            release_status, release_type)
     return _do_mb_query("release-group", id, includes, params)
 
 @_docstring('work')
 def get_work_by_id(id, includes=[]):
-    """*Available includes*: {includes}"""
+    """Get the work with the MusicBrainz `id` as a dict with a 'work' key.
+
+    *Available includes*: {includes}"""
     return _do_mb_query("work", id, includes)
 
 
@@ -696,39 +711,54 @@ def get_work_by_id(id, includes=[]):
 
 @_docstring('annotation')
 def search_annotations(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for annotations and return a dict with an 'annotation-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('annotation', query, fields, limit, offset, strict)
 
 @_docstring('artist')
 def search_artists(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for artists and return a dict with an 'artist-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('artist', query, fields, limit, offset, strict)
 
 @_docstring('label')
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for labels and return a dict with a 'label-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('label', query, fields, limit, offset, strict)
 
 @_docstring('recording')
 def search_recordings(query='', limit=None, offset=None,
                       strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for recordings and return a dict with a 'recording-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('recording', query, fields, limit, offset, strict)
 
 @_docstring('release')
 def search_releases(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for recordings and return a dict with a 'recording-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('release', query, fields, limit, offset, strict)
 
 @_docstring('release-group')
 def search_release_groups(query='', limit=None, offset=None,
 			  strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for release groups and return a dict
+    with a 'release-group-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('release-group', query, fields, limit, offset, strict)
 
 @_docstring('work')
 def search_works(query='', limit=None, offset=None, strict=False, **fields):
-    """*Available search fields*: {fields}"""
+    """Search for works and return a dict with a 'work-list' key.
+
+    *Available search fields*: {fields}"""
     return _do_mb_search('work', query, fields, limit, offset, strict)
 
 
