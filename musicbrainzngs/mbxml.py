@@ -131,6 +131,7 @@ def parse_message(message):
 
 	                  "disc": parse_disc,
 	                  "puid": parse_puid,
+	                  "isrc": parse_puid,
 	                  "echoprint": parse_puid,
 
 	                  "annotation-list": parse_annotation_list,
