@@ -86,6 +86,9 @@ already seen so the web service doesn't give you the same results again.
 Browsing
 --------
 
+You can browse entitities of a certain type linked to one specific entity.
+That is you can browse all recordings by an artist, for example.
+
 These functions can be used to to include more than the maximum of 25 linked
 entities returned by the functions in `Getting Data`_.
 You can set a `limit` as high as 100. The default is still 25.

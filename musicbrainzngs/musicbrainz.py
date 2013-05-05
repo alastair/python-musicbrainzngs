@@ -807,7 +807,7 @@ def get_recordings_by_puid(puid, includes=[], release_status=[],
 @_docstring('recording')
 def get_recordings_by_isrc(isrc, includes=[], release_status=[],
                            release_type=[]):
-    """Search for recordings with a :musicbrainz:`ISRC`.
+    """Search for recordings with an :musicbrainz:`ISRC`.
     The result is a dict with an 'isrc' key,
     which again includes a 'recording-list'.
 
@@ -818,8 +818,8 @@ def get_recordings_by_isrc(isrc, includes=[], release_status=[],
 
 @_docstring('work')
 def get_works_by_iswc(iswc, includes=[]):
-    """Search for works with a :musicbrainz:`ISWC`.
-    The result is a dict with a `work-list`.
+    """Search for works with an :musicbrainz:`ISWC`.
+    The result is a dict with a`work-list`.
 
     *Available includes*: {includes}"""
     return _do_mb_query("iswc", iswc, includes)
@@ -845,7 +845,10 @@ def _browse_impl(entity, includes, valid_includes, limit, offset, params, releas
 @_docstring('artists', browse=True)
 def browse_artists(recording=None, release=None, release_group=None,
                    includes=[], limit=None, offset=None):
-    """*Available includes*: {includes}"""
+    """Get all artists linked to a recording, a release or a release group.
+    You need to give one MusicBrainz ID.
+
+    *Available includes*: {includes}"""
     # optional parameter work?
     valid_includes = VALID_BROWSE_INCLUDES['artists']
     params = {"recording": recording,
@@ -856,7 +859,9 @@ def browse_artists(recording=None, release=None, release_group=None,
 
 @_docstring('labels', browse=True)
 def browse_labels(release=None, includes=[], limit=None, offset=None):
-    """*Available includes*: {includes}"""
+    """Get all labels linked to a relase. You need to give a MusicBrainz ID.
+
+    *Available includes*: {includes}"""
     valid_includes = VALID_BROWSE_INCLUDES['labels']
     params = {"release": release}
     return _browse_impl("label", includes, valid_includes,
@@ -865,7 +870,10 @@ def browse_labels(release=None, includes=[], limit=None, offset=None):
 @_docstring('recordings', browse=True)
 def browse_recordings(artist=None, release=None, includes=[],
                       limit=None, offset=None):
-    """*Available includes*: {includes}"""
+    """Get all recordings linked to an artist or a release.
+    You need to give one MusicBrainz ID.
+
+    *Available includes*: {includes}"""
     valid_includes = VALID_BROWSE_INCLUDES['recordings']
     params = {"artist": artist,
               "release": release}
@@ -876,7 +884,13 @@ def browse_recordings(artist=None, release=None, includes=[],
 def browse_releases(artist=None, label=None, recording=None,
                     release_group=None, release_status=[], release_type=[],
                     includes=[], limit=None, offset=None):
-    """*Available includes*: {includes}"""
+    """Get all releases linked to an artist, a label, a recording
+    or a release group. You need to give one MusicBrainz ID.
+
+    You can filter by :data:`musicbrainz.VALID_RELEASE_TYPES` or
+    :data:`musicbrainz.VALID_RELEASE_STATUSES`.
+
+    *Available includes*: {includes}"""
     # track_artist param doesn't work yet
     valid_includes = VALID_BROWSE_INCLUDES['releases']
     params = {"artist": artist,
@@ -889,7 +903,12 @@ def browse_releases(artist=None, label=None, recording=None,
 @_docstring('release-groups', browse=True)
 def browse_release_groups(artist=None, release=None, release_type=[],
                           includes=[], limit=None, offset=None):
-    """*Available includes*: {includes}"""
+    """Get all release groups linked to an artist or a release.
+    You need to give one MusicBrainz ID.
+
+    You can filter by :data:`musicbrainz.VALID_RELEASE_TYPES`.
+
+    *Available includes*: {includes}"""
     valid_includes = VALID_BROWSE_INCLUDES['release-groups']
     params = {"artist": artist,
               "release": release}
