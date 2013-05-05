@@ -919,11 +919,16 @@ def browse_release_groups(artist=None, release=None, release_type=[],
 
 # Collections
 def get_collections():
-	# Missing <release-list count="n"> the count in the reply
-	return _do_mb_query("collection", '')
+    """List the collections for the currently authenticated user
+    as a dict with a 'collection-list' key."""
+    # Missing <release-list count="n"> the count in the reply
+    return _do_mb_query("collection", '')
 
 def get_releases_in_collection(collection):
-	return _do_mb_query("collection", "%s/releases" % collection)
+    """List the releases in a collection.
+    Returns a dict with a 'collection' key, which again has a 'release-list'.
+    """
+    return _do_mb_query("collection", "%s/releases" % collection)
 
 # Submission methods
 
