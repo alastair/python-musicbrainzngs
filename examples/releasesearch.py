@@ -29,16 +29,10 @@ def show_release_details(rel):
         print("Released {} ({})".format(rel['date'], rel['status']))
     print("MusicBrainz ID: {}".format(rel['id']))
 
-def fail(message):
-    """Print a message to stderr and then exit with an error status.
-    """
-    print(message, file=sys.stderr)
-    sys.exit(1)
-
 if __name__ == '__main__':
     args = sys.argv[1:]
     if len(args) != 2:
-        fail("usage: {} ARTIST ALBUM".format(sys.argv[0]))
+        sys.exit("usage: {} ARTIST ALBUM".format(sys.argv[0]))
     artist, album = args
 
     # Keyword arguments to the "search_*" functions limit keywords to
@@ -50,7 +44,7 @@ if __name__ == '__main__':
     # On success, result is a dictionary with a single key:
     # "release-list", which is a list of dictionaries.
     if not result['release-list']:
-        fail("no release found")
+        sys.exit("no release found")
     for (idx, release) in enumerate(result['release-list']):
         print("match #{}:".format(idx+1))
         show_release_details(release)
