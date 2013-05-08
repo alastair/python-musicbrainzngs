@@ -620,7 +620,7 @@ def _do_mb_search(entity, query='', fields={},
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
-		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', value)
+		value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\\/])', r'\\\1', value)
 		if value:
 			if strict:
 				query_parts.append('%s:"%s"' % (key, value))
