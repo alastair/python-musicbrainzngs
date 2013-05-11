@@ -33,13 +33,19 @@ More documentation is available at https://python-musicbrainz-ngs.readthedocs.or
 
 ### Authors
 
-These bindings were written by [Alastair Porter](http://github.com/alastair). Contributions
-have been made by:
+These bindings were written by [Alastair Porter](http://github.com/alastair).
+Contributions have been made by:
 
 * [Adrian Sampson](https://github.com/sampsyo)
-* [Michael Marineau](https://github.com/marineam)
-* [Thomas Vander Stichele](https://github.com/thomasvs)
+* [Galen Hazelwood](https://github.com/galenhz)
+* [Greg Ward](https://github.com/gward)
 * [Ian McEwen](https://github.com/ianmcorvidae)
+* [Johannes Dewender](https://github.com/JonnyJD)
+* [Michael Marineau](https://github.com/marineam)
+* [Patrick Speiser](https://github.com/doskir)
+* [Paul Bailey](https://github.com/paulbailey)
+* [Sam Doshi](https://github.com/samdoshi)
+* [Thomas Vander Stichele](https://github.com/thomasvs)
 * [Wieland Hoffmann](https://github.com/mineo)
 
 ### License

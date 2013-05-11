@@ -1,102 +1,149 @@
 API
 ~~~
+.. module:: musicbrainzngs
+
+This is a shallow python binding of the MusicBrainz web service
+so you should read
+:musicbrainz:`Development/XML Web Service/Version 2`
+to understand how that web service works in general.
+
+All requests that fetch data return the data in the form of a :class:`dict`.
+Attributes and elements both map to keys in the dict.
+List entities are of type :class:`list`.
+
+This part will give an overview of available functions.
+Have a look at :doc:`usage` for examples on how to use them.
 
 General
 -------
 
-.. autofunction:: musicbrainzngs.auth
+.. autofunction:: auth
+.. autofunction:: set_rate_limit
+.. autofunction:: set_useragent
+.. autofunction:: set_hostname
 
-.. autofunction:: musicbrainzngs.set_rate_limit
-
-.. autofunction:: musicbrainzngs.set_useragent
-
-.. autofunction:: musicbrainzngs.set_hostname
-
-Getting data
+Getting Data
 ------------
 
-.. autofunction:: musicbrainzngs.get_artist_by_id
+All of these functions will fetch a MusicBrainz entity or a list of entities
+as a dict.
+You can specify a list of `includes` to get more data
+and you can filter on `release_status` and `release_type`.
+See :const:`musicbrainz.VALID_RELEASE_STATUSES`
+and :const:`musicbrainz.VALID_RELEASE_TYPES`.
+The valid includes are listed for each function.
 
-.. autofunction:: musicbrainzngs.get_label_by_id
+.. autofunction:: get_artist_by_id
+.. autofunction:: get_label_by_id
+.. autofunction:: get_recording_by_id
+.. autofunction:: get_recordings_by_echoprint
+.. autofunction:: get_recordings_by_puid
+.. autofunction:: get_recordings_by_isrc
+.. autofunction:: get_release_group_by_id
+.. autofunction:: get_release_by_id
+.. autofunction:: get_releases_by_discid
+.. autofunction:: get_work_by_id
+.. autofunction:: get_works_by_iswc
+.. autofunction:: get_collections
+.. autofunction:: get_releases_in_collection
 
-.. autofunction:: musicbrainzngs.get_recording_by_id
-
-.. autofunction:: musicbrainzngs.get_recordings_by_echoprint
-
-.. autofunction:: musicbrainzngs.get_recordings_by_puid
-
-.. autofunction:: musicbrainzngs.get_recordings_by_isrc
-
-.. autofunction:: musicbrainzngs.get_release_group_by_id
-
-.. autofunction:: musicbrainzngs.get_release_by_id
-
-.. autofunction:: musicbrainzngs.get_releases_by_discid
-
-.. autofunction:: musicbrainzngs.get_work_by_id
-
-.. autofunction:: musicbrainzngs.get_works_by_iswc
-
-.. autofunction:: musicbrainzngs.get_collections
-
-.. autofunction:: musicbrainzngs.get_releases_in_collection
+.. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_TYPES
+.. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_STATUSES
 
 .. _search_api:
 
 Searching
 ---------
 
-.. autofunction:: musicbrainzngs.search_annotations
+For all of these search functions you can use any of the allowed search fields
+as parameter names.
+The documentation of what these fields do is on
+:musicbrainz:`Development/XML Web Service/Version 2/Search`.
 
-.. autofunction:: musicbrainzngs.search_artists
+You can also set the `query` parameter to any lucene query you like.
+When you use any of the search fields as parameters,
+special characters are escaped in the `query`.
 
-.. autofunction:: musicbrainzngs.search_labels
+By default the elements are concatenated with spaces in between,
+so lucene essentially does a fuzzy search.
+That search might include results that don't match the complete query,
+though these will be ranked lower than the ones that do.
+If you want all query elements to match for all results,
+you have to set `strict=True`.
 
-.. autofunction:: musicbrainzngs.search_recordings
+By default the web service returns 25 results per request and you can set
+a `limit` of up to 100.
+You have to use the `offset` parameter to set how many results you have
+already seen so the web service doesn't give you the same results again.
 
-.. autofunction:: musicbrainzngs.search_release_groups
-
-.. autofunction:: musicbrainzngs.search_releases
-
-.. autoattribute:: musicbrainzngs.musicbrainz.VALID_INCLUDES
-
-.. autoattribute:: musicbrainzngs.musicbrainz.VALID_SEARCH_FIELDS
+.. autofunction:: search_annotations
+.. autofunction:: search_artists
+.. autofunction:: search_labels
+.. autofunction:: search_recordings
+.. autofunction:: search_release_groups
+.. autofunction:: search_releases
 
 Browsing
 --------
 
-.. autofunction:: musicbrainzngs.browse_artists
+You can browse entitities of a certain type linked to one specific entity.
+That is you can browse all recordings by an artist, for example.
 
-.. autofunction:: musicbrainzngs.browse_labels
+These functions can be used to to include more than the maximum of 25 linked
+entities returned by the functions in `Getting Data`_.
+You can set a `limit` as high as 100. The default is still 25.
+Similar to the functions in `Searching`_, you have to specify
+an `offset` to see the results you haven't seen yet.
 
-.. autofunction:: musicbrainzngs.browse_recordings
+You have to provide exactly one MusicBrainz ID to these functions.
 
-.. autofunction:: musicbrainzngs.browse_release_groups
+.. autofunction:: browse_artists
+.. autofunction:: browse_labels
+.. autofunction:: browse_recordings
+.. autofunction:: browse_release_groups
+.. autofunction:: browse_releases
 
-.. autofunction:: musicbrainzngs.browse_releases
+.. _api_submitting:
 
 Submitting
 ----------
 
-.. autofunction:: musicbrainzngs.submit_barcodes
+These are the only functions that write to the MusicBrainz database.
+They take one or more dicts with multiple entities as keys,
+which take certain values or a list of values.
 
-.. autofunction:: musicbrainzngs.submit_puids
+You have to use :func:`auth` before using any of these functions.
 
-.. autofunction:: musicbrainzngs.submit_echoprints
-
-.. autofunction:: musicbrainzngs.submit_isrcs
-
-.. autofunction:: musicbrainzngs.submit_tags
-
-.. autofunction:: musicbrainzngs.submit_ratings
-
-.. autofunction:: musicbrainzngs.add_releases_to_collection
-
-.. autofunction:: musicbrainzngs.remove_releases_from_collection
+.. autofunction:: submit_barcodes
+.. autofunction:: submit_puids
+.. autofunction:: submit_echoprints
+.. autofunction:: submit_isrcs
+.. autofunction:: submit_tags
+.. autofunction:: submit_ratings
+.. autofunction:: add_releases_to_collection
+.. autofunction:: remove_releases_from_collection
 
 Exceptions
 ----------
 
-.. autoclass:: musicbrainzngs.AuthenticationError
+These are the main exceptions that are raised by functions in musicbrainzngs.
+You might want to catch some of these at an appropriate point in your code.
 
-.. autoclass:: musicbrainzngs.UsageError
+Some of these might have subclasses that are not listed here.
+
+.. autoclass:: MusicBrainzError
+
+.. autoclass:: UsageError
+   :show-inheritance:
+
+.. autoclass:: WebServiceError
+   :show-inheritance:
+
+.. autoclass:: AuthenticationError
+   :show-inheritance:
+
+.. autoclass:: NetworkError
+   :show-inheritance:
+
+.. autoclass:: ResponseError
+   :show-inheritance:

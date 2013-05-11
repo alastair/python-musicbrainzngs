@@ -21,7 +21,7 @@ Git
 ---
 
 If you want the latest code or even feel like contributing, the code is
-available on `Github <https://github.com/alastair/python-musicbrainz-ngs>`_.
+available on `GitHub <https://github.com/alastair/python-musicbrainz-ngs>`_.
 
 You can easily clone the code with git::
 

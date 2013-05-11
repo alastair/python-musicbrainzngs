@@ -1,12 +1,18 @@
-.. musicbrainzngs documentation master file, created by
-   sphinx-quickstart2 on Thu Apr 26 15:56:46 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+musicbrainzngs |release|
+========================
 
+`musicbrainzngs` implements Python bindings of the `MusicBrainz Web Service`_
+(WS/2, NGS).
+With this library you can retrieve all kinds of music metadata
+from the `MusicBrainz`_ database.
 
-Welcome to musicbrainzngs's documentation!
-==========================================
+`musicbrainzngs` is released under a simplified BSD style license.
 
+.. _`MusicBrainz`: http://musicbrainz.org
+.. _`MusicBrainz Web Service`: http://musicbrainz.org/doc/Development/XML%20Web%20Service/Version%202
+
+Contents
+--------
 .. toctree::
 
     installation
@@ -16,7 +22,7 @@ Welcome to musicbrainzngs's documentation!
 .. currentmodule:: musicbrainzngs.musicbrainz
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`search`
