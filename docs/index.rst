@@ -2,7 +2,7 @@ musicbrainzngs |release|
 ========================
 
 `musicbrainzngs` implements Python bindings of the `MusicBrainz Web Service`_
-(WS/2/NGS).
+(WS/2, NGS).
 With this library you can retrieve all kinds of music metadata
 from the `MusicBrainz`_ database.
 
