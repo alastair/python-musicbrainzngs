@@ -1,4 +1,15 @@
-0.4-dev:
+0.4 (2013-05-15):
+    Thanks to Johannes Dewender for all his work in this release!
+    * Improve documentation
+    * Fix get_recordings_by_puid/isrc
+    * Update search fields
+    * Parse CDStubs in release results
+    * Correct release_type/release_status checking
+    * Allow iso-8859-1 passwords
+    * Convert single isrcs to list when submitting
+    * Parse ISRC results
+    * Escape forward slashes in search queries (Adrian Sampson)
+    * Package documentation and examples in release (Alastair Porter)
 
 0.3 (2013-03-11):
     * Lots of bug fixes! also:
