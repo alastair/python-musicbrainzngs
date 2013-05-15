@@ -18,7 +18,7 @@ from musicbrainzngs import mbxml
 from musicbrainzngs import util
 from musicbrainzngs import compat
 
-_version = "0.4"
+_version = "0.5dev"
 _log = logging.getLogger("musicbrainzngs")
 
 
