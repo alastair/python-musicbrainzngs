@@ -964,7 +964,7 @@ def get_releases_in_collection(collection):
 
 def submit_barcodes(release_barcode):
     """Submits a set of {release_id1: barcode, ...}"""
-    query = mbxml.make_barcode_request(release2barcode)
+    query = mbxml.make_barcode_request(release_barcode)
     return _do_mb_post("release", query)
 
 def submit_puids(recording_puids):
