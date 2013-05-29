@@ -50,4 +50,6 @@ Contributions have been made by:
 
 ### License
 
-This library is released under the simplified BSD license. See COPYING for details.
+This library is released under the simplified BSD license except for the file
+`musicbrainzngs/compat.py` which is licensed under the ISC license.
+See COPYING for details.
