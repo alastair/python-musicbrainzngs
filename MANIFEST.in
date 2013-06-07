@@ -1,2 +1,8 @@
-include COPYING README.md query.py
+include COPYING README.md CHANGES query.py
 recursive-include test *.py
+recursive-include test/data *.xml
+include test/data/artist test/data/label test/data/release
+include test/data/release-group test/data/work
+recursive-include docs *.rst
+include docs/conf.py docs/Makefile docs/make.bat
+recursive-include examples *.py
