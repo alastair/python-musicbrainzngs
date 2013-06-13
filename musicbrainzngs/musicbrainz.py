@@ -974,7 +974,7 @@ def submit_puids(recording_puids):
     """
     rec2puids = dict()
     for (rec, puids) in recording_puids.items():
-        rec2puids[rec] = puids if isinstance(rec, list) else [puids]
+        rec2puids[rec] = puids if isinstance(puids, list) else [puids]
     query = mbxml.make_puid_request(rec2puids)
     return _do_mb_post("recording", query)
 
@@ -985,7 +985,7 @@ def submit_echoprints(recording_echoprints):
     """
     rec2echos = dict()
     for (rec, echos) in recording_echoprints.items():
-        rec2echos[rec] = echos if isinstance(rec, list) else [echos]
+        rec2echos[rec] = echos if isinstance(echos, list) else [echos]
     query = mbxml.make_echoprint_request(rec2echos)
     return _do_mb_post("recording", query)
 
@@ -996,7 +996,7 @@ def submit_isrcs(recording_isrcs):
     """
     rec2isrcs = dict()
     for (rec, isrcs) in recording_isrcs.items():
-        rec2isrcs[rec] = isrcs if isinstance(rec, list) else [isrcs]
+        rec2isrcs[rec] = isrcs if isinstance(isrcs, list) else [isrcs]
     query = mbxml.make_isrc_request(rec2isrcs)
     return _do_mb_post("recording", query)
 
