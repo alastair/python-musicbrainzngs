@@ -11,15 +11,19 @@ class ArgumentTest(unittest.TestCase):
     """Tests request methods to ensure they're enforcing general parameters
     (useragent, authentication)."""
 
+    def setUp(self):
+        self.opener = _common.FakeOpener("<response/>")
+        musicbrainzngs.compat.build_opener = lambda *args: self.opener
+
     def test_no_client(self):
         musicbrainzngs.set_useragent("testapp", "0.1", "test@example.org")
         musicbrainz._mb_request(path="foo", client_required=False)
-        self.assertFalse("testapp" in _common.opener.myurl)
+        self.assertFalse("testapp" in self.opener.myurl)
 
     def test_client(self):
         musicbrainzngs.set_useragent("testapp", "0.1", "test@example.org")
         musicbrainz._mb_request(path="foo", client_required=True)
-        self.assertTrue("testapp" in _common.opener.myurl)
+        self.assertTrue("testapp" in self.opener.myurl)
 
     def test_false_useragent(self):
         self.assertRaises(ValueError, musicbrainzngs.set_useragent, "", "0.1",
@@ -42,6 +46,9 @@ class MethodTest(unittest.TestCase):
     using the correct HTTP method."""
 
     def setUp(self):
+        self.opener = _common.FakeOpener("<response/>")
+        musicbrainzngs.compat.build_opener = lambda *args: self.opener
+
         musicbrainz.auth("user", "password")
 
     def test_invalid_method(self):
@@ -50,16 +57,16 @@ class MethodTest(unittest.TestCase):
 
     def test_delete(self):
         musicbrainz._do_mb_delete("foo")
-        self.assertEqual("DELETE", _common.opener.request.get_method())
+        self.assertEqual("DELETE", self.opener.request.get_method())
 
     def test_put(self):
         musicbrainz._do_mb_put("foo")
-        self.assertEqual("PUT", _common.opener.request.get_method())
+        self.assertEqual("PUT", self.opener.request.get_method())
 
     def test_post(self):
         musicbrainz._do_mb_post("foo", "body")
-        self.assertEqual("POST", _common.opener.request.get_method())
+        self.assertEqual("POST", self.opener.request.get_method())
 
     def test_get(self):
         musicbrainz._do_mb_query("artist", 1234, [], [])
-        self.assertEqual("GET", _common.opener.request.get_method())
+        self.assertEqual("GET", self.opener.request.get_method())

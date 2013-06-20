@@ -15,20 +15,23 @@ except ImportError:
 
 class FakeOpener(OpenerDirector):
     """ A URL Opener that saves the URL requested and
-    returns a dummy response """
-    def __init__(self):
+    returns a dummy response or raises an exception """
+    def __init__(self, response="<response/>", exception=None):
         self.myurl = None
+        self.response = response
+        self.exception = exception
 
     def open(self, request, body=None):
         self.myurl = request.get_full_url()
         self.request = request
-        return StringIO.StringIO("<response/>")
+        if self.exception:
+            raise self.exception
+        else:
+            return StringIO.StringIO(self.response)
 
     def get_url(self):
         return self.myurl
 
-opener = FakeOpener()
-musicbrainzngs.compat.build_opener = lambda *args: opener
 
 # Mock timing.
 class Timecop(object):
