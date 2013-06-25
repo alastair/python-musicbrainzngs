@@ -18,11 +18,13 @@ class FakeOpener(OpenerDirector):
     returns a dummy response or raises an exception """
     def __init__(self, response="<response/>", exception=None):
         self.myurl = None
+        self.headers = None
         self.response = response
         self.exception = exception
 
     def open(self, request, body=None):
         self.myurl = request.get_full_url()
+        self.headers = request.header_items()
         self.request = request
         if self.exception:
             raise self.exception
