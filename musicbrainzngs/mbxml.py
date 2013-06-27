@@ -128,6 +128,7 @@ def parse_message(message):
 	                  "release-group": parse_release_group,
 	                  "recording": parse_recording,
 	                  "work": parse_work,
+	                  "url": parse_url,
 
 	                  "disc": parse_disc,
 	                  "cdstub": parse_cdstub,
@@ -368,6 +369,18 @@ def parse_work(work):
     result.update(parse_attributes(attribs, work))
     result.update(parse_elements(elements, work))
     result.update(parse_inner(inner_els, work))
+
+    return result
+
+def parse_url(url):
+    result = {}
+    attribs = ["id"]
+    elements = ["resource"]
+    inner_els = {"relation-list": parse_relation_list}
+
+    result.update(parse_attributes(attribs, url))
+    result.update(parse_elements(elements, url))
+    result.update(parse_inner(inner_els, url))
 
     return result
 

@@ -68,6 +68,10 @@ VALID_INCLUDES = {
 		"artist-rels", "label-rels", "recording-rels", "release-rels",
 		"release-group-rels", "url-rels", "work-rels", "annotation"
 	],
+    'url': [
+        'area-rels', 'artist-rels', 'label-rels', 'recording-rels',
+        'release-rels', 'release-group-rels', 'url-rels', 'work-rels'
+    ],
 	'discid': [
 		"artists", "labels", "recordings", "release-groups", "media",
 		"artist-credits", "discids", "puids", "echoprints", "isrcs",
@@ -90,6 +94,8 @@ VALID_BROWSE_INCLUDES = {
                   "user-ratings"],
     'labels': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
     'artists': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
+    'urls': ['area-rels', 'artist-rels', 'label-rels', 'recording-rels',
+            'release-rels', 'release-group-rels', 'url-rels', 'work-rels'],
     'release-groups': ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
 }
 
@@ -736,6 +742,13 @@ def get_work_by_id(id, includes=[]):
     *Available includes*: {includes}"""
     return _do_mb_query("work", id, includes)
 
+@_docstring('url')
+def get_url_by_id(id, includes=[]):
+    """Get the url with the MusicBrainz `id` as a dict with a 'url' key.
+
+    *Available includes*: {includes}"""
+    return _do_mb_query("url", id, includes)
+
 
 # Searching
 
@@ -944,6 +957,18 @@ def browse_release_groups(artist=None, release=None, release_type=[],
               "release": release}
     return _browse_impl("release-group", includes, valid_includes,
                         limit, offset, params, [], release_type)
+
+@_docstring('urls', browse=True)
+def browse_urls(resource=None, includes=[], limit=None, offset=None):
+    """Get urls by actual URL string.
+    You need to give a URL string as 'resource'
+
+    *Available includes*: {includes}"""
+    # optional parameter work?
+    valid_includes = VALID_BROWSE_INCLUDES['urls']
+    params = {"resource": resource}
+    return _browse_impl("url", includes, valid_includes,
+                        limit, offset, params)
 
 # browse_work is defined in the docs but has no browse criteria
 
