@@ -24,7 +24,7 @@ _log = logging.getLogger("musicbrainzngs")
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['artist', 'label', 'recording', 'release', 'release-group', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'recording', 'release', 'release-group', 'url', 'work']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 
 VALID_INCLUDES = {
