@@ -79,10 +79,13 @@ VALID_BROWSE_INCLUDES = {
     'releases': ["artist-credits", "labels", "recordings",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
     'recordings': ["artist-credits", "tags", "ratings", "user-tags",
-                  "user-ratings"],
-    'labels': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
-    'artists': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
-    'release-groups': ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+                  "user-ratings"] + RELATION_INCLUDES,
+    'labels': ["aliases", "tags", "ratings",
+               "user-tags", "user-ratings"] + RELATION_INCLUDES,
+    'artists': ["aliases", "tags", "ratings",
+                "user-tags", "user-ratings"] + RELATION_INCLUDES,
+    'release-groups': ["artist-credits", "tags", "ratings",
+                       "user-tags", "user-ratings"] + RELATION_INCLUDES
 }
 
 #: These can be used to filter whenever releases are includes or browsed
