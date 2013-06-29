@@ -44,6 +44,7 @@ The valid includes are listed for each function.
 .. autofunction:: get_releases_by_discid
 .. autofunction:: get_work_by_id
 .. autofunction:: get_works_by_iswc
+.. autofunction:: get_url_by_id
 .. autofunction:: get_collections
 .. autofunction:: get_releases_in_collection
 
@@ -102,6 +103,7 @@ You have to provide exactly one MusicBrainz ID to these functions.
 .. autofunction:: browse_recordings
 .. autofunction:: browse_release_groups
 .. autofunction:: browse_releases
+.. autofunction:: browse_urls
 
 .. _api_submitting:
 
