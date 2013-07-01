@@ -24,14 +24,16 @@ _log = logging.getLogger("musicbrainzngs")
 
 # Constants for validation.
 
+RELATABLE_TYPES = ['area', 'artist', 'label', 'recording', 'release', 'release-group', 'url', 'work']
+RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
+
 VALID_INCLUDES = {
 	'artist': [
 		"recordings", "releases", "release-groups", "works", # Subqueries
 		"various-artists", "discids", "media",
 		"aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation"
-	],
+		"annotation"
+	] + RELATION_INCLUDES,
 	'annotation': [
 
 	],
@@ -39,42 +41,34 @@ VALID_INCLUDES = {
 		"releases", # Subqueries
 	    "discids", "media",
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation"
-	],
+		"annotation"
+	] + RELATION_INCLUDES,
 	'recording': [
 		"artists", "releases", # Subqueries
 	    "discids", "media", "artist-credits",
 	    "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation", "aliases"
-	],
+		"annotation", "aliases"
+	] + RELATION_INCLUDES,
 	'release': [
 		"artists", "labels", "recordings", "release-groups", "media",
 		"artist-credits", "discids", "puids", "echoprints", "isrcs",
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "recording-level-rels",
-		"work-level-rels", "annotation", "aliases"
-	],
+		"recording-level-rels", "work-level-rels", "annotation", "aliases"
+	] + RELATION_INCLUDES,
 	'release-group': [
 		"artists", "releases", "discids", "media",
 		"artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation", "aliases"
-	],
+		"annotation", "aliases"
+	] + RELATION_INCLUDES,
 	'work': [
 		"artists", # Subqueries
 	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "annotation"
-	],
+		"annotation"
+	] + RELATION_INCLUDES,
 	'discid': [
 		"artists", "labels", "recordings", "release-groups", "media",
 		"artist-credits", "discids", "puids", "echoprints", "isrcs",
-		"artist-rels", "label-rels", "recording-rels", "release-rels",
-		"release-group-rels", "url-rels", "work-rels", "recording-level-rels",
-		"work-level-rels"
-	],
+		"recording-level-rels", "work-level-rels"
+	] + RELATION_INCLUDES,
 	'echoprint': ["artists", "releases"],
 	'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
 	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
@@ -83,14 +77,15 @@ VALID_INCLUDES = {
 }
 VALID_BROWSE_INCLUDES = {
     'releases': ["artist-credits", "labels", "recordings",
-                "release-groups", "media", "discids", "artist-rels",
-                "label-rels", "recording-rels", "release-rels",
-                "release-group-rels", "url-rels", "work-rels"],
+                "release-groups", "media", "discids"] + RELATION_INCLUDES,
     'recordings': ["artist-credits", "tags", "ratings", "user-tags",
-                  "user-ratings"],
-    'labels': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
-    'artists': ["aliases", "tags", "ratings", "user-tags", "user-ratings"],
-    'release-groups': ["artist-credits", "tags", "ratings", "user-tags", "user-ratings"]
+                  "user-ratings"] + RELATION_INCLUDES,
+    'labels': ["aliases", "tags", "ratings",
+               "user-tags", "user-ratings"] + RELATION_INCLUDES,
+    'artists': ["aliases", "tags", "ratings",
+                "user-tags", "user-ratings"] + RELATION_INCLUDES,
+    'release-groups': ["artist-credits", "tags", "ratings",
+                       "user-tags", "user-ratings"] + RELATION_INCLUDES
 }
 
 #: These can be used to filter whenever releases are includes or browsed
