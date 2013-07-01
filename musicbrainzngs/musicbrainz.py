@@ -28,53 +28,53 @@ RELATABLE_TYPES = ['area', 'artist', 'label', 'recording', 'release', 'release-g
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 
 VALID_INCLUDES = {
-	'artist': [
-		"recordings", "releases", "release-groups", "works", # Subqueries
-		"various-artists", "discids", "media",
-		"aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"annotation"
-	] + RELATION_INCLUDES,
-	'annotation': [
+    'artist': [
+        "recordings", "releases", "release-groups", "works", # Subqueries
+        "various-artists", "discids", "media",
+        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+        "annotation"
+    ] + RELATION_INCLUDES,
+    'annotation': [
 
-	],
-	'label': [
-		"releases", # Subqueries
-	    "discids", "media",
-	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"annotation"
-	] + RELATION_INCLUDES,
-	'recording': [
-		"artists", "releases", # Subqueries
-	    "discids", "media", "artist-credits",
-	    "tags", "user-tags", "ratings", "user-ratings", # misc
-		"annotation", "aliases"
-	] + RELATION_INCLUDES,
-	'release': [
-		"artists", "labels", "recordings", "release-groups", "media",
-		"artist-credits", "discids", "puids", "echoprints", "isrcs",
-		"recording-level-rels", "work-level-rels", "annotation", "aliases"
-	] + RELATION_INCLUDES,
-	'release-group': [
-		"artists", "releases", "discids", "media",
-		"artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"annotation", "aliases"
-	] + RELATION_INCLUDES,
-	'work': [
-		"artists", # Subqueries
-	    "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-		"annotation"
-	] + RELATION_INCLUDES,
+    ],
+    'label': [
+        "releases", # Subqueries
+        "discids", "media",
+        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+        "annotation"
+    ] + RELATION_INCLUDES,
+    'recording': [
+        "artists", "releases", # Subqueries
+        "discids", "media", "artist-credits",
+        "tags", "user-tags", "ratings", "user-ratings", # misc
+        "annotation", "aliases"
+    ] + RELATION_INCLUDES,
+    'release': [
+        "artists", "labels", "recordings", "release-groups", "media",
+        "artist-credits", "discids", "puids", "echoprints", "isrcs",
+        "recording-level-rels", "work-level-rels", "annotation", "aliases"
+    ] + RELATION_INCLUDES,
+    'release-group': [
+        "artists", "releases", "discids", "media",
+        "artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
+        "annotation", "aliases"
+    ] + RELATION_INCLUDES,
+    'work': [
+        "artists", # Subqueries
+        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
+        "annotation"
+    ] + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
-	'discid': [
-		"artists", "labels", "recordings", "release-groups", "media",
-		"artist-credits", "discids", "puids", "echoprints", "isrcs",
-		"recording-level-rels", "work-level-rels"
-	] + RELATION_INCLUDES,
-	'echoprint': ["artists", "releases"],
-	'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
-	'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
-	'iswc': ["artists"],
-	'collection': ['releases'],
+    'discid': [
+        "artists", "labels", "recordings", "release-groups", "media",
+        "artist-credits", "discids", "puids", "echoprints", "isrcs",
+        "recording-level-rels", "work-level-rels"
+    ] + RELATION_INCLUDES,
+    'echoprint': ["artists", "releases"],
+    'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
+    'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
+    'iswc': ["artists"],
+    'collection': ['releases'],
 }
 VALID_BROWSE_INCLUDES = {
     'releases': ["artist-credits", "labels", "recordings",
