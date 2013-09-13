@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import sys
 
-from distutils.core import setup
-from distutils.core import Command
+from setuptools import setup
+from setuptools import Command
 
 from musicbrainzngs import musicbrainz
 
@@ -53,6 +53,9 @@ setup(
     url="https://github.com/alastair/python-musicbrainz-ngs",
     packages=['musicbrainzngs'],
     cmdclass={'test': test },
+    install_requires=[
+        'requests>=1.2.1'
+    ],
     license='BSD 2-clause',
     classifiers=[
         "Development Status :: 3 - Alpha",
