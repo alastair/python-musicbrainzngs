@@ -1,21 +1,14 @@
 """Common support for the test cases."""
+from urllib.request import OpenerDirector
+
+import requests_mock
 import time
-
 import musicbrainzngs
-from musicbrainzngs import compat
+
+
 from os.path import join
+from unittest import TestCase
 
-try:
-    from urllib2 import OpenerDirector
-except ImportError:
-    from urllib.request import OpenerDirector
-
-from io import BytesIO
-
-try:
-    import StringIO
-except ImportError:
-    import io as StringIO
 
 class FakeOpener(OpenerDirector):
     """ A URL Opener that saves the URL requested and
@@ -27,25 +20,24 @@ class FakeOpener(OpenerDirector):
         self.exception = exception
         self.handlers = []
 
-    def open(self, request, body=None):
-        self.myurl = request.get_full_url()
-        self.headers = request.header_items()
-        self.request = request
 
-        if self.exception:
-            raise self.exception
+class RequestsMockingTestCase(TestCase):
+    """Mocks requests HTTP layer by instantiating a requests_mock.Mocker in setUp
+    and stopping it in tearDown. That object is available in the `m` attribute.
 
-        if isinstance(self.response, compat.unicode):
-            return StringIO.StringIO(self.response)
-        else:
-            return BytesIO(self.response)
+    """
+    def setUp(self):
+        self.m = requests_mock.Mocker()
+        self.m.start()
 
-    def get_url(self):
-        return self.myurl
+    @property
+    def last_url(self):
+        """The last URL seen by the Mocker.
+        """
+        return self.m.request_history.pop().url
 
-    def add_handlers_and_return(self, handlers=[]):
-        self.handlers.extend(handlers)
-        return self
+    def tearDown(self):
+        self.m.stop()
 
 
 # Mock timing.
@@ -73,6 +65,7 @@ class Timecop(object):
     def restore(self):
         time.time = self.orig['time']
         time.sleep = self.orig['sleep']
+
 
 def open_and_parse_test_data(datadir, filename):
     """ Opens an XML file dumped from the MusicBrainz web service and returns
