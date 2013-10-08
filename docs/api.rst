@@ -103,6 +103,7 @@ You have to provide exactly one MusicBrainz ID to these functions.
 .. autofunction:: browse_recordings
 .. autofunction:: browse_release_groups
 .. autofunction:: browse_releases
+.. autofunction:: browse_releases_in_collection
 .. autofunction:: browse_urls
 
 .. _api_submitting:

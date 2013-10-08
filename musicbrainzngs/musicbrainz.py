@@ -976,6 +976,14 @@ def get_releases_in_collection(collection):
     """
     return _do_mb_query("collection", "%s/releases" % collection)
 
+def browse_releases_in_collection(collection, limit=None, offset=None):
+    """Get all releases in a specific collection.
+    """
+    params = {}
+    if limit: params["limit"] = limit
+    if offset: params["offset"] = offset
+    return _do_mb_query("collection", "%s/releases" % collection, [], params)
+
 # Submission methods
 
 def submit_barcodes(release_barcode):
