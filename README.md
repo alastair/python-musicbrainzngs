@@ -22,11 +22,11 @@ For more information on the musicbrainz webservice see <http://wiki.musicbrainz.
 
 See the query.py file for more examples.
 
-More documentation is available at https://python-musicbrainz-ngs.readthedocs.org
+More documentation is available at https://python-musicbrainzngs.readthedocs.org
 
 ### Contribute
 
-1. Fork the [repository](https://github.com/alastair/python-musicbrainz-ngs) on Github.
+1. Fork the [repository](https://github.com/alastair/python-musicbrainzngs) on Github.
 2. Make and test whatever changes you desire.
 3. Signoff and commit your changes using `git commit -s`.
 4. Send a pull request.

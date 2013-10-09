@@ -278,9 +278,9 @@ def set_useragent(app, version, contact=None):
     if not app or not version:
         raise ValueError("App and version can not be empty")
     if contact is not None:
-        _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (app, version, _version, contact)
+        _useragent = "%s/%s python-musicbrainzngs/%s ( %s )" % (app, version, _version, contact)
     else:
-        _useragent = "%s/%s python-musicbrainz-ngs/%s" % (app, version, _version)
+        _useragent = "%s/%s python-musicbrainzngs/%s" % (app, version, _version)
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 

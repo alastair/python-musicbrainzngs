@@ -4,14 +4,14 @@
 To show a list of your collections:
 
     $ ./collection.py USERNAME
-    Password for USERNAME: 
+    Password for USERNAME:
     All collections for this user:
-    My Collection by USERNAME (4137a646-a104-4031-b549-da4e1f36a463) 
+    My Collection by USERNAME (4137a646-a104-4031-b549-da4e1f36a463)
 
 To show the releases in a collection:
 
     $ ./collection.py USERNAME 4137a646-a104-4031-b549-da4e1f36a463
-    Password for USERNAME: 
+    Password for USERNAME:
     Releases in My Collection:
     None Shall Pass (b0885908-cbe2-4e51-95d8-c4f3b9721ad6)
     ...
@@ -30,9 +30,9 @@ import getpass
 from optparse import OptionParser
 
 musicbrainzngs.set_useragent(
-    "python-musicbrainz-ngs-example",
+    "python-musicbrainzngs-example",
     "0.1",
-    "https://github.com/alastair/python-musicbrainz-ngs/",
+    "https://github.com/alastair/python-musicbrainzngs/",
 )
 
 def show_collections():

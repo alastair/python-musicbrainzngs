@@ -15,9 +15,9 @@ import musicbrainzngs
 import sys
 
 musicbrainzngs.set_useragent(
-    "python-musicbrainz-ngs-example",
+    "python-musicbrainzngs-example",
     "0.1",
-    "https://github.com/alastair/python-musicbrainz-ngs/",
+    "https://github.com/alastair/python-musicbrainzngs/",
 )
 
 def show_release_details(rel):
