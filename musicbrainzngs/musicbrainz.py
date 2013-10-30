@@ -493,7 +493,7 @@ else:
 	ETREE_EXCEPTIONS = (expat.ExpatError)
 
 @_rate_limit
-def _mb_request(path, method='GET', auth_required=False, client_required=False,
+def _mb_request_raw(path, method='GET', auth_required=False, client_required=False,
 				args=None, data=None, body=None):
 	"""Makes a request for the specified `path` (endpoint) on /ws/2 on
 	the globally-specified hostname. Parses the responses and returns
@@ -559,6 +559,13 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		req.add_header('Content-Length', '0')
 	resp = _safe_read(opener, req, body)
 
+	return resp
+
+def _mb_request(path, method='GET', auth_required=False, client_required=False,
+				args=None, data=None, body=None, raw=False):
+	resp = _mb_request_raw(path, method, auth_required, client_required, args, data, body)
+	if raw:
+		return resp
 	# Parse the response.
 	try:
 		return mbxml.parse_message(resp)
@@ -581,7 +588,7 @@ def _is_auth_required(entity, includes):
 	else:
 		return False
 
-def _do_mb_query(entity, id, includes=[], params={}):
+def _do_mb_query(entity, id, includes=[], params={}, raw=False):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
 	string indicated the type of object to be retrieved. The id may be
 	empty, in which case the query is a search. `includes` is a list
@@ -601,7 +608,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 
 	# Build the endpoint components.
 	path = '%s/%s' % (entity, id)
-	return _mb_request(path, 'GET', auth_required, args=args)
+	return _mb_request(path, 'GET', auth_required, args=args, raw=raw)
 
 def _do_mb_search(entity, query='', fields={},
 		  limit=None, offset=None, strict=False):
@@ -707,13 +714,13 @@ def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
     return _do_mb_query("recording", id, includes, params)
 
 @_docstring('release')
-def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
+def get_release_by_id(id, includes=[], release_status=[], release_type=[], raw=False):
     """Get the release with the MusicBrainz `id` as a dict with a 'release' key.
 
     *Available includes*: {includes}"""
     params = _check_filter_and_make_params("release", includes,
                                            release_status, release_type)
-    return _do_mb_query("release", id, includes, params)
+    return _do_mb_query("release", id, includes, params, raw)
 
 @_docstring('release-group')
 def get_release_group_by_id(id, includes=[],
