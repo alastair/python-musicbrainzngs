@@ -56,7 +56,7 @@ def show_collection(collection_id):
     """
     count = 0
     while True:
-        result = musicbrainzngs.browse_releases_in_collection(collection_id, limit=25, offset=count)
+        result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25, offset=count)
         collection = result['collection']
         release_list = collection['release-list']
         if len(release_list) == 0:
