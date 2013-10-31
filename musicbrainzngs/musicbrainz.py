@@ -970,11 +970,17 @@ def get_collections():
     # Missing <release-list count="n"> the count in the reply
     return _do_mb_query("collection", '')
 
-def get_releases_in_collection(collection):
+def get_releases_in_collection(collection, limit=None, offset=None):
     """List the releases in a collection.
     Returns a dict with a 'collection' key, which again has a 'release-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
     """
-    return _do_mb_query("collection", "%s/releases" % collection)
+    params = {}
+    if limit: params["limit"] = limit
+    if offset: params["offset"] = offset
+    return _do_mb_query("collection", "%s/releases" % collection, [], params)
+
 
 # Submission methods
 
