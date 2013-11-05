@@ -492,8 +492,39 @@ if hasattr(etree, 'ParseError'):
 else:
 	ETREE_EXCEPTIONS = (expat.ExpatError)
 
+# Parsing setup
+
+def mb_parser_null(resp):
+	"""Return the raw response (XML)"""
+	return resp
+
+def mb_parser_xml(resp):
+	"""Return a Python dict representing the XML response"""
+	# Parse the response.
+	try:
+		return mbxml.parse_message(resp)
+	except UnicodeError as exc:
+		raise ResponseError(cause=exc)
+	except Exception as exc:
+		if isinstance(exc, ETREE_EXCEPTIONS):
+			raise ResponseError(cause=exc)
+		else:
+			raise
+
+# Defaults
+parser_fun = mb_parser_xml
+
+def set_parser(new_parser_fun=mb_parser_xml):
+	"""Sets the function used to parse the response from the 
+	MusicBrainz web service.
+	"""
+	global parser_fun
+	if not callable(new_parser_fun):
+		raise ValueError("new_parser_fun must be callable")
+	parser_fun = new_parser_fun
+
 @_rate_limit
-def _mb_request_raw(path, method='GET', auth_required=False, client_required=False,
+def _mb_request(path, method='GET', auth_required=False, client_required=False,
 				args=None, data=None, body=None):
 	"""Makes a request for the specified `path` (endpoint) on /ws/2 on
 	the globally-specified hostname. Parses the responses and returns
@@ -501,6 +532,8 @@ def _mb_request_raw(path, method='GET', auth_required=False, client_required=Fal
 	whether exceptions should be raised if the client and
 	username/password are left unspecified, respectively.
 	"""
+	global parser_fun 
+
 	if args is None:
 		args = {}
 	else:
@@ -559,23 +592,7 @@ def _mb_request_raw(path, method='GET', auth_required=False, client_required=Fal
 		req.add_header('Content-Length', '0')
 	resp = _safe_read(opener, req, body)
 
-	return resp
-
-def _mb_request(path, method='GET', auth_required=False, client_required=False,
-				args=None, data=None, body=None, raw=False):
-	resp = _mb_request_raw(path, method, auth_required, client_required, args, data, body)
-	if raw:
-		return resp
-	# Parse the response.
-	try:
-		return mbxml.parse_message(resp)
-	except UnicodeError as exc:
-		raise ResponseError(cause=exc)
-	except Exception as exc:
-		if isinstance(exc, ETREE_EXCEPTIONS):
-			raise ResponseError(cause=exc)
-		else:
-			raise
+	return parser_fun(resp)
 
 def _is_auth_required(entity, includes):
 	""" Some calls require authentication. This returns
@@ -588,7 +605,7 @@ def _is_auth_required(entity, includes):
 	else:
 		return False
 
-def _do_mb_query(entity, id, includes=[], params={}, raw=False):
+def _do_mb_query(entity, id, includes=[], params={}):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
 	string indicated the type of object to be retrieved. The id may be
 	empty, in which case the query is a search. `includes` is a list
@@ -608,7 +625,7 @@ def _do_mb_query(entity, id, includes=[], params={}, raw=False):
 
 	# Build the endpoint components.
 	path = '%s/%s' % (entity, id)
-	return _mb_request(path, 'GET', auth_required, args=args, raw=raw)
+	return _mb_request(path, 'GET', auth_required, args=args)
 
 def _do_mb_search(entity, query='', fields={},
 		  limit=None, offset=None, strict=False):
@@ -714,13 +731,13 @@ def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
     return _do_mb_query("recording", id, includes, params)
 
 @_docstring('release')
-def get_release_by_id(id, includes=[], release_status=[], release_type=[], raw=False):
+def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the release with the MusicBrainz `id` as a dict with a 'release' key.
 
     *Available includes*: {includes}"""
     params = _check_filter_and_make_params("release", includes,
                                            release_status, release_type)
-    return _do_mb_query("release", id, includes, params, raw)
+    return _do_mb_query("release", id, includes, params)
 
 @_docstring('release-group')
 def get_release_group_by_id(id, includes=[],
