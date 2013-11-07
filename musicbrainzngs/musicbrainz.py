@@ -24,25 +24,27 @@ _log = logging.getLogger("musicbrainzngs")
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'recording', 'release', 'release-group', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'recording', 'release', 'release-group', 'url', 'work']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
+TAG_INCLUDES = ["tags", "user-tags"]
+RATING_INCLUDES = ["ratings", "user-ratings"]
 
 VALID_INCLUDES = {
+    'area' : ["aliases", "annotation"] + RELATION_INCLUDES,
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media",
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation"
-    ] + RELATION_INCLUDES,
+        "aliases", "annotation"
+    ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'annotation': [
 
     ],
     'label': [
         "releases", # Subqueries
         "discids", "media",
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation"
-    ] + RELATION_INCLUDES,
+        "aliases", "annotation"
+    ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
+    'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits",
@@ -682,6 +684,15 @@ def _do_mb_post(path, body):
 
 # Single entity by ID
 
+@_docstring('area')
+def get_area_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the area with the MusicBrainz `id` as a dict with an 'area' key.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("area", includes,
+                                           release_status, release_type)
+    return _do_mb_query("area", id, includes, params)
+
 @_docstring('artist')
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the artist with the MusicBrainz `id` as a dict with an 'artist' key.
@@ -699,6 +710,15 @@ def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
     params = _check_filter_and_make_params("label", includes,
                                            release_status, release_type)
     return _do_mb_query("label", id, includes, params)
+
+@_docstring('place')
+def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the place with the MusicBrainz `id` as a dict with an 'place' key.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("place", includes,
+                                           release_status, release_type)
+    return _do_mb_query("place", id, includes, params)
 
 @_docstring('recording')
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
