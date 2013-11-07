@@ -48,9 +48,8 @@ VALID_INCLUDES = {
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits",
-        "tags", "user-tags", "ratings", "user-ratings", # misc
         "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "puids", "echoprints", "isrcs",
@@ -58,14 +57,12 @@ VALID_INCLUDES = {
     ] + RELATION_INCLUDES,
     'release-group': [
         "artists", "releases", "discids", "media",
-        "artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+        "artist-credits", "annotation", "aliases"
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'work': [
         "artists", # Subqueries
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation"
-    ] + RELATION_INCLUDES,
+        "aliases", "annotation"
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
     'discid': [
         "artists", "labels", "recordings", "release-groups", "media",
@@ -81,15 +78,11 @@ VALID_INCLUDES = {
 VALID_BROWSE_INCLUDES = {
     'releases': ["artist-credits", "labels", "recordings",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
-    'recordings': ["artist-credits", "tags", "ratings", "user-tags",
-                  "user-ratings"] + RELATION_INCLUDES,
-    'labels': ["aliases", "tags", "ratings",
-               "user-tags", "user-ratings"] + RELATION_INCLUDES,
-    'artists': ["aliases", "tags", "ratings",
-                "user-tags", "user-ratings"] + RELATION_INCLUDES,
+    'recordings': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'labels': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'artists': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'urls': RELATION_INCLUDES,
-    'release-groups': ["artist-credits", "tags", "ratings",
-                       "user-tags", "user-ratings"] + RELATION_INCLUDES
+    'release-groups': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES
 }
 
 #: These can be used to filter whenever releases are includes or browsed

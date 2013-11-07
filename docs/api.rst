@@ -33,8 +33,10 @@ See :const:`musicbrainz.VALID_RELEASE_STATUSES`
 and :const:`musicbrainz.VALID_RELEASE_TYPES`.
 The valid includes are listed for each function.
 
+.. autofunction:: get_area_by_id
 .. autofunction:: get_artist_by_id
 .. autofunction:: get_label_by_id
+.. autofunction:: get_place_by_id
 .. autofunction:: get_recording_by_id
 .. autofunction:: get_recordings_by_echoprint
 .. autofunction:: get_recordings_by_puid
