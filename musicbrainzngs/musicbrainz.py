@@ -204,7 +204,8 @@ class AuthenticationError(WebServiceError):
 def _check_includes_impl(includes, valid_includes):
     for i in includes:
         if i not in valid_includes:
-            raise InvalidIncludeError("Bad includes", "%s is not a valid include" % i)
+            raise InvalidIncludeError("Bad includes: "
+                                      "%s is not a valid include" % i)
 def _check_includes(entity, inc):
     _check_includes_impl(inc, VALID_INCLUDES[entity])
 
@@ -231,7 +232,7 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
     if (release_type
             and "release-groups" not in includes and "releases" not in includes
             and entity not in ["release-group", "release"]):
-        raise InvalidFilterError("Can't have a release type"
+        raise InvalidFilterError("Can't have a release type "
                 "with no releases or release-groups involved")
 
     # Build parameters.
