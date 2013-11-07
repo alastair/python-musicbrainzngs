@@ -92,8 +92,10 @@ VALID_BROWSE_INCLUDES = {
 
 #: These can be used to filter whenever releases are includes or browsed
 VALID_RELEASE_TYPES = [
-	"nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
-	"interview", "audiobook", "live", "remix", "other"
+    "nat",
+    "album", "single", "ep", "broadcast", "other", # primary types
+    "compilation", "soundtrack", "spokenword", "interview", "audiobook",
+    "live", "remix", "dj-mix", "mixtape/street", # secondary types
 ]
 #: These can be used to filter whenever releases or release-groups are involved
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
@@ -103,11 +105,13 @@ VALID_SEARCH_FIELDS = {
     ],
     'artist': [
         'arid', 'artist', 'artistaccent', 'alias', 'begin', 'comment',
-        'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type'
+        'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type',
+        'area', 'beginarea', 'endarea'
     ],
     'label': [
         'alias', 'begin', 'code', 'comment', 'country', 'end', 'ended',
-        'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag'
+        'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag',
+        'area'
     ],
     'recording': [
         'arid', 'artist', 'artistname', 'creditname', 'comment',
@@ -115,7 +119,7 @@ VALID_SEARCH_FIELDS = {
         'position', 'primarytype', 'puid', 'qdur', 'recording',
         'recordingaccent', 'reid', 'release', 'rgid', 'rid',
         'secondarytype', 'status', 'tnum', 'tracks', 'tracksrelease',
-        'tag', 'type'
+        'tag', 'type', 'video'
     ],
     'release-group': [
         'arid', 'artist', 'artistname', 'comment', 'creditname',
@@ -127,7 +131,7 @@ VALID_SEARCH_FIELDS = {
         'arid', 'artist', 'artistname', 'asin', 'barcode', 'creditname',
         'catno', 'comment', 'country', 'creditname', 'date', 'discids',
         'discidsmedium', 'format', 'laid', 'label', 'lang', 'mediums',
-        'primarytype', 'puid', 'reid', 'release', 'releaseaccent',
+        'primarytype', 'puid', 'quality', 'reid', 'release', 'releaseaccent',
         'rgid', 'script', 'secondarytype', 'status', 'tag', 'tracks',
         'tracksmedium', 'type'
     ],
