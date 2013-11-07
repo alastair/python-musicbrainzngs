@@ -45,6 +45,7 @@ Contributions have been made by:
 * [Patrick Speiser](https://github.com/doskir)
 * [Paul Bailey](https://github.com/paulbailey)
 * [Sam Doshi](https://github.com/samdoshi)
+* [Simon Chopin](https://github.com/laarmen)
 * [Thomas Vander Stichele](https://github.com/thomasvs)
 * [Wieland Hoffmann](https://github.com/mineo)
 
