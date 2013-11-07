@@ -995,25 +995,15 @@ def submit_barcodes(release_barcode):
 
 def submit_puids(recording_puids):
     """Submit PUIDs.
-    Submits a set of {recording_id1: [puid1, ...], ...}
-    or {recording_id1: puid, ...}.
+    (Functionality removed from server)
     """
-    rec2puids = dict()
-    for (rec, puids) in recording_puids.items():
-        rec2puids[rec] = puids if isinstance(puids, list) else [puids]
-    query = mbxml.make_puid_request(rec2puids)
-    return _do_mb_post("recording", query)
+    return {}
 
 def submit_echoprints(recording_echoprints):
     """Submit echoprints.
-    Submits a set of {recording_id1: [echoprint1, ...], ...}
-    or {recording_id1: echoprint, ...}.
+    (Functionality removed from server)
     """
-    rec2echos = dict()
-    for (rec, echos) in recording_echoprints.items():
-        rec2echos[rec] = echos if isinstance(echos, list) else [echos]
-    query = mbxml.make_echoprint_request(rec2echos)
-    return _do_mb_post("recording", query)
+    return {}
 
 def submit_isrcs(recording_isrcs):
     """Submit ISRCs.
