@@ -29,6 +29,11 @@ import musicbrainzngs
 import getpass
 from optparse import OptionParser
 
+try:
+    user_input = raw_input
+except NameError:
+    user_input = input
+
 musicbrainzngs.set_useragent(
     "python-musicbrainzngs-example",
     "0.1",
@@ -49,13 +54,25 @@ def show_collections():
 def show_collection(collection_id):
     """Show the list of releases in a given collection.
     """
-    result = musicbrainzngs.get_releases_in_collection(collection_id)
-    collection = result['collection']
-    print('Releases in {}:'.format(collection['name']))
-    for release in collection['release-list']:
-        print('{title} ({mbid})'.format(
-            title=release['title'], mbid=release['id']
-        ))
+    count = 0
+    while True:
+        result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25, offset=count)
+        collection = result['collection']
+        release_list = collection['release-list']
+        if len(release_list) == 0:
+            break;
+        if count == 0:
+            print('Releases in {}:'.format(collection['name']))
+        count += len(release_list)
+        for release in release_list:
+            print('{title} ({mbid})'.format(
+                title=release['title'], mbid=release['id']
+            ))
+        if user_input("Would you like to display more releases? [y/N] ") != "y":
+            break;
+        print("")
+
+    print("number of releases displayed: %d" % count)
 
 if __name__ == '__main__':
     parser = OptionParser(usage="%prog [options] USERNAME [COLLECTION-ID]")
