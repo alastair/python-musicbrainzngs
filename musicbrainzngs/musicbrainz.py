@@ -51,7 +51,7 @@ VALID_INCLUDES = {
     ] + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "puids", "echoprints", "isrcs",
+        "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
     ] + RELATION_INCLUDES,
     'release-group': [
@@ -67,12 +67,12 @@ VALID_INCLUDES = {
     'url': RELATION_INCLUDES,
     'discid': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "puids", "echoprints", "isrcs",
+        "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels"
     ] + RELATION_INCLUDES,
     'echoprint': ["artists", "releases"],
-    'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
-    'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
+    'puid': ["artists", "releases", "isrcs"],
+    'isrc': ["artists", "releases", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
 }
@@ -250,8 +250,11 @@ def _docstring(entity, browse=False):
         else:
             includes = ", ".join(VALID_INCLUDES.get(entity, []))
         if func.__doc__:
+            search_fields = list(VALID_SEARCH_FIELDS.get(entity, []))
+            # puid is allowed so nothing breaks, but not documented
+            if "puid" in search_fields: search_fields.remove("puid")
             func.__doc__ = func.__doc__.format(includes=includes,
-                    fields=", ".join(VALID_SEARCH_FIELDS.get(entity, [])))
+                    fields=", ".join(search_fields))
         return func
 
     return _decorator
