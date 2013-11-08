@@ -50,7 +50,7 @@ setup(
     description="python bindings for musicbrainz NGS webservice",
     author="Alastair Porter",
     author_email="alastair@porter.net.nz",
-    url="https://github.com/alastair/python-musicbrainzngs",
+    url="https://python-musicbrainzngs.readthedocs.org/",
     packages=['musicbrainzngs'],
     cmdclass={'test': test },
     license='BSD 2-clause',
