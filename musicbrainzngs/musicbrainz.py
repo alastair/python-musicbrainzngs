@@ -500,6 +500,7 @@ if hasattr(etree, 'ParseError'):
 else:
 	ETREE_EXCEPTIONS = (expat.ExpatError)
 
+
 # Parsing setup
 
 def mb_parser_null(resp):
@@ -521,6 +522,7 @@ def mb_parser_xml(resp):
 
 # Defaults
 parser_fun = mb_parser_xml
+ws_format = "xml"
 
 def set_parser(new_parser_fun=None):
     """Sets the function used to parse the response from the
@@ -535,6 +537,17 @@ def set_parser(new_parser_fun=None):
     if not callable(new_parser_fun):
         raise ValueError("new_parser_fun must be callable")
     parser_fun = new_parser_fun
+
+def set_format(fmt="xml"):
+    """Sets the format that should be returned by the Web Service.
+    The server currently supports `xml` and `json`.
+    """
+    global ws_format
+    if fmt not in ["xml", "json"]:
+        raise ValueError("invalid format: %s" % fmt)
+    else:
+        ws_format = fmt
+
 
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
@@ -563,6 +576,9 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	for key, value in args.items():
 		if isinstance(value, compat.unicode):
 			args[key] = value.encode('utf8')
+
+	if ws_format != "xml":
+		args["fmt"] = ws_format
 
 	# Construct the full URL for the request, including hostname and
 	# query string.
