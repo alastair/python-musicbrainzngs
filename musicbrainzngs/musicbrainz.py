@@ -74,8 +74,6 @@ VALID_INCLUDES = {
         "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels"
     ] + RELATION_INCLUDES,
-    'echoprint': ["artists", "releases"],
-    'puid': ["artists", "releases", "isrcs"],
     'isrc': ["artists", "releases", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
@@ -826,35 +824,23 @@ def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
                                 release_type=[]):
     """Search for recordings with an `echoprint <http://echoprint.me>`_.
-    The result is a dict with an 'echoprint' key,
-    which again includes a 'recording-list'.
-
-    The preferred fingerprint method is :musicbrainz:`AcoustID`.
-
-    *Available includes*: {includes}"""
+    (not available on server)"""
     warn("Echoprints were never introduced\n"
          "and will not be found (404)",
          DeprecationWarning, stacklevel=2)
-    params = _check_filter_and_make_params("echoprint", includes,
-                                           release_status, release_type)
-    return _do_mb_query("echoprint", echoprint, includes, params)
+    raise ResponseError(cause=compat.HTTPError(
+                                            None, 404, "Not Found", None, None))
 
 @_docstring('recording')
 def get_recordings_by_puid(puid, includes=[], release_status=[],
                            release_type=[]):
     """Search for recordings with a :musicbrainz:`PUID`.
-    The result is a dict with a 'puid' key,
-    which again includes a 'recording-list'.
-
-    The preferred fingerprint method is :musicbrainz:`AcoustID`.
-
-    *Available includes*: {includes}"""
+    (not available on server)"""
     warn("PUID support was removed from the server\n"
          "and no PUIDs will be found (404)",
          DeprecationWarning, stacklevel=2)
-    params = _check_filter_and_make_params("puid", includes,
-                                           release_status, release_type)
-    return _do_mb_query("puid", puid, includes, params)
+    raise ResponseError(cause=compat.HTTPError(
+                                            None, 404, "Not Found", None, None))
 
 @_docstring('recording')
 def get_recordings_by_isrc(isrc, includes=[], release_status=[],
