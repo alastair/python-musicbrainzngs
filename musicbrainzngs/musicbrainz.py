@@ -13,6 +13,7 @@ import locale
 import sys
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
+from warnings import warn, simplefilter
 
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
@@ -20,6 +21,9 @@ from musicbrainzngs import compat
 
 _version = "0.5dev"
 _log = logging.getLogger("musicbrainzngs")
+
+# turn on DeprecationWarnings below
+simplefilter(action="once", category=DeprecationWarning)
 
 
 # Constants for validation.
@@ -634,6 +638,10 @@ def _do_mb_search(entity, query='', fields={},
 			raise InvalidSearchFieldError(
 				'%s is not a valid search field for %s' % (key, entity)
 			)
+		elif key == "puid":
+			warn("PUID support was removed from server\n"
+			     "the 'puid' field is ignored",
+			     DeprecationWarning, stacklevel=2)
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
@@ -824,6 +832,9 @@ def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
     The preferred fingerprint method is :musicbrainz:`AcoustID`.
 
     *Available includes*: {includes}"""
+    warn("Echoprints were never introduced\n"
+         "and will not be found (404)",
+         DeprecationWarning, stacklevel=2)
     params = _check_filter_and_make_params("echoprint", includes,
                                            release_status, release_type)
     return _do_mb_query("echoprint", echoprint, includes, params)
@@ -838,6 +849,9 @@ def get_recordings_by_puid(puid, includes=[], release_status=[],
     The preferred fingerprint method is :musicbrainz:`AcoustID`.
 
     *Available includes*: {includes}"""
+    warn("PUID support was removed from the server\n"
+         "and no PUIDs will be found (404)",
+         DeprecationWarning, stacklevel=2)
     params = _check_filter_and_make_params("puid", includes,
                                            release_status, release_type)
     return _do_mb_query("puid", puid, includes, params)
@@ -997,12 +1011,18 @@ def submit_puids(recording_puids):
     """Submit PUIDs.
     (Functionality removed from server)
     """
+    warn("PUID support was dropped at the server\n"
+         "nothing will be submitted",
+         DeprecationWarning, stacklevel=2)
     return {}
 
 def submit_echoprints(recording_echoprints):
     """Submit echoprints.
     (Functionality removed from server)
     """
+    warn("Echoprints were never introduced\n"
+         "nothing will be submitted",
+         DeprecationWarning, stacklevel=2)
     return {}
 
 def submit_isrcs(recording_isrcs):
