@@ -1000,7 +1000,7 @@ def submit_puids(recording_puids):
     warn("PUID support was dropped at the server\n"
          "nothing will be submitted",
          DeprecationWarning, stacklevel=2)
-    return {}
+    return {'message': {'text': 'OK'}}
 
 def submit_echoprints(recording_echoprints):
     """Submit echoprints.
@@ -1009,7 +1009,7 @@ def submit_echoprints(recording_echoprints):
     warn("Echoprints were never introduced\n"
          "nothing will be submitted",
          DeprecationWarning, stacklevel=2)
-    return {}
+    return {'message': {'text': 'OK'}}
 
 def submit_isrcs(recording_isrcs):
     """Submit ISRCs.
