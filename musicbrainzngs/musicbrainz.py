@@ -55,7 +55,7 @@ VALID_INCLUDES = {
     ] + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "isrcs",
+        "artist-credits", "discids", "puids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
     ] + RELATION_INCLUDES,
     'release-group': [
@@ -71,10 +71,10 @@ VALID_INCLUDES = {
     'url': RELATION_INCLUDES,
     'discid': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "isrcs",
+        "artist-credits", "discids", "puids", "isrcs",
         "recording-level-rels", "work-level-rels"
     ] + RELATION_INCLUDES,
-    'isrc': ["artists", "releases", "isrcs"],
+    'isrc': ["artists", "releases", "puids", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
 }
@@ -248,9 +248,12 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
 def _docstring(entity, browse=False):
     def _decorator(func):
         if browse:
-            includes = ", ".join(VALID_BROWSE_INCLUDES.get(entity, []))
+            includes = list(VALID_BROWSE_INCLUDES.get(entity, []))
         else:
-            includes = ", ".join(VALID_INCLUDES.get(entity, []))
+            includes = list(VALID_INCLUDES.get(entity, []))
+        # puids are allowed so nothing breaks, but not documented
+        if "puids" in includes: includes.remove("puids")
+        includes = ", ".join(includes)
         if func.__doc__:
             search_fields = list(VALID_SEARCH_FIELDS.get(entity, []))
             # puid is allowed so nothing breaks, but not documented
