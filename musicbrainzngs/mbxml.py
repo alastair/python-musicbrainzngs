@@ -132,9 +132,7 @@ def parse_message(message):
 
 	                  "disc": parse_disc,
 	                  "cdstub": parse_cdstub,
-	                  "puid": parse_puid,
-	                  "isrc": parse_puid,
-	                  "echoprint": parse_puid,
+	                  "isrc": parse_isrc,
 
 	                  "annotation-list": parse_annotation_list,
 	                  "artist-list": parse_artist_list,
@@ -331,7 +329,6 @@ def parse_recording(recording):
 	             "tag-list": parse_tag_list,
 	             "user-tag-list": parse_tag_list,
 	             "rating": parse_rating,
-	             "puid-list": parse_external_id_list,
 	             "isrc-list": parse_external_id_list,
 	             "echoprint-list": parse_external_id_list,
 	             "relation-list": parse_relation_list,
@@ -420,13 +417,13 @@ def parse_release_group_list(rgl):
 		result.append(parse_release_group(rg))
 	return result
 
-def parse_puid(puid):
+def parse_isrc(isrc):
 	result = {}
 	attribs = ["id"]
 	inner_els = {"recording-list": parse_recording_list}
 
-	result.update(parse_attributes(attribs, puid))
-	result.update(parse_inner(inner_els, puid))
+	result.update(parse_attributes(attribs, isrc))
+	result.update(parse_inner(inner_els, isrc))
 
 	return result
 
@@ -543,34 +540,6 @@ def make_barcode_request(release2barcode):
         bar_xml = ET.SubElement(rel_xml, "{%s}barcode" % NS)
         rel_xml.set("{%s}id" % NS, release)
         bar_xml.text = barcode
-
-    return ET.tostring(root, "utf-8")
-
-def make_puid_request(recording2puids):
-    NS = "http://musicbrainz.org/ns/mmd-2.0#"
-    root = ET.Element("{%s}metadata" % NS)
-    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-    for recording, puid_list in recording2puids.items():
-        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-        rec_xml.set("id", recording)
-        puid_list_xml = ET.SubElement(rec_xml, "{%s}puid-list" % NS)
-        for puid in puid_list:
-            puid_xml = ET.SubElement(puid_list_xml, "{%s}puid" % NS)
-            puid_xml.set("id", puid)
-
-    return ET.tostring(root, "utf-8")
-
-def make_echoprint_request(recording2echoprints):
-    NS = "http://musicbrainz.org/ns/mmd-2.0#"
-    root = ET.Element("{%s}metadata" % NS)
-    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-    for recording, echoprint_list in recording2echoprints.items():
-        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-        rec_xml.set("id", recording)
-        echoprint_list_xml = ET.SubElement(rec_xml, "{%s}echoprint-list" % NS)
-        for echoprint in echoprint_list:
-            echo_xml = ET.SubElement(echoprint_list_xml, "{%s}echoprint" % NS)
-            echo_xml.set("id", echoprint)
 
     return ET.tostring(root, "utf-8")
 

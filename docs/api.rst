@@ -36,8 +36,6 @@ The valid includes are listed for each function.
 .. autofunction:: get_artist_by_id
 .. autofunction:: get_label_by_id
 .. autofunction:: get_recording_by_id
-.. autofunction:: get_recordings_by_echoprint
-.. autofunction:: get_recordings_by_puid
 .. autofunction:: get_recordings_by_isrc
 .. autofunction:: get_release_group_by_id
 .. autofunction:: get_release_by_id
@@ -117,8 +115,6 @@ which take certain values or a list of values.
 You have to use :func:`auth` before using any of these functions.
 
 .. autofunction:: submit_barcodes
-.. autofunction:: submit_puids
-.. autofunction:: submit_echoprints
 .. autofunction:: submit_isrcs
 .. autofunction:: submit_tags
 .. autofunction:: submit_ratings

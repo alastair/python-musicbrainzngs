@@ -13,6 +13,7 @@ import locale
 import sys
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
+from warnings import warn, simplefilter
 
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
@@ -20,6 +21,9 @@ from musicbrainzngs import compat
 
 _version = "0.5dev"
 _log = logging.getLogger("musicbrainzngs")
+
+# turn on DeprecationWarnings below
+simplefilter(action="once", category=DeprecationWarning)
 
 
 # Constants for validation.
@@ -51,7 +55,7 @@ VALID_INCLUDES = {
     ] + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "puids", "echoprints", "isrcs",
+        "artist-credits", "discids", "puids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
     ] + RELATION_INCLUDES,
     'release-group': [
@@ -67,12 +71,10 @@ VALID_INCLUDES = {
     'url': RELATION_INCLUDES,
     'discid': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "puids", "echoprints", "isrcs",
+        "artist-credits", "discids", "puids", "isrcs",
         "recording-level-rels", "work-level-rels"
     ] + RELATION_INCLUDES,
-    'echoprint': ["artists", "releases"],
-    'puid': ["artists", "releases", "puids", "echoprints", "isrcs"],
-    'isrc': ["artists", "releases", "puids", "echoprints", "isrcs"],
+    'isrc': ["artists", "releases", "puids", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
 }
@@ -246,12 +248,18 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
 def _docstring(entity, browse=False):
     def _decorator(func):
         if browse:
-            includes = ", ".join(VALID_BROWSE_INCLUDES.get(entity, []))
+            includes = list(VALID_BROWSE_INCLUDES.get(entity, []))
         else:
-            includes = ", ".join(VALID_INCLUDES.get(entity, []))
+            includes = list(VALID_INCLUDES.get(entity, []))
+        # puids are allowed so nothing breaks, but not documented
+        if "puids" in includes: includes.remove("puids")
+        includes = ", ".join(includes)
         if func.__doc__:
+            search_fields = list(VALID_SEARCH_FIELDS.get(entity, []))
+            # puid is allowed so nothing breaks, but not documented
+            if "puid" in search_fields: search_fields.remove("puid")
             func.__doc__ = func.__doc__.format(includes=includes,
-                    fields=", ".join(VALID_SEARCH_FIELDS.get(entity, [])))
+                    fields=", ".join(search_fields))
         return func
 
     return _decorator
@@ -631,6 +639,10 @@ def _do_mb_search(entity, query='', fields={},
 			raise InvalidSearchFieldError(
 				'%s is not a valid search field for %s' % (key, entity)
 			)
+		elif key == "puid":
+			warn("PUID support was removed from server\n"
+			     "the 'puid' field is ignored",
+			     DeprecationWarning, stacklevel=2)
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
@@ -815,29 +827,23 @@ def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
                                 release_type=[]):
     """Search for recordings with an `echoprint <http://echoprint.me>`_.
-    The result is a dict with an 'echoprint' key,
-    which again includes a 'recording-list'.
-
-    The preferred fingerprint method is :musicbrainz:`AcoustID`.
-
-    *Available includes*: {includes}"""
-    params = _check_filter_and_make_params("echoprint", includes,
-                                           release_status, release_type)
-    return _do_mb_query("echoprint", echoprint, includes, params)
+    (not available on server)"""
+    warn("Echoprints were never introduced\n"
+         "and will not be found (404)",
+         DeprecationWarning, stacklevel=2)
+    raise ResponseError(cause=compat.HTTPError(
+                                            None, 404, "Not Found", None, None))
 
 @_docstring('recording')
 def get_recordings_by_puid(puid, includes=[], release_status=[],
                            release_type=[]):
     """Search for recordings with a :musicbrainz:`PUID`.
-    The result is a dict with a 'puid' key,
-    which again includes a 'recording-list'.
-
-    The preferred fingerprint method is :musicbrainz:`AcoustID`.
-
-    *Available includes*: {includes}"""
-    params = _check_filter_and_make_params("puid", includes,
-                                           release_status, release_type)
-    return _do_mb_query("puid", puid, includes, params)
+    (not available on server)"""
+    warn("PUID support was removed from the server\n"
+         "and no PUIDs will be found (404)",
+         DeprecationWarning, stacklevel=2)
+    raise ResponseError(cause=compat.HTTPError(
+                                            None, 404, "Not Found", None, None))
 
 @_docstring('recording')
 def get_recordings_by_isrc(isrc, includes=[], release_status=[],
@@ -992,25 +998,21 @@ def submit_barcodes(release_barcode):
 
 def submit_puids(recording_puids):
     """Submit PUIDs.
-    Submits a set of {recording_id1: [puid1, ...], ...}
-    or {recording_id1: puid, ...}.
+    (Functionality removed from server)
     """
-    rec2puids = dict()
-    for (rec, puids) in recording_puids.items():
-        rec2puids[rec] = puids if isinstance(puids, list) else [puids]
-    query = mbxml.make_puid_request(rec2puids)
-    return _do_mb_post("recording", query)
+    warn("PUID support was dropped at the server\n"
+         "nothing will be submitted",
+         DeprecationWarning, stacklevel=2)
+    return {'message': {'text': 'OK'}}
 
 def submit_echoprints(recording_echoprints):
     """Submit echoprints.
-    Submits a set of {recording_id1: [echoprint1, ...], ...}
-    or {recording_id1: echoprint, ...}.
+    (Functionality removed from server)
     """
-    rec2echos = dict()
-    for (rec, echos) in recording_echoprints.items():
-        rec2echos[rec] = echos if isinstance(echos, list) else [echos]
-    query = mbxml.make_echoprint_request(rec2echos)
-    return _do_mb_post("recording", query)
+    warn("Echoprints were never introduced\n"
+         "nothing will be submitted",
+         DeprecationWarning, stacklevel=2)
+    return {'message': {'text': 'OK'}}
 
 def submit_isrcs(recording_isrcs):
     """Submit ISRCs.
