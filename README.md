@@ -44,6 +44,7 @@ Contributions have been made by:
 * [Michael Marineau](https://github.com/marineam)
 * [Patrick Speiser](https://github.com/doskir)
 * [Paul Bailey](https://github.com/paulbailey)
+* [Ryan Helinski](https://github.com/rlhelinski)
 * [Sam Doshi](https://github.com/samdoshi)
 * [Simon Chopin](https://github.com/laarmen)
 * [Thomas Vander Stichele](https://github.com/thomasvs)
