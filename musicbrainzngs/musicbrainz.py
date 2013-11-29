@@ -28,31 +28,32 @@ simplefilter(action="once", category=DeprecationWarning)
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'recording', 'release', 'release-group', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'recording', 'release', 'release-group', 'url', 'work']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
+TAG_INCLUDES = ["tags", "user-tags"]
+RATING_INCLUDES = ["ratings", "user-ratings"]
 
 VALID_INCLUDES = {
+    'area' : ["aliases", "annotation"] + RELATION_INCLUDES,
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media",
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation"
-    ] + RELATION_INCLUDES,
+        "aliases", "annotation"
+    ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'annotation': [
 
     ],
     'label': [
         "releases", # Subqueries
         "discids", "media",
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation"
-    ] + RELATION_INCLUDES,
+        "aliases", "annotation"
+    ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
+    'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits",
-        "tags", "user-tags", "ratings", "user-ratings", # misc
         "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "puids", "isrcs",
@@ -60,14 +61,12 @@ VALID_INCLUDES = {
     ] + RELATION_INCLUDES,
     'release-group': [
         "artists", "releases", "discids", "media",
-        "artist-credits", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+        "artist-credits", "annotation", "aliases"
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'work': [
         "artists", # Subqueries
-        "aliases", "tags", "user-tags", "ratings", "user-ratings", # misc
-        "annotation"
-    ] + RELATION_INCLUDES,
+        "aliases", "annotation"
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
     'discid': [
         "artists", "labels", "recordings", "release-groups", "media",
@@ -81,21 +80,19 @@ VALID_INCLUDES = {
 VALID_BROWSE_INCLUDES = {
     'releases': ["artist-credits", "labels", "recordings",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
-    'recordings': ["artist-credits", "tags", "ratings", "user-tags",
-                  "user-ratings"] + RELATION_INCLUDES,
-    'labels': ["aliases", "tags", "ratings",
-               "user-tags", "user-ratings"] + RELATION_INCLUDES,
-    'artists': ["aliases", "tags", "ratings",
-                "user-tags", "user-ratings"] + RELATION_INCLUDES,
+    'recordings': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'labels': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'artists': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'urls': RELATION_INCLUDES,
-    'release-groups': ["artist-credits", "tags", "ratings",
-                       "user-tags", "user-ratings"] + RELATION_INCLUDES
+    'release-groups': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES
 }
 
 #: These can be used to filter whenever releases are includes or browsed
 VALID_RELEASE_TYPES = [
-	"nat", "album", "single", "ep", "compilation", "soundtrack", "spokenword",
-	"interview", "audiobook", "live", "remix", "other"
+    "nat",
+    "album", "single", "ep", "broadcast", "other", # primary types
+    "compilation", "soundtrack", "spokenword", "interview", "audiobook",
+    "live", "remix", "dj-mix", "mixtape/street", # secondary types
 ]
 #: These can be used to filter whenever releases or release-groups are involved
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
@@ -105,11 +102,13 @@ VALID_SEARCH_FIELDS = {
     ],
     'artist': [
         'arid', 'artist', 'artistaccent', 'alias', 'begin', 'comment',
-        'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type'
+        'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type',
+        'area', 'beginarea', 'endarea'
     ],
     'label': [
         'alias', 'begin', 'code', 'comment', 'country', 'end', 'ended',
-        'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag'
+        'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag',
+        'area'
     ],
     'recording': [
         'arid', 'artist', 'artistname', 'creditname', 'comment',
@@ -117,7 +116,7 @@ VALID_SEARCH_FIELDS = {
         'position', 'primarytype', 'puid', 'qdur', 'recording',
         'recordingaccent', 'reid', 'release', 'rgid', 'rid',
         'secondarytype', 'status', 'tnum', 'tracks', 'tracksrelease',
-        'tag', 'type'
+        'tag', 'type', 'video'
     ],
     'release-group': [
         'arid', 'artist', 'artistname', 'comment', 'creditname',
@@ -129,7 +128,7 @@ VALID_SEARCH_FIELDS = {
         'arid', 'artist', 'artistname', 'asin', 'barcode', 'creditname',
         'catno', 'comment', 'country', 'creditname', 'date', 'discids',
         'discidsmedium', 'format', 'laid', 'label', 'lang', 'mediums',
-        'primarytype', 'puid', 'reid', 'release', 'releaseaccent',
+        'primarytype', 'puid', 'quality', 'reid', 'release', 'releaseaccent',
         'rgid', 'script', 'secondarytype', 'status', 'tag', 'tracks',
         'tracksmedium', 'type'
     ],
@@ -691,6 +690,15 @@ def _do_mb_post(path, body):
 
 # Single entity by ID
 
+@_docstring('area')
+def get_area_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the area with the MusicBrainz `id` as a dict with an 'area' key.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("area", includes,
+                                           release_status, release_type)
+    return _do_mb_query("area", id, includes, params)
+
 @_docstring('artist')
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the artist with the MusicBrainz `id` as a dict with an 'artist' key.
@@ -708,6 +716,15 @@ def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
     params = _check_filter_and_make_params("label", includes,
                                            release_status, release_type)
     return _do_mb_query("label", id, includes, params)
+
+@_docstring('place')
+def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the place with the MusicBrainz `id` as a dict with an 'place' key.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("place", includes,
+                                           release_status, release_type)
+    return _do_mb_query("place", id, includes, params)
 
 @_docstring('recording')
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
