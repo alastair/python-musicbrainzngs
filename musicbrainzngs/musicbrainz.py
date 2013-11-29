@@ -503,33 +503,38 @@ else:
 # Parsing setup
 
 def mb_parser_null(resp):
-	"""Return the raw response (XML)"""
-	return resp
+    """Return the raw response (XML)"""
+    return resp
 
 def mb_parser_xml(resp):
-	"""Return a Python dict representing the XML response"""
-	# Parse the response.
-	try:
-		return mbxml.parse_message(resp)
-	except UnicodeError as exc:
-		raise ResponseError(cause=exc)
-	except Exception as exc:
-		if isinstance(exc, ETREE_EXCEPTIONS):
-			raise ResponseError(cause=exc)
-		else:
-			raise
+    """Return a Python dict representing the XML response"""
+    # Parse the response.
+    try:
+        return mbxml.parse_message(resp)
+    except UnicodeError as exc:
+        raise ResponseError(cause=exc)
+    except Exception as exc:
+        if isinstance(exc, ETREE_EXCEPTIONS):
+            raise ResponseError(cause=exc)
+        else:
+            raise
 
 # Defaults
 parser_fun = mb_parser_xml
 
-def set_parser(new_parser_fun=mb_parser_xml):
-	"""Sets the function used to parse the response from the 
-	MusicBrainz web service.
-	"""
-	global parser_fun
-	if not callable(new_parser_fun):
-		raise ValueError("new_parser_fun must be callable")
-	parser_fun = new_parser_fun
+def set_parser(new_parser_fun=None):
+    """Sets the function used to parse the response from the
+    MusicBrainz web service.
+
+    If no parser is given, the parser is reset to the default parser
+    :func:`mb_parser_xml`.
+    """
+    global parser_fun
+    if new_parser_fun is None:
+        new_parser_fun = mb_parser_xml
+    if not callable(new_parser_fun):
+        raise ValueError("new_parser_fun must be callable")
+    parser_fun = new_parser_fun
 
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
