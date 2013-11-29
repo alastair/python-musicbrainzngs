@@ -500,6 +500,37 @@ if hasattr(etree, 'ParseError'):
 else:
 	ETREE_EXCEPTIONS = (expat.ExpatError)
 
+# Parsing setup
+
+def mb_parser_null(resp):
+	"""Return the raw response (XML)"""
+	return resp
+
+def mb_parser_xml(resp):
+	"""Return a Python dict representing the XML response"""
+	# Parse the response.
+	try:
+		return mbxml.parse_message(resp)
+	except UnicodeError as exc:
+		raise ResponseError(cause=exc)
+	except Exception as exc:
+		if isinstance(exc, ETREE_EXCEPTIONS):
+			raise ResponseError(cause=exc)
+		else:
+			raise
+
+# Defaults
+parser_fun = mb_parser_xml
+
+def set_parser(new_parser_fun=mb_parser_xml):
+	"""Sets the function used to parse the response from the 
+	MusicBrainz web service.
+	"""
+	global parser_fun
+	if not callable(new_parser_fun):
+		raise ValueError("new_parser_fun must be callable")
+	parser_fun = new_parser_fun
+
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
 				args=None, data=None, body=None):
@@ -509,6 +540,8 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 	whether exceptions should be raised if the client and
 	username/password are left unspecified, respectively.
 	"""
+	global parser_fun 
+
 	if args is None:
 		args = {}
 	else:
@@ -567,16 +600,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 		req.add_header('Content-Length', '0')
 	resp = _safe_read(opener, req, body)
 
-	# Parse the response.
-	try:
-		return mbxml.parse_message(resp)
-	except UnicodeError as exc:
-		raise ResponseError(cause=exc)
-	except Exception as exc:
-		if isinstance(exc, ETREE_EXCEPTIONS):
-			raise ResponseError(cause=exc)
-		else:
-			raise
+	return parser_fun(resp)
 
 def _is_auth_required(entity, includes):
 	""" Some calls require authentication. This returns
