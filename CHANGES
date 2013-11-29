@@ -1,6 +1,10 @@
 0.5dev:
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
+    * added get_area_by_id() and get_place_by_id() (Ian McEwen, #119 + #132)
+    * added support for URL MBIDs (Ian McEwen, #132)
+    * added support for link type UUIDs (Ian McEwen, #127 + #132)
     * updated valid includes and browse includes (Ian McEwen, #118)
+    * updated valid search fields and release group types (Ian McEwen, #132)
     * browsing for get_releases_in_collection() (Johannes Dewender, #88 + #128)
     * fixed undefined name in submit_barcodes (Simon Chopin, #109)
     * fix list submission for isrcs and echoprints (Johannes Dewender, #113)

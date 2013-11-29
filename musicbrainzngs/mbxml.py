@@ -122,8 +122,10 @@ def parse_message(message):
 	tree = util.bytes_to_elementtree(message)
 	root = tree.getroot()
 	result = {}
-	valid_elements = {"artist": parse_artist,
+	valid_elements = {"area": parse_area,
+                          "artist": parse_artist,
 	                  "label": parse_label,
+                          "place": parse_place,
 	                  "release": parse_release,
 	                  "release-group": parse_release_group,
 	                  "recording": parse_recording,
@@ -135,12 +137,15 @@ def parse_message(message):
 	                  "isrc": parse_isrc,
 
 	                  "annotation-list": parse_annotation_list,
+	                  "area-list": parse_area_list,
 	                  "artist-list": parse_artist_list,
 	                  "label-list": parse_label_list,
+	                  "place-list": parse_place_list,
 	                  "release-list": parse_release_list,
 	                  "release-group-list": parse_release_group_list,
 	                  "recording-list": parse_recording_list,
 	                  "work-list": parse_work_list,
+	                  "url-list": parse_url_list,
 
 	                  "collection-list": parse_collection_list,
 	                  "collection": parse_collection,
@@ -187,6 +192,27 @@ def parse_artist_lifespan(lifespan):
 
 	return parts
 
+def parse_area_list(al):
+	return [parse_area(a) for a in al]
+
+def parse_area(area):
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "sort-name", "disambiguation"]
+    inner_els = {"life-span": parse_artist_lifespan,
+                 "alias-list": parse_alias_list,
+                 "relation-list": parse_relation_list,
+                 "annotation": parse_annotation,
+                 "iso-3166-1-code-list": parse_element_list,
+                 "iso-3166-2-code-list": parse_element_list,
+                 "iso-3166-3-code-list": parse_element_list}
+
+    result.update(parse_attributes(attribs, area))
+    result.update(parse_elements(elements, area))
+    result.update(parse_inner(inner_els, area))
+
+    return result
+
 def parse_artist_list(al):
 	return [parse_artist(a) for a in al]
 
@@ -195,7 +221,10 @@ def parse_artist(artist):
     attribs = ["id", "type", "ext:score"]
     elements = ["name", "sort-name", "country", "user-rating",
                 "disambiguation", "gender", "ipi"]
-    inner_els = {"life-span": parse_artist_lifespan,
+    inner_els = {"area": parse_area,
+                 "begin-area": parse_area,
+                 "end-area": parse_area,
+                 "life-span": parse_artist_lifespan,
                  "recording-list": parse_recording_list,
                  "relation-list": parse_relation_list,
                  "release-list": parse_release_list,
@@ -214,6 +243,32 @@ def parse_artist(artist):
 
     return result
 
+def parse_coordinates(c):
+    return parse_elements(['latitude', 'longitude'], c)
+
+def parse_place_list(pl):
+    return [parse_place(p) for p in pl]
+
+def parse_place(place):
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "address",
+                "ipi", "disambiguation"]
+    inner_els = {"area": parse_area,
+                 "coordinates": parse_coordinates,
+                 "life-span": parse_artist_lifespan,
+                 "tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
+                 "alias-list": parse_alias_list,
+                 "relation-list": parse_relation_list,
+                 "annotation": parse_annotation}
+
+    result.update(parse_attributes(attribs, place))
+    result.update(parse_elements(elements, place))
+    result.update(parse_inner(inner_els, place))
+
+    return result
+
 def parse_label_list(ll):
     return [parse_label(l) for l in ll]
 
@@ -222,13 +277,15 @@ def parse_label(label):
     attribs = ["id", "type", "ext:score"]
     elements = ["name", "sort-name", "country", "label-code", "user-rating",
                 "ipi", "disambiguation"]
-    inner_els = {"life-span": parse_artist_lifespan,
+    inner_els = {"area": parse_area,
+                 "life-span": parse_artist_lifespan,
                  "release-list": parse_release_list,
                  "tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
                  "alias-list": parse_alias_list,
+                 "relation-list": parse_relation_list,
                  "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, label))
@@ -236,6 +293,13 @@ def parse_label(label):
     result.update(parse_inner(inner_els, label))
 
     return result
+
+def parse_relation_target(tgt):
+    attributes = parse_attributes(['id'], tgt)
+    if 'id' in attributes:
+        return ('target-id', attributes['id'])
+    else:
+        return ('target-id', tgt.text)
 
 def parse_relation_list(rl):
     attribs = ["target-type"]
@@ -245,15 +309,18 @@ def parse_relation_list(rl):
 
 def parse_relation(relation):
     result = {}
-    attribs = ["type"]
+    attribs = ["type", "type-id"]
     elements = ["target", "direction"]
-    inner_els = {"artist": parse_artist,
+    inner_els = {"area": parse_area,
+                 "artist": parse_artist,
                  "label": parse_label,
+                 "place": parse_place,
                  "recording": parse_recording,
                  "release": parse_release,
                  "release-group": parse_release_group,
                  "attribute-list": parse_element_list,
-                 "work": parse_work
+                 "work": parse_work,
+                 "target": parse_relation_target
                 }
     result.update(parse_attributes(attribs, relation))
     result.update(parse_elements(elements, relation))
@@ -309,6 +376,7 @@ def parse_release_group(rg):
                  "tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "secondary-type-list": parse_element_list,
+                 "relation-list": parse_relation_list,
                  "rating": parse_rating,
                  "annotation": parse_annotation}
 
@@ -368,6 +436,9 @@ def parse_work(work):
     result.update(parse_inner(inner_els, work))
 
     return result
+
+def parse_url_list(ul):
+    return [parse_url(u) for u in ul]
 
 def parse_url(url):
     result = {}
