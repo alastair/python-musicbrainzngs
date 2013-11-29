@@ -338,7 +338,8 @@ def parse_release(release):
 	             "medium-list": parse_medium_list,
 	             "release-group": parse_release_group,
 	             "relation-list": parse_relation_list,
-	             "annotation": parse_annotation}
+	             "annotation": parse_annotation,
+	             "release-event-list": parse_release_event_list}
 
 	result.update(parse_attributes(attribs, release))
 	result.update(parse_elements(elements, release))
@@ -350,6 +351,18 @@ def parse_release(release):
 
 def parse_medium_list(ml):
 	return [parse_medium(m) for m in ml]
+
+def parse_release_event_list(rel):
+    return [parse_release_event(re) for re in rel]
+
+def parse_release_event(event):
+    result = {}
+    elements = ["date"]
+    inner_els = {"area": parse_area}
+
+    result.update(parse_elements(elements, event))
+    result.update(parse_inner(inner_els, event))
+    return result
 
 def parse_medium(medium):
 	result = {}
