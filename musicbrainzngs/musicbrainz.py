@@ -37,7 +37,7 @@ VALID_INCLUDES = {
     'area' : ["aliases", "annotation"] + RELATION_INCLUDES,
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
-        "various-artists", "discids", "media",
+        "various-artists", "discids", "media", "isrcs",
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'annotation': [
@@ -51,7 +51,7 @@ VALID_INCLUDES = {
     'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
-        "discids", "media", "artist-credits",
+        "discids", "media", "artist-credits", "isrcs",
         "annotation", "aliases"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': [
