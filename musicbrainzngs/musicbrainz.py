@@ -541,6 +541,9 @@ def set_parser(new_parser_fun=None):
 def set_format(fmt="xml"):
     """Sets the format that should be returned by the Web Service.
     The server currently supports `xml` and `json`.
+
+    When you set the format to anything different from the default,
+    you need to provide your own parser with :func:`set_parser`.
     """
     global ws_format
     if fmt not in ["xml", "json"]:
