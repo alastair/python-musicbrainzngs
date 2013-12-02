@@ -177,8 +177,8 @@ def parse_annotation(annotation):
 	result.update(parse_elements(elements, {}, annotation))
 	return result
 
-def parse_artist_lifespan(lifespan):
-	parts = parse_elements(["begin", "end"], {}, lifespan)
+def parse_lifespan(lifespan):
+	parts = parse_elements(["begin", "end", "ended"], {}, lifespan)
 
 	return parts
 
@@ -189,7 +189,7 @@ def parse_area(area):
     result = {}
     attribs = ["id", "type", "ext:score"]
     elements = ["name", "sort-name", "disambiguation"]
-    inner_els = {"life-span": parse_artist_lifespan,
+    inner_els = {"life-span": parse_lifespan,
                  "alias-list": parse_alias_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_annotation,
@@ -213,7 +213,7 @@ def parse_artist(artist):
     inner_els = {"area": parse_area,
                  "begin-area": parse_area,
                  "end-area": parse_area,
-                 "life-span": parse_artist_lifespan,
+                 "life-span": parse_lifespan,
                  "recording-list": parse_recording_list,
                  "relation-list": parse_relation_list,
                  "release-list": parse_release_list,
@@ -223,6 +223,7 @@ def parse_artist(artist):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
+                 "isni-list": parse_element_list,
                  "alias-list": parse_alias_list,
                  "annotation": parse_annotation}
 
@@ -244,7 +245,7 @@ def parse_place(place):
                 "ipi", "disambiguation"]
     inner_els = {"area": parse_area,
                  "coordinates": parse_coordinates,
-                 "life-span": parse_artist_lifespan,
+                 "life-span": parse_lifespan,
                  "tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "alias-list": parse_alias_list,
@@ -265,7 +266,7 @@ def parse_label(label):
     elements = ["name", "sort-name", "country", "label-code", "user-rating",
                 "ipi", "disambiguation"]
     inner_els = {"area": parse_area,
-                 "life-span": parse_artist_lifespan,
+                 "life-span": parse_lifespan,
                  "release-list": parse_release_list,
                  "tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
@@ -324,6 +325,7 @@ def parse_release(release):
 	             "release-group": parse_release_group,
 	             "relation-list": parse_relation_list,
 	             "annotation": parse_annotation,
+                     "cover-art-archive": parse_caa,
 	             "release-event-list": parse_release_event_list}
 
 	result.update(parse_attributes(attribs, release))
@@ -414,8 +416,8 @@ def parse_work_list(wl):
 
 def parse_work(work):
     result = {}
-    attribs = ["id", "ext:score"]
-    elements = ["title", "user-rating", "language", "iswc"]
+    attribs = ["id", "ext:score", "type"]
+    elements = ["title", "user-rating", "language", "iswc", "disambiguation"]
     inner_els = {"tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
@@ -587,7 +589,16 @@ def parse_alias(alias):
 
     return result
 
+def parse_caa(caa_element):
+    result = {}
+    elements = ["artwork", "count", "front", "back", "darkened"]
+
+    result.update(parse_elements(elements, {}, caa_element))
+    return result
+
+
 ###
+
 def make_barcode_request(release2barcode):
     NS = "http://musicbrainz.org/ns/mmd-2.0#"
     root = ET.Element("{%s}metadata" % NS)
