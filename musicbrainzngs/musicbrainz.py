@@ -37,7 +37,7 @@ VALID_INCLUDES = {
     'area' : ["aliases", "annotation"] + RELATION_INCLUDES,
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
-        "various-artists", "discids", "media",
+        "various-artists", "discids", "media", "isrcs",
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'annotation': [
@@ -51,7 +51,7 @@ VALID_INCLUDES = {
     'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
-        "discids", "media", "artist-credits",
+        "discids", "media", "artist-credits", "isrcs",
         "annotation", "aliases"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': [
@@ -78,9 +78,9 @@ VALID_INCLUDES = {
     'collection': ['releases'],
 }
 VALID_BROWSE_INCLUDES = {
-    'releases': ["artist-credits", "labels", "recordings",
+    'releases': ["artist-credits", "labels", "recordings", "isrcs",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
-    'recordings': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'recordings': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'labels': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'artists': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'urls': RELATION_INCLUDES,
