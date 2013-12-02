@@ -297,7 +297,7 @@ def parse_relation_list(rl):
 def parse_relation(relation):
     result = {}
     attribs = ["type", "type-id"]
-    elements = ["target", "direction"]
+    elements = ["target", "direction", "begin", "end", "ended"]
     inner_els = {"area": parse_area,
                  "artist": parse_artist,
                  "label": parse_label,
@@ -367,7 +367,8 @@ def parse_text_representation(textr):
 def parse_release_group(rg):
     result = {}
     attribs = ["id", "type", "ext:score"]
-    elements = ["title", "user-rating", "first-release-date", "primary-type"]
+    elements = ["title", "user-rating", "first-release-date", "primary-type",
+                "disambiguation"]
     inner_els = {"artist-credit": parse_artist_credit,
                  "release-list": parse_release_list,
                  "tag-list": parse_tag_list,
