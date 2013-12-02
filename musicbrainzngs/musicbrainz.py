@@ -544,6 +544,10 @@ def set_format(fmt="xml"):
 
     When you set the format to anything different from the default,
     you need to provide your own parser with :func:`set_parser`.
+
+    .. warning:: The json format used by the server is different from
+        the json format returned by the `musicbrainzngs` internal parser
+        when using the `xml` format!
     """
     global ws_format
     if fmt not in ["xml", "json"]:
