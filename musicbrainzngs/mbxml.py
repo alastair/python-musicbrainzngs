@@ -85,7 +85,7 @@ def parse_elements(valid_els, inner_els, element):
 			else:
 				result[t] = inner_result
 		else:
-			_log.debug("in <%s>, uncaught <%s>",
+			_log.info("in <%s>, uncaught <%s>",
                                     fixtag(element.tag, NS_MAP)[0], t)
 	return result
 
@@ -105,7 +105,7 @@ def parse_attributes(attributes, element):
         if a in attributes:
             result[a] = element.attrib[attr]
         else:
-            _log.debug("in <%s>, uncaught attribute %s", fixtag(element.tag, NS_MAP)[0], attr)
+            _log.info("in <%s>, uncaught attribute %s", fixtag(element.tag, NS_MAP)[0], attr)
 
     return result
 
