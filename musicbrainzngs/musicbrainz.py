@@ -444,7 +444,7 @@ def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 	last_exc = None
 	for retry_num in range(max_retries):
 		if retry_num: # Not the first try: delay an increasing amount.
-			_log.debug("retrying after delay (#%i)" % retry_num)
+			_log.info("retrying after delay (#%i)" % retry_num)
 			time.sleep(retry_num * retry_delay_delta)
 
 		try:
@@ -460,19 +460,19 @@ def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 				raise ResponseError(cause=exc)
 			elif exc.code in (503, 502, 500):
 				# Rate limiting, internal overloading...
-				_log.debug("HTTP error %i" % exc.code)
+				_log.info("HTTP error %i" % exc.code)
 			elif exc.code in (401, ):
 				raise AuthenticationError(cause=exc)
 			else:
 				# Other, unknown error. Should handle more cases, but
 				# retrying for now.
-				_log.debug("unknown HTTP error %i" % exc.code)
+				_log.info("unknown HTTP error %i" % exc.code)
 			last_exc = exc
 		except compat.BadStatusLine as exc:
-			_log.debug("bad status line")
+			_log.info("bad status line")
 			last_exc = exc
 		except compat.HTTPException as exc:
-			_log.debug("miscellaneous HTTP exception: %s" % str(exc))
+			_log.info("miscellaneous HTTP exception: %s" % str(exc))
 			last_exc = exc
 		except compat.URLError as exc:
 			if isinstance(exc.reason, socket.error):
@@ -481,7 +481,7 @@ def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
 					continue
 			raise NetworkError(cause=exc)
 		except socket.timeout as exc:
-			_log.debug("socket timeout")
+			_log.info("socket timeout")
 			last_exc = exc
 		except socket.error as exc:
 			if exc.errno == 104:
