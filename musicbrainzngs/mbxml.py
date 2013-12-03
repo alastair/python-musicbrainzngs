@@ -33,7 +33,7 @@ except:
 
 NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2",
           "http://musicbrainz.org/ns/ext#-2.0": "ext"}
-_log = logging.getLogger("python-musicbrainzngs")
+_log = logging.getLogger("musicbrainzngs")
 
 def make_artist_credit(artists):
 	names = []
