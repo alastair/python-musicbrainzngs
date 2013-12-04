@@ -880,16 +880,24 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 
 # Lists of entities
 @_docstring('release')
-def get_releases_by_discid(id, includes=[], release_status=[], release_type=[]):
+def get_releases_by_discid(id, toc=None, includes=[],
+                           release_status=[], release_type=[]):
     """Search for releases with a :musicbrainz:`Disc ID`.
 
-    The result is a dict with either a 'disc' or a 'cdstub' key.
+    When a `toc` is provided and no release with the disc ID is found,
+    a fuzzy search by the toc is done.
+    The `toc` should have to same format as :attr:`discid.Disc.toc_string`.
+
+    The result is a dict with either a 'disc' , a 'cdstub' key
+    or a 'release-list' (fuzzy match with TOC).
     A 'disc' has a 'release-list' and a 'cdstub' key has direct 'artist'
     and 'title' keys.
 
     *Available includes*: {includes}"""
     params = _check_filter_and_make_params("discid", includes, release_status,
                                            release_type=release_type)
+    if toc:
+        params["toc"] = toc
     return _do_mb_query("discid", id, includes, params)
 
 @_docstring('recording')
