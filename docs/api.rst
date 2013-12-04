@@ -149,3 +149,17 @@ Some of these might have subclasses that are not listed here.
 
 .. autoclass:: ResponseError
    :show-inheritance:
+
+Logging
+-------
+
+`musicbrainzngs` logs debug and informational messages using Python's
+:mod:`logging` module.
+All logging is done in the logger with the name `musicbrainzngs`.
+
+You can enable this output in your application with::
+
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    # optionally restrict musicbrainzngs output to INFO messages
+    logging.getLogger("musicbrainzngs").setLevel(logging.INFO)
