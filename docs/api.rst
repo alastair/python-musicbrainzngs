@@ -22,6 +22,7 @@ General
 .. autofunction:: set_useragent
 .. autofunction:: set_hostname
 .. autofunction:: set_parser
+.. autofunction:: set_format
 
 Getting Data
 ------------
