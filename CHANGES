@@ -9,6 +9,7 @@
     * updated valid includes and browse includes (Ian McEwen, #118)
     * updated valid search fields and release group types (Ian McEwen, #132)
     * browsing for get_releases_in_collection() (Johannes Dewender, #88 + #128)
+    * allow browsing releases by track_artist (Johannes Dewender, #107)
     * fixed undefined name in submit_barcodes (Simon Chopin, #109)
     * fix list submission for isrcs (Johannes Dewender, #113)
     * fix debug logging and many unparsed entities (Johannes Dewender, #134)
