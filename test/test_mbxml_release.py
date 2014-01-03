@@ -118,3 +118,13 @@ class GetReleaseTest(unittest.TestCase):
         self.assertEqual(['1', '2'], [t["position"] for t in tracks])
         self.assertEqual(['A', 'B'], [t["number"] for t in tracks])
 
+    def testVideo(self):
+        """
+        Test that the video attribute is parsed.
+        """
+        fn = os.path.join(self.datadir, "fe29e7f0-eb46-44ba-9348-694166f47885-recordings.xml")
+        res = mbxml.parse_message(open(fn))
+        trackswithoutvideo = res["release"]["medium-list"][0]["track-list"]
+        trackswithvideo = res["release"]["medium-list"][2]["track-list"]
+        map(lambda t: self.assertNotIn("video", t["recording"]), trackswithoutvideo)
+        map(lambda t: self.assertEqual("true", t["recording"]["video"]), trackswithvideo)
