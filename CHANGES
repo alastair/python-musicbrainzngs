@@ -15,6 +15,8 @@
     * fix debug logging and many unparsed entities (Johannes Dewender, #134)
     * don't install tests with setup.py (Johannes Dewender, #112)
     * add ISC license (compat.py) to COPYING (Wieland Hoffmann, #111 and #110)
+    * parse the video element of recordings (Wieland Hoffmann, #136)
+    * parse track ids (Wieland Hoffmann)
 
     The github repository and RTD doc urls were renamed to python-musicbrainzngs
     (formerly python-musicbrainz-ngs).
