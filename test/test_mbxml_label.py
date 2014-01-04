@@ -6,16 +6,14 @@ import sys
 # Insert .. at the beginning of path so we use this version instead
 # of something that's already been installed
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import musicbrainzngs
-from musicbrainzngs import mbxml
+from test import _common
 
 class GetLabelTest(unittest.TestCase):
     def setUp(self):
         self.datadir = os.path.join(os.path.dirname(__file__), "data", "label")
 
     def testLabelAliases(self):
-        fn = os.path.join(self.datadir, "022fe361-596c-43a0-8e22-bad712bb9548-aliases.xml")
-        res = mbxml.parse_message(open(fn))
+        res = _common.open_and_parse_test_data(self.datadir, "022fe361-596c-43a0-8e22-bad712bb9548-aliases.xml")
         aliases = res["label"]["alias-list"]
         self.assertEqual(len(aliases), 4)
 
@@ -27,8 +25,7 @@ class GetLabelTest(unittest.TestCase):
         self.assertEqual(a1["alias"], "EMI Records (UK)")
         self.assertEqual(a1["sort-name"], "EMI Records (UK)")
 
-        fn = os.path.join(self.datadir, "e72fabf2-74a3-4444-a9a5-316296cbfc8d-aliases.xml")
-        res = mbxml.parse_message(open(fn))
+        res = _common.open_and_parse_test_data(self.datadir, "e72fabf2-74a3-4444-a9a5-316296cbfc8d-aliases.xml")
         aliases = res["label"]["alias-list"]
         self.assertEqual(len(aliases), 1)
 

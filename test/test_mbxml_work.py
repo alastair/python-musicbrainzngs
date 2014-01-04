@@ -7,16 +7,14 @@ import sys
 # Insert .. at the beginning of path so we use this version instead
 # of something that's already been installed
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import musicbrainzngs
-from musicbrainzngs import mbxml
+from test import _common
 
 class GetWorkTest(unittest.TestCase):
     def setUp(self):
         self.datadir = os.path.join(os.path.dirname(__file__), "data", "work")
 
     def testWorkAliases(self):
-        fn = os.path.join(self.datadir, "80737426-8ef3-3a9c-a3a6-9507afb93e93-aliases.xml")
-        res = mbxml.parse_message(open(fn))
+        res = _common.open_and_parse_test_data(self.datadir, "80737426-8ef3-3a9c-a3a6-9507afb93e93-aliases.xml")
         aliases = res["work"]["alias-list"]
         self.assertEqual(len(aliases), 2)
 
@@ -28,8 +26,7 @@ class GetWorkTest(unittest.TestCase):
         self.assertEqual(a1["alias"], 'Symphony No. 3, Op. 55 "Eroica"')
         self.assertEqual(a1["sort-name"], 'Symphony No. 3, Op. 55 "Eroica"')
 
-        fn = os.path.join(self.datadir, "3d7c7cd2-da79-37f4-98b8-ccfb1a4ac6c4-aliases.xml")
-        res = mbxml.parse_message(open(fn))
+        res = _common.open_and_parse_test_data(self.datadir, "3d7c7cd2-da79-37f4-98b8-ccfb1a4ac6c4-aliases.xml")
         aliases = res["work"]["alias-list"]
         self.assertEqual(len(aliases), 10)
 
