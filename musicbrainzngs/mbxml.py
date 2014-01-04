@@ -538,10 +538,12 @@ def parse_track_list(tl):
 
 def parse_track(track):
     result = {}
+    attribs = ["id"]
     elements = ["number", "position", "title", "length"]
     inner_els = {"recording": parse_recording,
                  "artist-credit": parse_artist_credit}
 
+    result.update(parse_attributes(attribs, track))
     result.update(parse_elements(elements, inner_els, track))
     if "artist-credit" in result.get("recording", {}) and "artist-credit" not in result:
         result["artist-credit"] = result["recording"]["artist-credit"]

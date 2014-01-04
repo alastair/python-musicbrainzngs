@@ -63,6 +63,15 @@ class GetReleaseTest(unittest.TestCase):
         self.assertEqual("H. Lichner", t1["artist-credit-phrase"])
         self.assertNotEqual(t1["recording"]["artist-credit-phrase"], t1["artist-credit-phrase"])
 
+    def testTrackId(self):
+        """
+        Test that the id attribute of tracks is read.
+        """
+        fn = os.path.join(self.datadir, "212895ca-ee36-439a-a824-d2620cd10461-recordings.xml")
+        res = mbxml.parse_message(open(fn))
+        tracks = res["release"]["medium-list"][0]["track-list"]
+        map(lambda t: self.assertIn("id", t), tracks)
+
     def testTrackLength(self):
         """
         Test that if there is a track length, then `track_or_recording_length` has
