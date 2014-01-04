@@ -66,7 +66,7 @@ class GetReleaseTest(unittest.TestCase):
         """
         res = _common.open_and_parse_test_data(self.datadir, "212895ca-ee36-439a-a824-d2620cd10461-recordings.xml")
         tracks = res["release"]["medium-list"][0]["track-list"]
-        map(lambda t: self.assertIn("id", t), tracks)
+        map(lambda t: self.assertTrue("id" in t), tracks)
 
     def testTrackLength(self):
         """
@@ -127,5 +127,5 @@ class GetReleaseTest(unittest.TestCase):
         res = _common.open_and_parse_test_data(self.datadir, "fe29e7f0-eb46-44ba-9348-694166f47885-recordings.xml")
         trackswithoutvideo = res["release"]["medium-list"][0]["track-list"]
         trackswithvideo = res["release"]["medium-list"][2]["track-list"]
-        map(lambda t: self.assertNotIn("video", t["recording"]), trackswithoutvideo)
+        map(lambda t: self.assertTrue("video" not in ["recording"]), trackswithoutvideo)
         map(lambda t: self.assertEqual("true", t["recording"]["video"]), trackswithvideo)
