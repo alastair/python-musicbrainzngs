@@ -1022,11 +1022,11 @@ def add_releases_to_collection(collection, releases=[]):
     """
     # XXX: Maximum URI length of 16kb means we should only allow ~400 releases
     releaselist = ";".join(releases)
-    _do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
+    return _do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
 
 def remove_releases_from_collection(collection, releases=[]):
     """Remove releases from a collection.
     Collection and releases should be identified by their MBIDs
     """
     releaselist = ";".join(releases)
-    _do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
+    return _do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
