@@ -4,14 +4,14 @@
 To show a list of your collections:
 
     $ ./collection.py USERNAME
-    Password for USERNAME: 
+    Password for USERNAME:
     All collections for this user:
-    My Collection by USERNAME (4137a646-a104-4031-b549-da4e1f36a463) 
+    My Collection by USERNAME (4137a646-a104-4031-b549-da4e1f36a463)
 
 To show the releases in a collection:
 
     $ ./collection.py USERNAME 4137a646-a104-4031-b549-da4e1f36a463
-    Password for USERNAME: 
+    Password for USERNAME:
     Releases in My Collection:
     None Shall Pass (b0885908-cbe2-4e51-95d8-c4f3b9721ad6)
     ...
@@ -29,10 +29,15 @@ import musicbrainzngs
 import getpass
 from optparse import OptionParser
 
+try:
+    user_input = raw_input
+except NameError:
+    user_input = input
+
 musicbrainzngs.set_useragent(
-    "python-musicbrainz-ngs-example",
+    "python-musicbrainzngs-example",
     "0.1",
-    "https://github.com/alastair/python-musicbrainz-ngs/",
+    "https://github.com/alastair/python-musicbrainzngs/",
 )
 
 def show_collections():
@@ -49,13 +54,25 @@ def show_collections():
 def show_collection(collection_id):
     """Show the list of releases in a given collection.
     """
-    result = musicbrainzngs.get_releases_in_collection(collection_id)
-    collection = result['collection']
-    print('Releases in {}:'.format(collection['name']))
-    for release in collection['release-list']:
-        print('{title} ({mbid})'.format(
-            title=release['title'], mbid=release['id']
-        ))
+    count = 0
+    while True:
+        result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25, offset=count)
+        collection = result['collection']
+        release_list = collection['release-list']
+        if len(release_list) == 0:
+            break;
+        if count == 0:
+            print('Releases in {}:'.format(collection['name']))
+        count += len(release_list)
+        for release in release_list:
+            print('{title} ({mbid})'.format(
+                title=release['title'], mbid=release['id']
+            ))
+        if user_input("Would you like to display more releases? [y/N] ") != "y":
+            break;
+        print("")
+
+    print("number of releases displayed: %d" % count)
 
 if __name__ == '__main__':
     parser = OptionParser(usage="%prog [options] USERNAME [COLLECTION-ID]")

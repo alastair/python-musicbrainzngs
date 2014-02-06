@@ -1,4 +1,22 @@
 0.5dev:
+    * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
+    * added get_area_by_id() and get_place_by_id() (Ian McEwen, #119 + #132)
+    * added set_parser() (Ryan Helinski, #129)
+    * added set_format() (Johannes Dewender, #131)
+    * added support for URL MBIDs (Ian McEwen, #132)
+    * added support for link type UUIDs (Ian McEwen, #127 + #132)
+    * deprecated puid and echoprint support (Johannes Dewender, #106)
+    * updated valid includes and browse includes (Ian McEwen, #118)
+    * updated valid search fields and release group types (Ian McEwen, #132)
+    * browsing for get_releases_in_collection() (Johannes Dewender, #88 + #128)
+    * fixed undefined name in submit_barcodes (Simon Chopin, #109)
+    * fix list submission for isrcs (Johannes Dewender, #113)
+    * fix debug logging and many unparsed entities (Johannes Dewender, #134)
+    * don't install tests with setup.py (Johannes Dewender, #112)
+    * add ISC license (compat.py) to COPYING (Wieland Hoffmann, #111 and #110)
+
+    The github repository and RTD doc urls were renamed to python-musicbrainzngs
+    (formerly python-musicbrainz-ngs).
 
 0.4 (2013-05-15):
     Thanks to Johannes Dewender for all his work in this release!

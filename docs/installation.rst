@@ -21,11 +21,11 @@ Git
 ---
 
 If you want the latest code or even feel like contributing, the code is
-available on `GitHub <https://github.com/alastair/python-musicbrainz-ngs>`_.
+available on `GitHub <https://github.com/alastair/python-musicbrainzngs>`_.
 
 You can easily clone the code with git::
 
-    git clone git://github.com/alastair/python-musicbrainz-ngs.git
+    git clone git://github.com/alastair/python-musicbrainzngs.git
 
 Now you can start hacking on the code or install it system-wide::
 

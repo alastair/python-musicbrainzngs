@@ -21,6 +21,8 @@ General
 .. autofunction:: set_rate_limit
 .. autofunction:: set_useragent
 .. autofunction:: set_hostname
+.. autofunction:: set_parser
+.. autofunction:: set_format
 
 Getting Data
 ------------
@@ -33,17 +35,18 @@ See :const:`musicbrainz.VALID_RELEASE_STATUSES`
 and :const:`musicbrainz.VALID_RELEASE_TYPES`.
 The valid includes are listed for each function.
 
+.. autofunction:: get_area_by_id
 .. autofunction:: get_artist_by_id
 .. autofunction:: get_label_by_id
+.. autofunction:: get_place_by_id
 .. autofunction:: get_recording_by_id
-.. autofunction:: get_recordings_by_echoprint
-.. autofunction:: get_recordings_by_puid
 .. autofunction:: get_recordings_by_isrc
 .. autofunction:: get_release_group_by_id
 .. autofunction:: get_release_by_id
 .. autofunction:: get_releases_by_discid
 .. autofunction:: get_work_by_id
 .. autofunction:: get_works_by_iswc
+.. autofunction:: get_url_by_id
 .. autofunction:: get_collections
 .. autofunction:: get_releases_in_collection
 
@@ -102,6 +105,7 @@ You have to provide exactly one MusicBrainz ID to these functions.
 .. autofunction:: browse_recordings
 .. autofunction:: browse_release_groups
 .. autofunction:: browse_releases
+.. autofunction:: browse_urls
 
 .. _api_submitting:
 
@@ -115,8 +119,6 @@ which take certain values or a list of values.
 You have to use :func:`auth` before using any of these functions.
 
 .. autofunction:: submit_barcodes
-.. autofunction:: submit_puids
-.. autofunction:: submit_echoprints
 .. autofunction:: submit_isrcs
 .. autofunction:: submit_tags
 .. autofunction:: submit_ratings
@@ -147,3 +149,17 @@ Some of these might have subclasses that are not listed here.
 
 .. autoclass:: ResponseError
    :show-inheritance:
+
+Logging
+-------
+
+`musicbrainzngs` logs debug and informational messages using Python's
+:mod:`logging` module.
+All logging is done in the logger with the name `musicbrainzngs`.
+
+You can enable this output in your application with::
+
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    # optionally restrict musicbrainzngs output to INFO messages
+    logging.getLogger("musicbrainzngs").setLevel(logging.INFO)

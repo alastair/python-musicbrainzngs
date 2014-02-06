@@ -91,3 +91,18 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.get_work_by_id("c6dfad5a-f915-41c7-a1c0-e2b606948e69")
         self.assertEqual("http://musicbrainz.org/ws/2/work/c6dfad5a-f915-41c7-a1c0-e2b606948e69", self.opener.get_url())
 
+    def testGetByDiscid(self):
+        musicbrainzngs.get_releases_by_discid("I5l9cCSFccLKFEKS.7wqSZAorPU-")
+        self.assertEqual("http://musicbrainz.org/ws/2/discid/I5l9cCSFccLKFEKS.7wqSZAorPU-", self.opener.get_url())
+
+        includes = ["artists"]
+        musicbrainzngs.get_releases_by_discid("I5l9cCSFccLKFEKS.7wqSZAorPU-", includes)
+        self.assertEqual("http://musicbrainz.org/ws/2/discid/I5l9cCSFccLKFEKS.7wqSZAorPU-?inc=artists", self.opener.get_url())
+
+        musicbrainzngs.get_releases_by_discid("discid", toc="toc")
+        self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?toc=toc", self.opener.get_url())
+
+        musicbrainzngs.get_releases_by_discid("discid", toc="toc", cdstubs=False)
+        self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?toc=toc&cdstubs=no", self.opener.get_url())
+
+

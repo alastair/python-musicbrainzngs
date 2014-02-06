@@ -96,6 +96,7 @@ extlinks = {
 intersphinx_mapping = {
     'python': ('http://python.readthedocs.org/en/latest/', None),
     'python2': ('http://python.readthedocs.org/en/v2.7.2/', None),
+    'discid': ('http://python-discid.readthedocs.org/en/latest/', None),
 }
 
 
