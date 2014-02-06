@@ -48,6 +48,7 @@ class SearchArtistTest(unittest.TestCase):
         fn = os.path.join(os.path.dirname(__file__), "data", "search-artist.xml")
         res = mbxml.parse_message(open(fn))
         self.assertEqual(25, len(res["artist-list"]))
+        self.assertEqual(349, res["artist-count"])
         one = res["artist-list"][0]
         self.assertEqual(9, len(one.keys()))
         # Score is a key that is only in search results -
@@ -59,6 +60,7 @@ class SearchReleaseTest(unittest.TestCase):
         fn = os.path.join(os.path.dirname(__file__), "data", "search-release.xml")
         res = mbxml.parse_message(open(fn))
         self.assertEqual(25, len(res["release-list"]))
+        self.assertEqual(16739, res["release-count"])
         one = res["release-list"][0]
         self.assertEqual("100", one["ext:score"])
 
@@ -67,6 +69,7 @@ class SearchReleaseGroupTest(unittest.TestCase):
         fn = os.path.join(os.path.dirname(__file__), "data", "search-release-group.xml")
         res = mbxml.parse_message(open(fn))
         self.assertEqual(25, len(res["release-group-list"]))
+        self.assertEqual(14641, res["release-group-count"])
         one = res["release-group-list"][0]
         self.assertEqual("100", one["ext:score"])
 
@@ -75,6 +78,7 @@ class SearchWorkTest(unittest.TestCase):
         fn = os.path.join(os.path.dirname(__file__), "data", "search-work.xml")
         res = mbxml.parse_message(open(fn))
         self.assertEqual(25, len(res["work-list"]))
+        self.assertEqual(174, res["work-count"])
         one = res["work-list"][0]
         self.assertEqual("100", one["ext:score"])
 
@@ -83,6 +87,7 @@ class SearchLabelTest(unittest.TestCase):
         fn = os.path.join(os.path.dirname(__file__), "data", "search-label.xml")
         res = mbxml.parse_message(open(fn))
         self.assertEqual(1, len(res["label-list"]))
+        self.assertEqual(1, res["label-count"])
         one = res["label-list"][0]
         self.assertEqual("100", one["ext:score"])
 
@@ -91,5 +96,6 @@ class SearchRecordingTest(unittest.TestCase):
         fn = os.path.join(os.path.dirname(__file__), "data", "search-recording.xml")
         res = mbxml.parse_message(open(fn))
         self.assertEqual(25, len(res["recording-list"]))
+        self.assertEqual(1258, res["recording-count"])
         one = res["recording-list"][0]
         self.assertEqual("100", one["ext:score"])
