@@ -119,17 +119,24 @@ to get all releases for a label::
   limit = 100
   offset = 0
   releases = []
-  page = 0
-  while True:
+  page = 1
+  print("fetching page number %d.." % page)
+  result = musicbrainzngs.browse_releases(label=label, includes=["labels"],
+                  release_type=["album"], limit=limit)
+  page_releases = result['release-list']
+  releases += page_releases
+  # release-count is only available starting with musicbrainzngs 0.5
+  if "release-count" in result:
+          count = result['release-count']
+          print("")
+  while len(page_releases) >= limit:
+      offset += limit
       page += 1
       print("fetching page number %d.." % page)
       result = musicbrainzngs.browse_releases(label=label, includes=["labels"],
                           release_type=["album"], limit=limit, offset=offset)
       page_releases = result['release-list']
       releases += page_releases
-      offset += limit
-      if len(page_releases) < limit:
-          break
   print("")
   for release in releases:
       for label_info in release['label-info-list']:
