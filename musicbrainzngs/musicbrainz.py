@@ -558,77 +558,82 @@ def set_format(fmt="xml"):
 
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=False, client_required=False,
-				args=None, data=None, body=None):
-	"""Makes a request for the specified `path` (endpoint) on /ws/2 on
-	the globally-specified hostname. Parses the responses and returns
-	the resulting object.  `auth_required` and `client_required` control
-	whether exceptions should be raised if the client and
-	username/password are left unspecified, respectively.
-	"""
-	global parser_fun 
+                args=None, data=None, body=None):
+    """Makes a request for the specified `path` (endpoint) on /ws/2 on
+    the globally-specified hostname. Parses the responses and returns
+    the resulting object.  `auth_required` and `client_required` control
+    whether exceptions should be raised if the client and
+    username/password are left unspecified, respectively.
+    """
+    global parser_fun 
 
-	if args is None:
-		args = {}
-	else:
-		args = dict(args) or {}
+    if args is None:
+        args = {}
+    else:
+        args = dict(args) or {}
 
-	if _useragent == "":
-		raise UsageError("set a proper user-agent with "
-						 "set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
+    if _useragent == "":
+        raise UsageError("set a proper user-agent with "
+                         "set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
 
-	if client_required:
-		args["client"] = _client
+    if client_required:
+        args["client"] = _client
 
-	# Encode Unicode arguments using UTF-8.
-	for key, value in args.items():
-		if isinstance(value, compat.unicode):
-			args[key] = value.encode('utf8')
+    if ws_format != "xml":
+        args["fmt"] = ws_format
 
-	if ws_format != "xml":
-		args["fmt"] = ws_format
+    # Convert args from a dictionary to a list of tuples
+    # so that the ordering of elements is stable for easy
+    # testing (in this case we order alphabetically)
+    # Encode Unicode arguments using UTF-8.
+    newargs = []
+    for key, value in sorted(args.items()):
+        if isinstance(value, compat.unicode):
+            value = value.encode('utf8')
+        newargs.append((key, value))
 
-	# Construct the full URL for the request, including hostname and
-	# query string.
-	url = compat.urlunparse((
-		'http',
-		hostname,
-		'/ws/2/%s' % path,
-		'',
-		compat.urlencode(args),
-		''
-	))
-	_log.debug("%s request for %s" % (method, url))
+    # Construct the full URL for the request, including hostname and
+    # query string.
+    url = compat.urlunparse((
+        'http',
+        hostname,
+        '/ws/2/%s' % path,
+        '',
+        compat.urlencode(newargs),
+        ''
+    ))
+    _log.debug("%s request for %s" % (method, url))
 
-	# Set up HTTP request handler and URL opener.
-	httpHandler = compat.HTTPHandler(debuglevel=0)
-	handlers = [httpHandler]
+    # Set up HTTP request handler and URL opener.
+    httpHandler = compat.HTTPHandler(debuglevel=0)
+    handlers = [httpHandler]
 
-	# Add credentials if required.
-	if auth_required:
-		_log.debug("Auth required for %s" % url)
-		if not user:
-			raise UsageError("authorization required; "
-							 "use auth(user, pass) first")
-		passwordMgr = _RedirectPasswordMgr()
-		authHandler = _DigestAuthHandler(passwordMgr)
-		authHandler.add_password("musicbrainz.org", (), user, password)
-		handlers.append(authHandler)
+    # Add credentials if required.
+    if auth_required:
+        _log.debug("Auth required for %s" % url)
+        if not user:
+            raise UsageError("authorization required; "
+                             "use auth(user, pass) first")
+        passwordMgr = _RedirectPasswordMgr()
+        authHandler = _DigestAuthHandler(passwordMgr)
+        authHandler.add_password("musicbrainz.org", (), user, password)
+        handlers.append(authHandler)
 
-	opener = compat.build_opener(*handlers)
+    opener = compat.build_opener(*handlers)
 
-	# Make request.
-	req = _MusicbrainzHttpRequest(method, url, data)
-	req.add_header('User-Agent', _useragent)
-	_log.debug("requesting with UA %s" % _useragent)
-	if body:
-		req.add_header('Content-Type', 'application/xml; charset=UTF-8')
-	elif not data and not req.has_header('Content-Length'):
-		# Explicitly indicate zero content length if no request data
-		# will be sent (avoids HTTP 411 error).
-		req.add_header('Content-Length', '0')
-	resp = _safe_read(opener, req, body)
+    # Make request.
+    req = _MusicbrainzHttpRequest(method, url, data)
+    req.add_header('User-Agent', _useragent)
+    _log.debug("requesting with UA %s" % _useragent)
+    if body:
+        req.add_header('Content-Type', 'application/xml; charset=UTF-8')
+    elif not data and not req.has_header('Content-Length'):
+        # Explicitly indicate zero content length if no request data
+        # will be sent (avoids HTTP 411 error).
+        req.add_header('Content-Length', '0')
+    resp = _safe_read(opener, req, body)
 
-	return parser_fun(resp)
+    return parser_fun(resp)
 
 def _is_auth_required(entity, includes):
 	""" Some calls require authentication. This returns

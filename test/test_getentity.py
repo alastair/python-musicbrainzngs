@@ -103,6 +103,6 @@ class UrlTest(unittest.TestCase):
         self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?toc=toc", self.opener.get_url())
 
         musicbrainzngs.get_releases_by_discid("discid", toc="toc", cdstubs=False)
-        self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?toc=toc&cdstubs=no", self.opener.get_url())
+        self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?cdstubs=no&toc=toc", self.opener.get_url())
 
 
