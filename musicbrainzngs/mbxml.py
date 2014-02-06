@@ -3,6 +3,7 @@
 # This file is distributed under a BSD-2-Clause type license.
 # See the COPYING file for more information.
 
+import re
 import xml.etree.ElementTree as ET
 import logging
 
@@ -83,6 +84,10 @@ def parse_elements(valid_els, inner_els, element):
                 result[inner_result[0]] = inner_result[1]
             else:
                 result[t] = inner_result
+            # add counts for lists when available
+            m = re.match(r'([a-z0-9-]+)-list', t)
+            if m and  "count" in sub.attrib:
+                result["%s-count" % m.group(1)] = sub.attrib["count"]
         else:
             _log.info("in <%s>, uncaught <%s>",
                       fixtag(element.tag, NS_MAP)[0], t)
@@ -160,10 +165,6 @@ def parse_collection(collection):
     result.update(parse_elements(elements, inner_els, collection))
 
     return result
-
-def parse_collection_release_list(rl):
-    attribs = ["count"]
-    return parse_attributes(attribs, rl)
 
 def parse_annotation_list(al):
     return [parse_annotation(a) for a in al]

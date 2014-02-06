@@ -54,25 +54,34 @@ def show_collections():
 def show_collection(collection_id):
     """Show the list of releases in a given collection.
     """
-    count = 0
-    while True:
-        result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25, offset=count)
-        collection = result['collection']
-        release_list = collection['release-list']
-        if len(release_list) == 0:
-            break;
-        if count == 0:
-            print('Releases in {}:'.format(collection['name']))
-        count += len(release_list)
+    result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25)
+    collection = result['collection']
+    release_list = collection['release-list']
+    # release count is only available starting with musicbrainzngs 0.5
+    if "release-count" in collection:
+        release_count = collection['release-count']
+        print('{} releases in {}:'.format(release_count, collection['name']))
+    else:
+        print('Releases in {}:'.format(collection['name']))
+    releases_fetched = 0
+    while len(release_list) > 0:
+        print("")
+        releases_fetched += len(release_list)
         for release in release_list:
             print('{title} ({mbid})'.format(
                 title=release['title'], mbid=release['id']
             ))
         if user_input("Would you like to display more releases? [y/N] ") != "y":
             break;
-        print("")
 
-    print("number of releases displayed: %d" % count)
+        # fetch next batch of releases
+        result = musicbrainzngs.get_releases_in_collection(collection_id,
+                            limit=25, offset=releases_fetched)
+        collection = result['collection']
+        release_list = collection['release-list']
+
+    print("")
+    print("Number of fetched releases: %d" % releases_fetched)
 
 if __name__ == '__main__':
     parser = OptionParser(usage="%prog [options] USERNAME [COLLECTION-ID]")
@@ -108,7 +117,9 @@ if __name__ == '__main__':
             )
         else:
             # Print out the collection's contents.
+            print("")
             show_collection(collection_id)
     else:
         # Show all collections.
+        print("")
         show_collections()
