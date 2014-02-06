@@ -1004,11 +1004,14 @@ def browse_recordings(artist=None, release=None, includes=[],
                         limit, offset, params)
 
 @_docstring('releases', browse=True)
-def browse_releases(artist=None, label=None, recording=None,
+def browse_releases(artist=None, track_artist=None, label=None, recording=None,
                     release_group=None, release_status=[], release_type=[],
                     includes=[], limit=None, offset=None):
     """Get all releases linked to an artist, a label, a recording
     or a release group. You need to give one MusicBrainz ID.
+
+    You can also browse by `track_artist`, which gives all releases where some
+    tracks are attributed to that artist, but not the whole release.
 
     You can filter by :data:`musicbrainz.VALID_RELEASE_TYPES` or
     :data:`musicbrainz.VALID_RELEASE_STATUSES`.
@@ -1017,6 +1020,7 @@ def browse_releases(artist=None, label=None, recording=None,
     # track_artist param doesn't work yet
     valid_includes = VALID_BROWSE_INCLUDES['releases']
     params = {"artist": artist,
+              "track_artist": track_artist,
               "label": label,
               "recording": recording,
               "release-group": release_group}

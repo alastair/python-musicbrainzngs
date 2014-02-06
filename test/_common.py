@@ -2,7 +2,7 @@
 import time
 
 import musicbrainzngs
-from musicbrainzngs import compat
+from os.path import join
 
 try:
     from urllib2 import OpenerDirector
@@ -58,3 +58,16 @@ class Timecop(object):
     def restore(self):
         time.time = self.orig['time']
         time.sleep = self.orig['sleep']
+
+def open_and_parse_test_data(datadir, filename):
+    """ Opens an XML file dumped from the MusicBrainz web service and returns
+    the parses it.
+
+    :datadir: The directory containing the file
+    :filename: The filename of the XML file
+    :returns: The parsed representation of the XML files content
+
+    """
+    fn = join(datadir, filename)
+    res = musicbrainzngs.mbxml.parse_message(open(fn))
+    return res

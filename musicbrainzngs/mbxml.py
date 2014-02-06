@@ -389,7 +389,7 @@ def parse_release_group(rg):
 def parse_recording(recording):
     result = {}
     attribs = ["id", "ext:score"]
-    elements = ["title", "length", "user-rating", "disambiguation"]
+    elements = ["title", "length", "user-rating", "disambiguation", "video"]
     inner_els = {"artist-credit": parse_artist_credit,
                  "release-list": parse_release_list,
                  "tag-list": parse_tag_list,
@@ -538,10 +538,12 @@ def parse_track_list(tl):
 
 def parse_track(track):
     result = {}
+    attribs = ["id"]
     elements = ["number", "position", "title", "length"]
     inner_els = {"recording": parse_recording,
                  "artist-credit": parse_artist_credit}
 
+    result.update(parse_attributes(attribs, track))
     result.update(parse_elements(elements, inner_els, track))
     if "artist-credit" in result.get("recording", {}) and "artist-credit" not in result:
         result["artist-credit"] = result["recording"]["artist-credit"]
