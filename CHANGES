@@ -1,3 +1,6 @@
+0.6dev:
+
+
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
     * added get_area_by_id() and get_place_by_id() (Ian McEwen, #119 + #132)

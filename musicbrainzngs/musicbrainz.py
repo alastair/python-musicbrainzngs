@@ -19,7 +19,7 @@ from musicbrainzngs import mbxml
 from musicbrainzngs import util
 from musicbrainzngs import compat
 
-_version = "0.5"
+_version = "0.6dev"
 _log = logging.getLogger("musicbrainzngs")
 
 # turn on DeprecationWarnings below
