@@ -26,12 +26,14 @@ Usage
 
 See the ``query.py`` file for more examples.
 
-More documentation is available at `Read the Docs`_.
+More documentation is available at
+`Read the Docs <https://python-musicbrainzngs.readthedocs.org>`_.
 
 Contribute
 **********
 
-1. Fork the `repository`_ on Github.
+1. Fork the `repository <https://github.com/alastair/python-musicbrainzngs>`_
+   on Github.
 2. Make and test whatever changes you desire.
 3. Signoff and commit your changes using ``git commit -s``.
 4. Send a pull request.
@@ -62,6 +64,3 @@ License
 This library is released under the simplified BSD license except for the file
 ``musicbrainzngs/compat.py`` which is licensed under the ISC license.
 See COPYING for details.
-
-.. _Read the Docs: https://python-musicbrainzngs.readthedocs.org
-.. _repository: https://github.com/alastair/python-musicbrainzngs
