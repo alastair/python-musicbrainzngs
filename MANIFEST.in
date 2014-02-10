@@ -1,4 +1,4 @@
-include COPYING README.md CHANGES query.py
+include COPYING README.rst CHANGES query.py
 recursive-include test *.py
 recursive-include test/data *.xml
 include test/data/artist test/data/label test/data/release
