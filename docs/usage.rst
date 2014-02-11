@@ -85,7 +85,7 @@ Searching
 ---------
 
 When you don't know the MusicBrainz IDs yet, you have to start a search.
-Using :func:`musicbrainzngs.search_artist`::
+Using :func:`musicbrainzngs.search_artists`::
 
   result = musicbrainzngs.search_artists(artist="xx", type="group",
                                          country="GB")
