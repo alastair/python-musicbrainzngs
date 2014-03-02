@@ -90,15 +90,7 @@ def download_coverart_front(releaseid, size=None):
     400: Releaseid is not a UUID
     503: Ratelimit exceeded
     """
-    if isinstance(size, int):
-        size = "%d" % (size, )
-    try:
-        return _caa_request(releaseid, "front", size=size)
-    except musicbrainz.ResponseError as e:
-        if e.cause.code == 404:
-            return None
-        else:
-            raise
+    return download_coverart(releaseid, "front", size=size)
 
 def download_coverart_back(releaseid, size=None):
     """ Download the back coverart for a release.
@@ -113,15 +105,7 @@ def download_coverart_back(releaseid, size=None):
     400: Releaseid is not a UUID
     503: Ratelimit exceeded
     """
-    if isinstance(size, int):
-        size = "%d" % (size, )
-    try:
-        return _caa_request(releaseid, "back", size=size)
-    except musicbrainz.ResponseError as e:
-        if e.cause.code == 404:
-            return None
-        else:
-            raise
+    return download_coverart(releaseid, "back", size=size)
 
 def download_coverart(releaseid, coverid, size=None):
     """ Download coverart for a release. The coverart file to download
