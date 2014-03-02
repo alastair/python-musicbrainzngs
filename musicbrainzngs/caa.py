@@ -15,7 +15,7 @@ def _caa_request(releaseid, imageid=None, size=None):
     """ Make a CAA request.
 
     :param imageid: ``front``, ``back`` or a number from the listing obtained
-                    with :meth:`get_coverart_list`.
+                    with :meth:`get_cover_art_list`.
     :type imageid: str
 
     :param size: 250, 500
@@ -62,7 +62,7 @@ def _caa_request(releaseid, imageid=None, size=None):
         # Otherwise it's json
         return json.loads(resp)
 
-def get_coverart_list(releaseid):
+def get_cover_art_list(releaseid):
     """Get the list of cover art associated with a release.
 
     The return value is the deserialized response of the `JSON listing
@@ -78,22 +78,22 @@ def get_coverart_list(releaseid):
     """
     return _caa_request(releaseid)
 
-def download_coverart_front(releaseid, size=None):
-    """Download the front coverart for a release.
+def download_cover_art_front(releaseid, size=None):
+    """Download the front cover art for a release.
     The `size` argument and the possible error conditions are the same as for
-    :meth:`download_coverart`.
+    :meth:`download_cover_art`.
     """
-    return download_coverart(releaseid, "front", size=size)
+    return download_cover_art(releaseid, "front", size=size)
 
-def download_coverart_back(releaseid, size=None):
-    """Download the back coverart for a release.
+def download_cover_art_back(releaseid, size=None):
+    """Download the back cover art for a release.
     The `size` argument and the possible error conditions are the same as for
-    :meth:`download_coverart`.
+    :meth:`download_cover_art`.
     """
-    return download_coverart(releaseid, "back", size=size)
+    return download_cover_art(releaseid, "back", size=size)
 
-def download_coverart(releaseid, coverid, size=None):
-    """Download coverart for a release. The coverart file to download
+def download_cover_art(releaseid, coverid, size=None):
+    """Download cover art for a release. The coverart file to download
     is specified by the `coverid` argument.
     If `size` is not specified, download the largest copy present.
 
@@ -105,7 +105,7 @@ def download_coverart(releaseid, coverid, size=None):
     * 503: Ratelimit exceeded
 
     :param coverid: ``front``, ``back`` or a number from the listing obtained with
-                    :meth:`get_coverart_list`
+                    :meth:`get_cover_art_list`
     :type coverid: int or str
 
     :param size: 250 or 500

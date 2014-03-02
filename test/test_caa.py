@@ -16,7 +16,7 @@ class CaaTest(unittest.TestCase):
         resp = '{"images":[]}'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.get_coverart_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
+        res = caa.get_cover_art_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
         self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
         self.assertEqual(1, len(res))
         self.assertTrue("images" in res)
@@ -28,7 +28,7 @@ class CaaTest(unittest.TestCase):
         self.opener = _common.FakeOpener(exception=musicbrainzngs.ResponseError(cause=exc))
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         try:
-            res = caa.get_coverart_list("8ec178f4-a8e8-4f22-bcba-19644XXXXXX")
+            res = caa.get_cover_art_list("8ec178f4-a8e8-4f22-bcba-19644XXXXXX")
             self.assertTrue(False, "Expected an exception")
         except musicbrainzngs.ResponseError as e:
             self.assertEqual(e.cause.code, 404)
@@ -38,7 +38,7 @@ class CaaTest(unittest.TestCase):
         self.opener = _common.FakeOpener(exception=musicbrainzngs.ResponseError(cause=exc))
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         try:
-            res = caa.get_coverart_list("8ec178f4-a8e8-4f22-bcba-19644XXXXXX")
+            res = caa.get_cover_art_list("8ec178f4-a8e8-4f22-bcba-19644XXXXXX")
             self.assertTrue(False, "Expected an exception")
         except musicbrainzngs.ResponseError as e:
             self.assertEqual(e.cause.code, 400)
@@ -50,44 +50,44 @@ class CaaTest(unittest.TestCase):
         resp = '{"images":[]}'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.get_coverart_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
+        res = caa.get_cover_art_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         headers = dict(self.opener.headers)
         self.assertTrue("User-agent" in headers)
         self.assertEqual("caa-test/0.1 python-musicbrainz-ngs/0.5dev", headers["User-agent"])
 
     def test_coverid(self):
-        resp = 'some_coverart'
+        resp = 'some_cover_art'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.download_coverart("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234")
+        res = caa.download_cover_art("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234")
 
         self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_get_size(self):
-        resp = 'some_coverart'
+        resp = 'some_cover_art'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.download_coverart("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234", 250)
+        res = caa.download_cover_art("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234", 250)
 
         self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234-250", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_front(self):
-        resp = 'front_coverart'
+        resp = 'front_cover_art'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.download_coverart_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
+        res = caa.download_cover_art_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_back(self):
-        resp = 'back_coverart'
+        resp = 'back_cover_art'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.download_coverart_back("8ec178f4-a8e8-4f22-bcba-1964466ef214")
+        res = caa.download_cover_art_back("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/back", self.opener.myurl)
         self.assertEqual(resp, res)
