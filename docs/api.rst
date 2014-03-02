@@ -50,6 +50,17 @@ The valid includes are listed for each function.
 .. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_TYPES
 .. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_STATUSES
 
+.. _caa_api:
+
+Cover Art
+---------
+
+.. autofunction:: get_coverart_list
+.. autofunction:: download_coverart
+.. autofunction:: download_coverart_front
+.. autofunction:: download_coverart_back
+
+
 .. _search_api:
 
 Searching

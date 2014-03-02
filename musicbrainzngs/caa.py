@@ -1,7 +1,7 @@
 import json
 
-import compat
-import musicbrainz
+from musicbrainzngs import compat
+from musicbrainzngs import musicbrainz
 
 hostname = "coverartarchive.org"
 
@@ -58,16 +58,19 @@ def _caa_request(releaseid, imageid=None, size=None):
         return json.loads(resp)
 
 def get_coverart_list(releaseid):
-    """ Get the list of coverart associated with a release.
+    """Get the list of coverart associated with a release.
     The format is the same as the json representation returned
     by the Cover Art Archive.
 
-    If there is no coverart for this release then None is returned.
+    The return value is the deserialized response of the `JSON listing
+    <http://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease.2F.7Bmbid.7D.2F>`_
+    returned by the Cover Art Archive API.
 
     If an error occurs then a musicbrainz.ResponseError will
     be raised with one of the following HTTP codes:
-    400: Releaseid is not a UUID
-    503: Ratelimit exceeded
+
+    * 400: Releaseid is not a valid UUID
+    * 503: Ratelimit exceeded
     """
     try:
         return _caa_request(releaseid)
@@ -78,48 +81,30 @@ def get_coverart_list(releaseid):
             raise
 
 def download_coverart_front(releaseid, size=None):
-    """ Download the front coverart for a release.
-    If `size' is not specified, download the largest copy present.
-    `size' can be one of 250 or 500 (as an integer or a string)
-
-    If there is no coverart for this release or if no front image
-    has been chosen then None is returned.
-
-    If an error occurs then a musicbrainz.ResponseError will
-    be raised with one of the following HTTP codes:
-    400: Releaseid is not a UUID
-    503: Ratelimit exceeded
+    """Download the front coverart for a release.
+    The `size` argument and the possible error conditions are the same as for
+    :meth:`download_coverart`.
     """
     return download_coverart(releaseid, "front", size=size)
 
 def download_coverart_back(releaseid, size=None):
-    """ Download the back coverart for a release.
-    If `size' is not specified, download the largest copy present.
-    `size' can be one of 250 or 500 (as an integer or a string)
-
-    If there is no coverart for this release or if no back image
-    has been chosen then None is returned.
-
-    If an error occurs then a musicbrainz.ResponseError will
-    be raised with one of the following HTTP codes:
-    400: Releaseid is not a UUID
-    503: Ratelimit exceeded
+    """Download the back coverart for a release.
+    The `size` argument and the possible error conditions are the same as for
+    :meth:`download_coverart`.
     """
     return download_coverart(releaseid, "back", size=size)
 
 def download_coverart(releaseid, coverid, size=None):
-    """ Download coverart for a release. The coverart file to download
-    is specified by the `coverid' argument.
-    If `size' is not specified, download the largest copy present.
-    `size' can be one of 250 or 500 (as an integer or a string)
-
-    If there is no coverart for this release or if the given 
-    coverid doesn't exist then None is returned.
+    """Download coverart for a release. The coverart file to download
+    is specified by the `coverid` argument.
+    If `size` is not specified, download the largest copy present.
+    `size` can be one of 250 or 500 (as an integer or a string)
 
     If an error occurs then a musicbrainz.ResponseError will
     be raised with one of the following HTTP codes:
-    400: Releaseid is not a UUID
-    503: Ratelimit exceeded
+
+    * 400: `releaseid` is not a valid UUID or `coverid` is invalid
+    * 503: Ratelimit exceeded
     """
     if isinstance(coverid, int):
         coverid = "%d" % (coverid, )
