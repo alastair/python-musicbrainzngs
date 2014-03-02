@@ -21,6 +21,17 @@ class CaaTest(unittest.TestCase):
         self.assertEqual(1, len(res))
         self.assertTrue("images" in res)
 
+    def test_get_release_group_list(self):
+        # check the url and response for a listing
+        resp = '{"images":[], "release": "foo"}'
+        self.opener = _common.FakeOpener(resp)
+        musicbrainzngs.compat.build_opener = lambda *args: self.opener
+        res = caa.get_release_group_cover_art_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
+        self.assertEqual("http://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
+        self.assertEqual(2, len(res))
+        self.assertTrue("images" in res)
+        self.assertEquals("foo", res["release"])
+
     def test_list_none(self):
         """ When CAA gives a 404 error, pass it through."""
 
@@ -81,6 +92,15 @@ class CaaTest(unittest.TestCase):
         res = caa.download_cover_art_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
+        self.assertEqual(resp, res)
+
+    def test_release_group_front(self):
+        resp = 'front_cover_art'
+        self.opener = _common.FakeOpener(resp)
+        musicbrainzngs.compat.build_opener = lambda *args: self.opener
+        res = caa.download_release_group_cover_art_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
+
+        self.assertEqual("http://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_back(self):

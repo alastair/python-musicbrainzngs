@@ -11,7 +11,7 @@ def set_caa_hostname(new_hostname):
     global hostname
     hostname = new_hostname
 
-def _caa_request(releaseid, imageid=None, size=None):
+def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
     """ Make a CAA request.
 
     :param imageid: ``front``, ``back`` or a number from the listing obtained
@@ -21,10 +21,12 @@ def _caa_request(releaseid, imageid=None, size=None):
     :param size: 250, 500
     :type size: str or None
 
+    :param entitytype: ``release`` or ``release-group``
+    :type entitytype: str
     """
     # Construct the full URL for the request, including hostname and
     # query string.
-    path = ["release", releaseid]
+    path = [entitytype, mbid]
     if imageid and size:
         path.append("%s-%s" % (imageid, size))
     elif imageid:
@@ -78,6 +80,31 @@ def get_cover_art_list(releaseid):
     """
     return _caa_request(releaseid)
 
+def get_release_group_cover_art_list(releasegroupid):
+    """Get the list of cover art associated with a release group.
+
+    The return value is the deserialized response of the `JSON listing
+    <http://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease-group.2F.7Bmbid.7D.2F>`_
+    returned by the Cover Art Archive API.
+
+    If an error occurs then a musicbrainz.ResponseError will
+    be raised with one of the following HTTP codes:
+
+    * 400: `Releaseid` is not a valid UUID
+    * 404: No release exists with an MBID of `releaseid`
+    * 503: Ratelimit exceeded
+    """
+    return _caa_request(releasegroupid, entitytype="release-group")
+
+def download_release_group_cover_art_front(releasegroupid, size=None):
+    """Download the front cover art for a release group.
+    The `size` argument and the possible error conditions are the same as for
+    :meth:`download_cover_art`.
+    """
+    return download_cover_art(releasegroupid, "front", size=size,
+                              entitytype="release-group")
+
+
 def download_cover_art_front(releaseid, size=None):
     """Download the front cover art for a release.
     The `size` argument and the possible error conditions are the same as for
@@ -92,7 +119,7 @@ def download_cover_art_back(releaseid, size=None):
     """
     return download_cover_art(releaseid, "back", size=size)
 
-def download_cover_art(releaseid, coverid, size=None):
+def download_cover_art(releaseid, coverid, size=None, entitytype="release"):
     """Download cover art for a release. The coverart file to download
     is specified by the `coverid` argument.
     If `size` is not specified, download the largest copy present.
@@ -115,4 +142,4 @@ def download_cover_art(releaseid, coverid, size=None):
         coverid = "%d" % (coverid, )
     if isinstance(size, int):
         size = "%d" % (size, )
-    return _caa_request(releaseid, coverid, size=size)
+    return _caa_request(releaseid, coverid, size=size, entitytype=entitytype)
