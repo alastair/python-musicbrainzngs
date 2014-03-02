@@ -51,6 +51,9 @@ If the credentials provided are wrong and the server returns a status code of
 Getting data
 ------------
 
+Regular MusicBrainz data
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 You can get MusicBrainz entities as a :class:`dict`
 when retrieving them with some form of identifier.
 An example using :func:`musicbrainzngs.get_artist_by_id`::
@@ -80,6 +83,14 @@ with adding `includes` and you filter releases and release_groups::
 .. note:: You can only get at most 25 release groups using this method.
    If you want to fetch all release groups you will have to
    `browse <browsing>`_.
+
+Cover art data
+^^^^^^^^^^^^^^
+
+This library includes a few methods to access data from the `Cover Art Archive
+<https://coverartarchive.org/>`_. After reading the `Cover Art Archive API
+documentation <https://musicbrainz.org/doc/Cover_Art_Archive/API>`_, the
+:ref:`documentation <caa_api>` for them should make clear how to use them.
 
 Searching
 ---------
