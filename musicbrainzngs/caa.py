@@ -70,15 +70,10 @@ def get_coverart_list(releaseid):
     be raised with one of the following HTTP codes:
 
     * 400: Releaseid is not a valid UUID
+    * 404: There is no release with this MBID
     * 503: Ratelimit exceeded
     """
-    try:
-        return _caa_request(releaseid)
-    except musicbrainz.ResponseError as e:
-        if e.cause.code == 404:
-            return None
-        else:
-            raise
+    return _caa_request(releaseid)
 
 def download_coverart_front(releaseid, size=None):
     """Download the front coverart for a release.
@@ -104,17 +99,11 @@ def download_coverart(releaseid, coverid, size=None):
     be raised with one of the following HTTP codes:
 
     * 400: `releaseid` is not a valid UUID or `coverid` is invalid
+    * 404: No release exists with an MBID of `releaseid`
     * 503: Ratelimit exceeded
     """
     if isinstance(coverid, int):
         coverid = "%d" % (coverid, )
     if isinstance(size, int):
         size = "%d" % (size, )
-    try:
-        return _caa_request(releaseid, coverid, size=size)
-    except musicbrainz.ResponseError as e:
-        if e.cause.code == 404:
-            return None
-        else:
-            raise
-
+    return _caa_request(releaseid, coverid, size=size)

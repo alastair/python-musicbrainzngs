@@ -22,17 +22,18 @@ class CaaTest(unittest.TestCase):
         self.assertTrue("images" in res)
 
     def test_list_none(self):
-        """ When CAA gives a 404 error, return None"""
-        
-        # urllib2.HTTPError(self, url, code, msg, hdrs, fp)
+        """ When CAA gives a 404 error, pass it through."""
+
         exc = compat.HTTPError("", 404, "", "", StringIO.StringIO(""))
         self.opener = _common.FakeOpener(exception=musicbrainzngs.ResponseError(cause=exc))
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        res = caa.get_coverart_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
-        self.assertEqual(None, res)
+        try:
+            res = caa.get_coverart_list("8ec178f4-a8e8-4f22-bcba-19644XXXXXX")
+            self.assertTrue(False, "Expected an exception")
+        except musicbrainzngs.ResponseError as e:
+            self.assertEqual(e.cause.code, 404)
 
     def test_list_baduuid(self):
-        # urllib2.HTTPError(self, url, code, msg, hdrs, fp)
         exc = compat.HTTPError("", 400, "", "", StringIO.StringIO(""))
         self.opener = _common.FakeOpener(exception=musicbrainzngs.ResponseError(cause=exc))
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
