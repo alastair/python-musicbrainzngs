@@ -5,11 +5,13 @@ from musicbrainzngs import musicbrainz
 
 hostname = "coverartarchive.org"
 
+
 def set_caa_hostname(new_hostname):
     """Set the base hostname for Cover Art Archive requests.
     Defaults to 'coverartarchive.org'."""
     global hostname
     hostname = new_hostname
+
 
 def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
     """ Make a CAA request.
@@ -64,6 +66,7 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
         # Otherwise it's json
         return json.loads(resp)
 
+
 def get_cover_art_list(releaseid):
     """Get the list of cover art associated with a release.
 
@@ -79,6 +82,7 @@ def get_cover_art_list(releaseid):
     * 503: Ratelimit exceeded
     """
     return _caa_request(releaseid)
+
 
 def get_release_group_cover_art_list(releasegroupid):
     """Get the list of cover art associated with a release group.
@@ -96,6 +100,7 @@ def get_release_group_cover_art_list(releasegroupid):
     """
     return _caa_request(releasegroupid, entitytype="release-group")
 
+
 def download_release_group_cover_art_front(releasegroupid, size=None):
     """Download the front cover art for a release group.
     The `size` argument and the possible error conditions are the same as for
@@ -112,12 +117,14 @@ def download_cover_art_front(releaseid, size=None):
     """
     return download_cover_art(releaseid, "front", size=size)
 
+
 def download_cover_art_back(releaseid, size=None):
     """Download the back cover art for a release.
     The `size` argument and the possible error conditions are the same as for
     :meth:`download_cover_art`.
     """
     return download_cover_art(releaseid, "back", size=size)
+
 
 def download_cover_art(mbid, coverid, size=None, entitytype="release"):
     """Download cover art for a release. The coverart file to download
