@@ -119,7 +119,7 @@ def download_cover_art_back(releaseid, size=None):
     """
     return download_cover_art(releaseid, "back", size=size)
 
-def download_cover_art(releaseid, coverid, size=None, entitytype="release"):
+def download_cover_art(mbid, coverid, size=None, entitytype="release"):
     """Download cover art for a release. The coverart file to download
     is specified by the `coverid` argument.
     If `size` is not specified, download the largest copy present.
@@ -137,9 +137,13 @@ def download_cover_art(releaseid, coverid, size=None, entitytype="release"):
 
     :param size: 250 or 500
     :type size: str or None
+
+    :param entitytype: The type of entity for which to download the cover art.
+                       This is either ``release`` or ``release-group``.
+    :type entitytype: str
     """
     if isinstance(coverid, int):
         coverid = "%d" % (coverid, )
     if isinstance(size, int):
         size = "%d" % (size, )
-    return _caa_request(releaseid, coverid, size=size, entitytype=entitytype)
+    return _caa_request(mbid, coverid, size=size, entitytype=entitytype)
