@@ -142,7 +142,10 @@ def download_cover_art(mbid, coverid, size=None, entitytype="release"):
                     :meth:`get_cover_art_list`
     :type coverid: int or str
 
-    :param size: 250 or 500
+    :param size: 250, 500 or None. If it is None, the largest available picture
+                 will be downloaded. If the image originally uploaded to the
+                 Cover Art Archive was smaller than the requested size, only
+                 the original image will be returned.
     :type size: str or None
 
     :param entitytype: The type of entity for which to download the cover art.
