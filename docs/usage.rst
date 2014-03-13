@@ -88,9 +88,33 @@ Cover art data
 ^^^^^^^^^^^^^^
 
 This library includes a few methods to access data from the `Cover Art Archive
-<https://coverartarchive.org/>`_. After reading the `Cover Art Archive API
-documentation <https://musicbrainz.org/doc/Cover_Art_Archive/API>`_, the
-:ref:`documentation <caa_api>` for them should make clear how to use them.
+<https://coverartarchive.org/>`_ which has a `documented API
+documentation <https://musicbrainz.org/doc/Cover_Art_Archive/API>`_
+
+Both :func:`musicbrainzngs.get_cover_art_list` and
+:func:`musicbrainzngs.get_release_group_cover_art_list` return the deserialized
+cover art listing for a `release
+<https://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease.2F.7Bmbid.7D.2F>`_
+or `release group
+<https://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease-group.2F.7Bmbid.7D.2F>`_.
+To find out whether a release
+has an approved front image, you could use the following example code::
+
+  release_id = "46a48e90-819b-4bed-81fa-5ca8aa33fbf3"
+  data = musicbrainzngs.get_cover_art_list("46a48e90-819b-4bed-81fa-5ca8aa33fbf3")
+  for image in data["images"]:
+      if "Front" in image["types"] and image["approved"]:
+          print "%s is an approved front image!" % image["thumbnails"]["large"]
+          break
+
+To retrieve an image itself, use :func:`musicbrainzngs.download_cover_art`. A
+few convenience functions like :func:`musicbrainzngs.download_cover_art_front`
+are provided to allow easy access to often requested images.
+
+.. warning:: There is no upper bound for the size of images uploaded to the
+   Cover Art Archive and downloading an image will return the binary data in
+   memory. Consider using the :py:mod:`tempfile` module or similar
+   techniques to save images to disk as soon as possible.
 
 Searching
 ---------
