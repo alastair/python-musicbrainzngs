@@ -129,10 +129,12 @@ def download_cover_art_back(releaseid, size=None):
 def download_cover_art(mbid, coverid, size=None, entitytype="release"):
     """Download cover art for a release. The coverart file to download
     is specified by the `coverid` argument.
-    If `size` is not specified, download the largest copy present.
 
-    If an error occurs then a musicbrainz.ResponseError will
-    be raised with one of the following HTTP codes:
+    If `size` is not specified, download the largest copy present, which can be
+    very large.
+
+    If an error occurs then a musicbrainz.ResponseError will be raised with one
+    of the following HTTP codes:
 
     * 400: `Releaseid` is not a valid UUID or `coverid` is invalid
     * 404: No release exists with an MBID of `releaseid`
@@ -151,6 +153,8 @@ def download_cover_art(mbid, coverid, size=None, entitytype="release"):
     :param entitytype: The type of entity for which to download the cover art.
                        This is either ``release`` or ``release-group``.
     :type entitytype: str
+    :return: The binary image data
+    :type: str
     """
     if isinstance(coverid, int):
         coverid = "%d" % (coverid, )
