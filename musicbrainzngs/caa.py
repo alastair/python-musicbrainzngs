@@ -58,7 +58,10 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
 
     resp = musicbrainz._safe_read(opener, req, None)
 
-    # TODO: Could use response headers here
+    # TODO: The content type declared by the CAA for JSON files is
+    # 'applicaiton/octet-stream'. This is not useful to detect whether the
+    # content is JSON, so default to decoding JSON if no imageid was supplied.
+    # http://tickets.musicbrainz.org/browse/CAA-75
     if imageid:
         # If we asked for an image, return the image
         return resp
