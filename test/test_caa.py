@@ -65,7 +65,7 @@ class CaaTest(unittest.TestCase):
 
         headers = dict(self.opener.headers)
         self.assertTrue("User-agent" in headers)
-        self.assertEqual("caa-test/0.1 python-musicbrainz-ngs/%s" % _version, headers["User-agent"])
+        self.assertEqual("caa-test/0.1 python-musicbrainzngs/%s" % _version, headers["User-agent"])
 
     def test_coverid(self):
         resp = 'some_image'
