@@ -21,6 +21,7 @@ General
 .. autofunction:: set_rate_limit
 .. autofunction:: set_useragent
 .. autofunction:: set_hostname
+.. autofunction:: set_caa_hostname
 
 Getting Data
 ------------
