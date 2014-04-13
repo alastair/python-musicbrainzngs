@@ -55,12 +55,12 @@ The valid includes are listed for each function.
 Cover Art
 ---------
 
-.. autofunction:: get_cover_art_list
-.. autofunction:: get_release_group_cover_art_list
-.. autofunction:: download_cover_art
-.. autofunction:: download_cover_art_front
-.. autofunction:: download_release_group_cover_art_front
-.. autofunction:: download_cover_art_back
+.. autofunction:: get_image_list
+.. autofunction:: get_release_group_image_list
+.. autofunction:: get_image
+.. autofunction:: get_image_front
+.. autofunction:: get_release_group_image_front
+.. autofunction:: get_image_back
 
 
 .. _search_api:

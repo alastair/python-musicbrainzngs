@@ -91,8 +91,8 @@ This library includes a few methods to access data from the `Cover Art Archive
 <https://coverartarchive.org/>`_ which has a `documented API
 documentation <https://musicbrainz.org/doc/Cover_Art_Archive/API>`_
 
-Both :func:`musicbrainzngs.get_cover_art_list` and
-:func:`musicbrainzngs.get_release_group_cover_art_list` return the deserialized
+Both :func:`musicbrainzngs.get_image_list` and
+:func:`musicbrainzngs.get_release_group_image_list` return the deserialized
 cover art listing for a `release
 <https://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease.2F.7Bmbid.7D.2F>`_
 or `release group
@@ -107,8 +107,8 @@ has an approved front image, you could use the following example code::
           print "%s is an approved front image!" % image["thumbnails"]["large"]
           break
 
-To retrieve an image itself, use :func:`musicbrainzngs.download_cover_art`. A
-few convenience functions like :func:`musicbrainzngs.download_cover_art_front`
+To retrieve an image itself, use :func:`musicbrainzngs.get_image`. A
+few convenience functions like :func:`musicbrainzngs.get_image_front`
 are provided to allow easy access to often requested images.
 
 .. warning:: There is no upper bound for the size of images uploaded to the
