@@ -30,7 +30,7 @@ class CaaTest(unittest.TestCase):
         self.assertEqual("http://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
         self.assertEqual(2, len(res))
         self.assertTrue("images" in res)
-        self.assertEquals("foo", res["release"])
+        self.assertEqual("foo", res["release"])
 
     def test_list_none(self):
         """ When CAA gives a 404 error, pass it through."""
