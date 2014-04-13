@@ -1,3 +1,8 @@
+# This file is part of the musicbrainzngs library
+# Copyright (C) Alastair Porter, Wieland Hoffmann, and others
+# This file is distributed under a BSD-2-Clause type license.
+# See the COPYING file for more information.
+
 import json
 
 from musicbrainzngs import compat
