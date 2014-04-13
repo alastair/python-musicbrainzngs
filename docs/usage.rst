@@ -51,6 +51,9 @@ If the credentials provided are wrong and the server returns a status code of
 Getting data
 ------------
 
+Regular MusicBrainz data
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 You can get MusicBrainz entities as a :class:`dict`
 when retrieving them with some form of identifier.
 An example using :func:`musicbrainzngs.get_artist_by_id`::
@@ -80,6 +83,38 @@ with adding `includes` and you filter releases and release_groups::
 .. note:: You can only get at most 25 release groups using this method.
    If you want to fetch all release groups you will have to
    `browse <browsing>`_.
+
+Cover art data
+^^^^^^^^^^^^^^
+
+This library includes a few methods to access data from the `Cover Art Archive
+<https://coverartarchive.org/>`_ which has a `documented API
+documentation <https://musicbrainz.org/doc/Cover_Art_Archive/API>`_
+
+Both :func:`musicbrainzngs.get_image_list` and
+:func:`musicbrainzngs.get_release_group_image_list` return the deserialized
+cover art listing for a `release
+<https://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease.2F.7Bmbid.7D.2F>`_
+or `release group
+<https://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease-group.2F.7Bmbid.7D.2F>`_.
+To find out whether a release
+has an approved front image, you could use the following example code::
+
+  release_id = "46a48e90-819b-4bed-81fa-5ca8aa33fbf3"
+  data = musicbrainzngs.get_cover_art_list("46a48e90-819b-4bed-81fa-5ca8aa33fbf3")
+  for image in data["images"]:
+      if "Front" in image["types"] and image["approved"]:
+          print "%s is an approved front image!" % image["thumbnails"]["large"]
+          break
+
+To retrieve an image itself, use :func:`musicbrainzngs.get_image`. A
+few convenience functions like :func:`musicbrainzngs.get_image_front`
+are provided to allow easy access to often requested images.
+
+.. warning:: There is no upper bound for the size of images uploaded to the
+   Cover Art Archive and downloading an image will return the binary data in
+   memory. Consider using the :py:mod:`tempfile` module or similar
+   techniques to save images to disk as soon as possible.
 
 Searching
 ---------

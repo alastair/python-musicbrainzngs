@@ -21,6 +21,7 @@ General
 .. autofunction:: set_rate_limit
 .. autofunction:: set_useragent
 .. autofunction:: set_hostname
+.. autofunction:: set_caa_hostname
 .. autofunction:: set_parser
 .. autofunction:: set_format
 
@@ -52,6 +53,19 @@ The valid includes are listed for each function.
 
 .. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_TYPES
 .. autodata:: musicbrainzngs.musicbrainz.VALID_RELEASE_STATUSES
+
+.. _caa_api:
+
+Cover Art
+---------
+
+.. autofunction:: get_image_list
+.. autofunction:: get_release_group_image_list
+.. autofunction:: get_image
+.. autofunction:: get_image_front
+.. autofunction:: get_release_group_image_front
+.. autofunction:: get_image_back
+
 
 .. _search_api:
 
