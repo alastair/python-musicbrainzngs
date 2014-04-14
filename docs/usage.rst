@@ -48,10 +48,10 @@ If a method requiring authentication is called without authenticating, a
 If the credentials provided are wrong and the server returns a status code of
 401, a :exc:`musicbrainzngs.AuthenticationError` will be raised.
 
-Getting data
+Getting Data
 ------------
 
-Regular MusicBrainz data
+Regular MusicBrainz Data
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can get MusicBrainz entities as a :class:`dict`
@@ -84,7 +84,7 @@ with adding `includes` and you filter releases and release_groups::
    If you want to fetch all release groups you will have to
    `browse <browsing>`_.
 
-Cover art data
+Cover Art Data
 ^^^^^^^^^^^^^^
 
 This library includes a few methods to access data from the `Cover Art Archive
