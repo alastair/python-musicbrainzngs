@@ -25,6 +25,7 @@ _log = logging.getLogger("musicbrainzngs")
 # turn on DeprecationWarnings below
 simplefilter(action="once", category=DeprecationWarning)
 
+LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 # Constants for validation.
 
@@ -677,12 +678,11 @@ def _do_mb_search(entity, query='', fields={},
 	for the given entity type.
 	"""
 	# Encode the query terms as a Lucene query string.
-	lucene_special = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 	query_parts = []
 	if query:
 		clean_query = util._unicode(query)
 		if fields:
-			clean_query = re.sub(lucene_special, r'\\\1',
+			clean_query = re.sub(LUCENE_SPECIAL, r'\\\1',
 					     clean_query)
 			if strict:
 				query_parts.append('"%s"' % clean_query)
@@ -703,7 +703,7 @@ def _do_mb_search(entity, query='', fields={},
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
-		value = re.sub(lucene_special, r'\\\1', value)
+		value = re.sub(LUCENE_SPECIAL, r'\\\1', value)
 		if value:
 			if strict:
 				query_parts.append('%s:"%s"' % (key, value))
