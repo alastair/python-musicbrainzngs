@@ -12,3 +12,10 @@ class MbXML(unittest.TestCase):
                     b'</ns0:release></ns0:release-list></ns0:metadata>')
         xml = mbxml.make_barcode_request({'trid':'12345'})
         self.assertEqual(expected, xml)
+
+    def test_read_error(self):
+        error = '<?xml version="1.0" encoding="UTF-8"?><error><text>Invalid mbid.</text><text>For usage, please see: http://musicbrainz.org/development/mmd</text></error>'
+        parts = mbxml.get_error_message(error)
+        self.assertEqual(2, len(parts))
+        self.assertEqual("Invalid mbid.", parts[0])
+        self.assertEqual(True, parts[1].startswith("For usage"))
