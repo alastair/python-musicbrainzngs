@@ -45,6 +45,9 @@ VALID_INCLUDES = {
     'annotation': [
 
     ],
+    'instrument': [
+
+    ],
     'label': [
         "releases", # Subqueries
         "discids", "media",
@@ -554,7 +557,7 @@ def set_format(fmt="xml"):
     """Sets the format that should be returned by the Web Service.
     The server currently supports `xml` and `json`.
 
-    This method will set a default parser for the specified type,
+    This method will set a default parser for the specified format,
     but you can modify it with :func:`set_parser`.
 
     .. warning:: The json format used by the server is different from
@@ -582,7 +585,7 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
     whether exceptions should be raised if the client and
     username/password are left unspecified, respectively.
     """
-    global parser_fun 
+    global parser_fun
 
     if args is None:
         args = {}
@@ -782,6 +785,15 @@ def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("artist", id, includes, params)
 
+@_docstring('instrument')
+def get_instrument_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the instrument with the MusicBrainz `id` as a dict with an 'artist' key.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("instrument", includes,
+                                           release_status, release_type)
+    return _do_mb_query("instrument", id, includes, params)
+
 @_docstring('label')
 def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the label with the MusicBrainz `id` as a dict with a 'label' key.
@@ -934,7 +946,7 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format
     `toc` is desired.
 
     If no toc matches in musicbrainz but a :musicbrainz:`CD Stub` does,
-    the CD Stub will be returned. Prevent this from happening by 
+    the CD Stub will be returned. Prevent this from happening by
     passing `cdstubs=False`.
 
     By default only results that match a format that allows discids
