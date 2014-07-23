@@ -29,7 +29,7 @@ LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'recording', 'release', 'release-group', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'recording', 'release', 'release-group', 'series', 'url', 'work']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 TAG_INCLUDES = ["tags", "user-tags"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
@@ -64,6 +64,9 @@ VALID_INCLUDES = {
         "artists", "releases", "discids", "media",
         "artist-credits", "annotation", "aliases"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'series': [
+        "annotation", "aliases"
+    ] + RELATION_INCLUDES,
     'work': [
         "artists", # Subqueries
         "aliases", "annotation"
@@ -101,6 +104,10 @@ VALID_SEARCH_FIELDS = {
     'annotation': [
         'entity', 'name', 'text', 'type'
     ],
+    'area': [
+        'aid', 'area', 'alias', 'begin', 'comment', 'end', 'ended',
+        'iso', 'iso1', 'iso2', 'iso3', 'type'
+    ],
     'artist': [
         'arid', 'artist', 'artistaccent', 'alias', 'begin', 'comment',
         'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type',
@@ -132,6 +139,9 @@ VALID_SEARCH_FIELDS = {
         'primarytype', 'puid', 'quality', 'reid', 'release', 'releaseaccent',
         'rgid', 'script', 'secondarytype', 'status', 'tag', 'tracks',
         'tracksmedium', 'type'
+    ],
+    'series': [
+        'sid', 'series', 'alias', 'comment', 'type'
     ],
     'work': [
         'alias', 'arid', 'artist', 'comment', 'iswc', 'lang', 'tag',
@@ -814,6 +824,13 @@ def get_release_group_by_id(id, includes=[],
                                            release_status, release_type)
     return _do_mb_query("release-group", id, includes, params)
 
+@_docstring('series')
+def get_series_by_id(id, includes=[]):
+    """Get the series with the MusicBrainz `id` as a dict with a 'series' key.
+
+    *Available includes*: {includes}"""
+    return _do_mb_query("series", id, includes)
+
 @_docstring('work')
 def get_work_by_id(id, includes=[]):
     """Get the work with the MusicBrainz `id` as a dict with a 'work' key.
@@ -837,6 +854,13 @@ def search_annotations(query='', limit=None, offset=None, strict=False, **fields
 
     *Available search fields*: {fields}"""
     return _do_mb_search('annotation', query, fields, limit, offset, strict)
+
+@_docstring('area')
+def search_areas(query='', limit=None, offset=None, strict=False, **fields):
+    """Search for areas and return a dict with an 'area-list' key.
+
+    *Available search fields*: {fields}"""
+    return _do_mb_search('area', query, fields, limit, offset, strict)
 
 @_docstring('artist')
 def search_artists(query='', limit=None, offset=None, strict=False, **fields):
@@ -876,6 +900,13 @@ def search_release_groups(query='', limit=None, offset=None,
     *Available search fields*: {fields}"""
     return _do_mb_search('release-group', query, fields, limit, offset, strict)
 
+@_docstring('series')
+def search_series(query='', limit=None, offset=None, strict=False, **fields):
+    """Search for series and return a dict with a 'series-list' key.
+
+    *Available search fields*: {fields}"""
+    return _do_mb_search('series', query, fields, limit, offset, strict)
+
 @_docstring('work')
 def search_works(query='', limit=None, offset=None, strict=False, **fields):
     """Search for works and return a dict with a 'work-list' key.
@@ -886,16 +917,23 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 
 # Lists of entities
 @_docstring('release')
-def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True):
-    """Search for releases with a :musicbrainz:`Disc ID`.
+def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format=None):
+    """Search for releases with a :musicbrainz:`Disc ID` or table of contents.
 
     When a `toc` is provided and no release with the disc ID is found,
     a fuzzy search by the toc is done.
     The `toc` should have to same format as :attr:`discid.Disc.toc_string`.
+    When a `toc` is provided, the format of the discid itself is not
+    checked server-side, so any value may be passed if searching by only
+    `toc` is desired.
 
     If no toc matches in musicbrainz but a :musicbrainz:`CD Stub` does,
     the CD Stub will be returned. Prevent this from happening by 
     passing `cdstubs=False`.
+
+    By default only results that match a format that allows discids
+    (e.g. CD) are included. To include all media formats, pass
+    `media_format='all'`.
 
     The result is a dict with either a 'disc' , a 'cdstub' key
     or a 'release-list' (fuzzy match with TOC).
@@ -909,6 +947,8 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True):
         params["toc"] = toc
     if not cdstubs:
         params["cdstubs"] = "no"
+    if media_format:
+        params["media-format"] = media_format
     return _do_mb_query("discid", id, includes, params)
 
 @_docstring('recording')
