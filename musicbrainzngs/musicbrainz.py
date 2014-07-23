@@ -1117,20 +1117,29 @@ def submit_isrcs(recording_isrcs):
     query = mbxml.make_isrc_request(rec2isrcs)
     return _do_mb_post("recording", query)
 
-def submit_tags(artist_tags={}, recording_tags={}):
+def submit_tags(**kwargs):
     """Submit user tags.
-    Artist or recording parameters are of the form:
+    Takes parameters named e.g. 'artist_tags', 'recording_tags', etc.,
+    and of the form:
     {entity_id1: [tag1, ...], ...}
+
+    The user's tags for each entity will be set to that list, adding or
+    removing tags as necessary. Submitting an empty list for an entity
+    will remove all tags by the user.
     """
-    query = mbxml.make_tag_request(artist_tags, recording_tags)
+    query = mbxml.make_tag_request(**kwargs)
     return _do_mb_post("tag", query)
 
-def submit_ratings(artist_ratings={}, recording_ratings={}):
-    """ Submit user ratings.
-    Artist or recording parameters are of the form:
+def submit_ratings(**kwargs):
+    """Submit user ratings.
+    Takes parameters named e.g. 'artist_ratings', 'recording_ratings', etc.,
+    and of the form:
     {entity_id1: rating, ...}
+
+    Ratings are numbers from 0-100, at intervals of 20 (20 per 'star').
+    Submitting a rating of 0 will remove the user's rating.
     """
-    query = mbxml.make_rating_request(artist_ratings, recording_ratings)
+    query = mbxml.make_rating_request(**kwargs)
     return _do_mb_post("rating", query)
 
 def add_releases_to_collection(collection, releases=[]):

@@ -617,45 +617,34 @@ def make_barcode_request(release2barcode):
 
     return ET.tostring(root, "utf-8")
 
-def make_tag_request(artist2tags, recording2tags):
+def make_tag_request(**kwargs):
     NS = "http://musicbrainz.org/ns/mmd-2.0#"
     root = ET.Element("{%s}metadata" % NS)
-    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-    for rec, tags in recording2tags.items():
-        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-        rec_xml.set("{%s}id" % NS, rec)
-        taglist = ET.SubElement(rec_xml, "{%s}user-tag-list" % NS)
-        for tag in tags:
-            usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
-            name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
-            name_xml.text = tag
-    art_list = ET.SubElement(root, "{%s}artist-list" % NS)
-    for art, tags in artist2tags.items():
-        art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
-        art_xml.set("{%s}id" % NS, art)
-        taglist = ET.SubElement(art_xml, "{%s}user-tag-list" % NS)
-        for tag in tags:
-            usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
-            name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
-            name_xml.text = tag
+    for entity_type in ['artist', 'label', 'place', 'recording', 'release', 'release_group', 'work']:
+        if kwargs.get(entity_type + '_tags'):
+            e_list = ET.SubElement(root, "{%s}%s-list" % (NS, entity_type.replace('_', '-')))
+            for e, tags in kwargs.get(entity_type + '_tags').items():
+                e_xml = ET.SubElement(e_list, "{%s}%s" % (NS, entity_type.replace('_', '-')))
+                e_xml.set("{%s}id" % NS, e)
+                taglist = ET.SubElement(e_xml, "{%s}user-tag-list" % NS)
+                for tag in tags:
+                    usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+                    name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+                    name_xml.text = tag
 
     return ET.tostring(root, "utf-8")
 
-def make_rating_request(artist2rating, recording2rating):
+def make_rating_request(**kwargs):
     NS = "http://musicbrainz.org/ns/mmd-2.0#"
     root = ET.Element("{%s}metadata" % NS)
-    rec_list = ET.SubElement(root, "{%s}recording-list" % NS)
-    for rec, rating in recording2rating.items():
-        rec_xml = ET.SubElement(rec_list, "{%s}recording" % NS)
-        rec_xml.set("{%s}id" % NS, rec)
-        rating_xml = ET.SubElement(rec_xml, "{%s}user-rating" % NS)
-        rating_xml.text = str(rating)
-    art_list = ET.SubElement(root, "{%s}artist-list" % NS)
-    for art, rating in artist2rating.items():
-        art_xml = ET.SubElement(art_list, "{%s}artist" % NS)
-        art_xml.set("{%s}id" % NS, art)
-        rating_xml = ET.SubElement(art_xml, "{%s}user-rating" % NS)
-        rating_xml.text = str(rating)
+    for entity_type in ['artist', 'label', 'recording', 'release_group', 'work']:
+        if kwargs.get(entity_type + '_ratings'):
+            e_list = ET.SubElement(root, "{%s}%s-list" % (NS, entity_type.replace('_', '-')))
+            for e, rating in kwargs.get(entity_type + '_ratings').items():
+                e_xml = ET.SubElement(e_list, "{%s}%s" % (NS, entity_type.replace('_', '-')))
+                e_xml.set("{%s}id" % NS, e)
+                rating_xml = ET.SubElement(e_xml, "{%s}user-rating" % NS)
+                rating_xml.text = str(rating)
 
     return ET.tostring(root, "utf-8")
 
