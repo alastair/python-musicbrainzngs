@@ -1,5 +1,7 @@
 0.6dev:
-
+    * added get_series_by_id(), search_areas(), search_series() (Ian McEwen)
+    * updated options for get_releases_by_discid() to support 'media-format'
+      and discid-less requests (Ian McEwen)
 
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
