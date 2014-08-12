@@ -1125,7 +1125,7 @@ def submit_tags(**kwargs):
 
     The user's tags for each entity will be set to that list, adding or
     removing tags as necessary. Submitting an empty list for an entity
-    will remove all tags by the user.
+    will remove all tags for that entity by the user.
     """
     query = mbxml.make_tag_request(**kwargs)
     return _do_mb_post("tag", query)
