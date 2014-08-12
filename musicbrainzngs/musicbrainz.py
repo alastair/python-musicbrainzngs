@@ -141,7 +141,7 @@ VALID_SEARCH_FIELDS = {
         'tracksmedium', 'type'
     ],
     'series': [
-        'sid', 'series', 'alias', 'comment', 'type'
+        'alias', 'comment', 'sid', 'series', 'type'
     ],
     'work': [
         'alias', 'arid', 'artist', 'comment', 'iswc', 'lang', 'tag',
