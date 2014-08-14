@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import sys
 
 from distutils.core import setup
 from distutils.core import Command
