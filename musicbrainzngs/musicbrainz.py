@@ -59,7 +59,7 @@ VALID_INCLUDES = {
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "puids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+    ] + TAG_INCLUDES + RELATION_INCLUDES,
     'release-group': [
         "artists", "releases", "discids", "media",
         "artist-credits", "annotation", "aliases"

@@ -324,6 +324,8 @@ def parse_release(release):
                  "label-info-list": parse_label_info_list,
                  "medium-list": parse_medium_list,
                  "release-group": parse_release_group,
+                 "tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_annotation,
                  "cover-art-archive": parse_caa,
