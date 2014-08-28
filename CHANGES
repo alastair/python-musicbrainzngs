@@ -1,5 +1,6 @@
 0.6dev:
     * allow submit_ratings() and submit_tags() to submit for all supported entities (Ian McEwen, #145)
+    * allow 'tags' and 'user-tags' includes on releases (Jérémie Detrey, #150)
 
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
