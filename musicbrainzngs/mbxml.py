@@ -123,6 +123,7 @@ def parse_message(message):
                       "place": parse_place,
                       "release": parse_release,
                       "release-group": parse_release_group,
+                      "series": parse_series,
                       "recording": parse_recording,
                       "work": parse_work,
                       "url": parse_url,
@@ -138,6 +139,7 @@ def parse_message(message):
                       "place-list": parse_place_list,
                       "release-list": parse_release_list,
                       "release-group-list": parse_release_group_list,
+                      "series-list": parse_series_list,
                       "recording-list": parse_recording_list,
                       "work-list": parse_work_list,
                       "url-list": parse_url_list,
@@ -407,6 +409,22 @@ def parse_recording(recording):
     result.update(parse_elements(elements, inner_els, recording))
     if "artist-credit" in result:
         result["artist-credit-phrase"] = make_artist_credit(result["artist-credit"])
+
+    return result
+
+def parse_series_list(sl):
+    return [parse_series(s) for s in sl]
+
+def parse_series(series):
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "disambiguation"]
+    inner_els = {"alias-list": parse_alias_list,
+                 "relation-list": parse_relation_list,
+                 "annotation": parse_annotation}
+
+    result.update(parse_attributes(attribs, series))
+    result.update(parse_elements(elements, inner_els, series))
 
     return result
 

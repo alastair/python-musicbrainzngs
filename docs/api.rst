@@ -45,6 +45,7 @@ The valid includes are listed for each function.
 .. autofunction:: get_release_group_by_id
 .. autofunction:: get_release_by_id
 .. autofunction:: get_releases_by_discid
+.. autofunction:: get_series_by_id
 .. autofunction:: get_work_by_id
 .. autofunction:: get_works_by_iswc
 .. autofunction:: get_url_by_id
@@ -94,11 +95,13 @@ You have to use the `offset` parameter to set how many results you have
 already seen so the web service doesn't give you the same results again.
 
 .. autofunction:: search_annotations
+.. autofunction:: search_areas
 .. autofunction:: search_artists
 .. autofunction:: search_labels
 .. autofunction:: search_recordings
 .. autofunction:: search_release_groups
 .. autofunction:: search_releases
+.. autofunction:: search_series
 
 Browsing
 --------
