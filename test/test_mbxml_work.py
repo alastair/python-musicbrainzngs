@@ -26,6 +26,12 @@ class GetWorkTest(unittest.TestCase):
         self.assertEqual(a1["alias"], 'Symphony No. 3, Op. 55 "Eroica"')
         self.assertEqual(a1["sort-name"], 'Symphony No. 3, Op. 55 "Eroica"')
 
+        work_attrs = res["work"]["attribute-list"]
+        self.assertEqual(len(work_attrs), 1)
+        attr = work_attrs[0]
+        self.assertEqual(attr["type"], "Key")
+        self.assertEqual(attr["attribute"], "E-flat major")
+
         res = _common.open_and_parse_test_data(self.datadir, "3d7c7cd2-da79-37f4-98b8-ccfb1a4ac6c4-aliases.xml")
         aliases = res["work"]["alias-list"]
         self.assertEqual(len(aliases), 10)
@@ -33,4 +39,3 @@ class GetWorkTest(unittest.TestCase):
         a0 = aliases[0]
         self.assertEqual(a0["alias"], "Adagio from Symphony No. 2 in E minor, Op. 27")
         self.assertEqual(a0["sort-name"], "Adagio from Symphony No. 2 in E minor, Op. 27")
-

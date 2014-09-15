@@ -447,12 +447,27 @@ def parse_work(work):
                  "alias-list": parse_alias_list,
                  "iswc-list": parse_element_list,
                  "relation-list": parse_relation_list,
-                 "annotation": parse_response_message}
+                 "annotation": parse_response_message,
+                 "attribute-list": parse_work_attribute_list
+    }
 
     result.update(parse_attributes(attribs, work))
     result.update(parse_elements(elements, inner_els, work))
 
     return result
+
+def parse_work_attribute_list(wal):
+    return [parse_work_attribute(wa) for wa in wal]
+
+def parse_work_attribute(wa):
+    result = {}
+    attribs = ["type"]
+
+    result.update(parse_attributes(attribs, wa))
+    result["attribute"] = wa.text
+
+    return result
+
 
 def parse_url_list(ul):
     return [parse_url(u) for u in ul]
