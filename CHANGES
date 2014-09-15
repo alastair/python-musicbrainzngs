@@ -1,9 +1,9 @@
 0.6dev:
     * allow submit_ratings() and submit_tags() to submit for all supported entities (Ian McEwen, #145)
     * allow 'tags' and 'user-tags' includes on releases (Jérémie Detrey, #150)
-    * added get_series_by_id(), search_areas(), search_series() (Ian McEwen)
+    * added get_series_by_id(), search_areas(), search_series() (Ian McEwen, #145)
     * updated options for get_releases_by_discid() to support 'media-format'
-      and discid-less requests (Ian McEwen)
+      and discid-less requests (Ian McEwen, #145)
 
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
