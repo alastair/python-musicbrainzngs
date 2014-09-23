@@ -11,6 +11,7 @@ import socket
 import hashlib
 import locale
 import sys
+import json
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 from warnings import warn, simplefilter
@@ -553,18 +554,23 @@ def set_format(fmt="xml"):
     """Sets the format that should be returned by the Web Service.
     The server currently supports `xml` and `json`.
 
-    When you set the format to anything different from the default,
-    you need to provide your own parser with :func:`set_parser`.
+    This method will set a default parser for the specified type,
+    but you can modify it with :func:`set_parser`.
 
     .. warning:: The json format used by the server is different from
         the json format returned by the `musicbrainzngs` internal parser
-        when using the `xml` format!
+        when using the `xml` format! This format may change at any time.
     """
     global ws_format
-    if fmt not in ["xml", "json"]:
-        raise ValueError("invalid format: %s" % fmt)
-    else:
+    if fmt == "xml":
         ws_format = fmt
+        set_parser() # set to default
+    elif fmt == "json":
+        ws_format = fmt
+        warn("The json format is non-official and may change at any time")
+        set_parser(json.loads)
+    else:
+        raise ValueError("invalid format: %s" % fmt)
 
 
 @_rate_limit
