@@ -646,16 +646,16 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 
     return parser_fun(resp)
 
-def _is_auth_required(entity, includes):
-	""" Some calls require authentication. This returns
-	True if a call does, False otherwise
-	"""
-	if "user-tags" in includes or "user-ratings" in includes:
-		return True
-	elif entity.startswith("collection"):
-		return True
-	else:
-		return False
+def _is_auth_required(entity, id, includes):
+    """ Some calls require authentication. This returns
+    True if a call does, False otherwise
+    """
+    if "user-tags" in includes or "user-ratings" in includes:
+        return True
+    elif entity.startswith("collection") and not id:
+        return True
+    else:
+        return False
 
 def _do_mb_query(entity, id, includes=[], params={}):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
@@ -669,7 +669,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	if not isinstance(includes, list):
 		includes = [includes]
 	_check_includes(entity, includes)
-	auth_required = _is_auth_required(entity, includes)
+	auth_required = _is_auth_required(entity, id, includes)
 	args = dict(params)
 	if len(includes) > 0:
 		inc = " ".join(includes)
