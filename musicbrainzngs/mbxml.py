@@ -299,7 +299,7 @@ def parse_relation_list(rl):
 def parse_relation(relation):
     result = {}
     attribs = ["type", "type-id"]
-    elements = ["target", "direction", "begin", "end", "ended"]
+    elements = ["target", "direction", "begin", "end", "ended", "ordering-key"]
     inner_els = {"area": parse_area,
                  "artist": parse_artist,
                  "label": parse_label,
