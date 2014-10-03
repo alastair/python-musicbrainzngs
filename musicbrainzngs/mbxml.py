@@ -307,6 +307,7 @@ def parse_relation(relation):
                  "recording": parse_recording,
                  "release": parse_release,
                  "release-group": parse_release_group,
+                 "series": parse_series,
                  "attribute-list": parse_element_list,
                  "work": parse_work,
                  "target": parse_relation_target
