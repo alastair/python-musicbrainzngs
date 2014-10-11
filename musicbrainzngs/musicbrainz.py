@@ -683,7 +683,10 @@ def _do_mb_query(entity, id, includes=[], params={}):
 
 	# Build the endpoint components.
 	path = '%s/%s' % (entity, id)
-	return _mb_request(path, 'GET', auth_required, args=args)
+	try:
+		return _mb_request(path, 'GET', auth_required, args=args)
+	except AuthenticationError:
+		return _mb_request(path, 'GET', True, args=args)
 
 def _do_mb_search(entity, query='', fields={},
 		  limit=None, offset=None, strict=False):
