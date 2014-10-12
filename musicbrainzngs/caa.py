@@ -3,6 +3,12 @@
 # This file is distributed under a BSD-2-Clause type license.
 # See the COPYING file for more information.
 
+__all__ = [
+    'set_caa_hostname', 'get_image_list', 'get_release_group_image_list',
+    'get_release_group_image_front', 'get_image_front', 'get_image_back',
+    'get_image'
+    ]
+
 import json
 
 from musicbrainzngs import compat
