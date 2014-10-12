@@ -36,6 +36,22 @@ NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2",
           "http://musicbrainz.org/ns/ext#-2.0": "ext"}
 _log = logging.getLogger("musicbrainzngs")
 
+def get_error_message(error):
+    """ Given an error XML message from the webservice containing
+    <error><text>x</text><text>y</text></error>, return a list
+    of [x, y]"""
+    try:
+        tree = util.bytes_to_elementtree(error)
+        root = tree.getroot()
+        errors = []
+        if root.tag == "error":
+            for ch in root:
+                if ch.tag == "text":
+                    errors.append(ch.text)
+        return errors
+    except ET.ParseError:
+        return None
+
 def make_artist_credit(artists):
     names = []
     for artist in artists:
