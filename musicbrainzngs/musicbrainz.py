@@ -157,62 +157,75 @@ VALID_SEARCH_FIELDS = {
 # Exceptions.
 
 class MusicBrainzError(Exception):
-	"""Base class for all exceptions related to MusicBrainz."""
-	pass
+    """Base class for all exceptions related to MusicBrainz."""
+    pass
 
 class UsageError(MusicBrainzError):
-	"""Error related to misuse of the module API."""
-	pass
+    """Error related to misuse of the module API."""
+    pass
 
 class InvalidSearchFieldError(UsageError):
-	pass
+    pass
 
 class InvalidIncludeError(UsageError):
-	def __init__(self, msg='Invalid Includes', reason=None):
-		super(InvalidIncludeError, self).__init__(self)
-		self.msg = msg
-		self.reason = reason
+    def __init__(self, msg='Invalid Includes', reason=None):
+        super(InvalidIncludeError, self).__init__(self)
+        self.msg = msg
+        self.reason = reason
 
-	def __str__(self):
-		return self.msg
+    def __str__(self):
+        return self.msg
 
 class InvalidFilterError(UsageError):
-	def __init__(self, msg='Invalid Includes', reason=None):
-		super(InvalidFilterError, self).__init__(self)
-		self.msg = msg
-		self.reason = reason
+    def __init__(self, msg='Invalid Includes', reason=None):
+        super(InvalidFilterError, self).__init__(self)
+        self.msg = msg
+        self.reason = reason
 
-	def __str__(self):
-		return self.msg
+    def __str__(self):
+        return self.msg
 
 class WebServiceError(MusicBrainzError):
-	"""Error related to MusicBrainz API requests."""
-	def __init__(self, message=None, cause=None):
-		"""Pass ``cause`` if this exception was caused by another
-		exception.
-		"""
-		self.message = message
-		self.cause = cause
+    """Error related to MusicBrainz API requests."""
+    def __init__(self, message=None, cause=None):
+        """Pass ``cause`` if this exception was caused by another
+        exception.
+        """
+        self.message = message
+        self.cause = cause
 
-	def __str__(self):
-		if self.message:
-			msg = "%s, " % self.message
-		else:
-			msg = ""
-		msg += "caused by: %s" % str(self.cause)
-		return msg
+    def __str__(self):
+        if self.message:
+            msg = "%s, " % self.message
+        else:
+            msg = ""
+        msg += "caused by: %s" % str(self.cause)
+        return msg
 
 class NetworkError(WebServiceError):
-	"""Problem communicating with the MB server."""
-	pass
+    """Problem communicating with the MB server."""
+    pass
 
 class ResponseError(WebServiceError):
-	"""Bad response sent by the MB server."""
-	pass
+    """Bad response sent by the MB server."""
+    def __init__(self, **args):
+        super(ResponseError, self).__init__(**args)
+        if self.cause and isinstance(self.cause, compat.HTTPError)
+            body = self.cause.read()
+            if body and ws_format == "xml":
+                error_parts = mbxml.get_error_message(body)
+                if error_parts:
+                    self.message = " ".join(error_parts)
+            elif body and ws_format == "json":
+                try:
+                    decoded = json.loads(body)
+                    self.message = decoded.get("error", "")
+                except ValueError:
+                    self.message = "Error parsing error message! Message is: %s" % (body)
 
 class AuthenticationError(WebServiceError):
-	"""Received a HTTP 401 response while accessing a protected resource."""
-	pass
+    """Received a HTTP 401 response while accessing a protected resource."""
+    pass
 
 
 # Helpers for validating and formatting allowed sets.
