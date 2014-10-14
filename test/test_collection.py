@@ -17,11 +17,12 @@ class CollectionTest(unittest.TestCase):
 
     def test_auth_required(self):
         """ Check the auth_required method in isolation """
-        ar = musicbrainzngs.musicbrainz._is_auth_required("collection", "", [])
-        self.assertEqual(True, ar)
+        ar = musicbrainzngs.musicbrainz._get_auth_type("collection", "", [])
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_YES, ar)
 
-        ar = musicbrainzngs.musicbrainz._is_auth_required("collection", "foo/releases", [])
-        self.assertEqual(False, ar)
+        ar = musicbrainzngs.musicbrainz._get_auth_type("collection",
+                "foo/releases", [])
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_IFSET, ar)
 
     def test_my_collections(self):
         """ If you ask for your collections, you need to have
@@ -30,13 +31,15 @@ class CollectionTest(unittest.TestCase):
         old_mb_request = musicbrainzngs.musicbrainz._mb_request
 
         params = {}
-        def local_mb_request(path, method='GET', auth_required=False,
+        def local_mb_request(path, method='GET',
+                auth_required=musicbrainzngs.musicbrainz.AUTH_NO,
                 client_required=False, args=None, data=None, body=None):
             params["auth_required"] = auth_required
 
         musicbrainzngs.musicbrainz._mb_request = local_mb_request
         musicbrainzngs.get_collections()
-        self.assertEqual(True, params["auth_required"])
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_YES,
+            params["auth_required"])
 
         musicbrainzngs.musicbrainz._mb_request = old_mb_request
 
@@ -47,13 +50,20 @@ class CollectionTest(unittest.TestCase):
         old_mb_request = musicbrainzngs.musicbrainz._mb_request
 
         params = {}
-        def local_mb_request(path, method='GET', auth_required=False,
+        def local_mb_request(path, method='GET',
+                auth_required=musicbrainzngs.musicbrainz.AUTH_NO,
                 client_required=False, args=None, data=None, body=None):
             params["auth_required"] = auth_required
 
         musicbrainzngs.musicbrainz._mb_request = local_mb_request
-        musicbrainzngs.get_releases_in_collection("17905fdb-102d-40f0-91d3-eabcabc64fd3")
-        self.assertEqual(False, params["auth_required"])
+        musicbrainzngs.get_releases_in_collection(
+                "17905fdb-102d-40f0-91d3-eabcabc64fd3")
+        # If _get_auth_type() returns AUTH_IFSET, then _mb_request()
+        # should send the user credentials if they are set by auth()
+        # i.e., We use whether auth() has been executed to determine if
+        # the requested collection belongs to the user or not.
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_IFSET,
+                params["auth_required"])
 
         musicbrainzngs.musicbrainz._mb_request = old_mb_request
 
