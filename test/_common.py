@@ -70,6 +70,6 @@ def open_and_parse_test_data(datadir, filename):
     :returns: The parsed representation of the XML files content
 
     """
-    fn = join(datadir, filename)
-    res = musicbrainzngs.mbxml.parse_message(open(fn))
+    with open(join(datadir, filename)) as msg:
+        res = musicbrainzngs.mbxml.parse_message(msg)
     return res
