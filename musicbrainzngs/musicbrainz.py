@@ -14,7 +14,7 @@ import sys
 import json
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
-from warnings import warn, simplefilter
+from warnings import warn
 
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
@@ -22,9 +22,6 @@ from musicbrainzngs import compat
 
 _version = "0.6dev"
 _log = logging.getLogger("musicbrainzngs")
-
-# turn on DeprecationWarnings below
-simplefilter(action="once", category=DeprecationWarning)
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
@@ -718,7 +715,7 @@ def _do_mb_search(entity, query='', fields={},
 		elif key == "puid":
 			warn("PUID support was removed from server\n"
 			     "the 'puid' field is ignored",
-			     DeprecationWarning, stacklevel=2)
+			     Warning, stacklevel=2)
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
@@ -976,7 +973,7 @@ def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
     (not available on server)"""
     warn("Echoprints were never introduced\n"
          "and will not be found (404)",
-         DeprecationWarning, stacklevel=2)
+         Warning, stacklevel=2)
     raise ResponseError(cause=compat.HTTPError(
                                             None, 404, "Not Found", None, None))
 
@@ -987,7 +984,7 @@ def get_recordings_by_puid(puid, includes=[], release_status=[],
     (not available on server)"""
     warn("PUID support was removed from the server\n"
          "and no PUIDs will be found (404)",
-         DeprecationWarning, stacklevel=2)
+         Warning, stacklevel=2)
     raise ResponseError(cause=compat.HTTPError(
                                             None, 404, "Not Found", None, None))
 
@@ -1152,7 +1149,7 @@ def submit_puids(recording_puids):
     """
     warn("PUID support was dropped at the server\n"
          "nothing will be submitted",
-         DeprecationWarning, stacklevel=2)
+         Warning, stacklevel=2)
     return {'message': {'text': 'OK'}}
 
 def submit_echoprints(recording_echoprints):
@@ -1161,7 +1158,7 @@ def submit_echoprints(recording_echoprints):
     """
     warn("Echoprints were never introduced\n"
          "nothing will be submitted",
-         DeprecationWarning, stacklevel=2)
+         Warning, stacklevel=2)
     return {'message': {'text': 'OK'}}
 
 def submit_isrcs(recording_isrcs):
