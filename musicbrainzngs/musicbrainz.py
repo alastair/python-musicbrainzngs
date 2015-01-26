@@ -73,10 +73,10 @@ VALID_INCLUDES = {
         "aliases", "annotation"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
-    'discid': [
+    'discid': [ # Discid should be the same as release
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "puids", "isrcs",
-        "recording-level-rels", "work-level-rels"
+        "recording-level-rels", "work-level-rels", "annotation", "aliases"
     ] + RELATION_INCLUDES,
     'isrc': ["artists", "releases", "puids", "isrcs"],
     'iswc': ["artists"],
@@ -931,7 +931,7 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 
 
 # Lists of entities
-@_docstring('release')
+@_docstring('discid')
 def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format=None):
     """Search for releases with a :musicbrainz:`Disc ID` or table of contents.
 
