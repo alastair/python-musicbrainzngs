@@ -150,6 +150,11 @@ VALID_SEARCH_FIELDS = {
     ],
 }
 
+# Constants
+class AUTH_YES: pass
+class AUTH_NO: pass
+class AUTH_IFSET: pass
+
 
 # Exceptions.
 
@@ -574,13 +579,13 @@ def set_format(fmt="xml"):
 
 
 @_rate_limit
-def _mb_request(path, method='GET', auth_required=False, client_required=False,
-                args=None, data=None, body=None):
+def _mb_request(path, method='GET', auth_required=AUTH_NO,
+                client_required=False, args=None, data=None, body=None):
     """Makes a request for the specified `path` (endpoint) on /ws/2 on
     the globally-specified hostname. Parses the responses and returns
     the resulting object.  `auth_required` and `client_required` control
-    whether exceptions should be raised if the client and
-    username/password are left unspecified, respectively.
+    whether exceptions should be raised if the username/password and
+    client are left unspecified, respectively.
     """
     global parser_fun
 
@@ -626,11 +631,19 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
     handlers = [httpHandler]
 
     # Add credentials if required.
-    if auth_required:
+    add_auth = False
+    if auth_required == AUTH_YES:
         _log.debug("Auth required for %s" % url)
         if not user:
             raise UsageError("authorization required; "
                              "use auth(user, pass) first")
+        add_auth = True
+
+    if auth_required == AUTH_IFSET and user:
+        _log.debug("Using auth for %s because user and pass is set" % url)
+        add_auth = True
+
+    if add_auth:
         passwordMgr = _RedirectPasswordMgr()
         authHandler = _DigestAuthHandler(passwordMgr)
         authHandler.add_password("musicbrainz.org", (), user, password)
@@ -652,16 +665,19 @@ def _mb_request(path, method='GET', auth_required=False, client_required=False,
 
     return parser_fun(resp)
 
-def _is_auth_required(entity, id, includes):
+def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
     True if a call does, False otherwise
     """
     if "user-tags" in includes or "user-ratings" in includes:
-        return True
-    elif entity.startswith("collection") and not id:
-        return True
+        return AUTH_YES
+    elif entity.startswith("collection"):
+        if not id:
+            return AUTH_YES
+        else:
+            return AUTH_IFSET
     else:
-        return False
+        return AUTH_NO
 
 def _do_mb_query(entity, id, includes=[], params={}):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
@@ -675,7 +691,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	if not isinstance(includes, list):
 		includes = [includes]
 	_check_includes(entity, includes)
-	auth_required = _is_auth_required(entity, id, includes)
+	auth_required = _get_auth_type(entity, id, includes)
 	args = dict(params)
 	if len(includes) > 0:
 		inc = " ".join(includes)
@@ -746,18 +762,18 @@ def _do_mb_search(entity, query='', fields={},
 def _do_mb_delete(path):
 	"""Send a DELETE request for the specified object.
 	"""
-	return _mb_request(path, 'DELETE', True, True)
+	return _mb_request(path, 'DELETE', AUTH_YES, True)
 
 def _do_mb_put(path):
 	"""Send a PUT request for the specified object.
 	"""
-	return _mb_request(path, 'PUT', True, True)
+	return _mb_request(path, 'PUT', AUTH_YES, True)
 
 def _do_mb_post(path, body):
 	"""Perform a single POST call for an endpoint with a specified
 	request body.
 	"""
-	return _mb_request(path, 'POST', True, True, body=body)
+	return _mb_request(path, 'POST', AUTH_YES, True, body=body)
 
 
 # The main interface!

@@ -33,7 +33,8 @@ class ArgumentTest(unittest.TestCase):
 
     def test_missing_auth(self):
         self.assertRaises(musicbrainzngs.UsageError,
-                musicbrainz._mb_request, path="foo", auth_required=True)
+                musicbrainz._mb_request, path="foo",
+                auth_required=musicbrainz.AUTH_YES)
 
     def test_missing_useragent(self):
         musicbrainz._useragent = ""
