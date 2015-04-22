@@ -8,7 +8,7 @@ For more information on the musicbrainz webservice see `<http://wiki.musicbrainz
 Usage
 *****
 
-::
+.. code:: python
 
     # Import the module
     import musicbrainzngs
