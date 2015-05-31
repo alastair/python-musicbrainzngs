@@ -129,3 +129,15 @@ class GetReleaseTest(unittest.TestCase):
         trackswithvideo = res["release"]["medium-list"][2]["track-list"]
         map(lambda t: self.assertTrue("video" not in ["recording"]), trackswithoutvideo)
         map(lambda t: self.assertEqual("true", t["recording"]["video"]), trackswithvideo)
+
+    def testPregapTrack(self):
+        """
+        Test that the pregap track is parsed if it exists.
+        """
+        res = _common.open_and_parse_test_data(self.datadir, "8eb2b179-643d-3507-b64c-29fcc6745156-recordings.xml")
+        medium = res["release"]["medium-list"][0]
+        self.assertTrue("pregap" in medium)
+        self.assertEqual("0", medium["pregap"]["position"])
+        self.assertEqual("0", medium["pregap"]["number"])
+        self.assertEqual("35000", medium["pregap"]["length"])
+        self.assertEqual("[untitled]", medium["pregap"]["recording"]["title"])
