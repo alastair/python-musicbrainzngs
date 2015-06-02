@@ -376,6 +376,7 @@ def parse_medium(medium):
     result = {}
     elements = ["position", "format", "title"]
     inner_els = {"disc-list": parse_disc_list,
+                 "pregap": parse_track,
                  "track-list": parse_track_list}
 
     result.update(parse_elements(elements, inner_els, medium))
