@@ -6,6 +6,7 @@
       and discid-less requests (Ian McEwen, #145)
     * parse work attributes (Wieland Hoffmann, #151)
     * added various methods to retrieve data from the Cover Art Archive (Alastair Porter & Wieland Hoffmann, #115)
+    * added support for pregap tracks (Rui Gonçalves, #154 & #165)
 
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
