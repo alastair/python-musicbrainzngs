@@ -27,7 +27,7 @@ LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'recording', 'release', 'release-group', 'series', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 TAG_INCLUDES = ["tags", "user-tags"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
@@ -51,6 +51,7 @@ VALID_INCLUDES = {
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
+    'event' : ["aliases"] + RELATION_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits", "isrcs",
@@ -825,6 +826,15 @@ def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
     params = _check_filter_and_make_params("place", includes,
                                            release_status, release_type)
     return _do_mb_query("place", id, includes, params)
+
+@_docstring('event')
+def get_event_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the event with the MusicBrainz `id` as a dict with an 'event' key.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("event", includes,
+                                           release_status, release_type)
+    return _do_mb_query("event", id, includes, params)
 
 @_docstring('recording')
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):

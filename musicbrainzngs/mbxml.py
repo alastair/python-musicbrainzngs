@@ -137,6 +137,7 @@ def parse_message(message):
                       "artist": parse_artist,
                       "label": parse_label,
                       "place": parse_place,
+                      "event": parse_event,
                       "release": parse_release,
                       "release-group": parse_release_group,
                       "series": parse_series,
@@ -153,6 +154,7 @@ def parse_message(message):
                       "artist-list": parse_artist_list,
                       "label-list": parse_label_list,
                       "place-list": parse_place_list,
+                      "event-list": parse_event_list,
                       "release-list": parse_release_list,
                       "release-group-list": parse_release_group_list,
                       "series-list": parse_series_list,
@@ -273,6 +275,20 @@ def parse_place(place):
 
     result.update(parse_attributes(attribs, place))
     result.update(parse_elements(elements, inner_els, place))
+
+    return result
+
+def parse_event_list(el):
+    return [parse_event(e) for e in el]
+
+def parse_event(event):
+    result = {}
+    attribs = ["id", "type"]
+    elements = ["name", "time"]
+    inner_els = {"life-span": parse_lifespan}
+
+    result.update(parse_attributes(attribs, event))
+    result.update(parse_elements(elements, inner_els, event))
 
     return result
 
