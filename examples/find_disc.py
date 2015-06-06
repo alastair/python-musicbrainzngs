@@ -35,9 +35,9 @@ def show_offsets(offset_list):
     offsets = None
     for offset in offset_list:
         if offsets == None:
-            offsets = offset
+            offsets = str(offset)
         else:
-            offsets += " " + offset
+            offsets += " " + str(offset)
     print("\toffsets: {}".format(offsets))
 
 if __name__ == '__main__':

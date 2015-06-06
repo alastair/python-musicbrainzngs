@@ -526,7 +526,7 @@ def parse_cdstub(cdstub):
     return result
 
 def parse_offset_list(ol):
-    return [o.text for o in ol]
+    return [int(o.text) for o in ol]
 
 def parse_release_list(rl):
     result = []
