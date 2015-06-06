@@ -505,7 +505,9 @@ def parse_disc(disc):
     result = {}
     attribs = ["id"]
     elements = ["sectors"]
-    inner_els = {"release-list": parse_release_list}
+    inner_els = {"release-list": parse_release_list,
+                 "offset-list": parse_offset_list
+    }
 
     result.update(parse_attributes(attribs, disc))
     result.update(parse_elements(elements, inner_els, disc))
@@ -522,6 +524,9 @@ def parse_cdstub(cdstub):
     result.update(parse_elements(elements, inner_els, cdstub))
 
     return result
+
+def parse_offset_list(ol):
+    return [o.text for o in ol]
 
 def parse_release_list(rl):
     result = []
