@@ -285,7 +285,8 @@ def parse_event(event):
     result = {}
     attribs = ["id", "type"]
     elements = ["name", "time"]
-    inner_els = {"life-span": parse_lifespan}
+    inner_els = {"life-span": parse_lifespan,
+                 "relation-list": parse_relation_list}
 
     result.update(parse_attributes(attribs, event))
     result.update(parse_elements(elements, inner_els, event))
@@ -337,6 +338,7 @@ def parse_relation(relation):
                  "artist": parse_artist,
                  "label": parse_label,
                  "place": parse_place,
+                 "event": parse_event,
                  "recording": parse_recording,
                  "release": parse_release,
                  "release-group": parse_release_group,
