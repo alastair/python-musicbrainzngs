@@ -42,6 +42,11 @@ class UrlTest(unittest.TestCase):
                 musicbrainzngs.get_artist_by_id,
                 artistid, ["release-groups"], release_status=["official"])
 
+    def testGetEvent(self):
+        event_id = "a4a0927c-8ad7-48dd-883c-7126cc0b9c6b"
+        musicbrainzngs.get_event_by_id(event_id)
+        self.assertEqual("http://musicbrainz.org/ws/2/event/a4a0927c-8ad7-48dd-883c-7126cc0b9c6b", self.opener.get_url())
+
     def testGetLabel(self):
         label_id = "aab2e720-bdd2-4565-afc2-460743585f16"
         musicbrainzngs.get_label_by_id(label_id)
