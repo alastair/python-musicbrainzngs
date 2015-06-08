@@ -89,6 +89,7 @@ VALID_BROWSE_INCLUDES = {
     'recordings': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'labels': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'artists': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'events': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'urls': RELATION_INCLUDES,
     'release-groups': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES
 }
@@ -911,6 +912,13 @@ def search_artists(query='', limit=None, offset=None, strict=False, **fields):
     *Available search fields*: {fields}"""
     return _do_mb_search('artist', query, fields, limit, offset, strict)
 
+@_docstring('event')
+def search_events(query='', limit=None, offset=None, strict=False, **fields):
+    """Search for events and return a dict with an 'event-list' key.
+
+    *Available search fields*: {fields}"""
+    return _do_mb_search('event', query, fields, limit, offset, strict)
+
 @_docstring('label')
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
     """Search for labels and return a dict with a 'label-list' key.
@@ -1066,6 +1074,20 @@ def browse_artists(recording=None, release=None, release_group=None,
               "release": release,
               "release-group": release_group}
     return _browse_impl("artist", includes, valid_includes,
+                        limit, offset, params)
+
+@_docstring('events', browse=True)
+def browse_events(area=None, artist=None, place=None,
+                   includes=[], limit=None, offset=None):
+    """Get all events linked to a area, a artist or a place.
+    You need to give one MusicBrainz ID.
+
+    *Available includes*: {includes}"""
+    valid_includes = VALID_BROWSE_INCLUDES['events']
+    params = {"area": area,
+              "artist": artist,
+              "place": place}
+    return _browse_impl("event", includes, valid_includes,
                         limit, offset, params)
 
 @_docstring('labels', browse=True)
