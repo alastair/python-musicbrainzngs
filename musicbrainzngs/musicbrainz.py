@@ -968,8 +968,8 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format
 
     The result is a dict with either a 'disc' , a 'cdstub' key
     or a 'release-list' (fuzzy match with TOC).
-    A 'disc' has a 'release-list' and a 'cdstub' key has direct 'artist'
-    and 'title' keys.
+    A 'disc' has an 'offset-count', an 'offset-list' and a 'release-list'.
+    A 'cdstub' key has direct 'artist' and 'title' keys.
 
     *Available includes*: {includes}"""
     params = _check_filter_and_make_params("discid", includes, release_status=[],
