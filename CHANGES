@@ -7,6 +7,8 @@
     * parse work attributes (Wieland Hoffmann, #151)
     * added various methods to retrieve data from the Cover Art Archive (Alastair Porter & Wieland Hoffmann, #115)
     * added support for pregap tracks (Rui Gonçalves, #154 & #165)
+    * return 'offset-list' and 'offset-count' for get_releases_by_discid()
+      (Johannes Dewender, #169)
 
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
