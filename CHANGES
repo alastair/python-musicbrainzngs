@@ -1,9 +1,9 @@
 0.6dev:
     * allow submit_ratings() and submit_tags() to submit for all supported entities (Ian McEwen, #145)
     * allow 'tags' and 'user-tags' includes on releases (Jérémie Detrey, #150)
-    * added get_series_by_id(), search_areas(), search_series() (Ian McEwen, #145)
+    * added get_series_by_id(), search_areas(), search_series() (Ian McEwen, #148)
     * updated options for get_releases_by_discid() to support 'media-format'
-      and discid-less requests (Ian McEwen, #145)
+      and discid-less requests (Ian McEwen, #148)
     * parse work attributes (Wieland Hoffmann, #151)
     * added various methods to retrieve data from the Cover Art Archive (Alastair Porter & Wieland Hoffmann, #115)
     * added support for pregap tracks (Rui Gonçalves, #154 & #165)
