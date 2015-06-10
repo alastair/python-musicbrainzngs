@@ -60,8 +60,10 @@ if __name__ == '__main__':
     if result.get('disc'):
         print("disc:")
         print("\tSectors: {}".format(result['disc']['sectors']))
-        show_offsets(result['disc']['offset-list'])
-        print("\tTracks: {}".format(result['disc']['offset-count']))
+        # offset-list only available starting with musicbrainzngs 0.6
+        if "offset-list" in result['disc']:
+            show_offsets(result['disc']['offset-list'])
+            print("\tTracks: {}".format(result['disc']['offset-count']))
         for release in result['disc']['release-list']:
             show_release_details(release)
             print("")
