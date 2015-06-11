@@ -310,8 +310,9 @@ def set_useragent(app, version, contact=None):
     _log.debug("set user-agent to %s" % _useragent)
 
 def set_hostname(new_hostname):
-    """Set the base hostname for MusicBrainz webservice requests.
-    Defaults to 'musicbrainz.org'."""
+    """Set the hostname for MusicBrainz webservice requests.
+    Defaults to 'musicbrainz.org'.
+    You can also include a port: 'localhost:8000'."""
     global hostname
     hostname = new_hostname
 
