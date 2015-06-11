@@ -176,8 +176,9 @@ def parse_collection_list(cl):
 
 def parse_collection(collection):
     result = {}
-    attribs = ["id"]
+    attribs = ["id", "type", "entity-type"]
     elements = ["name", "editor"]
+    # TODO: add event-list:
     inner_els = {"release-list": parse_release_list}
     result.update(parse_attributes(attribs, collection))
     result.update(parse_elements(elements, inner_els, collection))
