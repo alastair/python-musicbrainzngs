@@ -208,3 +208,9 @@ An example using :func:`musicbrainzngs.submit_barcodes` looks like this::
   musicbrainzngs.submit_barcodes(barcodes)
 
 See :ref:`api_submitting` in the API for other possibilites.
+
+More Examples
+-------------
+
+You can find some examples for using `musicbrainzngs` in the
+`examples directory <https://github.com/alastair/python-musicbrainzngs/tree/master/examples>`_.
