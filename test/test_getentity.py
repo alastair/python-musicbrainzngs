@@ -47,6 +47,10 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.get_event_by_id(event_id)
         self.assertEqual("http://musicbrainz.org/ws/2/event/a4a0927c-8ad7-48dd-883c-7126cc0b9c6b", self.opener.get_url())
 
+        # one include
+        musicbrainzngs.get_event_by_id(event_id, ["artist-rels"])
+        self.assertEqual("http://musicbrainz.org/ws/2/event/a4a0927c-8ad7-48dd-883c-7126cc0b9c6b?inc=artist-rels", self.opener.get_url())
+
     def testGetLabel(self):
         label_id = "aab2e720-bdd2-4565-afc2-460743585f16"
         musicbrainzngs.get_label_by_id(label_id)
