@@ -88,7 +88,7 @@ def get_image_list(releaseid):
     <http://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease.2F.7Bmbid.7D.2F>`_
     returned by the Cover Art Archive API.
 
-    If an error occurs then a musicbrainz.ResponseError will
+    If an error occurs then a :class:`~musicbrainzngs.ResponseError` will
     be raised with one of the following HTTP codes:
 
     * 400: `Releaseid` is not a valid UUID
@@ -105,7 +105,7 @@ def get_release_group_image_list(releasegroupid):
     <http://musicbrainz.org/doc/Cover_Art_Archive/API#.2Frelease-group.2F.7Bmbid.7D.2F>`_
     returned by the Cover Art Archive API.
 
-    If an error occurs then a musicbrainz.ResponseError will
+    If an error occurs then a :class:`~musicbrainzngs.ResponseError` will
     be raised with one of the following HTTP codes:
 
     * 400: `Releaseid` is not a valid UUID
@@ -147,8 +147,8 @@ def get_image(mbid, coverid, size=None, entitytype="release"):
     If `size` is not specified, download the largest copy present, which can be
     very large.
 
-    If an error occurs then a musicbrainz.ResponseError will be raised with one
-    of the following HTTP codes:
+    If an error occurs then a :class:`~musicbrainzngs.ResponseError`
+    will be raised with one of the following HTTP codes:
 
     * 400: `Releaseid` is not a valid UUID or `coverid` is invalid
     * 404: No release exists with an MBID of `releaseid`
