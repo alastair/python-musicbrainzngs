@@ -44,13 +44,17 @@ These bindings were written by `Alastair Porter <http://github.com/alastair>`_.
 Contributions have been made by:
 
 * `Adrian Sampson <https://github.com/sampsyo>`_
+* `Corey Farwell <https://github.com/frewsxcv>`_
 * `Galen Hazelwood <https://github.com/galenhz>`_
 * `Greg Ward <https://github.com/gward>`_
 * `Ian McEwen <https://github.com/ianmcorvidae>`_
+* `Jérémie Detrey <https://github.com/jdetrey>`_
 * `Johannes Dewender <https://github.com/JonnyJD>`_
 * `Michael Marineau <https://github.com/marineam>`_
 * `Patrick Speiser <https://github.com/doskir>`_
+* `Pavan Chander <https://github.com/navap>`_
 * `Paul Bailey <https://github.com/paulbailey>`_
+* `Rui Gonçalves <https://github.com/ruippeixotog>`_
 * `Ryan Helinski <https://github.com/rlhelinski>`_
 * `Sam Doshi <https://github.com/samdoshi>`_
 * `Simon Chopin <https://github.com/laarmen>`_
