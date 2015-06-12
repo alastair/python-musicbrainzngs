@@ -832,6 +832,9 @@ def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
 def get_event_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the event with the MusicBrainz `id` as a dict with an 'event' key.
 
+    The event dict has the following keys:
+    `id`, `type`, `name`, `time`, `disambiguation` and `life-span`.
+
     *Available includes*: {includes}"""
     params = _check_filter_and_make_params("event", includes,
                                            release_status, release_type)

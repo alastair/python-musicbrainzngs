@@ -58,6 +58,7 @@ Contributions have been made by:
 * `Rui Gonçalves <https://github.com/ruippeixotog>`_
 * `Ryan Helinski <https://github.com/rlhelinski>`_
 * `Sam Doshi <https://github.com/samdoshi>`_
+* `Shadab Zafar <https://github.com/dufferzafar>`_
 * `Simon Chopin <https://github.com/laarmen>`_
 * `Thomas Vander Stichele <https://github.com/thomasvs>`_
 * `Wieland Hoffmann <https://github.com/mineo>`_
