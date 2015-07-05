@@ -46,7 +46,8 @@ class test(Command):
 setup(
     name="musicbrainzngs",
     version=musicbrainz._version,
-    description="python bindings for musicbrainz NGS webservice",
+    description="Python bindings for the MusicBrainz NGS and"
+    " the Cover Art Archive webservices",
     author="Alastair Porter",
     author_email="alastair@porter.net.nz",
     url="https://python-musicbrainzngs.readthedocs.org/",
