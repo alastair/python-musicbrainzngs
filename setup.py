@@ -55,7 +55,7 @@ setup(
     cmdclass={'test': test },
     license='BSD 2-clause',
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: BSD License",
         "License :: OSI Approved :: ISC License (ISCL)",
         "Intended Audience :: Developers",
