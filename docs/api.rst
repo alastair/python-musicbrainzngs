@@ -102,6 +102,7 @@ already seen so the web service doesn't give you the same results again.
 .. autofunction:: search_release_groups
 .. autofunction:: search_releases
 .. autofunction:: search_series
+.. autofunction:: search_works
 
 Browsing
 --------
