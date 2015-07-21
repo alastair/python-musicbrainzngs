@@ -33,6 +33,15 @@ def show_release_details(rel):
         if info.get('catalog-number'):
             print("\t\tcat#: {}".format(info['catalog-number']))
 
+def show_offsets(offset_list):
+    offsets = None
+    for offset in offset_list:
+        if offsets == None:
+            offsets = str(offset)
+        else:
+            offsets += " " + str(offset)
+    print("\toffsets: {}".format(offsets))
+
 if __name__ == '__main__':
     args = sys.argv[1:]
     if len(args) != 1:
@@ -53,6 +62,10 @@ if __name__ == '__main__':
     if result.get('disc'):
         print("disc:")
         print("\tSectors: {}".format(result['disc']['sectors']))
+        # offset-list only available starting with musicbrainzngs 0.6
+        if "offset-list" in result['disc']:
+            show_offsets(result['disc']['offset-list'])
+            print("\tTracks: {}".format(result['disc']['offset-count']))
         for release in result['disc']['release-list']:
             show_release_details(release)
             print("")
