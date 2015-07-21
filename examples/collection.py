@@ -28,6 +28,7 @@ from __future__ import unicode_literals
 import musicbrainzngs
 import getpass
 from optparse import OptionParser
+import sys
 
 try:
     user_input = raw_input
@@ -46,23 +47,60 @@ def show_collections():
     result = musicbrainzngs.get_collections()
     print('All collections for this user:')
     for collection in result['collection-list']:
-        print('{name} by {editor} ({mbid})'.format(
+        # entity-type only available starting with musicbrainzngs 0.6
+        if "entity-type" in collection:
+            print('"{name}" by {editor} ({cat}, {entity})\n\t{mbid}'.format(
+                name=collection['name'], editor=collection['editor'],
+                cat=collection['type'], entity=collection['entity-type'],
+                mbid=collection['id']
+            ))
+        else:
+            print('"{name}" by {editor}\n\t{mbid}'.format(
+                name=collection['name'], editor=collection['editor'],
+                mbid=collection['id']
+            ))
+
+def show_collection(collection_id):
+    """Show a given collection.
+    """
+    try:
+        result = musicbrainzngs.get_releases_in_collection(
+                                                collection_id, limit=0)
+        collection = result['collection']
+    except musicbrainzngs.ResponseError:
+        # TODO
+        #result = musicbrainzngs.get_events_in_collection(
+        #        collection_id, limit=0)
+        sys.exit("This is a collection of events which is not yet implemented")
+    # entity-type only available starting with musicbrainzngs 0.6
+    if "entity-type" in collection:
+        print('{mbid}\n"{name}" by {editor} ({cat}, {entity})'.format(
+            name=collection['name'], editor=collection['editor'],
+            cat=collection['type'], entity=collection['entity-type'],
+            mbid=collection['id']
+        ))
+    else:
+        print('{mbid}\n"{name}" by {editor}'.format(
             name=collection['name'], editor=collection['editor'],
             mbid=collection['id']
         ))
-
-def show_collection(collection_id):
-    """Show the list of releases in a given collection.
-    """
-    result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25)
-    collection = result['collection']
-    release_list = collection['release-list']
+    print('')
     # release count is only available starting with musicbrainzngs 0.5
     if "release-count" in collection:
-        release_count = collection['release-count']
-        print('{} releases in {}:'.format(release_count, collection['name']))
-    else:
-        print('Releases in {}:'.format(collection['name']))
+        print('{} releases'.format(collection['release-count']))
+    if "event-count" in collection:
+        print('{} events'.format(collection['release-count']))
+    print('')
+
+    if "release-list" in collection:
+        show_releases(collection)
+    if "event-list" in collection:
+        pass # TODO
+
+def show_releases(collection):
+    result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25)
+    release_list = result['collection']['release-list']
+    print('Releases:')
     releases_fetched = 0
     while len(release_list) > 0:
         print("")
