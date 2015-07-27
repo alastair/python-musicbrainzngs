@@ -35,7 +35,7 @@ Contribute
 
 If you want to contribute to this repository, please read `the
 contribution guidelines
-<https://github.com/alastair/python-musicbrainzngs/CONTRIBUTING.md>`_ first.
+<https://github.com/alastair/python-musicbrainzngs/blob/master/CONTRIBUTING.md>`_ first.
 
 
 Authors
