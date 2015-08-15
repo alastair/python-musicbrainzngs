@@ -137,6 +137,7 @@ def parse_message(message):
                       "artist": parse_artist,
                       "label": parse_label,
                       "place": parse_place,
+                      "event": parse_event,
                       "release": parse_release,
                       "release-group": parse_release_group,
                       "series": parse_series,
@@ -153,6 +154,7 @@ def parse_message(message):
                       "artist-list": parse_artist_list,
                       "label-list": parse_label_list,
                       "place-list": parse_place_list,
+                      "event-list": parse_event_list,
                       "release-list": parse_release_list,
                       "release-group-list": parse_release_group_list,
                       "series-list": parse_series_list,
@@ -176,8 +178,9 @@ def parse_collection_list(cl):
 
 def parse_collection(collection):
     result = {}
-    attribs = ["id"]
+    attribs = ["id", "type", "entity-type"]
     elements = ["name", "editor"]
+    # TODO: add event-list:
     inner_els = {"release-list": parse_release_list}
     result.update(parse_attributes(attribs, collection))
     result.update(parse_elements(elements, inner_els, collection))
@@ -275,6 +278,21 @@ def parse_place(place):
 
     return result
 
+def parse_event_list(el):
+    return [parse_event(e) for e in el]
+
+def parse_event(event):
+    result = {}
+    attribs = ["id", "type"]
+    elements = ["name", "time"]
+    inner_els = {"life-span": parse_lifespan,
+                 "relation-list": parse_relation_list}
+
+    result.update(parse_attributes(attribs, event))
+    result.update(parse_elements(elements, inner_els, event))
+
+    return result
+
 def parse_label_list(ll):
     return [parse_label(l) for l in ll]
 
@@ -320,6 +338,7 @@ def parse_relation(relation):
                  "artist": parse_artist,
                  "label": parse_label,
                  "place": parse_place,
+                 "event": parse_event,
                  "recording": parse_recording,
                  "release": parse_release,
                  "release-group": parse_release_group,
@@ -505,7 +524,9 @@ def parse_disc(disc):
     result = {}
     attribs = ["id"]
     elements = ["sectors"]
-    inner_els = {"release-list": parse_release_list}
+    inner_els = {"release-list": parse_release_list,
+                 "offset-list": parse_offset_list
+    }
 
     result.update(parse_attributes(attribs, disc))
     result.update(parse_elements(elements, inner_els, disc))
@@ -522,6 +543,9 @@ def parse_cdstub(cdstub):
     result.update(parse_elements(elements, inner_els, cdstub))
 
     return result
+
+def parse_offset_list(ol):
+    return [int(o.text) for o in ol]
 
 def parse_release_list(rl):
     result = []

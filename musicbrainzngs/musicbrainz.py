@@ -27,7 +27,7 @@ LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'recording', 'release', 'release-group', 'series', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 TAG_INCLUDES = ["tags", "user-tags"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
@@ -51,6 +51,7 @@ VALID_INCLUDES = {
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
+    'event' : ["aliases"] + RELATION_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits", "isrcs",
@@ -88,6 +89,7 @@ VALID_BROWSE_INCLUDES = {
     'recordings': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'labels': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'artists': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'events': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'urls': RELATION_INCLUDES,
     'release-groups': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES
 }
@@ -826,6 +828,18 @@ def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("place", id, includes, params)
 
+@_docstring('event')
+def get_event_by_id(id, includes=[], release_status=[], release_type=[]):
+    """Get the event with the MusicBrainz `id` as a dict with an 'event' key.
+
+    The event dict has the following keys:
+    `id`, `type`, `name`, `time`, `disambiguation` and `life-span`.
+
+    *Available includes*: {includes}"""
+    params = _check_filter_and_make_params("event", includes,
+                                           release_status, release_type)
+    return _do_mb_query("event", id, includes, params)
+
 @_docstring('recording')
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the recording with the MusicBrainz `id` as a dict
@@ -901,6 +915,13 @@ def search_artists(query='', limit=None, offset=None, strict=False, **fields):
     *Available search fields*: {fields}"""
     return _do_mb_search('artist', query, fields, limit, offset, strict)
 
+@_docstring('event')
+def search_events(query='', limit=None, offset=None, strict=False, **fields):
+    """Search for events and return a dict with an 'event-list' key.
+
+    *Available search fields*: {fields}"""
+    return _do_mb_search('event', query, fields, limit, offset, strict)
+
 @_docstring('label')
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
     """Search for labels and return a dict with a 'label-list' key.
@@ -969,8 +990,8 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format
 
     The result is a dict with either a 'disc' , a 'cdstub' key
     or a 'release-list' (fuzzy match with TOC).
-    A 'disc' has a 'release-list' and a 'cdstub' key has direct 'artist'
-    and 'title' keys.
+    A 'disc' has an 'offset-count', an 'offset-list' and a 'release-list'.
+    A 'cdstub' key has direct 'artist' and 'title' keys.
 
     *Available includes*: {includes}"""
     params = _check_filter_and_make_params("discid", includes, release_status=[],
@@ -1056,6 +1077,20 @@ def browse_artists(recording=None, release=None, release_group=None,
               "release": release,
               "release-group": release_group}
     return _browse_impl("artist", includes, valid_includes,
+                        limit, offset, params)
+
+@_docstring('events', browse=True)
+def browse_events(area=None, artist=None, place=None,
+                   includes=[], limit=None, offset=None):
+    """Get all events linked to a area, a artist or a place.
+    You need to give one MusicBrainz ID.
+
+    *Available includes*: {includes}"""
+    valid_includes = VALID_BROWSE_INCLUDES['events']
+    params = {"area": area,
+              "artist": artist,
+              "place": place}
+    return _browse_impl("event", includes, valid_includes,
                         limit, offset, params)
 
 @_docstring('labels', browse=True)

@@ -38,6 +38,7 @@ The valid includes are listed for each function.
 
 .. autofunction:: get_area_by_id
 .. autofunction:: get_artist_by_id
+.. autofunction:: get_event_by_id
 .. autofunction:: get_label_by_id
 .. autofunction:: get_place_by_id
 .. autofunction:: get_recording_by_id
@@ -97,11 +98,13 @@ already seen so the web service doesn't give you the same results again.
 .. autofunction:: search_annotations
 .. autofunction:: search_areas
 .. autofunction:: search_artists
+.. autofunction:: search_events
 .. autofunction:: search_labels
 .. autofunction:: search_recordings
 .. autofunction:: search_release_groups
 .. autofunction:: search_releases
 .. autofunction:: search_series
+.. autofunction:: search_works
 
 Browsing
 --------
@@ -118,6 +121,7 @@ an `offset` to see the results you haven't seen yet.
 You have to provide exactly one MusicBrainz ID to these functions.
 
 .. autofunction:: browse_artists
+.. autofunction:: browse_events
 .. autofunction:: browse_labels
 .. autofunction:: browse_recordings
 .. autofunction:: browse_release_groups
