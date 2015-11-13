@@ -135,6 +135,7 @@ def parse_message(message):
     result = {}
     valid_elements = {"area": parse_area,
                       "artist": parse_artist,
+                      "instrument": parse_instrument,
                       "label": parse_label,
                       "place": parse_place,
                       "event": parse_event,
@@ -293,6 +294,16 @@ def parse_event(event):
 
     return result
 
+def parse_instrument(instrument):
+    result = {}
+    attribs = ["id", "type"]
+    elements = ["name", "description"]
+    inner_els = {"relation-list": parse_relation_list}
+    result.update(parse_attributes(attribs, instrument))
+    result.update(parse_elements(elements, inner_els, instrument))
+
+    return result
+
 def parse_label_list(ll):
     return [parse_label(l) for l in ll]
 
@@ -336,6 +347,7 @@ def parse_relation(relation):
     elements = ["target", "direction", "begin", "end", "ended", "ordering-key"]
     inner_els = {"area": parse_area,
                  "artist": parse_artist,
+                 "instrument": parse_instrument,
                  "label": parse_label,
                  "place": parse_place,
                  "event": parse_event,
