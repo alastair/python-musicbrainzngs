@@ -42,9 +42,8 @@ VALID_INCLUDES = {
     'annotation': [
 
     ],
-    'instrument': [
-
-    ] + RELATION_INCLUDES,
+    'instrument': ["aliases", "annotation"
+    ] + RELATION_INCLUDES + TAG_INCLUDES,
     'label': [
         "releases", # Subqueries
         "discids", "media",

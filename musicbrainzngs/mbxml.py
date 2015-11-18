@@ -156,6 +156,7 @@ def parse_message(message):
                       "label-list": parse_label_list,
                       "place-list": parse_place_list,
                       "event-list": parse_event_list,
+                      "instrument-list": parse_instrument_list,
                       "release-list": parse_release_list,
                       "release-group-list": parse_release_group_list,
                       "series-list": parse_series_list,
@@ -296,9 +297,12 @@ def parse_event(event):
 
 def parse_instrument(instrument):
     result = {}
-    attribs = ["id", "type"]
+    attribs = ["id", "type", "ext:score"]
     elements = ["name", "description"]
-    inner_els = {"relation-list": parse_relation_list}
+    inner_els = {"relation-list": parse_relation_list,
+                 "tag-list": parse_tag_list,
+                 "alias-list": parse_alias_list,
+                 "annotation": parse_annotation}
     result.update(parse_attributes(attribs, instrument))
     result.update(parse_elements(elements, inner_els, instrument))
 
@@ -559,6 +563,12 @@ def parse_cdstub(cdstub):
 
 def parse_offset_list(ol):
     return [int(o.text) for o in ol]
+
+def parse_instrument_list(rl):
+    result = []
+    for r in rl:
+        result.append(parse_instrument(r))
+    return result
 
 def parse_release_list(rl):
     result = []
