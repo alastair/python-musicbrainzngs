@@ -298,7 +298,7 @@ def parse_event(event):
 def parse_instrument(instrument):
     result = {}
     attribs = ["id", "type", "ext:score"]
-    elements = ["name", "description"]
+    elements = ["name", "description", "disambiguation"]
     inner_els = {"relation-list": parse_relation_list,
                  "tag-list": parse_tag_list,
                  "alias-list": parse_alias_list,

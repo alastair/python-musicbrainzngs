@@ -10,29 +10,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from test import _common
 import musicbrainzngs
 
-class UrlTest(unittest.TestCase):
-    def setUp(self):
-        self.opener = _common.FakeOpener("<response/>")
-        musicbrainzngs.compat.build_opener = lambda *args: self.opener
-
-        musicbrainzngs.set_useragent("test", "1")
-        musicbrainzngs.set_rate_limit(False)
-
-    def testGetInstrument(self):
-        # Tags
-        musicbrainzngs.get_instrument_by_id("")
-
-        # some rels
-
-        # alias, annotation
-
-        # Ratings are used on almost all other entites but instrument
-        try:
-            musicbrainzngs.get_instrument_by_id("", includes=["ratings"])
-            self.assertFalse()
-        except musicbrainzngs.InvalidIncludeError:
-            pass
-
 class GetInstrumentTest(unittest.TestCase):
     def setUp(self):
         self.datadir = os.path.join(os.path.dirname(__file__), "data", "instrument")
@@ -95,3 +72,7 @@ class GetInstrumentTest(unittest.TestCase):
         self.assertEqual(rels[1]["instrument"]["id"], "ad09a4ed-d1b6-47c3-ac85-acb531244a4d")
         self.assertTrue(rels[1]["instrument"]["name"].startswith(b"kemen\xc3\xa7e".decode("utf-8")))
 
+    def testDisambiguation(self):
+        res = _common.open_and_parse_test_data(self.datadir, "dabdeb41-560f-4d84-aa6a-cf22349326fe.xml")
+        inst = res["instrument"]
+        self.assertEqual(inst["disambiguation"], "lute")
