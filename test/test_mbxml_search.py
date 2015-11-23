@@ -9,6 +9,8 @@ from musicbrainzngs import mbxml
 from test import _common
 
 
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
 class UrlTest(unittest.TestCase):
     """ Test that the correct URL is generated when a search query is made """
 
@@ -45,7 +47,7 @@ class UrlTest(unittest.TestCase):
 
 class SearchArtistTest(unittest.TestCase):
     def testFields(self):
-        fn = os.path.join(os.path.dirname(__file__), "data", "search-artist.xml")
+        fn = os.path.join(DATA_DIR, "search-artist.xml")
         with open(fn) as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["artist-list"]))
@@ -58,7 +60,7 @@ class SearchArtistTest(unittest.TestCase):
 
 class SearchReleaseTest(unittest.TestCase):
     def testFields(self):
-        fn = os.path.join(os.path.dirname(__file__), "data", "search-release.xml")
+        fn = os.path.join(DATA_DIR, "search-release.xml")
         with open(fn) as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["release-list"]))
@@ -68,7 +70,7 @@ class SearchReleaseTest(unittest.TestCase):
 
 class SearchReleaseGroupTest(unittest.TestCase):
     def testFields(self):
-        fn = os.path.join(os.path.dirname(__file__), "data", "search-release-group.xml")
+        fn = os.path.join(DATA_DIR, "search-release-group.xml")
         with open(fn) as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["release-group-list"]))
@@ -78,7 +80,7 @@ class SearchReleaseGroupTest(unittest.TestCase):
 
 class SearchWorkTest(unittest.TestCase):
     def testFields(self):
-        fn = os.path.join(os.path.dirname(__file__), "data", "search-work.xml")
+        fn = os.path.join(DATA_DIR, "search-work.xml")
         with open(fn) as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["work-list"]))
@@ -88,7 +90,7 @@ class SearchWorkTest(unittest.TestCase):
 
 class SearchLabelTest(unittest.TestCase):
     def testFields(self):
-        fn = os.path.join(os.path.dirname(__file__), "data", "search-label.xml")
+        fn = os.path.join(DATA_DIR, "search-label.xml")
         with open(fn) as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(1, len(res["label-list"]))
@@ -98,10 +100,22 @@ class SearchLabelTest(unittest.TestCase):
 
 class SearchRecordingTest(unittest.TestCase):
     def testFields(self):
-        fn = os.path.join(os.path.dirname(__file__), "data", "search-recording.xml")
+        fn = os.path.join(DATA_DIR, "search-recording.xml")
         with open(fn) as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["recording-list"]))
         self.assertEqual(1258, res["recording-count"])
         one = res["recording-list"][0]
         self.assertEqual("100", one["ext:score"])
+
+class SearchInstrumentTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(DATA_DIR, "search-instrument.xml")
+        with open(fn) as msg:
+            res = mbxml.parse_message(msg)
+        self.assertEqual(23, len(res["instrument-list"]))
+        self.assertEqual(23, res["instrument-count"])
+        one = res["instrument-list"][0]
+        self.assertEqual("100", one["ext:score"])
+        end = res["instrument-list"][-1]
+        self.assertEqual("29", end["ext:score"])

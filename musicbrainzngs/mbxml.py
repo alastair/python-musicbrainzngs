@@ -135,6 +135,7 @@ def parse_message(message):
     result = {}
     valid_elements = {"area": parse_area,
                       "artist": parse_artist,
+                      "instrument": parse_instrument,
                       "label": parse_label,
                       "place": parse_place,
                       "event": parse_event,
@@ -155,6 +156,7 @@ def parse_message(message):
                       "label-list": parse_label_list,
                       "place-list": parse_place_list,
                       "event-list": parse_event_list,
+                      "instrument-list": parse_instrument_list,
                       "release-list": parse_release_list,
                       "release-group-list": parse_release_group_list,
                       "series-list": parse_series_list,
@@ -293,6 +295,19 @@ def parse_event(event):
 
     return result
 
+def parse_instrument(instrument):
+    result = {}
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "description", "disambiguation"]
+    inner_els = {"relation-list": parse_relation_list,
+                 "tag-list": parse_tag_list,
+                 "alias-list": parse_alias_list,
+                 "annotation": parse_annotation}
+    result.update(parse_attributes(attribs, instrument))
+    result.update(parse_elements(elements, inner_els, instrument))
+
+    return result
+
 def parse_label_list(ll):
     return [parse_label(l) for l in ll]
 
@@ -336,6 +351,7 @@ def parse_relation(relation):
     elements = ["target", "direction", "begin", "end", "ended", "ordering-key"]
     inner_els = {"area": parse_area,
                  "artist": parse_artist,
+                 "instrument": parse_instrument,
                  "label": parse_label,
                  "place": parse_place,
                  "event": parse_event,
@@ -547,6 +563,12 @@ def parse_cdstub(cdstub):
 
 def parse_offset_list(ol):
     return [int(o.text) for o in ol]
+
+def parse_instrument_list(rl):
+    result = []
+    for r in rl:
+        result.append(parse_instrument(r))
+    return result
 
 def parse_release_list(rl):
     result = []

@@ -115,3 +115,25 @@ class UrlTest(unittest.TestCase):
         self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?cdstubs=no&toc=toc", self.opener.get_url())
 
 
+    def testGetInstrument(self):
+
+        musicbrainzngs.get_instrument_by_id("6505f98c-f698-4406-8bf4-8ca43d05c36f")
+        self.assertEqual("http://musicbrainz.org/ws/2/instrument/6505f98c-f698-4406-8bf4-8ca43d05c36f", self.opener.get_url())
+
+        # Tags
+        musicbrainzngs.get_instrument_by_id("6505f98c-f698-4406-8bf4-8ca43d05c36f", includes="tags")
+        self.assertEqual("http://musicbrainz.org/ws/2/instrument/6505f98c-f698-4406-8bf4-8ca43d05c36f?inc=tags", self.opener.get_url())
+
+        # some rels
+        musicbrainzngs.get_instrument_by_id("6505f98c-f698-4406-8bf4-8ca43d05c36f", includes=["instrument-rels", "url-rels"])
+        self.assertEqual("http://musicbrainz.org/ws/2/instrument/6505f98c-f698-4406-8bf4-8ca43d05c36f?inc=instrument-rels+url-rels", self.opener.get_url())
+
+        # alias, annotation
+        musicbrainzngs.get_instrument_by_id("d00cec5f-f9bc-4235-a54f-6639a02d4e4c", includes=["aliases", "annotation"])
+        self.assertEqual("http://musicbrainz.org/ws/2/instrument/d00cec5f-f9bc-4235-a54f-6639a02d4e4c?inc=aliases+annotation", self.opener.get_url())
+
+        # Ratings are used on almost all other entites but instrument
+        self.assertRaises(musicbrainzngs.UsageError,
+                musicbrainzngs.get_instrument_by_id,
+                "dabdeb41-560f-4d84-aa6a-cf22349326fe", includes=["ratings"])
+

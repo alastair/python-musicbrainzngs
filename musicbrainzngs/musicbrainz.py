@@ -27,7 +27,7 @@ LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 # Constants for validation.
 
-RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work']
+RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work', 'instrument']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
 TAG_INCLUDES = ["tags", "user-tags"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
@@ -42,9 +42,8 @@ VALID_INCLUDES = {
     'annotation': [
 
     ],
-    'instrument': [
-
-    ],
+    'instrument': ["aliases", "annotation"
+    ] + RELATION_INCLUDES + TAG_INCLUDES,
     'label': [
         "releases", # Subqueries
         "discids", "media",
@@ -921,6 +920,13 @@ def search_events(query='', limit=None, offset=None, strict=False, **fields):
 
     *Available search fields*: {fields}"""
     return _do_mb_search('event', query, fields, limit, offset, strict)
+
+@_docstring('instrument')
+def search_instruments(query='', limit=None, offset=None, strict=False, **fields):
+    """Search for instruments and return a dict with a 'instrument-list' key.
+
+    *Available search fields*: {fields}"""
+    return _do_mb_search('instrument', query, fields, limit, offset, strict)
 
 @_docstring('label')
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
