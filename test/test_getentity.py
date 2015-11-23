@@ -133,9 +133,7 @@ class UrlTest(unittest.TestCase):
         self.assertEqual("http://musicbrainz.org/ws/2/instrument/d00cec5f-f9bc-4235-a54f-6639a02d4e4c?inc=aliases+annotation", self.opener.get_url())
 
         # Ratings are used on almost all other entites but instrument
-        try:
-            musicbrainzngs.get_instrument_by_id("dabdeb41-560f-4d84-aa6a-cf22349326fe", includes=["ratings"])
-            self.assertFalse("Should not be able to include ratings")
-        except musicbrainzngs.InvalidIncludeError:
-            pass
+        self.assertRaises(musicbrainzngs.UsageError,
+                musicbrainzngs.get_instrument_by_id,
+                "dabdeb41-560f-4d84-aa6a-cf22349326fe", includes=["ratings"])
 
