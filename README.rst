@@ -22,8 +22,8 @@ Usage
     # at http://wiki.musicbrainz.org/XML_Web_Service/Rate_Limiting )
     musicbrainzngs.set_useragent("Example music app", "0.1", "http://example.com/music")
 
-    # If you are connecting to a development server
-    musicbrainzngs.set_hostname("echoprint.musicbrainz.org")
+    # If you are connecting to a different server
+    musicbrainzngs.set_hostname("beta.musicbrainz.org")
 
 See the ``query.py`` file for more examples.
 
