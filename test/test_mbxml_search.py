@@ -25,13 +25,17 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.search_artists("Dynamo Go")
         self.assertEqual("http://musicbrainz.org/ws/2/artist/?query=Dynamo+Go", self.opener.get_url())
 
-    def testSearchWork(self):
-        musicbrainzngs.search_works("Fountain City")
-        self.assertEqual("http://musicbrainz.org/ws/2/work/?query=Fountain+City", self.opener.get_url())
+    def testSearchEvent(self):
+        musicbrainzngs.search_events("woodstock")
+        self.assertEqual("http://musicbrainz.org/ws/2/event/?query=woodstock", self.opener.get_url())
 
     def testSearchLabel(self):
         musicbrainzngs.search_labels("Waysafe")
         self.assertEqual("http://musicbrainz.org/ws/2/label/?query=Waysafe", self.opener.get_url())
+
+    def testSearchPlace(self):
+        musicbrainzngs.search_places("Fillmore")
+        self.assertEqual("http://musicbrainz.org/ws/2/place/?query=Fillmore", self.opener.get_url())
 
     def testSearchRelease(self):
         musicbrainzngs.search_releases("Affordable Pop Music")
@@ -44,6 +48,11 @@ class UrlTest(unittest.TestCase):
     def testSearchRecording(self):
         musicbrainzngs.search_recordings("Thief of Hearts")
         self.assertEqual("http://musicbrainz.org/ws/2/recording/?query=Thief+of+Hearts", self.opener.get_url())
+
+    def testSearchWork(self):
+        musicbrainzngs.search_works("Fountain City")
+        self.assertEqual("http://musicbrainz.org/ws/2/work/?query=Fountain+City", self.opener.get_url())
+
 
 class SearchArtistTest(unittest.TestCase):
     def testFields(self):
@@ -119,3 +128,28 @@ class SearchInstrumentTest(unittest.TestCase):
         self.assertEqual("100", one["ext:score"])
         end = res["instrument-list"][-1]
         self.assertEqual("29", end["ext:score"])
+
+class SearchPlaceTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(DATA_DIR, "search-place.xml")
+        with open(fn) as msg:
+            res = mbxml.parse_message(msg)
+        self.assertEqual(14, res["place-count"])
+        self.assertEqual(14, len(res["place-list"]))
+        one = res["place-list"][0]
+        self.assertEqual("100", one["ext:score"])
+        two = res["place-list"][1]
+        self.assertEqual("63", two["ext:score"])
+        self.assertEqual("Southampton", two["disambiguation"])
+
+class SearchEventTest(unittest.TestCase):
+    def testFields(self):
+        fn = os.path.join(DATA_DIR, "search-event.xml")
+        with open(fn) as msg:
+            res = mbxml.parse_message(msg)
+        self.assertEqual(3, res["event-count"])
+        self.assertEqual(3, len(res["event-list"]))
+        one = res["event-list"][0]
+        self.assertEqual("100", one["ext:score"])
+        two = res["event-list"][1]
+        self.assertEqual(1, len(two["place-relation-list"]))
