@@ -1235,11 +1235,17 @@ def submit_tags(**kwargs):
     Takes parameters named e.g. 'artist_tags', 'recording_tags', etc.,
     and of the form:
     {entity_id1: [tag1, ...], ...}
+    If you only have one tag for an entity you can use a string instead
+    of a list.
 
     The user's tags for each entity will be set to that list, adding or
     removing tags as necessary. Submitting an empty list for an entity
     will remove all tags for that entity by the user.
     """
+    for k, v in kwargs.items():
+        for id, tags in v.items():
+            kwargs[k][id] = tags if isinstance(tags, list) else [tags]
+
     query = mbxml.make_tag_request(**kwargs)
     return _do_mb_post("tag", query)
 
