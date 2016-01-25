@@ -1054,6 +1054,7 @@ def get_works_by_iswc(iswc, includes=[]):
 
 
 def _browse_impl(entity, includes, valid_includes, limit, offset, params, release_status=[], release_type=[]):
+    includes = includes if isinstance(includes, list) else [includes]
     _check_includes_impl(includes, valid_includes)
     p = {}
     for k,v in params.items():
