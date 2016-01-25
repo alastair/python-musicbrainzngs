@@ -262,21 +262,27 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
         params["type"] = "|".join(release_type)
     return params
 
-def _docstring(entity, browse=False):
+def _docstring_get(entity):
+    includes = list(VALID_INCLUDES.get(entity, []))
+    return _docstring_impl("includes", includes)
+
+def _docstring_browse(entity):
+    includes = list(VALID_BROWSE_INCLUDES.get(entity, []))
+    return _docstring_impl("includes", includes)
+
+def _docstring_search(entity):
+    search_fields = list(VALID_SEARCH_FIELDS.get(entity, []))
+    return _docstring_impl("fields", search_fields)
+
+def _docstring_impl(name, values):
     def _decorator(func):
-        if browse:
-            includes = list(VALID_BROWSE_INCLUDES.get(entity, []))
-        else:
-            includes = list(VALID_INCLUDES.get(entity, []))
         # puids are allowed so nothing breaks, but not documented
-        if "puids" in includes: includes.remove("puids")
-        includes = ", ".join(includes)
+        s = values
+        if "puids" in values: values.remove("puids")
+        vstr = ", ".join(values)
+        args = {name: vstr}
         if func.__doc__:
-            search_fields = list(VALID_SEARCH_FIELDS.get(entity, []))
-            # puid is allowed so nothing breaks, but not documented
-            if "puid" in search_fields: search_fields.remove("puid")
-            func.__doc__ = func.__doc__.format(includes=includes,
-                    fields=", ".join(search_fields))
+            func.__doc__ = func.__doc__.format(**args)
         return func
 
     return _decorator
@@ -782,7 +788,7 @@ def _do_mb_post(path, body):
 
 # Single entity by ID
 
-@_docstring('area')
+@_docstring_get("area")
 def get_area_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the area with the MusicBrainz `id` as a dict with an 'area' key.
 
@@ -791,7 +797,7 @@ def get_area_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("area", id, includes, params)
 
-@_docstring('artist')
+@_docstring_get("artist")
 def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the artist with the MusicBrainz `id` as a dict with an 'artist' key.
 
@@ -800,7 +806,7 @@ def get_artist_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("artist", id, includes, params)
 
-@_docstring('instrument')
+@_docstring_get("instrument")
 def get_instrument_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the instrument with the MusicBrainz `id` as a dict with an 'artist' key.
 
@@ -809,7 +815,7 @@ def get_instrument_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("instrument", id, includes, params)
 
-@_docstring('label')
+@_docstring_get("label")
 def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the label with the MusicBrainz `id` as a dict with a 'label' key.
 
@@ -818,7 +824,7 @@ def get_label_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("label", id, includes, params)
 
-@_docstring('place')
+@_docstring_get("place")
 def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the place with the MusicBrainz `id` as a dict with an 'place' key.
 
@@ -827,7 +833,7 @@ def get_place_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("place", id, includes, params)
 
-@_docstring('event')
+@_docstring_get("event")
 def get_event_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the event with the MusicBrainz `id` as a dict with an 'event' key.
 
@@ -839,7 +845,7 @@ def get_event_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("event", id, includes, params)
 
-@_docstring('recording')
+@_docstring_get("recording")
 def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the recording with the MusicBrainz `id` as a dict
     with a 'recording' key.
@@ -849,7 +855,7 @@ def get_recording_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("recording", id, includes, params)
 
-@_docstring('release')
+@_docstring_get("release")
 def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
     """Get the release with the MusicBrainz `id` as a dict with a 'release' key.
 
@@ -858,7 +864,7 @@ def get_release_by_id(id, includes=[], release_status=[], release_type=[]):
                                            release_status, release_type)
     return _do_mb_query("release", id, includes, params)
 
-@_docstring('release-group')
+@_docstring_get("release-group")
 def get_release_group_by_id(id, includes=[],
                             release_status=[], release_type=[]):
     """Get the release group with the MusicBrainz `id` as a dict
@@ -869,21 +875,21 @@ def get_release_group_by_id(id, includes=[],
                                            release_status, release_type)
     return _do_mb_query("release-group", id, includes, params)
 
-@_docstring('series')
+@_docstring_get("series")
 def get_series_by_id(id, includes=[]):
     """Get the series with the MusicBrainz `id` as a dict with a 'series' key.
 
     *Available includes*: {includes}"""
     return _do_mb_query("series", id, includes)
 
-@_docstring('work')
+@_docstring_get("work")
 def get_work_by_id(id, includes=[]):
     """Get the work with the MusicBrainz `id` as a dict with a 'work' key.
 
     *Available includes*: {includes}"""
     return _do_mb_query("work", id, includes)
 
-@_docstring('url')
+@_docstring_get("url")
 def get_url_by_id(id, includes=[]):
     """Get the url with the MusicBrainz `id` as a dict with a 'url' key.
 
@@ -893,49 +899,49 @@ def get_url_by_id(id, includes=[]):
 
 # Searching
 
-@_docstring('annotation')
+@_docstring_search("annotation")
 def search_annotations(query='', limit=None, offset=None, strict=False, **fields):
     """Search for annotations and return a dict with an 'annotation-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('annotation', query, fields, limit, offset, strict)
 
-@_docstring('area')
+@_docstring_search("area")
 def search_areas(query='', limit=None, offset=None, strict=False, **fields):
     """Search for areas and return a dict with an 'area-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('area', query, fields, limit, offset, strict)
 
-@_docstring('artist')
+@_docstring_search("artist")
 def search_artists(query='', limit=None, offset=None, strict=False, **fields):
     """Search for artists and return a dict with an 'artist-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('artist', query, fields, limit, offset, strict)
 
-@_docstring('event')
+@_docstring_search("event")
 def search_events(query='', limit=None, offset=None, strict=False, **fields):
     """Search for events and return a dict with an 'event-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('event', query, fields, limit, offset, strict)
 
-@_docstring('instrument')
+@_docstring_search("instrument")
 def search_instruments(query='', limit=None, offset=None, strict=False, **fields):
     """Search for instruments and return a dict with a 'instrument-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('instrument', query, fields, limit, offset, strict)
 
-@_docstring('label')
+@_docstring_search("label")
 def search_labels(query='', limit=None, offset=None, strict=False, **fields):
     """Search for labels and return a dict with a 'label-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('label', query, fields, limit, offset, strict)
 
-@_docstring('recording')
+@_docstring_search("recording")
 def search_recordings(query='', limit=None, offset=None,
                       strict=False, **fields):
     """Search for recordings and return a dict with a 'recording-list' key.
@@ -943,14 +949,14 @@ def search_recordings(query='', limit=None, offset=None,
     *Available search fields*: {fields}"""
     return _do_mb_search('recording', query, fields, limit, offset, strict)
 
-@_docstring('release')
+@_docstring_search("release")
 def search_releases(query='', limit=None, offset=None, strict=False, **fields):
     """Search for recordings and return a dict with a 'recording-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('release', query, fields, limit, offset, strict)
 
-@_docstring('release-group')
+@_docstring_search("release-group")
 def search_release_groups(query='', limit=None, offset=None,
 			  strict=False, **fields):
     """Search for release groups and return a dict
@@ -959,14 +965,14 @@ def search_release_groups(query='', limit=None, offset=None,
     *Available search fields*: {fields}"""
     return _do_mb_search('release-group', query, fields, limit, offset, strict)
 
-@_docstring('series')
+@_docstring_search("series")
 def search_series(query='', limit=None, offset=None, strict=False, **fields):
     """Search for series and return a dict with a 'series-list' key.
 
     *Available search fields*: {fields}"""
     return _do_mb_search('series', query, fields, limit, offset, strict)
 
-@_docstring('work')
+@_docstring_search("work")
 def search_works(query='', limit=None, offset=None, strict=False, **fields):
     """Search for works and return a dict with a 'work-list' key.
 
@@ -975,7 +981,7 @@ def search_works(query='', limit=None, offset=None, strict=False, **fields):
 
 
 # Lists of entities
-@_docstring('discid')
+@_docstring_get("discid")
 def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format=None):
     """Search for releases with a :musicbrainz:`Disc ID` or table of contents.
 
@@ -1010,7 +1016,7 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format
         params["media-format"] = media_format
     return _do_mb_query("discid", id, includes, params)
 
-@_docstring('recording')
+@_docstring_get("recording")
 def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
                                 release_type=[]):
     """Search for recordings with an `echoprint <http://echoprint.me>`_.
@@ -1021,7 +1027,7 @@ def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
     raise ResponseError(cause=compat.HTTPError(
                                             None, 404, "Not Found", None, None))
 
-@_docstring('recording')
+@_docstring_get("recording")
 def get_recordings_by_puid(puid, includes=[], release_status=[],
                            release_type=[]):
     """Search for recordings with a :musicbrainz:`PUID`.
@@ -1032,7 +1038,7 @@ def get_recordings_by_puid(puid, includes=[], release_status=[],
     raise ResponseError(cause=compat.HTTPError(
                                             None, 404, "Not Found", None, None))
 
-@_docstring('recording')
+@_docstring_get("recording")
 def get_recordings_by_isrc(isrc, includes=[], release_status=[],
                            release_type=[]):
     """Search for recordings with an :musicbrainz:`ISRC`.
@@ -1044,7 +1050,7 @@ def get_recordings_by_isrc(isrc, includes=[], release_status=[],
                                            release_status, release_type)
     return _do_mb_query("isrc", isrc, includes, params)
 
-@_docstring('work')
+@_docstring_get("work")
 def get_works_by_iswc(iswc, includes=[]):
     """Search for works with an :musicbrainz:`ISWC`.
     The result is a dict with a`work-list`.
@@ -1071,7 +1077,7 @@ def _browse_impl(entity, includes, valid_includes, limit, offset, params, releas
 # Browse methods
 # Browse include are a subset of regular get includes, so we check them here
 # and the test in _do_mb_query will pass anyway.
-@_docstring('artists', browse=True)
+@_docstring_browse("artists")
 def browse_artists(recording=None, release=None, release_group=None,
                    includes=[], limit=None, offset=None):
     """Get all artists linked to a recording, a release or a release group.
@@ -1086,7 +1092,7 @@ def browse_artists(recording=None, release=None, release_group=None,
     return _browse_impl("artist", includes, valid_includes,
                         limit, offset, params)
 
-@_docstring('events', browse=True)
+@_docstring_browse("events")
 def browse_events(area=None, artist=None, place=None,
                    includes=[], limit=None, offset=None):
     """Get all events linked to a area, a artist or a place.
@@ -1100,7 +1106,7 @@ def browse_events(area=None, artist=None, place=None,
     return _browse_impl("event", includes, valid_includes,
                         limit, offset, params)
 
-@_docstring('labels', browse=True)
+@_docstring_browse("labels")
 def browse_labels(release=None, includes=[], limit=None, offset=None):
     """Get all labels linked to a relase. You need to give a MusicBrainz ID.
 
@@ -1110,7 +1116,7 @@ def browse_labels(release=None, includes=[], limit=None, offset=None):
     return _browse_impl("label", includes, valid_includes,
                         limit, offset, params)
 
-@_docstring('recordings', browse=True)
+@_docstring_browse("recordings")
 def browse_recordings(artist=None, release=None, includes=[],
                       limit=None, offset=None):
     """Get all recordings linked to an artist or a release.
@@ -1123,7 +1129,7 @@ def browse_recordings(artist=None, release=None, includes=[],
     return _browse_impl("recording", includes, valid_includes,
                         limit, offset, params)
 
-@_docstring('releases', browse=True)
+@_docstring_browse("releases")
 def browse_releases(artist=None, track_artist=None, label=None, recording=None,
                     release_group=None, release_status=[], release_type=[],
                     includes=[], limit=None, offset=None):
@@ -1147,7 +1153,7 @@ def browse_releases(artist=None, track_artist=None, label=None, recording=None,
     return _browse_impl("release", includes, valid_includes, limit, offset,
                         params, release_status, release_type)
 
-@_docstring('release-groups', browse=True)
+@_docstring_browse("release-groups")
 def browse_release_groups(artist=None, release=None, release_type=[],
                           includes=[], limit=None, offset=None):
     """Get all release groups linked to an artist or a release.
@@ -1162,7 +1168,7 @@ def browse_release_groups(artist=None, release=None, release_type=[],
     return _browse_impl("release-group", includes, valid_includes,
                         limit, offset, params, [], release_type)
 
-@_docstring('urls', browse=True)
+@_docstring_browse("urls")
 def browse_urls(resource=None, includes=[], limit=None, offset=None):
     """Get urls by actual URL string.
     You need to give a URL string as 'resource'
