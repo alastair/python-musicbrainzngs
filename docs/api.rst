@@ -39,6 +39,7 @@ The valid includes are listed for each function.
 .. autofunction:: get_area_by_id
 .. autofunction:: get_artist_by_id
 .. autofunction:: get_event_by_id
+.. autofunction:: get_instrument_by_id
 .. autofunction:: get_label_by_id
 .. autofunction:: get_place_by_id
 .. autofunction:: get_recording_by_id
@@ -99,7 +100,9 @@ already seen so the web service doesn't give you the same results again.
 .. autofunction:: search_areas
 .. autofunction:: search_artists
 .. autofunction:: search_events
+.. autofunction:: search_instruments
 .. autofunction:: search_labels
+.. autofunction:: search_places
 .. autofunction:: search_recordings
 .. autofunction:: search_release_groups
 .. autofunction:: search_releases
@@ -123,6 +126,7 @@ You have to provide exactly one MusicBrainz ID to these functions.
 .. autofunction:: browse_artists
 .. autofunction:: browse_events
 .. autofunction:: browse_labels
+.. autofunction:: browse_places
 .. autofunction:: browse_recordings
 .. autofunction:: browse_release_groups
 .. autofunction:: browse_releases
