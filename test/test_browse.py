@@ -38,7 +38,6 @@ class BrowseTest(unittest.TestCase):
         area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
         musicbrainzngs.browse_events(area=area, limit=50, offset=100)
         self.assertEqual("http://musicbrainz.org/ws/2/event/?area=74e50e58-5deb-4b99-93a2-decbb365c07f&limit=50&offset=100", self.opener.get_url())
-        pass
 
     def test_browse_artist(self):
         release = "9ace7c8c-55b4-4c5d-9aa8-e573a5dde9ad"
@@ -52,6 +51,10 @@ class BrowseTest(unittest.TestCase):
         release_group = "44c90c72-76b5-3c13-890e-3d37f21c10c9"
         musicbrainzngs.browse_artists(release_group=release_group)
         self.assertEqual("http://musicbrainz.org/ws/2/artist/?release-group=44c90c72-76b5-3c13-890e-3d37f21c10c9", self.opener.get_url())
+
+        work = "deb27b88-cf41-4f7c-b3aa-bc3268bc3c02"
+        musicbrainzngs.browse_artists(work=work)
+        self.assertEqual("http://musicbrainz.org/ws/2/artist/?work=deb27b88-cf41-4f7c-b3aa-bc3268bc3c02", self.opener.get_url())
 
     def test_browse_event(self):
         area = "f03d09b3-39dc-4083-afd6-159e3f0d462f"
@@ -79,6 +82,13 @@ class BrowseTest(unittest.TestCase):
         release = "438042ef-7ccc-4d03-9391-4f66427b2055"
         musicbrainzngs.browse_recordings(release=release)
         self.assertEqual("http://musicbrainz.org/ws/2/recording/?release=438042ef-7ccc-4d03-9391-4f66427b2055", self.opener.get_url())
+
+    @unittest.skip("missing browse implementation")
+    def test_browse_place(self):
+        area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
+        musicbrainzngs.browse_places(area=area)
+        self.assertEqual("http://musicbrainz.org/ws/2/place/?area=74e50e58-5deb-4b99-93a2-decbb365c07f", self.opener.get_url())
+
 
     def test_browse_release(self):
         artist = "47f67b22-affe-4fe1-9d25-853d69bc0ee3"
@@ -122,6 +132,11 @@ class BrowseTest(unittest.TestCase):
         resource = "http://www.splendidezine.com/review.html?reviewid=1109588405202831"
         musicbrainzngs.browse_urls(resource=resource)
         self.assertEqual("http://musicbrainz.org/ws/2/url/?resource=http%3A%2F%2Fwww.splendidezine.com%2Freview.html%3Freviewid%3D1109588405202831", self.opener.get_url())
+
+    def test_browse_work(self):
+        artist = "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+        musicbrainzngs.browse_works(artist=artist)
+        self.assertEqual("http://musicbrainz.org/ws/2/work/?artist=0383dadf-2a4e-4d10-a46a-e9e041da8eb3", self.opener.get_url())
 
     @unittest.skip("waiting for merge")
     def test_browse_includes_is_subset_of_includes(self):

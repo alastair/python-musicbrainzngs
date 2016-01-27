@@ -83,14 +83,15 @@ VALID_INCLUDES = {
     'collection': ['releases'],
 }
 VALID_BROWSE_INCLUDES = {
-    'release': ["artist-credits", "labels", "recordings", "isrcs",
-                "release-groups", "media", "discids"] + RELATION_INCLUDES,
-    'recording': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'recording': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'release': ["artist-credits", "labels", "recordings", "isrcs",
+                "release-groups", "media", "discids"] + RELATION_INCLUDES,
+    'release-group': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
-    'release-group': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES
+    'work': ["aliases", "annotation"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
 }
 
 #: These can be used to filter whenever releases are includes or browsed
@@ -1080,15 +1081,15 @@ def _browse_impl(entity, includes, limit, offset, params, release_status=[], rel
 # and the test in _do_mb_query will pass anyway.
 @_docstring_browse("artist")
 def browse_artists(recording=None, release=None, release_group=None,
-                   includes=[], limit=None, offset=None):
+                   work=None, includes=[], limit=None, offset=None):
     """Get all artists linked to a recording, a release or a release group.
     You need to give one MusicBrainz ID.
 
     *Available includes*: {includes}"""
-    # optional parameter work?
     params = {"recording": recording,
               "release": release,
-              "release-group": release_group}
+              "release-group": release_group,
+              "work": work}
     return _browse_impl("artist", includes, limit, offset, params)
 
 @_docstring_browse("event")
@@ -1167,6 +1168,14 @@ def browse_urls(resource=None, includes=[], limit=None, offset=None):
     *Available includes*: {includes}"""
     params = {"resource": resource}
     return _browse_impl("url", includes, limit, offset, params)
+
+@_docstring_browse("work")
+def browse_works(artist=None, includes=[], limit=None, offset=None):
+    """Get all works linked to an artist
+
+    *Available includes*: {includes}"""
+    params = {"artist": artist}
+    return _browse_impl("work", includes, limit, offset, params)
 
 # Collections
 def get_collections():
