@@ -32,6 +32,8 @@ class GetWorkTest(unittest.TestCase):
         self.assertEqual(attr["type"], "Key")
         self.assertEqual(attr["attribute"], "E-flat major")
 
+        self.assertEqual(res["work"]["attribute-list"], res["work"]["attribute-dict"])
+
         res = _common.open_and_parse_test_data(self.datadir, "3d7c7cd2-da79-37f4-98b8-ccfb1a4ac6c4-aliases.xml")
         aliases = res["work"]["alias-list"]
         self.assertEqual(len(aliases), 10)
@@ -39,3 +41,20 @@ class GetWorkTest(unittest.TestCase):
         a0 = aliases[0]
         self.assertEqual(a0["alias"], "Adagio from Symphony No. 2 in E minor, Op. 27")
         self.assertEqual(a0["sort-name"], "Adagio from Symphony No. 2 in E minor, Op. 27")
+
+    def testWorkRelationAttributes(self):
+        # Some relation attributes can contain attributes as well as text
+        res = _common.open_and_parse_test_data(self.datadir, "72c9aad2-3c95-4e3e-8a01-3974f8fef8eb-series-rels.xml")
+
+        work = res["work"]
+        rels = work["series-relation-list"]
+
+        self.assertEqual(1, len(rels))
+        # Original attributes
+        attributes = rels[0]["attribute-list"]
+        self.assertEqual("number", attributes[0])
+
+        # New attribute dict format
+        attributes = rels[0]["attribute-dict"]
+        self.assertEqual("number", attributes[0]["attribute"])
+        self.assertEqual("BuxWV 1", attributes[0]["value"])

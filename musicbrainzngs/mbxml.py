@@ -375,7 +375,32 @@ def parse_relation(relation):
                 }
     result.update(parse_attributes(attribs, relation))
     result.update(parse_elements(elements, inner_els, relation))
+    # We parse attribute-list again to get attributes that have both
+    # text and attribute values
+    result.update(parse_elements([], {"attribute-list": parse_relation_attribute_list}, relation))
 
+    return result
+
+def parse_relation_attribute_list(attributelist):
+    ret = []
+    for attribute in attributelist:
+        ret.append(parse_relation_attribute_element(attribute))
+    return ("attribute-dict", ret)
+
+def parse_relation_attribute_element(element):
+    # Parses an attribute into a dictionary containing an element
+    # {"attribute": <text value>} and also an additional element
+    # containing any xml attributes.
+    # e.g <attribute value="BuxWV 1">number</attribute>
+    # -> {"attribute": "number", "value": "BuxWV 1"}
+    result = {}
+    for attr in element.attrib:
+        if "{" in attr:
+            a = fixtag(attr, NS_MAP)[0]
+        else:
+            a = attr
+        result[a] = element.attrib[attr]
+    result["attribute"] = element.text
     return result
 
 def parse_release(release):
@@ -532,6 +557,9 @@ def parse_work(work):
 
     result.update(parse_attributes(attribs, work))
     result.update(parse_elements(elements, inner_els, work))
+    # We parse attribute-list again to get attributes that have both
+    # text and attribute values
+    result.update(parse_elements([], {"attribute-list": parse_relation_attribute_list}, work))
 
     return result
 
