@@ -49,9 +49,11 @@ def show_collections():
     for collection in result['collection-list']:
         # entity-type only available starting with musicbrainzngs 0.6
         if "entity-type" in collection:
-            print('"{name}" by {editor} ({cat}, {entity})\n\t{mbid}'.format(
+            print('"{name}" by {editor} ({cat}, {count} {entity}s)\n\t{mbid}'
+                    .format(
                 name=collection['name'], editor=collection['editor'],
                 cat=collection['type'], entity=collection['entity-type'],
+                count=collection[collection['entity-type']+'-count'],
                 mbid=collection['id']
             ))
         else:
@@ -60,18 +62,28 @@ def show_collections():
                 mbid=collection['id']
             ))
 
-def show_collection(collection_id):
+def show_collection(collection_id, ctype):
     """Show a given collection.
     """
-    try:
+    if ctype == "release":
         result = musicbrainzngs.get_releases_in_collection(
                                                 collection_id, limit=0)
-        collection = result['collection']
-    except musicbrainzngs.ResponseError:
-        # TODO
-        #result = musicbrainzngs.get_events_in_collection(
-        #        collection_id, limit=0)
-        sys.exit("This is a collection of events which is not yet implemented")
+    elif ctype == "artist":
+        result = musicbrainzngs.get_artists_in_collection(
+                                                collection_id, limit=0)
+    elif ctype == "event":
+        result = musicbrainzngs.get_events_in_collection(
+                                                collection_id, limit=0)
+    elif ctype == "place":
+        result = musicbrainzngs.get_places_in_collection(
+                                                collection_id, limit=0)
+    elif ctype == "recording":
+        result = musicbrainzngs.get_recordings_in_collection(
+                                                collection_id, limit=0)
+    elif ctype == "work":
+        result = musicbrainzngs.get_works_in_collection(
+                                                collection_id, limit=0)
+    collection = result['collection']
     # entity-type only available starting with musicbrainzngs 0.6
     if "entity-type" in collection:
         print('{mbid}\n"{name}" by {editor} ({cat}, {entity})'.format(
@@ -88,13 +100,21 @@ def show_collection(collection_id):
     # release count is only available starting with musicbrainzngs 0.5
     if "release-count" in collection:
         print('{} releases'.format(collection['release-count']))
+    if "artist-count" in collection:
+        print('{} artists'.format(collection['artist-count']))
     if "event-count" in collection:
         print('{} events'.format(collection['release-count']))
+    if "place-count" in collection:
+        print('{} places'.format(collection['place-count']))
+    if "recording-count" in collection:
+        print('{} recordings'.format(collection['recording-count']))
+    if "work-count" in collection:
+        print('{} works'.format(collection['work-count']))
     print('')
 
     if "release-list" in collection:
         show_releases(collection)
-    if "event-list" in collection:
+    else:
         pass # TODO
 
 def show_releases(collection):
@@ -127,6 +147,8 @@ if __name__ == '__main__':
                       help="add a release to the collection")
     parser.add_option('-r', '--remove', metavar="RELEASE-ID",
                       help="remove a release from the collection")
+    parser.add_option('-t', '--type', metavar="TYPE", default="release",
+                      help="type of the collection (default: release)")
     options, args = parser.parse_args()
 
     if not args:
@@ -144,19 +166,23 @@ if __name__ == '__main__':
         # Actions for a specific collction.
         collection_id = args[0]
         if options.add:
-            # Add a release to the collection.
-            musicbrainzngs.add_releases_to_collection(
-                collection_id, [options.add]
-            )
+            if option.type == "release":
+                musicbrainzngs.add_releases_to_collection(
+                    collection_id, [options.add]
+                )
+            else:
+                sys.exit("only release collections can be modified ATM")
         elif options.remove:
-            # Remove a release from the collection.
-            musicbrainzngs.remove_releases_from_collection(
-                collection_id, [options.remove]
-            )
+            if option.type == "release":
+                musicbrainzngs.remove_releases_from_collection(
+                    collection_id, [options.remove]
+                )
+            else:
+                sys.exit("only release collections can be modified ATM")
         else:
             # Print out the collection's contents.
             print("")
-            show_collection(collection_id)
+            show_collection(collection_id, options.type)
     else:
         # Show all collections.
         print("")
