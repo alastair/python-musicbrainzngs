@@ -84,8 +84,10 @@ def parse_elements(valid_els, inner_els, element):
         call parse_subelement(<subelement>) and
         return a dict {'subelement': <result>}
         if parse_subelement returns a tuple of the form
-        ('subelement-key', <result>) then return a dict
-        {'subelement-key': <result>} instead
+        (True, {'subelement-key': <result>})
+        then merge the second element of the tuple into the
+        result (which may have a key other than 'subelement' or
+        more than 1 key)
     """
     result = {}
     for sub in element:
@@ -96,8 +98,8 @@ def parse_elements(valid_els, inner_els, element):
             result[t] = sub.text or ""
         elif t in inner_els.keys():
             inner_result = inner_els[t](sub)
-            if isinstance(inner_result, tuple):
-                result[inner_result[0]] = inner_result[1]
+            if isinstance(inner_result, tuple) and inner_result[0]:
+                result.update(inner_result[1])
             else:
                 result[t] = inner_result
             # add counts for lists when available
@@ -343,15 +345,15 @@ def parse_label(label):
 def parse_relation_target(tgt):
     attributes = parse_attributes(['id'], tgt)
     if 'id' in attributes:
-        return ('target-id', attributes['id'])
+        return (True, {'target-id': attributes['id']})
     else:
-        return ('target-id', tgt.text)
+        return (True, {'target-id': tgt.text})
 
 def parse_relation_list(rl):
     attribs = ["target-type"]
     ttype = parse_attributes(attribs, rl)
     key = "%s-relation-list" % ttype["target-type"]
-    return (key, [parse_relation(r) for r in rl])
+    return (True, {key: [parse_relation(r) for r in rl]})
 
 def parse_relation(relation):
     result = {}
@@ -402,7 +404,22 @@ def parse_release(release):
     return result
 
 def parse_medium_list(ml):
-    return [parse_medium(m) for m in ml]
+    """medium-list results from search have an additional
+    <track-count> element containing the number of tracks
+    over all mediums. Optionally add this"""
+    medium_list = []
+    track_count = None
+    for m in ml:
+        tag = fixtag(m.tag, NS_MAP)[0]
+        if tag == "ws2:medium":
+            medium_list.append(parse_medium(m))
+        elif tag == "ws2:track-count":
+            track_count = m.text
+    ret = {"medium-list": medium_list}
+    if track_count:
+        ret["medium-track-count"] = track_count
+
+    return (True, ret)
 
 def parse_release_event_list(rel):
     return [parse_release_event(re) for re in rel]
