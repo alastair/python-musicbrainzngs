@@ -289,10 +289,14 @@ def parse_event_list(el):
 
 def parse_event(event):
     result = {}
-    attribs = ["id", "type"]
-    elements = ["name", "time"]
+    attribs = ["id", "type", "ext:score"]
+    elements = ["name", "time", "setlist", "cancelled", "disambiguation", "user-rating"]
     inner_els = {"life-span": parse_lifespan,
-                 "relation-list": parse_relation_list}
+                 "relation-list": parse_relation_list,
+                 "alias-list": parse_alias_list,
+                 "tag-list": parse_tag_list,
+                 "user-tag-list": parse_tag_list,
+                 "rating": parse_rating}
 
     result.update(parse_attributes(attribs, event))
     result.update(parse_elements(elements, inner_els, event))

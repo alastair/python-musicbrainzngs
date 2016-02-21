@@ -50,7 +50,7 @@ VALID_INCLUDES = {
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
-    'event' : ["aliases"] + RELATION_INCLUDES,
+    'event' : ["aliases"] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits", "isrcs",
@@ -89,6 +89,7 @@ VALID_BROWSE_INCLUDES = {
     'labels': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'artists': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'events': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'places': ["aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
     'urls': RELATION_INCLUDES,
     'release-groups': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES
 }
@@ -935,6 +936,13 @@ def search_labels(query='', limit=None, offset=None, strict=False, **fields):
     *Available search fields*: {fields}"""
     return _do_mb_search('label', query, fields, limit, offset, strict)
 
+@_docstring('place')
+def search_places(query='', limit=None, offset=None, strict=False, **fields):
+    """Search for places and return a dict with a 'place-list' key.
+
+    *Available search fields*: {fields}"""
+    return _do_mb_search('place', query, fields, limit, offset, strict)
+
 @_docstring('recording')
 def search_recordings(query='', limit=None, offset=None,
                       strict=False, **fields):
@@ -1107,6 +1115,16 @@ def browse_labels(release=None, includes=[], limit=None, offset=None):
     valid_includes = VALID_BROWSE_INCLUDES['labels']
     params = {"release": release}
     return _browse_impl("label", includes, valid_includes,
+                        limit, offset, params)
+
+@_docstring('places', browse=True)
+def browse_places(area=None, includes=[], limit=None, offset=None):
+    """Get all places linked to an area. You need to give a MusicBrainz ID.
+
+    *Available includes*: {includes}"""
+    valid_includes = VALID_BROWSE_INCLUDES['places']
+    params = {"area": area}
+    return _browse_impl("place", includes, valid_includes,
                         limit, offset, params)
 
 @_docstring('recordings', browse=True)

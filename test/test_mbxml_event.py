@@ -1,4 +1,4 @@
-# Tests for parsing of event queries
+# Tests for parsing of event results
 
 import unittest
 import os
@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from test import _common
 
 
-class GetEventTest(unittest.TestCase):
+class EventTest(unittest.TestCase):
 
     def setUp(self):
         self.datadir = os.path.join(os.path.dirname(__file__), "data", "event")
@@ -31,3 +31,11 @@ class GetEventTest(unittest.TestCase):
         event_id = "770fb0b4-0ad8-4774-9275-099b66627355"
         res = _common.open_and_parse_test_data(self.datadir, "%s-place-rels.xml" % event_id)
         self.assertEqual("Concert", res["event"]["type"])
+
+    def testEventElements(self):
+        filename = "e921686d-ba86-4122-bc3b-777aec90d231-tags-artist-rels.xml"
+        res = _common.open_and_parse_test_data(self.datadir, filename)
+        e = res["event"]
+        keys = ["name", "life-span", "time", "setlist", "artist-relation-list", "tag-list"]
+        for k in keys:
+            self.assertTrue(k in e, "key %s in dict" % (k, ))
