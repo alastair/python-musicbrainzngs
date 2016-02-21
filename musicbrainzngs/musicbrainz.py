@@ -1182,16 +1182,59 @@ def get_collections():
     # Missing <release-list count="n"> the count in the reply
     return _do_mb_query("collection", '')
 
+def _do_collection_query(collection, collection_type, limit, offset):
+    params = {}
+    if limit: params["limit"] = limit
+    if offset: params["offset"] = offset
+    return _do_mb_query("collection", "%s/%s" % (collection, collection_type), [], params)
+
+def get_artists_in_collection(collection, limit=None, offset=None):
+    """List the artists in a collection.
+    Returns a dict with a 'collection' key, which again has a 'artist-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "artists", limit, offset)
+
 def get_releases_in_collection(collection, limit=None, offset=None):
     """List the releases in a collection.
     Returns a dict with a 'collection' key, which again has a 'release-list'.
 
     See `Browsing`_ for how to use `limit` and `offset`.
     """
-    params = {}
-    if limit: params["limit"] = limit
-    if offset: params["offset"] = offset
-    return _do_mb_query("collection", "%s/releases" % collection, [], params)
+    return _do_collection_query(collection, "releases", limit, offset)
+
+def get_events_in_collection(collection, limit=None, offset=None):
+    """List the events in a collection.
+    Returns a dict with a 'collection' key, which again has a 'event-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "events", limit, offset)
+
+def get_places_in_collection(collection, limit=None, offset=None):
+    """List the places in a collection.
+    Returns a dict with a 'collection' key, which again has a 'place-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "places", limit, offset)
+
+def get_recordings_in_collection(collection, limit=None, offset=None):
+    """List the recordings in a collection.
+    Returns a dict with a 'collection' key, which again has a 'recording-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "recordings", limit, offset)
+
+def get_works_in_collection(collection, limit=None, offset=None):
+    """List the works in a collection.
+    Returns a dict with a 'collection' key, which again has a 'work-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "works", limit, offset)
 
 
 # Submission methods
