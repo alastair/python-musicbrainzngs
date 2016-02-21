@@ -279,7 +279,6 @@ def _docstring_search(entity):
 def _docstring_impl(name, values):
     def _decorator(func):
         # puids are allowed so nothing breaks, but not documented
-        s = values
         if "puids" in values: values.remove("puids")
         vstr = ", ".join(values)
         args = {name: vstr}
