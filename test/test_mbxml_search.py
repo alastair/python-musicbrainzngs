@@ -78,7 +78,7 @@ class SearchReleaseTest(unittest.TestCase):
         self.assertEqual("100", one["ext:score"])
 
         # search results have a medium-list/track-count element
-        self.assertEqual("4", one["medium-track-count"])
+        self.assertEqual(4, one["medium-track-count"])
         self.assertEqual(1, one["medium-count"])
         self.assertEqual("CD", one["medium-list"][0]["format"])
 

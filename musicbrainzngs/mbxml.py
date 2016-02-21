@@ -414,9 +414,9 @@ def parse_medium_list(ml):
         if tag == "ws2:medium":
             medium_list.append(parse_medium(m))
         elif tag == "ws2:track-count":
-            track_count = m.text
+            track_count = int(m.text)
     ret = {"medium-list": medium_list}
-    if track_count:
+    if track_count is not None:
         ret["medium-track-count"] = track_count
 
     return (True, ret)
