@@ -33,8 +33,8 @@ class BrowseTest(unittest.TestCase):
 
     def test_browse_multiple_by(self):
         """It is an error to choose multiple entities to browse by"""
-        with self.assertRaises(Exception):
-            musicbrainzngs.browse_artists(recording="1", release="2")
+        self.assertRaises(Exception,
+                musicbrainzngs.browse_artists, recording="1", release="2")
 
     def test_browse_limit_offset(self):
         """Limit and offset values"""
@@ -86,7 +86,6 @@ class BrowseTest(unittest.TestCase):
         musicbrainzngs.browse_recordings(release=release)
         self.assertEqual("http://musicbrainz.org/ws/2/recording/?release=438042ef-7ccc-4d03-9391-4f66427b2055", self.opener.get_url())
 
-    @unittest.skip("missing browse implementation")
     def test_browse_place(self):
         area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
         musicbrainzngs.browse_places(area=area)
@@ -141,7 +140,6 @@ class BrowseTest(unittest.TestCase):
         musicbrainzngs.browse_works(artist=artist)
         self.assertEqual("http://musicbrainz.org/ws/2/work/?artist=0383dadf-2a4e-4d10-a46a-e9e041da8eb3", self.opener.get_url())
 
-    @unittest.skip("waiting for merge")
     def test_browse_includes_is_subset_of_includes(self):
         """Check that VALID_BROWSE_INCLUDES is a strict subset of
            VALID_INCLUDES"""

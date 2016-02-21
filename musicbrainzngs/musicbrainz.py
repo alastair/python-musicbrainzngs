@@ -1124,10 +1124,8 @@ def browse_places(area=None, includes=[], limit=None, offset=None):
     """Get all places linked to an area. You need to give a MusicBrainz ID.
 
     *Available includes*: {includes}"""
-    valid_includes = VALID_BROWSE_INCLUDES['places']
     params = {"area": area}
-    return _browse_impl("place", includes, valid_includes,
-                        limit, offset, params)
+    return _browse_impl("place", includes, limit, offset, params)
 
 @_docstring_browse("recording")
 def browse_recordings(artist=None, release=None, includes=[],
