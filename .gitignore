@@ -1,1 +1,15 @@
-*.pyc
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+env/
+build/
+dist/
+
+# Unit test / coverage reports
+.tox/
+
+# Sphinx documentation
+docs/_build/
