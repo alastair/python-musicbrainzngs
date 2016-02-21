@@ -13,6 +13,9 @@ class BrowseTest(unittest.TestCase):
         self.opener = _common.FakeOpener("<response/>")
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
 
+        musicbrainzngs.set_useragent("a", "1")
+        musicbrainzngs.set_rate_limit(False)
+
     def test_browse(self):
         area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
         musicbrainzngs.browse_events(area=area)

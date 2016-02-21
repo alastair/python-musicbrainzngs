@@ -51,8 +51,8 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.get_event_by_id(event_id, ["artist-rels"])
         self.assertEqual("http://musicbrainz.org/ws/2/event/a4a0927c-8ad7-48dd-883c-7126cc0b9c6b?inc=artist-rels", self.opener.get_url())
 
-        musicbrainzngs.get_event_by_id(event_id, ["artist-rels", "event-rels", "user-ratings", "ratings", "tags", "user-tags"])
-        self.assertEqual("http://musicbrainz.org/ws/2/event/a4a0927c-8ad7-48dd-883c-7126cc0b9c6b?inc=artist-rels+event-rels+user-ratings+ratings+tags+user-tags", self.opener.get_url())
+        musicbrainzngs.get_event_by_id(event_id, ["artist-rels", "event-rels", "ratings", "tags"])
+        self.assertEqual("http://musicbrainz.org/ws/2/event/a4a0927c-8ad7-48dd-883c-7126cc0b9c6b?inc=artist-rels+event-rels+ratings+tags", self.opener.get_url())
 
     def testGetPlace(self):
         place_id = "43e166a5-a024-4cbb-9a1f-d4947b4ff489"
