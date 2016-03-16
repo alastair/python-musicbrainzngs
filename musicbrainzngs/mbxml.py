@@ -385,7 +385,7 @@ def parse_relation_attribute_list(attributelist):
     ret = []
     for attribute in attributelist:
         ret.append(parse_relation_attribute_element(attribute))
-    return ("attribute-dict", ret)
+    return (True, {"attributes": ret})
 
 def parse_relation_attribute_element(element):
     # Parses an attribute into a dictionary containing an element
@@ -557,9 +557,6 @@ def parse_work(work):
 
     result.update(parse_attributes(attribs, work))
     result.update(parse_elements(elements, inner_els, work))
-    # We parse attribute-list again to get attributes that have both
-    # text and attribute values
-    result.update(parse_elements([], {"attribute-list": parse_relation_attribute_list}, work))
 
     return result
 

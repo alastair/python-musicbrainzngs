@@ -32,8 +32,6 @@ class GetWorkTest(unittest.TestCase):
         self.assertEqual(attr["type"], "Key")
         self.assertEqual(attr["attribute"], "E-flat major")
 
-        self.assertEqual(res["work"]["attribute-list"], res["work"]["attribute-dict"])
-
         res = _common.open_and_parse_test_data(self.datadir, "3d7c7cd2-da79-37f4-98b8-ccfb1a4ac6c4-aliases.xml")
         aliases = res["work"]["alias-list"]
         self.assertEqual(len(aliases), 10)
@@ -55,6 +53,6 @@ class GetWorkTest(unittest.TestCase):
         self.assertEqual("number", attributes[0])
 
         # New attribute dict format
-        attributes = rels[0]["attribute-dict"]
+        attributes = rels[0]["attributes"]
         self.assertEqual("number", attributes[0]["attribute"])
         self.assertEqual("BuxWV 1", attributes[0]["value"])
