@@ -47,9 +47,9 @@ class GetWorkTest(unittest.TestCase):
         res = _common.open_and_parse_test_data(self.datadir, "8e134b32-99b8-4e96-ae5c-426f3be85f4c-attributes.xml")
         work_attrs = res["work"]["attribute-list"]
         self.assertEqual(len(work_attrs), 3)
-        expected = {"attribute": "Makam (Ottoman, Turkish)", "value": u"Hüzzam"}
+        expected = {"attribute": "Makam (Ottoman, Turkish)", "value": b"H\xc3\xbczzam".decode("utf-8")}
         self.assertEqual(expected, work_attrs[0])
-        expected = {"attribute": "Form (Ottoman, Turkish)", "value": u"Peşrev"}
+        expected = {"attribute": "Form (Ottoman, Turkish)", "value": b"Pe\xc5\x9frev".decode("utf-8")}
         self.assertEqual(expected, work_attrs[1])
         expected = {"attribute": "Usul (Ottoman, Turkish)", "value": "Fahte"}
         self.assertEqual(expected, work_attrs[2])
