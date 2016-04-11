@@ -1,3 +1,5 @@
+0.7dev:
+
 0.6 (2016-04-11):
     * don't require authentication when getting public collections (#87)
     * allow submit_ratings() and submit_tags() to submit for all supported entities (Ian McEwen, #145)
