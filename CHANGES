@@ -1,4 +1,4 @@
-0.6dev:
+0.6 (2016-04-11):
     * don't require authentication when getting public collections (#87)
     * allow submit_ratings() and submit_tags() to submit for all supported entities (Ian McEwen, #145)
     * allow 'tags' and 'user-tags' includes on releases (Jérémie Detrey, #150)
@@ -22,6 +22,8 @@
     * allow single strings to be used as includes for browse requests (#172)
     * allow single strings to be used at tag submission (#172)
     * added support for browse artist by work and work by artist
+    * added support for 'track-count' elements in 'medium-list's returned by search
+    * added support to read xml attributes in 'attribute-list' elements (#142)
 
 0.5 (2014-02-06):
     * added get_url_by_id() and browse_urls() (Ian McEwen, #117)
