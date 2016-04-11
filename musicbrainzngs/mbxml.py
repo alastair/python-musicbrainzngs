@@ -564,11 +564,12 @@ def parse_work_attribute_list(wal):
     return [parse_work_attribute(wa) for wa in wal]
 
 def parse_work_attribute(wa):
-    result = {}
     attribs = ["type"]
-
-    result.update(parse_attributes(attribs, wa))
-    result["attribute"] = wa.text
+    typeinfo = parse_attributes(attribs, wa)
+    result = {}
+    if typeinfo:
+        result = {"attribute": typeinfo["type"],
+                  "value": wa.text}
 
     return result
 

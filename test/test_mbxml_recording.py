@@ -27,5 +27,5 @@ class GetRecordingTest(unittest.TestCase):
 
         # New attribute dict format
         attributes = rels[2]["attributes"]
-        self.assertEqual("piano", attributes[0]["attribute"])
-        self.assertEqual("Yamaha and Steinway pianos", attributes[0]["credited-as"])
+        expected = {"attribute": "piano", "credited-as": "Yamaha and Steinway pianos"}
+        self.assertEqual(expected, attributes[0])
