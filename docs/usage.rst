@@ -89,7 +89,7 @@ Cover Art Data
 
 This library includes a few methods to access data from the `Cover Art Archive
 <https://coverartarchive.org/>`_ which has a `documented API
-documentation <https://musicbrainz.org/doc/Cover_Art_Archive/API>`_
+<https://musicbrainz.org/doc/Cover_Art_Archive/API>`_.
 
 Both :func:`musicbrainzngs.get_image_list` and
 :func:`musicbrainzngs.get_release_group_image_list` return the deserialized
