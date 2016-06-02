@@ -39,8 +39,7 @@ class BrowseTest(_common.RequestsMockingTestCase):
         """Limit and offset values"""
         area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
         musicbrainzngs.browse_events(area=area, limit=50, offset=100)
-        # TODO: I had to switch the order of query arguments here
-        self.assertEqual("http://musicbrainz.org/ws/2/event/?offset=100&limit=50&area=74e50e58-5deb-4b99-93a2-decbb365c07f",
+        self.assertEqual("http://musicbrainz.org/ws/2/event/?area=74e50e58-5deb-4b99-93a2-decbb365c07f&limit=50&offset=100",
                          self.m.request_history.pop().url)
 
     def test_browse_artist(self):

@@ -527,6 +527,26 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
         # will be sent (avoids HTTP 411 error).
         headers['Content-Length'] = 0
 
+    # Convert args from a dictionary to a list of tuples
+    # so that the ordering of elements is stable for easy
+    # testing (in this case we order alphabetically)
+    # Encode Unicode arguments using UTF-8.
+    newargs = []
+    for key, value in sorted(args.items()):
+        if isinstance(value, compat.unicode):
+            value = value.encode('utf8')
+        newargs.append((key, value))
+
+    # Construct the full URL for the request, including hostname and
+    # query string.
+    url = compat.urlunparse((
+        'http',
+        hostname,
+        '/ws/2/%s' % path,
+        '',
+        compat.urlencode(newargs),
+        ''
+    ))
     # Add credentials if required.
     add_auth = False
     if auth_required == AUTH_YES:
@@ -548,7 +568,7 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     req = requests.Request(
             method,
             'http://{0}/ws/2/{1}'.format(hostname, path),
-            params=args,
+            params=newargs,
             auth=auth_handler,
             headers=headers,
             data=body,

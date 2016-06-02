@@ -141,8 +141,7 @@ class UrlTest(_common.RequestsMockingTestCase):
                          self.m.request_history.pop().url)
 
         musicbrainzngs.get_releases_by_discid("discid", toc="toc", cdstubs=False)
-        # TODO: I had to reorder query parameters here
-        self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?toc=toc&cdstubs=no",
+        self.assertEqual("http://musicbrainz.org/ws/2/discid/discid?cdstubs=no&toc=toc",
                          self.m.request_history.pop().url)
 
 
