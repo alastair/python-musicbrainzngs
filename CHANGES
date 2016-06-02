@@ -3,6 +3,11 @@
     * removed the 'artists' include for work lookup (Alastair Porter, #231 & #227)
     * allow the 'work-level-rels' include for recording lookups (Shen-Ta Hsieh, #213)
     * added support for 'target-credit' elements (Itay Brandes, #162 & #217)
+    * Use requests to make HTTP requests (Adrian Sampson & Wieland Hoffmann)
+
+      Note that this changes the exception types of the `cause` attribute of
+      musicbrainzngs.musicbrainz.WebServiceError and its subclasses to instances
+      of requests.exceptions.RequestException and its subclasses.
 
 0.6 (2016-04-11):
     * don't require authentication when getting public collections (#87)
