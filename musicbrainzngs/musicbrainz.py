@@ -473,6 +473,26 @@ def set_format(fmt="xml"):
         raise ValueError("invalid format: %s" % fmt)
 
 
+def _safe_read(request):
+    """
+    :param request:
+    """
+    # Make request (with retries).
+    session = requests.Session()
+    adapter = requests.adapters.HTTPAdapter(max_retries=8)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    try:
+        resp = session.send(request.prepare(), allow_redirects=True)
+        resp.raise_for_status()
+        return resp
+    except requests.HTTPError as exc:
+        if exc.response.status_code == 401:
+                raise AuthenticationError(cause=exc)
+        raise ResponseError(cause=exc)
+    except requests.RequestException as exc:
+        raise NetworkError(cause=exc)
+
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=AUTH_NO,
                 client_required=False, args=None, data=None, body=None):
@@ -491,54 +511,52 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
 
     if _useragent == "":
         raise UsageError("set a proper user-agent with "
-                        "set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
+                         "set_useragent(\"application name\", \"application version\", \"contact info (preferably URL or email for your application)\")")
 
     if client_required:
         args["client"] = _client
 
-    headers = {}
+    headers = {
+            "User-Agent": _useragent
+    }
+
     if body:
         headers['Content-Type'] = 'application/xml; charset=UTF-8'
     else:
         # Explicitly indicate zero content length if no request data
         # will be sent (avoids HTTP 411 error).
-        headers['Content-Length'] = '0'
+        headers['Content-Length'] = 0
+
+    # Add credentials if required.
+    add_auth = False
+    if auth_required == AUTH_YES:
+        # _log.debug("Auth required for %s" % url)
+        if not user:
+            raise UsageError("authorization required; "
+                             "use auth(user, pass) first")
+        add_auth = True
+
+    if auth_required == AUTH_IFSET and user:
+        # _log.debug("Using auth for %s because user and pass is set" % url)
+        add_auth = True
+
+    if add_auth:
+        auth_handler = HTTPDigestAuth(user, password)
+    else:
+        auth_handler = None
 
     req = requests.Request(
-         method,
-         'http://{0}/ws/2/{1}'.format(hostname, path),
-         params=args,
-         auth=HTTPDigestAuth(user, password) if auth_required else None,
-         headers=headers,
-         data=body,
+            method,
+            'http://{0}/ws/2/{1}'.format(hostname, path),
+            params=args,
+            auth=auth_handler,
+            headers=headers,
+            data=body,
     )
 
-    # Make request (with retries).
-    session = requests.Session()
-    adapter = requests.adapters.HTTPAdapter(max_retries=8)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-    try:
-        resp = session.send(req.prepare(), allow_redirects=True)
-    except requests.RequestException as exc:
-        raise NetworkError(cause=exc)
-    if resp.status_code != 200:
-        raise ResponseError(
-                'API responded with code {0}'.format(resp.status_code)
-        )
+    resp = _safe_read(req)
 
-    # Parse the response.
-    try:
-        return mbxml.parse_message(resp.content)
-    except UnicodeError as exc:
-        raise ResponseError(cause=exc)
-    except Exception as exc:
-        if isinstance(exc, ETREE_EXCEPTIONS):
-            raise ResponseError(cause=exc)
-        else:
-            raise
-
-    return parser_fun(resp)
+    return parser_fun(resp.content)
 
 def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns

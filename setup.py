@@ -56,6 +56,9 @@ setup(
     install_requires=[
         'requests>=1.2.1'
     ],
+    tests_require=[
+        'requests-mock'
+    ],
     license='BSD 2-clause',
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -68,4 +71,3 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules"
     ]
 )
-
