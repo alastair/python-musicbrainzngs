@@ -516,8 +516,11 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     if client_required:
         args["client"] = _client
 
+    if ws_format != "xml":
+        args["fmt"] = ws_format
+
     headers = {
-            "User-Agent": _useragent
+        "User-Agent": _useragent
     }
 
     if body:
