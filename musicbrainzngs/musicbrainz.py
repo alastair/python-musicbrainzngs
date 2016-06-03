@@ -541,7 +541,7 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
         newargs.append((key, value))
 
     # Construct the full URL for the request, including hostname and
-    # query string.
+    # query string
     url = compat.urlunparse((
         'http',
         hostname,
@@ -553,14 +553,14 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     # Add credentials if required.
     add_auth = False
     if auth_required == AUTH_YES:
-        # _log.debug("Auth required for %s" % url)
+        _log.debug("Auth required for %s" % url)
         if not user:
             raise UsageError("authorization required; "
                              "use auth(user, pass) first")
         add_auth = True
 
     if auth_required == AUTH_IFSET and user:
-        # _log.debug("Using auth for %s because user and pass is set" % url)
+        _log.debug("Using auth for %s because user and pass is set" % url)
         add_auth = True
 
     if add_auth:
@@ -569,12 +569,11 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
         auth_handler = None
 
     req = requests.Request(
-            method,
-            'http://{0}/ws/2/{1}'.format(hostname, path),
-            params=newargs,
-            auth=auth_handler,
-            headers=headers,
-            data=body,
+        method,
+        url,
+        auth=auth_handler,
+        headers=headers,
+        data=body,
     )
 
     resp = _safe_read(req)
