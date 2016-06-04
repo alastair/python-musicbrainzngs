@@ -54,7 +54,7 @@ setup(
     packages=['musicbrainzngs'],
     cmdclass={'test': test },
     install_requires=[
-        'requests>=1.2.1'
+        'requests>=2.1.0'
     ],
     tests_require=[
         'requests-mock'
