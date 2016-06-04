@@ -3,12 +3,14 @@
 # This file is distributed under a BSD-2-Clause type license.
 # See the COPYING file for more information.
 
+import json
 import re
 import threading
 import time
 import logging
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
+from warnings import warn
 import requests
 from requests.auth import HTTPDigestAuth
 
@@ -43,7 +45,7 @@ class MBRetry(Retry):
 
 
 _retry = MBRetry(total=8,
-               status_forcelist=[500, 502, 503])
+                 status_forcelist=[500, 502, 503])
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
