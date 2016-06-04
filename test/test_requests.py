@@ -18,12 +18,12 @@ class ArgumentTest(_common.RequestsMockingTestCase):
     def test_no_client(self):
         musicbrainzngs.set_useragent("testapp", "0.1", "test@example.org")
         musicbrainz._mb_request(path="foo", client_required=False)
-        self.assertFalse("testapp" in self.m.request_history.pop().url)
+        self.assertFalse("testapp" in self.last_url)
 
     def test_client(self):
         musicbrainzngs.set_useragent("testapp", "0.1", "test@example.org")
         musicbrainz._mb_request(path="foo", client_required=True)
-        self.assertTrue("testapp" in self.m.request_history.pop().url)
+        self.assertTrue("testapp" in self.last_url)
 
     def test_false_useragent(self):
         self.assertRaises(ValueError, musicbrainzngs.set_useragent, "", "0.1",

@@ -17,6 +17,12 @@ class RequestsMockingTestCase(TestCase):
         self.m = requests_mock.Mocker()
         self.m.start()
 
+    @property
+    def last_url(self):
+        """The last URL seen by the Mocker.
+        """
+        return self.m.request_history.pop().url
+
     def tearDown(self):
         self.m.stop()
 

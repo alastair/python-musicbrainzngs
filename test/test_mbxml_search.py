@@ -23,42 +23,42 @@ class UrlTest(_common.RequestsMockingTestCase):
     def testSearchArtist(self):
         musicbrainzngs.search_artists("Dynamo Go")
         self.assertEqual("http://musicbrainz.org/ws/2/artist/?query=Dynamo+Go",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchEvent(self):
         musicbrainzngs.search_events("woodstock")
         self.assertEqual("http://musicbrainz.org/ws/2/event/?query=woodstock",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchLabel(self):
         musicbrainzngs.search_labels("Waysafe")
         self.assertEqual("http://musicbrainz.org/ws/2/label/?query=Waysafe",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchPlace(self):
         musicbrainzngs.search_places("Fillmore")
         self.assertEqual("http://musicbrainz.org/ws/2/place/?query=Fillmore",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchRelease(self):
         musicbrainzngs.search_releases("Affordable Pop Music")
         self.assertEqual("http://musicbrainz.org/ws/2/release/?query=Affordable+Pop+Music",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchReleaseGroup(self):
         musicbrainzngs.search_release_groups("Affordable Pop Music")
         self.assertEqual("http://musicbrainz.org/ws/2/release-group/?query=Affordable+Pop+Music",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchRecording(self):
         musicbrainzngs.search_recordings("Thief of Hearts")
         self.assertEqual("http://musicbrainz.org/ws/2/recording/?query=Thief+of+Hearts",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
     def testSearchWork(self):
         musicbrainzngs.search_works("Fountain City")
         self.assertEqual("http://musicbrainz.org/ws/2/work/?query=Fountain+City",
-                         self.m.request_history.pop().url)
+                         self.last_url)
 
 
 class SearchArtistTest(unittest.TestCase):
