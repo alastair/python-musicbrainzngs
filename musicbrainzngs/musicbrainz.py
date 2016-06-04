@@ -478,20 +478,20 @@ def _safe_read(request):
     :param request:
     """
     # Make request (with retries).
-    session = requests.Session()
-    adapter = requests.adapters.HTTPAdapter(max_retries=8)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-    try:
-        resp = session.send(request.prepare(), allow_redirects=True)
-        resp.raise_for_status()
-        return resp
-    except requests.HTTPError as exc:
-        if exc.response.status_code == 401:
-                raise AuthenticationError(cause=exc)
-        raise ResponseError(cause=exc)
-    except requests.RequestException as exc:
-        raise NetworkError(cause=exc)
+    with requests.Session() as session:
+        adapter = requests.adapters.HTTPAdapter(max_retries=8)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        try:
+                resp = session.send(request.prepare(), allow_redirects=True)
+                resp.raise_for_status()
+                return resp
+        except requests.HTTPError as exc:
+                if exc.response.status_code == 401:
+                        raise AuthenticationError(cause=exc)
+                raise ResponseError(cause=exc)
+        except requests.RequestException as exc:
+                raise NetworkError(cause=exc)
 
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=AUTH_NO,
