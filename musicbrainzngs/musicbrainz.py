@@ -518,8 +518,6 @@ def _safe_read(request):
                 if exc.response.status_code == 401:
                         raise AuthenticationError(cause=exc)
                 raise ResponseError(cause=exc)
-        except requests.RetryError as exc:
-                raise NetworkError(cause=exc)
         except requests.RequestException as exc:
                 raise NetworkError(cause=exc)
 
