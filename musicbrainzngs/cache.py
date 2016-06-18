@@ -1,8 +1,12 @@
 import hashlib
 
 
+class NotInCache(Exception):
+    pass
+
+
 class BaseCache(object):
-    def get(self, key, value, url, args, method):
+    def get(self, key, url, args, method):
         raise NotImplementedError
 
     def set(self, key, value, url, args, method):
@@ -14,8 +18,21 @@ class BaseCache(object):
         return hashlib.sha1(url.encode('utf-8')).hexdigest()
 
 
-class NotInCache(Exception):
-    pass
+class DictCache(BaseCache):
+    """A really basic implementation of a cache that will store
+    the cached values in a dictionary"""
+
+    def __init__(self):
+        self._cache = {}
+
+    def get(self, key, url, args, method):
+        try:
+            return self._cache[key]
+        except KeyError:
+            raise NotInCache(key)
+
+    def set(self, key, value, url, args, method):
+        self._cache[key] = value
 
 
 def _get_from_cache(cache_obj, url, args, method):

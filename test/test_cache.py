@@ -19,7 +19,7 @@ class CacheTest(unittest.TestCase):
 
     def tearDown(self):
         musicbrainzngs.set_cache(None)
-        
+
     @mock.patch('musicbrainzngs.musicbrainz._safe_read', return_value='return_value')
     @mock.patch('musicbrainzngs.musicbrainz.parser_fun')
     @mock.patch('musicbrainzngs.cache.BaseCache.get', side_effect=musicbrainzngs.cache.NotInCache)
@@ -57,3 +57,25 @@ class CacheTest(unittest.TestCase):
             r = musicbrainzngs.get_artist_by_id('mbid')
             cache.assert_called_once_with(**expected_kwargs)
             self.assertEqual(r, 'value')
+
+    @mock.patch('musicbrainzngs.musicbrainz._safe_read', return_value='return_value')
+    @mock.patch('musicbrainzngs.musicbrainz.parser_fun', side_effect=lambda v: v)
+    def test_basic_dict_cache(self, parser, read):
+        cache = musicbrainzngs.cache.DictCache()
+        musicbrainzngs.set_cache(cache)
+
+        # first, we populate the cache
+        r = musicbrainzngs.get_artist_by_id('mbid')
+        self.assertEqual(r, 'return_value')
+        read.assert_called_once()
+
+
+        with mock.patch.object(cache, 'get', wraps=cache.get) as mocked:
+            # now we make the same request, so the cache is used
+            r = musicbrainzngs.get_artist_by_id('mbid')
+            self.assertEqual(r, 'return_value')
+
+            mocked.assert_called_once()
+
+            # read should not have been called again
+            read.assert_called_once()
