@@ -19,6 +19,7 @@ from warnings import warn
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
 from musicbrainzngs import compat
+from musicbrainzngs import cache
 
 _version = "0.7dev"
 _log = logging.getLogger("musicbrainzngs")
@@ -293,6 +294,7 @@ def _docstring_impl(name, values):
 
 user = password = ""
 hostname = "musicbrainz.org"
+_cache = None
 _client = ""
 _useragent = ""
 
@@ -323,6 +325,11 @@ def set_hostname(new_hostname):
     You can also include a port: 'localhost:8000'."""
     global hostname
     hostname = new_hostname
+
+def set_cache(new_cache):
+    """Set the cache (defaults to None)"""
+    global _cache
+    _cache = new_cache
 
 # Rate limiting.
 
@@ -660,6 +667,12 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
 
     opener = compat.build_opener(*handlers)
 
+    try:
+        cache_value = cache._get_from_cache(_cache, url=url, args=newargs, method=method)
+        return parser_fun(cache_value)
+    except cache.NotInCache:
+        pass
+
     # Make request.
     req = _MusicbrainzHttpRequest(method, url, data)
     req.add_header('User-Agent', _useragent)
@@ -672,7 +685,10 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
         req.add_header('Content-Length', '0')
     resp = _safe_read(opener, req, body)
 
+    cache._set_cache(_cache, resp, url=url, args=newargs, method=method)
+
     return parser_fun(resp)
+
 
 def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
