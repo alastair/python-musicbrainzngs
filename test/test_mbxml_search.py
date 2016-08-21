@@ -57,7 +57,7 @@ class UrlTest(unittest.TestCase):
 class SearchArtistTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-artist.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["artist-list"]))
         self.assertEqual(349, res["artist-count"])
@@ -70,7 +70,7 @@ class SearchArtistTest(unittest.TestCase):
 class SearchReleaseTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-release.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["release-list"]))
         self.assertEqual(16739, res["release-count"])
@@ -85,7 +85,7 @@ class SearchReleaseTest(unittest.TestCase):
 class SearchReleaseGroupTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-release-group.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["release-group-list"]))
         self.assertEqual(14641, res["release-group-count"])
@@ -95,7 +95,7 @@ class SearchReleaseGroupTest(unittest.TestCase):
 class SearchWorkTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-work.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["work-list"]))
         self.assertEqual(174, res["work-count"])
@@ -105,7 +105,7 @@ class SearchWorkTest(unittest.TestCase):
 class SearchLabelTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-label.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(1, len(res["label-list"]))
         self.assertEqual(1, res["label-count"])
@@ -115,7 +115,7 @@ class SearchLabelTest(unittest.TestCase):
 class SearchRecordingTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-recording.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(25, len(res["recording-list"]))
         self.assertEqual(1258, res["recording-count"])
@@ -125,7 +125,7 @@ class SearchRecordingTest(unittest.TestCase):
 class SearchInstrumentTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-instrument.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(23, len(res["instrument-list"]))
         self.assertEqual(23, res["instrument-count"])
@@ -137,7 +137,7 @@ class SearchInstrumentTest(unittest.TestCase):
 class SearchPlaceTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-place.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(14, res["place-count"])
         self.assertEqual(14, len(res["place-list"]))
@@ -150,7 +150,7 @@ class SearchPlaceTest(unittest.TestCase):
 class SearchEventTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-event.xml")
-        with open(fn) as msg:
+        with open(fn, 'rb') as msg:
             res = mbxml.parse_message(msg)
         self.assertEqual(3, res["event-count"])
         self.assertEqual(3, len(res["event-list"]))
