@@ -24,6 +24,9 @@ _version = "0.7dev"
 _log = logging.getLogger("musicbrainzngs")
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
+LUCENE_SPECIAL_NO_WILDCARD = r'([+\-&|!(){}\[\]\^":\\\/])'
+WILDCARD_CHARS = r'(\*|~|\?)+'
+
 
 # Constants for validation.
 
@@ -586,6 +589,15 @@ def set_format(fmt="xml"):
     else:
         raise ValueError("invalid format: %s" % fmt)
 
+# Lucene escaping support
+lucene_escaping = False
+
+def enable_escaping():
+    """Enable complete lucene escaping accoring to documentation.
+    By default, wildcard characters are not escaped due to a MusicBrainz API issue.
+    """
+    global lucene_escaping
+    lucene_escaping = True
 
 @_rate_limit
 def _mb_request(path, method='GET', auth_required=AUTH_NO,
@@ -719,16 +731,20 @@ def _do_mb_search(entity, query='', fields={},
 	for the given entity type.
 	"""
 	# Encode the query terms as a Lucene query string.
+	global lucene_escaping
+	lucene_chars = LUCENE_SPECIAL if lucene_escaping else LUCENE_SPECIAL_NO_WILDCARD
 	query_parts = []
 	if query:
 		clean_query = util._unicode(query)
 		if fields:
-			clean_query = re.sub(LUCENE_SPECIAL, r'\\\1',
+			clean_query = re.sub(lucene_chars, r'\\\1',
 					     clean_query)
-			if strict:
+			if strict and not re.search(WILDCARD_CHARS, clean_query):
 				query_parts.append('"%s"' % clean_query)
 			else:
-				query_parts.append(clean_query.lower())
+				if not strict:
+					clean_query = clean_query.lower()
+				query_parts.append(clean_query)
 		else:
 			query_parts.append(clean_query)
 	for key, value in fields.items():
@@ -744,12 +760,13 @@ def _do_mb_search(entity, query='', fields={},
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
-		value = re.sub(LUCENE_SPECIAL, r'\\\1', value)
+		value = re.sub(lucene_chars, r'\\\1', value)
 		if value:
-			if strict:
+			if strict and not re.search(WILDCARD_CHARS, value):
 				query_parts.append('%s:"%s"' % (key, value))
 			else:
-				value = value.lower() # avoid AND / OR
+				if not strict:
+					value = value.lower() # avoid AND / OR
 				query_parts.append('%s:(%s)' % (key, value))
 	if strict:
 		full_query = ' AND '.join(query_parts).strip()
