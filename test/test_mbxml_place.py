@@ -18,15 +18,15 @@ class PlaceTest(unittest.TestCase):
         res = _common.open_and_parse_test_data(self.datadir, filename)
 
         p = res["place"]
-        self.assertEquals("All Saints' Church", p["name"])
-        self.assertEquals("East Finchley, Durham Road", p["disambiguation"])
-        self.assertEquals("38 Durham Road, London N2 9DP, United Kingdom", p["address"])
-        self.assertEquals({"latitude": "51.591812", "longitude": "-0.159699"}, p["coordinates"])
-        self.assertEquals("f03d09b3-39dc-4083-afd6-159e3f0d462f", p["area"]["id"])
-        self.assertEquals("1891", p["life-span"]["begin"])
-        self.assertEquals("All Saints' Durham Road", p["alias-list"][0]["alias"])
-        self.assertEquals("type=church", p["tag-list"][0]["name"])
-        self.assertEquals("1", p["tag-list"][0]["count"])
+        self.assertEqual("All Saints' Church", p["name"])
+        self.assertEqual("East Finchley, Durham Road", p["disambiguation"])
+        self.assertEqual("38 Durham Road, London N2 9DP, United Kingdom", p["address"])
+        self.assertEqual({"latitude": "51.591812", "longitude": "-0.159699"}, p["coordinates"])
+        self.assertEqual("f03d09b3-39dc-4083-afd6-159e3f0d462f", p["area"]["id"])
+        self.assertEqual("1891", p["life-span"]["begin"])
+        self.assertEqual("All Saints' Durham Road", p["alias-list"][0]["alias"])
+        self.assertEqual("type=church", p["tag-list"][0]["name"])
+        self.assertEqual("1", p["tag-list"][0]["count"])
 
     def testListFromBrowse(self):
         filename = "browse-area-74e50e58-5deb-4b99-93a2-decbb365c07f-annotation.xml"
@@ -36,4 +36,3 @@ class PlaceTest(unittest.TestCase):
         self.assertEqual(25, len(res["place-list"]))
 
         self.assertTrue(res["place-list"][13]["annotation"]["text"].startswith("was later renamed"))
-
