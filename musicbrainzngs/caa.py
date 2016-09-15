@@ -13,6 +13,7 @@ import json
 
 from musicbrainzngs import compat
 from musicbrainzngs import musicbrainz
+from musicbrainzngs.util import _unicode
 
 hostname = "coverartarchive.org"
 
@@ -78,7 +79,8 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
         return resp
     else:
         # Otherwise it's json
-        return json.loads(resp)
+        data = _unicode(resp)
+        return json.loads(data)
 
 
 def get_image_list(releaseid):

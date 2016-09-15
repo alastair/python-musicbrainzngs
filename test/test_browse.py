@@ -10,7 +10,7 @@ from test import _common
 class BrowseTest(unittest.TestCase):
 
     def setUp(self):
-        self.opener = _common.FakeOpener("<response/>")
+        self.opener = _common.FakeOpener()
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
 
         musicbrainzngs.set_useragent("a", "1")
