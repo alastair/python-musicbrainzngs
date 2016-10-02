@@ -13,7 +13,7 @@ class CaaTest(unittest.TestCase):
 
     def test_get_list(self):
         # check the url and response for a listing
-        resp = '{"images":[]}'
+        resp = b'{"images":[]}'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
@@ -23,7 +23,7 @@ class CaaTest(unittest.TestCase):
 
     def test_get_release_group_list(self):
         # check the url and response for a listing
-        resp = '{"images":[], "release": "foo"}'
+        resp = b'{"images":[], "release": "foo"}'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_release_group_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
@@ -58,7 +58,7 @@ class CaaTest(unittest.TestCase):
         """ When a useragent is set it is sent with the request """
         musicbrainzngs.set_useragent("caa-test", "0.1")
 
-        resp = '{"images":[]}'
+        resp = b'{"images":[]}'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
@@ -68,7 +68,7 @@ class CaaTest(unittest.TestCase):
         self.assertEqual("caa-test/0.1 python-musicbrainzngs/%s" % _version, headers["User-agent"])
 
     def test_coverid(self):
-        resp = 'some_image'
+        resp = b'some_image'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234")
@@ -77,7 +77,7 @@ class CaaTest(unittest.TestCase):
         self.assertEqual(resp, res)
 
     def test_get_size(self):
-        resp = 'some_image'
+        resp = b'some_image'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234", 250)
@@ -86,7 +86,7 @@ class CaaTest(unittest.TestCase):
         self.assertEqual(resp, res)
 
     def test_front(self):
-        resp = 'front_image'
+        resp = b'front_image'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
@@ -95,7 +95,7 @@ class CaaTest(unittest.TestCase):
         self.assertEqual(resp, res)
 
     def test_release_group_front(self):
-        resp = 'front_image'
+        resp = b'front_image'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_release_group_image_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
@@ -104,7 +104,7 @@ class CaaTest(unittest.TestCase):
         self.assertEqual(resp, res)
 
     def test_back(self):
-        resp = 'back_image'
+        resp = b'back_image'
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_back("8ec178f4-a8e8-4f22-bcba-1964466ef214")
