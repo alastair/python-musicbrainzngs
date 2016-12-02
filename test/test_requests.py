@@ -14,6 +14,11 @@ class ArgumentTest(unittest.TestCase):
     def setUp(self):
         self.opener = _common.FakeOpener("<response/>")
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
+        self.orig_do_rate_limit = musicbrainz.do_rate_limit
+        musicbrainz.do_rate_limit = False
+
+    def tearDown(self):
+        musicbrainz.do_rate_limit = self.orig_do_rate_limit
 
     def test_no_client(self):
         musicbrainzngs.set_useragent("testapp", "0.1", "test@example.org")
