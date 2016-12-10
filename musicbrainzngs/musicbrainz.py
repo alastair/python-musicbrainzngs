@@ -556,7 +556,7 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     else:
         # Explicitly indicate zero content length if no request data
         # will be sent (avoids HTTP 411 error).
-        headers['Content-Length'] = 0
+        headers['Content-Length'] = '0'
 
     # Convert args from a dictionary to a list of tuples
     # so that the ordering of elements is stable for easy
