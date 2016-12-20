@@ -8,6 +8,19 @@ from musicbrainzngs import musicbrainz
 from test import _common
 
 class SubmitTest(unittest.TestCase):
+
+    def setUp(self):
+        self.orig_opener = musicbrainzngs.compat.build_opener
+        musicbrainz.set_useragent("test_client", "1.0")
+        musicbrainz.auth("user", "password")
+
+    def tearDown(self):
+        musicbrainzngs.compat.build_opener = self.orig_opener
+        musicbrainz._useragent = ""
+        musicbrainz._client = ""
+        musicbrainz.user = ""
+        musicbrainz.password = ""
+
     def test_submit_tags(self):
         self.opener = _common.FakeOpener("<response/>")
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
