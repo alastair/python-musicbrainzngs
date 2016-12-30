@@ -1,2 +1,2 @@
-from musicbrainzngs.musicbrainz import *
-from musicbrainzngs.caa import *
+from .musicbrainz import *
+from .caa import *
