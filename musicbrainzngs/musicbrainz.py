@@ -13,6 +13,8 @@ import locale
 import sys
 import json
 import xml.etree.ElementTree as etree
+import urllib
+import json
 from xml.parsers import expat
 from warnings import warn
 
@@ -289,12 +291,55 @@ def _docstring_impl(name, values):
     return _decorator
 
 
+# OAuth support
+class MbOAuth2(object):
+    def __init__(self, client_id, client_secret, redirect_uri):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.redirect_uri = redirect_uri
+
+    def auth_request(self, scope, state='', access_type='online', approval_prompt='auto'):
+        fields = {
+            'response_type': 'code',
+            'client_id': self.client_id,
+            'redirect_uri': self.redirect_uri,
+            'scope': scope
+        }
+
+        return u'https://musicbrainz.org/oauth2/authorize?{0}'.format(urllib.urlencode(fields))
+
+    def access_token(self, code):
+        fields = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'redirect_uri': self.redirect_uri
+        }
+        response = json.load(urllib.urlopen('https://musicbrainz.org/oauth2/token',
+            urllib.urlencode(fields)))
+        return response['access_token'], response['expires_in'], response['refresh_token']
+
+
+    def refresh_token(self, refresh_token):
+        fields = {
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token,
+            'client_id': self.client_id,
+            'client_secret': self.client_secret
+        }
+        response = json.load(urllib.urlopen('https://musicbrainz.org/oauth2/token',
+            urllib.urlencode(fields)))
+        return response['access_token'], response['expires_in'], response['refresh_token']
+
+
 # Global authentication and endpoint details.
 
 user = password = ""
 hostname = "musicbrainz.org"
 _client = ""
 _useragent = ""
+
 
 def auth(u, p):
 	"""Set the username and password to be used in subsequent queries to
