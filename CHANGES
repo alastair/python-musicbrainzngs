@@ -1,5 +1,6 @@
 0.7dev:
     * allow the 'work-level-rels' include for recording lookups (Shen-Ta Hsieh, #213)
+    * added support for 'target-credit' elements (Itay Brandes, #162 & #217)
 
 0.6 (2016-04-11):
     * don't require authentication when getting public collections (#87)
