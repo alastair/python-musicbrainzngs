@@ -33,3 +33,4 @@ class GetArtistTest(unittest.TestCase):
     def testArtistTargets(self):
         res = _common.open_and_parse_test_data(self.datadir, "b3785a55-2cf6-497d-b8e3-cfa21a36f997-artist-rels.xml")
         self.assertTrue('target-credit' in res['artist']['artist-relation-list'][0])
+        self.assertEqual(res['artist']['artist-relation-list'][0]["target-credit"], "TAO")
