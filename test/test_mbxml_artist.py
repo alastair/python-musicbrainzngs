@@ -29,4 +29,7 @@ class GetArtistTest(unittest.TestCase):
 
         res = _common.open_and_parse_test_data(self.datadir, "2736bad5-6280-4c8f-92c8-27a5e63bbab2-aliases.xml")
         self.assertFalse("alias-list" in res["artist"])
-
+    
+    def testArtistTargets(self):
+        res = _common.open_and_parse_test_data(self.datadir, "b3785a55-2cf6-497d-b8e3-cfa21a36f997-artist-rels.xml")
+        self.assertTrue('target-credit' in res['artist']['artist-relation-list'][0])

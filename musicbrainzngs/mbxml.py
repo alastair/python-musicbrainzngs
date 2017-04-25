@@ -377,7 +377,7 @@ def parse_relation(relation):
     result.update(parse_elements(elements, inner_els, relation))
     # We parse attribute-list again to get attributes that have both
     # text and attribute values
-    result.update(parse_elements([], {"attribute-list": parse_relation_attribute_list}, relation))
+    result.update(parse_elements(['target-credit'], {"attribute-list": parse_relation_attribute_list}, relation))
 
     return result
 
