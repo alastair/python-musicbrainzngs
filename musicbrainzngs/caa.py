@@ -32,7 +32,7 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
                     with :meth:`get_image_list`.
     :type imageid: str
 
-    :param size: "250", "500"
+    :param size: "250", "500", "1200"
     :type size: str or None
 
     :param entitytype: ``release`` or ``release-group``
@@ -160,10 +160,10 @@ def get_image(mbid, coverid, size=None, entitytype="release"):
                     :meth:`get_image_list`
     :type coverid: int or str
 
-    :param size: "250", "500" or None. If it is None, the largest available picture
-                 will be downloaded. If the image originally uploaded to the
-                 Cover Art Archive was smaller than the requested size, only
-                 the original image will be returned.
+    :param size: "250", "500", "1200" or None. If it is None, the largest
+                 available picture will be downloaded. If the image originally
+                 uploaded to the Cover Art Archive was smaller than the
+                 requested size, only the original image will be returned.
     :type size: str or None
 
     :param entitytype: The type of entity for which to download the cover art.
