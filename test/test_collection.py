@@ -1,12 +1,8 @@
 import unittest
-import os
-import sys
-# Insert .. at the beginning of path so we use this version instead
-# of something that's already been installed
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import musicbrainzngs
 from musicbrainzngs import compat
 from test import _common
+
 
 class CollectionTest(unittest.TestCase):
     """ Test that requesting collections works properly """

@@ -1,13 +1,11 @@
 import unittest
-import os
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from musicbrainzngs import caa
 from musicbrainzngs import compat
 from musicbrainzngs.musicbrainz import _version
 import musicbrainzngs
 from test import _common
+
 
 class CaaTest(unittest.TestCase):
 
