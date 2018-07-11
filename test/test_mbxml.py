@@ -1,8 +1,6 @@
 import unittest
-import os
-import sys
-sys.path.append(os.path.abspath(".."))
 from musicbrainzngs import mbxml
+
 
 class MbXML(unittest.TestCase):
 

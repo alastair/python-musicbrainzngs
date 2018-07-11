@@ -1,15 +1,12 @@
 import unittest
 import os
-import sys
-# Insert .. at the beginning of path so we use this version instead
-# of something that's already been installed
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import musicbrainzngs
 from musicbrainzngs import mbxml
 from test import _common
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
 
 class UrlTest(unittest.TestCase):
     """ Test that the correct URL is generated when a search query is made """
