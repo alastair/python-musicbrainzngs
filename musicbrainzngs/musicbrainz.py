@@ -1023,16 +1023,6 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format
         params["media-format"] = media_format
     return _do_mb_query("discid", id, includes, params)
 
-@_docstring_get("recording")
-def get_recordings_by_echoprint(echoprint, includes=[], release_status=[],
-                                release_type=[]):
-    """Search for recordings with an `echoprint <http://echoprint.me>`_.
-    (not available on server)"""
-    warn("Echoprints were never introduced\n"
-         "and will not be found (404)",
-         Warning, stacklevel=2)
-    raise ResponseError(cause=compat.HTTPError(
-                                            None, 404, "Not Found", None, None))
 
 @_docstring_get("recording")
 def get_recordings_by_puid(puid, includes=[], release_status=[],
@@ -1269,14 +1259,6 @@ def submit_puids(recording_puids):
          Warning, stacklevel=2)
     return {'message': {'text': 'OK'}}
 
-def submit_echoprints(recording_echoprints):
-    """Submit echoprints.
-    (Functionality removed from server)
-    """
-    warn("Echoprints were never introduced\n"
-         "nothing will be submitted",
-         Warning, stacklevel=2)
-    return {'message': {'text': 'OK'}}
 
 def submit_isrcs(recording_isrcs):
     """Submit ISRCs.
