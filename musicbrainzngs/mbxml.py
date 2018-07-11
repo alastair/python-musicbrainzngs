@@ -7,29 +7,26 @@ import re
 import xml.etree.ElementTree as ET
 import logging
 
-from musicbrainzngs import util
+from . import util
 
-try:
-    from ET import fixtag
-except:
-    # Python < 2.7
-    def fixtag(tag, namespaces):
-        # given a decorated tag (of the form {uri}tag), return prefixed
-        # tag and namespace declaration, if any
-        if isinstance(tag, ET.QName):
-            tag = tag.text
-        namespace_uri, tag = tag[1:].split("}", 1)
-        prefix = namespaces.get(namespace_uri)
-        if prefix is None:
-            prefix = "ns%d" % len(namespaces)
-            namespaces[namespace_uri] = prefix
-            if prefix == "xml":
-                xmlns = None
-            else:
-                xmlns = ("xmlns:%s" % prefix, namespace_uri)
-        else:
+
+def fixtag(tag, namespaces):
+    # given a decorated tag (of the form {uri}tag), return prefixed
+    # tag and namespace declaration, if any
+    if isinstance(tag, ET.QName):
+        tag = tag.text
+    namespace_uri, tag = tag[1:].split("}", 1)
+    prefix = namespaces.get(namespace_uri)
+    if prefix is None:
+        prefix = "ns%d" % len(namespaces)
+        namespaces[namespace_uri] = prefix
+        if prefix == "xml":
             xmlns = None
-        return "%s:%s" % (prefix, tag), xmlns
+        else:
+            xmlns = ("xmlns:%s" % prefix, namespace_uri)
+    else:
+        xmlns = None
+    return "%s:%s" % (prefix, tag), xmlns
 
 
 NS_MAP = {"http://musicbrainz.org/ns/mmd-2.0#": "ws2",
