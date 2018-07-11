@@ -69,7 +69,6 @@ VALID_INCLUDES = {
         "annotation", "aliases"
     ] + RELATION_INCLUDES,
     'work': [
-        "artists", # Subqueries
         "aliases", "annotation"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
