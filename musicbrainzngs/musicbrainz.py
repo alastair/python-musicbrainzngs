@@ -58,7 +58,7 @@ VALID_INCLUDES = {
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "puids", "isrcs",
+        "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
     ] + TAG_INCLUDES + RELATION_INCLUDES,
     'release-group': [
@@ -74,10 +74,10 @@ VALID_INCLUDES = {
     'url': RELATION_INCLUDES,
     'discid': [ # Discid should be the same as release
         "artists", "labels", "recordings", "release-groups", "media",
-        "artist-credits", "discids", "puids", "isrcs",
+        "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
     ] + RELATION_INCLUDES,
-    'isrc': ["artists", "releases", "puids", "isrcs"],
+    'isrc': ["artists", "releases", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
 }
@@ -124,7 +124,7 @@ VALID_SEARCH_FIELDS = {
     'recording': [
         'arid', 'artist', 'artistname', 'creditname', 'comment',
         'country', 'date', 'dur', 'format', 'isrc', 'number',
-        'position', 'primarytype', 'puid', 'qdur', 'recording',
+        'position', 'primarytype', 'qdur', 'recording',
         'recordingaccent', 'reid', 'release', 'rgid', 'rid',
         'secondarytype', 'status', 'tnum', 'tracks', 'tracksrelease',
         'tag', 'type', 'video'
@@ -139,7 +139,7 @@ VALID_SEARCH_FIELDS = {
         'arid', 'artist', 'artistname', 'asin', 'barcode', 'creditname',
         'catno', 'comment', 'country', 'creditname', 'date', 'discids',
         'discidsmedium', 'format', 'laid', 'label', 'lang', 'mediums',
-        'primarytype', 'puid', 'quality', 'reid', 'release', 'releaseaccent',
+        'primarytype', 'quality', 'reid', 'release', 'releaseaccent',
         'rgid', 'script', 'secondarytype', 'status', 'tag', 'tracks',
         'tracksmedium', 'type'
     ],
@@ -277,8 +277,6 @@ def _docstring_search(entity):
 
 def _docstring_impl(name, values):
     def _decorator(func):
-        # puids are allowed so nothing breaks, but not documented
-        if "puids" in values: values.remove("puids")
         vstr = ", ".join(values)
         args = {name: vstr}
         if func.__doc__:
@@ -736,10 +734,6 @@ def _do_mb_search(entity, query='', fields={},
 			raise InvalidSearchFieldError(
 				'%s is not a valid search field for %s' % (key, entity)
 			)
-		elif key == "puid":
-			warn("PUID support was removed from server\n"
-			     "the 'puid' field is ignored",
-			     Warning, stacklevel=2)
 
 		# Escape Lucene's special characters.
 		value = util._unicode(value)
@@ -1025,17 +1019,6 @@ def get_releases_by_discid(id, includes=[], toc=None, cdstubs=True, media_format
 
 
 @_docstring_get("recording")
-def get_recordings_by_puid(puid, includes=[], release_status=[],
-                           release_type=[]):
-    """Search for recordings with a :musicbrainz:`PUID`.
-    (not available on server)"""
-    warn("PUID support was removed from the server\n"
-         "and no PUIDs will be found (404)",
-         Warning, stacklevel=2)
-    raise ResponseError(cause=compat.HTTPError(
-                                            None, 404, "Not Found", None, None))
-
-@_docstring_get("recording")
 def get_recordings_by_isrc(isrc, includes=[], release_status=[],
                            release_type=[]):
     """Search for recordings with an :musicbrainz:`ISRC`.
@@ -1249,15 +1232,6 @@ def submit_barcodes(release_barcode):
     """Submits a set of {release_id1: barcode, ...}"""
     query = mbxml.make_barcode_request(release_barcode)
     return _do_mb_post("release", query)
-
-def submit_puids(recording_puids):
-    """Submit PUIDs.
-    (Functionality removed from server)
-    """
-    warn("PUID support was dropped at the server\n"
-         "nothing will be submitted",
-         Warning, stacklevel=2)
-    return {'message': {'text': 'OK'}}
 
 
 def submit_isrcs(recording_isrcs):

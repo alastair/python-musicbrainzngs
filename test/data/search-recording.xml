@@ -33,9 +33,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="61972436-c2f3-2803-7275-a7637f361762"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="ac78e2cd-720c-48be-b79f-d6d6ed5a05c4">
       <title>Waiting My Turn</title>
@@ -69,9 +66,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="86d41bcb-102a-73a7-8aa6-bbc35725e493"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="fc167a9c-7aca-4e27-a266-7d04b07004d6">
       <title>Just a Victim</title>
@@ -105,10 +99,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="ba1feb58-c113-ee03-183d-4e0e1dfdb03d"/>
-        <puid id="0df4a845-483a-c1b5-8f88-3f8061ac9592"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="35421254-0c57-40d0-a527-76709363f210">
       <title>Retail Guru</title>
@@ -142,9 +132,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="6e4777d8-1576-9cb5-9864-130cecc9becd"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="dc644a8d-6640-4117-8d96-5b9504c40cf1">
       <title>If this Beard Had Wings</title>
@@ -178,9 +165,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="5604d149-49ab-b67d-e6df-d3536a59c978"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="6f039458-796d-4e04-887c-5e8aa50fccb1">
       <title>Headrush</title>
@@ -676,9 +660,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="801e346c-f9c4-9dbc-8cd6-4815e5fbe423"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="ad5a48b4-c304-4080-85a8-dd2b0d96c359">
       <title>Dead By Morning</title>
@@ -712,11 +693,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="9885b669-c49d-a222-548d-a662854a121c"/>
-        <puid id="6afcd09c-c47f-f887-fa6f-708704d835ce"/>
-        <puid id="5f13504e-e464-fe45-17c6-e63fd81cd1e6"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="b073a71e-493e-421a-b6ff-1cbf5fe3a616">
       <title>New Bed Science</title>
@@ -750,10 +726,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="0ac4f4e8-a1a7-cecf-3769-bc97f7cdea3f"/>
-        <puid id="2457cbdd-a40e-72f3-a1b5-56e70064b399"/>
-      </puid-list>
     </recording>
     <recording ext:score="41" id="103e3fd2-e1cf-4f24-9fb1-c34f7a9fe3c1">
       <title>Middle Class</title>
@@ -787,10 +759,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="65389b84-2e3f-e6ff-b219-14db1ee2a83c"/>
-        <puid id="cc1e8ced-a696-825a-147b-a1c1f70a4f78"/>
-      </puid-list>
     </recording>
     <recording ext:score="16" id="5d93c09f-e20c-4518-a94a-cb91207c6a3c">
       <title>Thief</title>
@@ -824,14 +792,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="247db580-6841-073e-1cd8-136e8584245a"/>
-        <puid id="a60042b9-0d71-9360-443b-ea0911539390"/>
-        <puid id="1962ea02-bbdf-a0f0-b3eb-e1c6b04c6d4d"/>
-        <puid id="1ad283e2-a541-0e47-3835-8bdbc1808777"/>
-        <puid id="d4b46938-cb74-c8fd-1103-1852aa3f2ef0"/>
-        <puid id="50e47ce0-7934-e5f7-8b5c-bc2260f41c22"/>
-      </puid-list>
     </recording>
     <recording ext:score="16" id="b47c4a38-a130-484a-83cd-810e7b627ddf">
       <title>Thief</title>
@@ -922,10 +882,6 @@
           </medium-list>
         </release>
       </release-list>
-      <puid-list>
-        <puid id="5bc5f6e3-6b35-fec0-cc4a-6b2adcaa4381"/>
-        <puid id="15a57d44-729c-dcf5-ceaa-8653cde232f5"/>
-      </puid-list>
       <tag-list>
         <tag count="1">
           <name>to radiohead stop ruining can</name>

@@ -12,7 +12,6 @@ def main():
 	#print m.get_work_by_id("7e48685c-72dd-3a8b-9274-4777efb2aa75")
 
 	#print m.get_releases_by_discid("BG.iuI50.qn1DOBAWIk8fUYoeHM-")
-	#print m.get_recordings_by_puid("070359fc-8219-e62b-7bfd-5a01e742b490")
 	#print m.get_recordings_by_isrc("GBAYE9300106")
 
 	m.auth("", "")
