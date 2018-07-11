@@ -90,13 +90,13 @@ pygments_style = 'sphinx'
 #modindex_common_prefix = []
 
 extlinks = {
-    'musicbrainz': ('http://musicbrainz.org/doc/%s', ''),
+    'musicbrainz': ('https://musicbrainz.org/doc/%s', ''),
 }
 
 intersphinx_mapping = {
-    'python': ('http://python.readthedocs.org/en/latest/', None),
-    'python2': ('http://python.readthedocs.org/en/v2.7.2/', None),
-    'discid': ('http://python-discid.readthedocs.org/en/latest/', None),
+    'python': ('http://python.readthedocs.io/en/latest/', None),
+    'python2': ('http://python.readthedocs.io/en/v2.7.2/', None),
+    'discid': ('http://python-discid.readthedocs.io/en/latest/', None),
 }
 
 
