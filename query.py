@@ -12,7 +12,6 @@ def main():
 	#print m.get_work_by_id("7e48685c-72dd-3a8b-9274-4777efb2aa75")
 
 	#print m.get_releases_by_discid("BG.iuI50.qn1DOBAWIk8fUYoeHM-")
-	#print m.get_recordings_by_puid("070359fc-8219-e62b-7bfd-5a01e742b490")
 	#print m.get_recordings_by_isrc("GBAYE9300106")
 
 	m.auth("", "")
@@ -21,7 +20,6 @@ def main():
 	#m.submit_tags(artist_tags={"952a4205-023d-4235-897c-6fdb6f58dfaa":["NZ", "twee"]})
 
 	#m.submit_ratings(recording_ratings={"cb4d4d70-930c-4d1a-a157-776de18be66a":20})
-    #m.submit_echoprints({"e97f805a-ab48-4c52-855e-07049142113d": "anechoprint1234567"})
 
 if __name__ == "__main__":
 	main()

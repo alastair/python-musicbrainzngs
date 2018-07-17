@@ -505,7 +505,6 @@ def parse_recording(recording):
                  "user-tag-list": parse_tag_list,
                  "rating": parse_rating,
                  "isrc-list": parse_external_id_list,
-                 "echoprint-list": parse_external_id_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_annotation}
 
