@@ -1,4 +1,6 @@
 0.7dev:
+    * removed support for PUIDs and Echoprint (Alastair Porter, #237)
+    * removed the 'artists' include for work lookup (Alastair Porter, #231 & #227)
     * allow the 'work-level-rels' include for recording lookups (Shen-Ta Hsieh, #213)
     * added support for 'target-credit' elements (Itay Brandes, #162 & #217)
 
