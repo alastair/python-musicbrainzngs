@@ -109,25 +109,37 @@ VALID_SEARCH_FIELDS = {
     ],
     'area': [
         'aid', 'area', 'alias', 'begin', 'comment', 'end', 'ended',
-        'iso', 'iso1', 'iso2', 'iso3', 'type'
+        'iso', 'iso1', 'iso2', 'iso3', 'sortname', 'type'
     ],
     'artist': [
         'arid', 'artist', 'artistaccent', 'alias', 'begin', 'comment',
         'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type',
         'area', 'beginarea', 'endarea'
     ],
+    'event': [
+        'alias', 'aid', 'area', 'arid', 'artist', 'comment', 'eid', 'event',
+        'pid', 'place', 'type', 'tag'
+    ],
+    'instrument': [
+        'alias', 'comment', 'description', 'iid', 'instrument',
+        'type', 'tag'
+    ],
     'label': [
         'alias', 'begin', 'code', 'comment', 'country', 'end', 'ended',
         'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag',
         'area'
+    ],
+    'place': [
+        'pid', 'address', 'alias', 'area', 'begin', 'comment', 'end', 'ended',
+        'lat', 'long', 'place', 'placeaccent', 'type'
     ],
     'recording': [
         'arid', 'artist', 'artistname', 'creditname', 'comment',
         'country', 'date', 'dur', 'format', 'isrc', 'number',
         'position', 'primarytype', 'qdur', 'recording',
         'recordingaccent', 'reid', 'release', 'rgid', 'rid',
-        'secondarytype', 'status', 'tnum', 'tracks', 'tracksrelease',
-        'tag', 'type', 'video'
+        'secondarytype', 'status', 'tid', 'tnum', 'tracks',
+        'tracksrelease', 'tag', 'type', 'video'
     ],
     'release-group': [
         'arid', 'artist', 'artistname', 'comment', 'creditname',
@@ -144,7 +156,7 @@ VALID_SEARCH_FIELDS = {
         'tracksmedium', 'type'
     ],
     'series': [
-        'alias', 'comment', 'sid', 'series', 'type'
+        'alias', 'comment', 'sid', 'series', 'type', 'tag'
     ],
     'work': [
         'alias', 'arid', 'artist', 'comment', 'iswc', 'lang', 'tag',
