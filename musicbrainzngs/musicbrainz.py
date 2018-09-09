@@ -108,60 +108,58 @@ VALID_SEARCH_FIELDS = {
         'entity', 'name', 'text', 'type'
     ],
     'area': [
-        'aid', 'area', 'alias', 'begin', 'comment', 'end', 'ended',
-        'iso', 'iso1', 'iso2', 'iso3', 'sortname', 'type'
+        'aid', 'alias', 'area', 'areaaccent', 'begin', 'comment', 'end',
+        'ended', 'iso', 'iso1', 'iso2', 'iso3', 'sortname', 'tag', 'type'
     ],
     'artist': [
-        'arid', 'artist', 'artistaccent', 'alias', 'begin', 'comment',
-        'country', 'end', 'ended', 'gender', 'ipi', 'sortname', 'tag', 'type',
-        'area', 'beginarea', 'endarea'
+        'alias', 'area', 'arid', 'artist', 'artistaccent', 'begin', 'beginarea',
+        'comment', 'country', 'end', 'endarea', 'ended', 'gender',
+        'ipi', 'isni', 'primary_alias', 'sortname', 'tag', 'type'
     ],
     'event': [
-        'alias', 'aid', 'area', 'arid', 'artist', 'comment', 'eid', 'event',
-        'pid', 'place', 'type', 'tag'
+        'aid', 'alias', 'area', 'arid', 'artist', 'begin', 'comment', 'eid',
+        'end', 'ended', 'event', 'eventaccent', 'pid', 'place', 'tag', 'type'
     ],
     'instrument': [
         'alias', 'comment', 'description', 'iid', 'instrument',
-        'type', 'tag'
+        'instrumentaccent', 'tag', 'type'
     ],
     'label': [
-        'alias', 'begin', 'code', 'comment', 'country', 'end', 'ended',
-        'ipi', 'label', 'labelaccent', 'laid', 'sortname', 'type', 'tag',
-        'area'
-    ],
-    'place': [
-        'pid', 'address', 'alias', 'area', 'begin', 'comment', 'end', 'ended',
-        'lat', 'long', 'place', 'placeaccent', 'type'
-    ],
-    'recording': [
-        'arid', 'artist', 'artistname', 'creditname', 'comment',
-        'country', 'date', 'dur', 'format', 'isrc', 'number',
-        'position', 'primarytype', 'qdur', 'recording',
-        'recordingaccent', 'reid', 'release', 'rgid', 'rid',
-        'secondarytype', 'status', 'tid', 'tnum', 'tracks',
-        'tracksrelease', 'tag', 'type', 'video'
-    ],
-    'release-group': [
-        'arid', 'artist', 'artistname', 'comment', 'creditname',
-        'primarytype', 'rgid', 'releasegroup', 'releasegroupaccent',
-        'releases', 'release', 'reid', 'secondarytype', 'status',
+        'alias', 'area', 'begin', 'code', 'comment', 'country', 'end', 'ended',
+        'ipi', 'label', 'labelaccent', 'laid', 'release_count', 'sortname',
         'tag', 'type'
     ],
+    'place': [
+        'address', 'alias', 'area', 'begin', 'comment', 'end', 'ended', 'lat', 'long',
+        'pid', 'place', 'placeaccent', 'type'
+    ],
+    'recording': [
+        'alias', 'arid', 'artist', 'artistname', 'comment', 'country',
+        'creditname', 'date', 'dur', 'format', 'isrc', 'number', 'position',
+        'primarytype', 'qdur', 'recording', 'recordingaccent', 'reid',
+        'release', 'rgid', 'rid', 'secondarytype', 'status', 'tag', 'tid',
+        'tnum', 'tracks', 'tracksrelease', 'type', 'video'],
+
+    'release-group': [
+        'alias', 'arid', 'artist', 'artistname', 'comment', 'creditname',
+        'primarytype', 'reid', 'release', 'releasegroup', 'releasegroupaccent',
+        'releases', 'rgid', 'secondarytype', 'status', 'tag', 'type'
+    ],
     'release': [
-        'arid', 'artist', 'artistname', 'asin', 'barcode', 'creditname',
-        'catno', 'comment', 'country', 'creditname', 'date', 'discids',
-        'discidsmedium', 'format', 'laid', 'label', 'lang', 'mediums',
-        'primarytype', 'quality', 'reid', 'release', 'releaseaccent',
-        'rgid', 'script', 'secondarytype', 'status', 'tag', 'tracks',
-        'tracksmedium', 'type'
+        'alias', 'arid', 'artist', 'artistname', 'asin', 'barcode', 'catno',
+        'comment', 'country', 'creditname', 'date', 'discids', 'discidsmedium',
+        'format', 'label', 'laid', 'lang', 'mediums', 'primarytype', 'quality',
+        'reid', 'release', 'releaseaccent', 'rgid', 'script', 'secondarytype',
+        'status', 'tag', 'tracks', 'tracksmedium', 'type'
     ],
     'series': [
-        'alias', 'comment', 'sid', 'series', 'type', 'tag'
+        'alias', 'comment', 'orderingattribute', 'series', 'seriesaccent',
+        'sid', 'tag', 'type'
     ],
     'work': [
-        'alias', 'arid', 'artist', 'comment', 'iswc', 'lang', 'tag',
-        'type', 'wid', 'work', 'workaccent'
-    ],
+        'alias', 'arid', 'artist', 'comment', 'iswc', 'lang', 'recording',
+        'recording_count', 'rid', 'tag', 'type', 'wid', 'work', 'workaccent'
+    ]
 }
 
 # Constants
