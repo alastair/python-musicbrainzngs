@@ -1,54 +1,9 @@
 import unittest
 import os
-import musicbrainzngs
 from musicbrainzngs import mbxml
-from test import _common
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-
-
-class UrlTest(unittest.TestCase):
-    """ Test that the correct URL is generated when a search query is made """
-
-    def setUp(self):
-        self.opener = _common.FakeOpener("<response/>")
-        musicbrainzngs.compat.build_opener = lambda *args: self.opener
-
-        musicbrainzngs.set_useragent("a", "1")
-        musicbrainzngs.set_rate_limit(False)
-
-    def testSearchArtist(self):
-        musicbrainzngs.search_artists("Dynamo Go")
-        self.assertEqual("http://musicbrainz.org/ws/2/artist/?query=Dynamo+Go", self.opener.get_url())
-
-    def testSearchEvent(self):
-        musicbrainzngs.search_events("woodstock")
-        self.assertEqual("http://musicbrainz.org/ws/2/event/?query=woodstock", self.opener.get_url())
-
-    def testSearchLabel(self):
-        musicbrainzngs.search_labels("Waysafe")
-        self.assertEqual("http://musicbrainz.org/ws/2/label/?query=Waysafe", self.opener.get_url())
-
-    def testSearchPlace(self):
-        musicbrainzngs.search_places("Fillmore")
-        self.assertEqual("http://musicbrainz.org/ws/2/place/?query=Fillmore", self.opener.get_url())
-
-    def testSearchRelease(self):
-        musicbrainzngs.search_releases("Affordable Pop Music")
-        self.assertEqual("http://musicbrainz.org/ws/2/release/?query=Affordable+Pop+Music", self.opener.get_url())
-
-    def testSearchReleaseGroup(self):
-        musicbrainzngs.search_release_groups("Affordable Pop Music")
-        self.assertEqual("http://musicbrainz.org/ws/2/release-group/?query=Affordable+Pop+Music", self.opener.get_url())
-
-    def testSearchRecording(self):
-        musicbrainzngs.search_recordings("Thief of Hearts")
-        self.assertEqual("http://musicbrainz.org/ws/2/recording/?query=Thief+of+Hearts", self.opener.get_url())
-
-    def testSearchWork(self):
-        musicbrainzngs.search_works("Fountain City")
-        self.assertEqual("http://musicbrainz.org/ws/2/work/?query=Fountain+City", self.opener.get_url())
 
 
 class SearchArtistTest(unittest.TestCase):
@@ -63,6 +18,7 @@ class SearchArtistTest(unittest.TestCase):
         # Score is a key that is only in search results -
         # so check for it here
         self.assertEqual("100", one["ext:score"])
+
 
 class SearchReleaseTest(unittest.TestCase):
     def testFields(self):
@@ -79,6 +35,7 @@ class SearchReleaseTest(unittest.TestCase):
         self.assertEqual(1, one["medium-count"])
         self.assertEqual("CD", one["medium-list"][0]["format"])
 
+
 class SearchReleaseGroupTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-release-group.xml")
@@ -88,6 +45,7 @@ class SearchReleaseGroupTest(unittest.TestCase):
         self.assertEqual(14641, res["release-group-count"])
         one = res["release-group-list"][0]
         self.assertEqual("100", one["ext:score"])
+
 
 class SearchWorkTest(unittest.TestCase):
     def testFields(self):
@@ -99,6 +57,7 @@ class SearchWorkTest(unittest.TestCase):
         one = res["work-list"][0]
         self.assertEqual("100", one["ext:score"])
 
+
 class SearchLabelTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-label.xml")
@@ -109,6 +68,7 @@ class SearchLabelTest(unittest.TestCase):
         one = res["label-list"][0]
         self.assertEqual("100", one["ext:score"])
 
+
 class SearchRecordingTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-recording.xml")
@@ -118,6 +78,7 @@ class SearchRecordingTest(unittest.TestCase):
         self.assertEqual(1258, res["recording-count"])
         one = res["recording-list"][0]
         self.assertEqual("100", one["ext:score"])
+
 
 class SearchInstrumentTest(unittest.TestCase):
     def testFields(self):
@@ -131,6 +92,7 @@ class SearchInstrumentTest(unittest.TestCase):
         end = res["instrument-list"][-1]
         self.assertEqual("29", end["ext:score"])
 
+
 class SearchPlaceTest(unittest.TestCase):
     def testFields(self):
         fn = os.path.join(DATA_DIR, "search-place.xml")
@@ -143,6 +105,7 @@ class SearchPlaceTest(unittest.TestCase):
         two = res["place-list"][1]
         self.assertEqual("63", two["ext:score"])
         self.assertEqual("Southampton", two["disambiguation"])
+
 
 class SearchEventTest(unittest.TestCase):
     def testFields(self):
