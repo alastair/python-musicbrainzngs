@@ -775,10 +775,17 @@ def make_tag_request(**kwargs):
                 e_xml = ET.SubElement(e_list, "{%s}%s" % (NS, entity_type.replace('_', '-')))
                 e_xml.set("{%s}id" % NS, e)
                 taglist = ET.SubElement(e_xml, "{%s}user-tag-list" % NS)
-                for tag in tags:
-                    usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
-                    name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
-                    name_xml.text = tag
+                if isinstance(tags, dict):
+                    for tag, vote in tags.items():
+                        usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+                        usertag_xml.set('vote', vote)
+                        name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+                        name_xml.text = tag
+                else:
+                    for tag in tags:
+                        usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
+                        name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
+                        name_xml.text = tag
     if kwargs.keys():
         raise TypeError("make_tag_request() got an unexpected keyword argument '%s'" % kwargs.popitem()[0])
 

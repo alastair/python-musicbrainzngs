@@ -1259,8 +1259,10 @@ def submit_tags(**kwargs):
     """Submit user tags.
     Takes parameters named e.g. 'artist_tags', 'recording_tags', etc.,
     and of the form:
+    {entity_id1: {tag1: vote, ...}, ...}
+    If you don't want to vote, you can use a list of tags instead:
     {entity_id1: [tag1, ...], ...}
-    If you only have one tag for an entity you can use a string instead
+    If you only have one tag for an entity, you can use a string instead
     of a list.
 
     The user's tags for each entity will be set to that list, adding or
@@ -1269,7 +1271,7 @@ def submit_tags(**kwargs):
     """
     for k, v in kwargs.items():
         for id, tags in v.items():
-            kwargs[k][id] = tags if isinstance(tags, list) else [tags]
+            kwargs[k][id] = tags if isinstance(tags, (list, dict)) else [tags]
 
     query = mbxml.make_tag_request(**kwargs)
     return _do_mb_post("tag", query)
