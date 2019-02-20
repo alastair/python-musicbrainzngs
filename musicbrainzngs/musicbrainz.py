@@ -685,7 +685,7 @@ def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
     True if a call does, False otherwise
     """
-    if "user-tags" in includes or "user-ratings" in includes:
+    if "user-tags" in includes or "user-ratings" in includes or "user-genres" in includes:
         return AUTH_YES
     elif entity.startswith("collection"):
         if not id:
