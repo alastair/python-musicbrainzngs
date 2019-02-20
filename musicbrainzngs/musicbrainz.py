@@ -29,7 +29,7 @@ LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work', 'instrument']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
-TAG_INCLUDES = ["tags", "user-tags"]
+TAG_INCLUDES = ["tags", "user-tags", "genres", "user-genres"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
 
 VALID_INCLUDES = {
