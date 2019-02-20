@@ -33,7 +33,7 @@ TAG_INCLUDES = ["tags", "user-tags"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
 
 VALID_INCLUDES = {
-    'area' : ["aliases", "annotation"] + RELATION_INCLUDES,
+    'area' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media", "isrcs",
@@ -67,7 +67,7 @@ VALID_INCLUDES = {
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'series': [
         "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+    ] + RELATION_INCLUDES + TAG_INCLUDES,
     'work': [
         "aliases", "annotation"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
