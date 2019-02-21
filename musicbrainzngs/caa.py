@@ -16,13 +16,16 @@ from musicbrainzngs import musicbrainz
 from musicbrainzngs.util import _unicode
 
 hostname = "coverartarchive.org"
+https = True
 
 
-def set_caa_hostname(new_hostname):
+def set_caa_hostname(new_hostname, use_https=False):
     """Set the base hostname for Cover Art Archive requests.
     Defaults to 'coverartarchive.org'."""
     global hostname
+    global https
     hostname = new_hostname
+    https = use_https
 
 
 def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
@@ -46,7 +49,7 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
     elif imageid:
         path.append(imageid)
     url = compat.urlunparse((
-        'http',
+        'https' if https else 'http',
         hostname,
         '/%s' % '/'.join(path),
         '',
