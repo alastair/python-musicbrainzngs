@@ -300,6 +300,7 @@ def _docstring_impl(name, values):
 
 user = password = ""
 hostname = "musicbrainz.org"
+https = True
 _client = ""
 _useragent = ""
 
@@ -324,12 +325,14 @@ def set_useragent(app, version, contact=None):
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
-def set_hostname(new_hostname):
+def set_hostname(new_hostname, use_https=False):
     """Set the hostname for MusicBrainz webservice requests.
     Defaults to 'musicbrainz.org'.
     You can also include a port: 'localhost:8000'."""
     global hostname
+    global https
     hostname = new_hostname
+    https = use_https
 
 # Rate limiting.
 
@@ -633,7 +636,7 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     # Construct the full URL for the request, including hostname and
     # query string.
     url = compat.urlunparse((
-        'http',
+        'https' if https else 'http',
         hostname,
         '/ws/2/%s' % path,
         '',
