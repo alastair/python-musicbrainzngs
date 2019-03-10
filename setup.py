@@ -51,6 +51,7 @@ setup(
     author="Alastair Porter",
     author_email="alastair@porter.net.nz",
     url="https://python-musicbrainzngs.readthedocs.org/",
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     packages=['musicbrainzngs'],
     cmdclass={'test': test },
     license='BSD 2-clause',
