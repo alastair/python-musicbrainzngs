@@ -37,7 +37,7 @@ VALID_INCLUDES = {
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media", "isrcs",
-        "aliases", "annotation"
+        "aliases", "annotation", "genres"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'annotation': [
 
@@ -54,22 +54,22 @@ VALID_INCLUDES = {
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits", "isrcs",
-        "work-level-rels", "annotation", "aliases"
+        "work-level-rels", "annotation", "aliases", "genres"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': [
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "isrcs",
-        "recording-level-rels", "work-level-rels", "annotation", "aliases"
+        "recording-level-rels", "work-level-rels", "annotation", "aliases", "genres"
     ] + TAG_INCLUDES + RELATION_INCLUDES,
     'release-group': [
         "artists", "releases", "discids", "media",
-        "artist-credits", "annotation", "aliases"
+        "artist-credits", "annotation", "aliases", "genres"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'series': [
         "annotation", "aliases"
     ] + RELATION_INCLUDES,
     'work': [
-        "aliases", "annotation"
+        "aliases", "annotation", "genres"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
     'discid': [ # Discid should be the same as release
