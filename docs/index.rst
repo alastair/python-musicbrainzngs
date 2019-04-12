@@ -18,6 +18,7 @@ Contents
     installation
     usage
     api
+    cache
 
 .. currentmodule:: musicbrainzngs.musicbrainz
 
