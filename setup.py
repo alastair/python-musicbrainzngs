@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
-from distutils.core import Command
+from setuptools import setup
+from setuptools import Command
 
 from musicbrainzngs import musicbrainz
 
@@ -54,6 +54,12 @@ setup(
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     packages=['musicbrainzngs'],
     cmdclass={'test': test },
+    install_requires=[
+        'requests>=2.5.0'
+    ],
+    tests_require=[
+        'requests-mock'
+    ],
     license='BSD 2-clause',
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -66,4 +72,3 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules"
     ]
 )
-

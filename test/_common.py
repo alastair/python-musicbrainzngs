@@ -1,46 +1,30 @@
 """Common support for the test cases."""
+import requests_mock
 import time
-
 import musicbrainzngs
-from musicbrainzngs import compat
+
+
 from os.path import join
+from unittest import TestCase
 
-try:
-    from urllib2 import OpenerDirector
-except ImportError:
-    from urllib.request import OpenerDirector
 
-from io import BytesIO
+class RequestsMockingTestCase(TestCase):
+    """Mocks requests HTTP layer by instantiating a requests_mock.Mocker in setUp
+    and stopping it in tearDown. That object is available in the `m` attribute.
 
-try:
-    import StringIO
-except ImportError:
-    import io as StringIO
+    """
+    def setUp(self):
+        self.m = requests_mock.Mocker()
+        self.m.start()
 
-class FakeOpener(OpenerDirector):
-    """ A URL Opener that saves the URL requested and
-    returns a dummy response or raises an exception """
-    def __init__(self, response="<response/>", exception=None):
-        self.myurl = None
-        self.headers = None
-        self.response = response
-        self.exception = exception
+    @property
+    def last_url(self):
+        """The last URL seen by the Mocker.
+        """
+        return self.m.request_history.pop().url
 
-    def open(self, request, body=None):
-        self.myurl = request.get_full_url()
-        self.headers = request.header_items()
-        self.request = request
-
-        if self.exception:
-            raise self.exception
-
-        if isinstance(self.response, compat.unicode):
-            return StringIO.StringIO(self.response)
-        else:
-            return BytesIO(self.response)
-
-    def get_url(self):
-        return self.myurl
+    def tearDown(self):
+        self.m.stop()
 
 
 # Mock timing.
@@ -68,6 +52,7 @@ class Timecop(object):
     def restore(self):
         time.time = self.orig['time']
         time.sleep = self.orig['sleep']
+
 
 def open_and_parse_test_data(datadir, filename):
     """ Opens an XML file dumped from the MusicBrainz web service and returns
