@@ -325,10 +325,17 @@ def set_useragent(app, version, contact=None):
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
+
 def set_hostname(new_hostname, use_https=False):
     """Set the hostname for MusicBrainz webservice requests.
-    Defaults to 'musicbrainz.org'.
-    You can also include a port: 'localhost:8000'."""
+    Defaults to 'musicbrainz.org', accessing over https.
+    For backwards compatibility, `use_https` is False by default.
+
+    :param str new_hostname: The hostname (and port) of the MusicBrainz server to connect to
+    :param bool use_https: `True` if the host should be accessed using https. Default is `False`
+
+    Specify a non-standard port by adding it to the hostname,
+    for example 'localhost:8000'."""
     global hostname
     global https
     hostname = new_hostname
