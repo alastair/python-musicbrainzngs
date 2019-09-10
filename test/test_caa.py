@@ -15,7 +15,7 @@ class CaaTest(unittest.TestCase):
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
-        self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
         self.assertEqual(1, len(res))
         self.assertTrue("images" in res)
 
@@ -25,7 +25,7 @@ class CaaTest(unittest.TestCase):
         self.opener = _common.FakeOpener(resp)
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_release_group_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
-        self.assertEqual("http://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214", self.opener.myurl)
         self.assertEqual(2, len(res))
         self.assertTrue("images" in res)
         self.assertEqual("foo", res["release"])
@@ -71,7 +71,7 @@ class CaaTest(unittest.TestCase):
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234")
 
-        self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_get_size(self):
@@ -80,7 +80,7 @@ class CaaTest(unittest.TestCase):
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234", 250)
 
-        self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234-250", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234-250", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_front(self):
@@ -89,7 +89,7 @@ class CaaTest(unittest.TestCase):
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
-        self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_release_group_front(self):
@@ -98,7 +98,7 @@ class CaaTest(unittest.TestCase):
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_release_group_image_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
-        self.assertEqual("http://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", self.opener.myurl)
         self.assertEqual(resp, res)
 
     def test_back(self):
@@ -107,6 +107,6 @@ class CaaTest(unittest.TestCase):
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
         res = caa.get_image_back("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
-        self.assertEqual("http://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/back", self.opener.myurl)
+        self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/back", self.opener.myurl)
         self.assertEqual(resp, res)
 

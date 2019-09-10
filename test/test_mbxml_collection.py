@@ -18,22 +18,22 @@ class UrlTest(unittest.TestCase):
 
     def testGetCollection(self):
         musicbrainzngs.get_releases_in_collection("0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac")
-        self.assertEqual("http://musicbrainz.org/ws/2/collection/0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac/releases", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac/releases", self.opener.get_url())
 
         musicbrainzngs.get_works_in_collection("898676a6-bc79-4fe2-98ae-79c5940fe1a2")
-        self.assertEqual("http://musicbrainz.org/ws/2/collection/898676a6-bc79-4fe2-98ae-79c5940fe1a2/works", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/898676a6-bc79-4fe2-98ae-79c5940fe1a2/works", self.opener.get_url())
 
         musicbrainzngs.get_events_in_collection("65cb5dda-44aa-44a8-9c0d-4f99a14ab944")
-        self.assertEqual("http://musicbrainz.org/ws/2/collection/65cb5dda-44aa-44a8-9c0d-4f99a14ab944/events", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/65cb5dda-44aa-44a8-9c0d-4f99a14ab944/events", self.opener.get_url())
 
         musicbrainzngs.get_places_in_collection("9dde4c3c-520a-4bfd-9aae-446c3a04ce0c")
-        self.assertEqual("http://musicbrainz.org/ws/2/collection/9dde4c3c-520a-4bfd-9aae-446c3a04ce0c/places", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/9dde4c3c-520a-4bfd-9aae-446c3a04ce0c/places", self.opener.get_url())
 
         musicbrainzngs.get_recordings_in_collection("42bc6dd9-8deb-4bd7-83eb-5dacdb218b38")
-        self.assertEqual("http://musicbrainz.org/ws/2/collection/42bc6dd9-8deb-4bd7-83eb-5dacdb218b38/recordings", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/42bc6dd9-8deb-4bd7-83eb-5dacdb218b38/recordings", self.opener.get_url())
 
         musicbrainzngs.get_artists_in_collection("7e582256-b3ce-421f-82ba-451b0ab080eb")
-        self.assertEqual("http://musicbrainz.org/ws/2/collection/7e582256-b3ce-421f-82ba-451b0ab080eb/artists", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/7e582256-b3ce-421f-82ba-451b0ab080eb/artists", self.opener.get_url())
 
 
 class GetCollectionTest(unittest.TestCase):
