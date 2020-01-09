@@ -3,6 +3,8 @@
     * removed the 'artists' include for work lookup (Alastair Porter, #231 & #227)
     * allow the 'work-level-rels' include for recording lookups (Shen-Ta Hsieh, #213)
     * added support for 'target-credit' elements (Itay Brandes, #162 & #217)
+    * update valid search fields (Alastair Porter, #239)
+    * use https by default with musicbrainz.org (Frederik “Freso” S. Olesen, #197)
 
 0.6 (2016-04-11):
     * don't require authentication when getting public collections (#87)
