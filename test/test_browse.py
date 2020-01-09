@@ -13,6 +13,9 @@ class BrowseTest(unittest.TestCase):
         musicbrainzngs.set_useragent("a", "1")
         musicbrainzngs.set_rate_limit(False)
 
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
     def test_browse(self):
         area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
         musicbrainzngs.browse_events(area=area)
@@ -87,7 +90,6 @@ class BrowseTest(unittest.TestCase):
         area = "74e50e58-5deb-4b99-93a2-decbb365c07f"
         musicbrainzngs.browse_places(area=area)
         self.assertEqual("https://musicbrainz.org/ws/2/place/?area=74e50e58-5deb-4b99-93a2-decbb365c07f", self.opener.get_url())
-
 
     def test_browse_release(self):
         artist = "47f67b22-affe-4fe1-9d25-853d69bc0ee3"

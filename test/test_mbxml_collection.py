@@ -16,6 +16,9 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.set_useragent("test", "1")
         musicbrainzngs.set_rate_limit(False)
 
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
     def testGetCollection(self):
         musicbrainzngs.get_releases_in_collection("0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac")
         self.assertEqual("https://musicbrainz.org/ws/2/collection/0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac/releases", self.opener.get_url())

@@ -11,11 +11,10 @@ class ArgumentTest(unittest.TestCase):
     def setUp(self):
         self.opener = _common.FakeOpener("<response/>")
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        self.orig_do_rate_limit = musicbrainz.do_rate_limit
-        musicbrainz.do_rate_limit = False
+        musicbrainz.set_rate_limit(False)
 
     def tearDown(self):
-        musicbrainz.do_rate_limit = self.orig_do_rate_limit
+        musicbrainz.set_rate_limit(True)
 
     def test_no_client(self):
         musicbrainzngs.set_useragent("testapp", "0.1", "test@example.org")
@@ -53,6 +52,10 @@ class MethodTest(unittest.TestCase):
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
 
         musicbrainz.auth("user", "password")
+        musicbrainz.set_rate_limit(False)
+
+    def tearDown(self):
+        musicbrainz.set_rate_limit(False)
 
     def test_invalid_method(self):
         self.assertRaises(ValueError, musicbrainz._mb_request, path="foo",
@@ -81,11 +84,10 @@ class HostnameTest(unittest.TestCase):
     def setUp(self):
         self.opener = _common.FakeOpener("<response/>")
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
-        self.orig_do_rate_limit = musicbrainz.do_rate_limit
-        musicbrainz.do_rate_limit = False
+        musicbrainz.set_rate_limit(False)
 
     def tearDown(self):
-        musicbrainz.do_rate_limit = self.orig_do_rate_limit
+        musicbrainz.set_rate_limit(True)
         musicbrainzngs.set_hostname("musicbrainz.org", use_https=True)
 
     def test_default_musicbrainz_https(self):

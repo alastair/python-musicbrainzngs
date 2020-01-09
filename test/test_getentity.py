@@ -13,6 +13,9 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.set_useragent("a", "1")
         musicbrainzngs.set_rate_limit(False)
 
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
     def testGetArtist(self):
         artistid = "952a4205-023d-4235-897c-6fdb6f58dfaa"
         musicbrainzngs.get_artist_by_id(artistid)

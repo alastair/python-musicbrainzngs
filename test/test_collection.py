@@ -11,6 +11,9 @@ class CollectionTest(unittest.TestCase):
         musicbrainzngs.set_useragent("a", "1")
         musicbrainzngs.set_rate_limit(False)
 
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
     def test_auth_required(self):
         """ Check the auth_required method in isolation """
         ar = musicbrainzngs.musicbrainz._get_auth_type("collection", "", [])

@@ -10,6 +10,7 @@ class SubmitTest(unittest.TestCase):
         self.orig_opener = musicbrainzngs.compat.build_opener
         musicbrainz.set_useragent("test_client", "1.0")
         musicbrainz.auth("user", "password")
+        musicbrainz.set_rate_limit(False)
 
     def tearDown(self):
         musicbrainzngs.compat.build_opener = self.orig_opener
@@ -17,6 +18,7 @@ class SubmitTest(unittest.TestCase):
         musicbrainz._client = ""
         musicbrainz.user = ""
         musicbrainz.password = ""
+        musicbrainz.set_rate_limit(True)
 
     def test_submit_tags(self):
         self.opener = _common.FakeOpener("<response/>")

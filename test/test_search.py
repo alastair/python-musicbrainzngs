@@ -14,6 +14,9 @@ class SearchUrlTest(unittest.TestCase):
         musicbrainzngs.set_useragent("a", "1")
         musicbrainzngs.set_rate_limit(False)
 
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
     def test_search_annotations(self):
         musicbrainzngs.search_annotations("Pieds")
         self.assertEquals("https://musicbrainz.org/ws/2/annotation/?query=Pieds", self.opener.get_url())
