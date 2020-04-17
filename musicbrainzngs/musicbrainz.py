@@ -1251,6 +1251,30 @@ def get_works_in_collection(collection, limit=None, offset=None):
     """
     return _do_collection_query(collection, "works", limit, offset)
 
+def get_areas_in_collection(collection, limit=None, offset=None):
+    """List the areas in a collection.
+    Returns a dict with a 'collection' key, which again has a 'area-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "areas", limit, offset)
+
+def get_labels_in_collection(collection, limit=None, offset=None):
+    """List the labels in a collection.
+    Returns a dict with a 'collection' key, which again has a 'label-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "labels", limit, offset)
+
+def get_release_groups_in_collection(collection, limit=None, offset=None):
+    """List the release-groups in a collection.
+    Returns a dict with a 'collection' key, which again has a 'release-group-list'.
+
+    See `Browsing`_ for how to use `limit` and `offset`.
+    """
+    return _do_collection_query(collection, "areas", limit, offset)
+
 
 # Submission methods
 
@@ -1302,17 +1326,136 @@ def submit_ratings(**kwargs):
     query = mbxml.make_rating_request(**kwargs)
     return _do_mb_post("rating", query)
 
+def _do_collection_put(collection, collection_type, entities=[]):
+    """Add entities of a given type (one of areas, artists, events, labels,
+    places, recordings, releases, release-groups, or works). Collection and
+    the entities should be identified by their MBIDs. A maximum of 400
+    MBIDs can be submitted at once. See
+    https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#collections
+    for details.
+    """
+    if len(entities) > 400:
+        raise WebServiceError("Maximum URI length of 16kb means we only allow 400 releases")
+    entitieslist = ";".join(entities)
+    return _do_mb_put("collection/%s/%s/%s" % (collection, collection_type, entitieslist))
+
+def _do_collection_delete(collection, collection_type, entities=[]):
+    """Remove entities of a given type (one of areas, artists, events, labels,
+    places, recordings, releases, release-groups, or works). Collection and
+    the entities should be identified by their MBIDs. A maximum of 400
+    MBIDs can be submitted at once. See
+    https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#collections
+    for details.
+    """
+    if len(entities) > 400:
+        raise WebServiceError("Maximum URI length of 16kb means we only allow 400 releases")
+    entitieslist = ";".join(entities)
+    return _do_mb_delete("collection/%s/%s/%s" % (collection, collection_type, entitieslist))
+
+def add_areas_to_collection(collection, areas=[]):
+    """Add areas to a collection.
+    Collection and areas should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "areas", areas)
+
+def remove_areas_from_collection(collection, areas=[]):
+    """Remove areas from a collection.
+    Collection and areas should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "areas", areas)
+
+def add_artists_to_collection(collection, artists=[]):
+    """Add artists to a collection.
+    Collection and artists should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "artists", artists)
+
+def remove_artists_from_collection(collection, artists=[]):
+    """Remove artists from a collection.
+    Collection and artists should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "artists", artists)
+
+def add_events_to_collection(collection, events=[]):
+    """Add events to a collection.
+    Collection and events should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "events", events)
+
+def remove_events_from_collection(collection, events=[]):
+    """Remove events from a collection.
+    Collection and events should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "events", events)
+
+def add_labels_to_collection(collection, labels=[]):
+    """Add labels to a collection.
+    Collection and labels should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "labels", labels)
+
+def remove_labels_from_collection(collection, labels=[]):
+    """Remove labels from a collection.
+    Collection and labels should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "labels", labels)
+
+def add_places_to_collection(collection, places=[]):
+    """Add places to a collection.
+    Collection and places should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "places", places)
+
+def remove_places_from_collection(collection, places=[]):
+    """Remove places from a collection.
+    Collection and places should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "places", places)
+
+def add_recordings_to_collection(collection, recordings=[]):
+    """Add recordings to a collection.
+    Collection and recordings should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "recordings", recordings)
+
+def remove_recordings_from_collection(collection, recordings=[]):
+    """Remove recordings from a collection.
+    Collection and recordings should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "recordings", recordings)
+
 def add_releases_to_collection(collection, releases=[]):
     """Add releases to a collection.
     Collection and releases should be identified by their MBIDs
     """
-    # XXX: Maximum URI length of 16kb means we should only allow ~400 releases
-    releaselist = ";".join(releases)
-    return _do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
+    return _do_collection_put(collection, "releases", releases)
 
 def remove_releases_from_collection(collection, releases=[]):
     """Remove releases from a collection.
     Collection and releases should be identified by their MBIDs
     """
-    releaselist = ";".join(releases)
-    return _do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
+    return _do_collection_delete(collection, "releases", releases)
+
+def add_release_groups_to_collection(collection, release_groups=[]):
+    """Add release-groups to a collection.
+    Collection and release-groups should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "release-groups", release_groups)
+
+def remove_release_groups_from_collection(collection, release_groups=[]):
+    """Remove release-groups from a collection.
+    Collection and release-groups should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "release-groups", release_groups)
+
+def add_works_to_collection(collection, works=[]):
+    """Add works to a collection.
+    Collection and works should be identified by their MBIDs
+    """
+    return _do_collection_put(collection, "works", works)
+
+def remove_works_from_collection(collection, works=[]):
+    """Remove works from a collection.
+    Collection and works should be identified by their MBIDs
+    """
+    return _do_collection_delete(collection, "works", works)
