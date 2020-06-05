@@ -118,8 +118,8 @@ def get_release_group_image_list(releasegroupid):
     If an error occurs then a :class:`~musicbrainzngs.ResponseError` will
     be raised with one of the following HTTP codes:
 
-    * 400: `Releaseid` is not a valid UUID
-    * 404: No release exists with an MBID of `releaseid`
+    * 400: `releasegroupid` is not a valid UUID
+    * 404: No release group exists with an MBID of `releasegroupid`
     * 503: Ratelimit exceeded
     """
     return _caa_request(releasegroupid, entitytype="release-group")
