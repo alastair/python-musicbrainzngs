@@ -101,7 +101,7 @@ def get_image_list(releaseid):
     If an error occurs then a :class:`~musicbrainzngs.ResponseError` will
     be raised with one of the following HTTP codes:
 
-    * 400: `Releaseid` is not a valid UUID
+    * 400: `releaseid` is not a valid UUID
     * 404: No release exists with an MBID of `releaseid`
     * 503: Ratelimit exceeded
     """
@@ -160,7 +160,7 @@ def get_image(mbid, coverid, size=None, entitytype="release"):
     If an error occurs then a :class:`~musicbrainzngs.ResponseError`
     will be raised with one of the following HTTP codes:
 
-    * 400: `Releaseid` is not a valid UUID or `coverid` is invalid
+    * 400: `releaseid` is not a valid UUID or `coverid` is invalid
     * 404: No release exists with an MBID of `releaseid`
     * 503: Ratelimit exceeded
 
