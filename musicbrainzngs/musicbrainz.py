@@ -168,6 +168,9 @@ class AUTH_NO: pass
 class AUTH_IFSET: pass
 
 
+AUTH_REQUIRED_INCLUDES = ["user-tags", "user-ratings", "user-genres"]
+
+
 # Exceptions.
 
 class MusicBrainzError(Exception):
@@ -691,11 +694,12 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
 
     return parser_fun(resp)
 
+
 def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
-    True if a call does, False otherwise
+    a constant (Yes, No, IfSet) for the auth status of the call.
     """
-    if "user-tags" in includes or "user-ratings" in includes or "user-genres" in includes:
+    if any(elem in includes for elem in AUTH_REQUIRED_INCLUDES):
         return AUTH_YES
     elif entity.startswith("collection"):
         if not id:
@@ -704,6 +708,7 @@ def _get_auth_type(entity, id, includes):
             return AUTH_IFSET
     else:
         return AUTH_NO
+
 
 def _do_mb_query(entity, id, includes=[], params={}):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
