@@ -699,7 +699,7 @@ def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
     a constant (Yes, No, IfSet) for the auth status of the call.
     """
-    if any(elem in includes for elem in AUTH_REQUIRED_INCLUDES):
+    if "user-tags" in includes or "user-ratings" in includes or "user-genres" in includes:
         return AUTH_YES
     elif entity.startswith("collection"):
         if not id:

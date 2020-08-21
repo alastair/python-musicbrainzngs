@@ -23,6 +23,15 @@ class CollectionTest(unittest.TestCase):
                 "foo/releases", [])
         self.assertEqual(musicbrainzngs.musicbrainz.AUTH_IFSET, ar)
 
+        ar = musicbrainzngs.musicbrainz._get_auth_type("artist", "5b11f4ce-a62d-471e-81fc-a69a8278c7da", [])
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_NO, ar)
+
+        ar = musicbrainzngs.musicbrainz._get_auth_type("artist", "5b11f4ce-a62d-471e-81fc-a69a8278c7da", ["user-tags"])
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_YES, ar)
+
+        ar = musicbrainzngs.musicbrainz._get_auth_type("artist", "5b11f4ce-a62d-471e-81fc-a69a8278c7da", ["aliases", "user-genres", "artist-rels"])
+        self.assertEqual(musicbrainzngs.musicbrainz.AUTH_YES, ar)
+
     def test_my_collections(self):
         """ If you ask for your collections, you need to have
         authenticated first."""
