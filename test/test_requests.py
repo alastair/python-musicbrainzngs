@@ -50,6 +50,19 @@ class ArgumentTest(unittest.TestCase):
         req = musicbrainz._mb_request(path="foo", auth_required=musicbrainz.AUTH_YES)
         assert(any([isinstance(handler, musicbrainz._DigestAuthHandler) for handler in self.opener.handlers]))
 
+    def test_auth_headers_ifset(self):
+        musicbrainz._useragent = "test"
+        musicbrainz.auth("user", "password")
+        req = musicbrainz._mb_request(path="foo", auth_required=musicbrainz.AUTH_IFSET)
+        assert(any([isinstance(handler, musicbrainz._DigestAuthHandler) for handler in self.opener.handlers]))
+
+    def test_auth_headers_ifset_no_user(self):
+        musicbrainz._useragent = "test"
+        musicbrainz.auth("", "")
+        # if no user and password, auth is not set for AUTH_IFSET
+        req = musicbrainz._mb_request(path="foo", auth_required=musicbrainz.AUTH_IFSET)
+        assert(not any([isinstance(handler, musicbrainz._DigestAuthHandler) for handler in self.opener.handlers]))
+
 
 class MethodTest(unittest.TestCase):
     """Tests the various _do_mb_* methods to ensure they're setting the

@@ -20,12 +20,12 @@ except ImportError:
 class FakeOpener(OpenerDirector):
     """ A URL Opener that saves the URL requested and
     returns a dummy response or raises an exception """
-    def __init__(self, response="<response/>", exception=None, handlers=[]):
+    def __init__(self, response="<response/>", exception=None):
         self.myurl = None
         self.headers = None
         self.response = response
         self.exception = exception
-        self.handlers = handlers
+        self.handlers = []
 
     def open(self, request, body=None):
         self.myurl = request.get_full_url()
