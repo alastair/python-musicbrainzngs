@@ -48,7 +48,7 @@ class ArgumentTest(unittest.TestCase):
         musicbrainz._useragent = "test"
         musicbrainz.auth("user", "password")
         req = musicbrainz._mb_request(path="foo", auth_required=musicbrainz.AUTH_YES)
-        assert(any([type(handler) == musicbrainz._DigestAuthHandler for handler in self.opener.handlers]))
+        assert(any([isinstance(handler, musicbrainz._DigestAuthHandler) for handler in self.opener.handlers]))
 
 
 class MethodTest(unittest.TestCase):
