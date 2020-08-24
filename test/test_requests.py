@@ -47,14 +47,8 @@ class ArgumentTest(unittest.TestCase):
     def test_auth_headers(self):
         musicbrainz._useragent = "test"
         musicbrainz.auth("user", "password")
-        safe_read_orig = musicbrainz._safe_read
-        parser_fun_orig = musicbrainz.parser_fun
-        musicbrainz.parser_fun = lambda resp: resp
-        musicbrainz._safe_read = lambda opener, req, body: req
         req = musicbrainz._mb_request(path="foo", auth_required=musicbrainz.AUTH_YES)
         assert(any([type(handler) == musicbrainz._DigestAuthHandler for handler in self.opener.handlers]))
-        musicbrainz._safe_read = safe_read_orig
-        musicbrainz.parser_fun = parser_fun_orig
 
 
 class MethodTest(unittest.TestCase):
