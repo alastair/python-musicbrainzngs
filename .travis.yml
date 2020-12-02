@@ -6,6 +6,16 @@ python:
   - "3.6"
   - "3.7"
   - "pypy"
+arch:
+  - amd64
+  - ppc64le
+
+jobs:
+  exclude:
+    - python: "2.7"
+      arch: ppc64le
+    - python: "pypy"
+      arch: ppc64le
 install: python setup.py build
 script: python setup.py test
 branches:
