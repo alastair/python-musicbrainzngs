@@ -18,7 +18,7 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('..'))
 import musicbrainzngs
-from musicbrainzngs.musicbrainz import _version
+from musicbrainzngs import _version
 
 # -- General configuration -----------------------------------------------------
 

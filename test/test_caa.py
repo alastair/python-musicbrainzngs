@@ -2,7 +2,7 @@ import unittest
 
 from musicbrainzngs import caa
 from musicbrainzngs import compat
-from musicbrainzngs.musicbrainz import _version
+from musicbrainzngs import _version
 import musicbrainzngs
 from test import _common
 
