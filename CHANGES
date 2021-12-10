@@ -1,3 +1,10 @@
+0.7.2 (2021-11-26):
+    * Use requests to make HTTP requests (Adrian Sampson & Wieland Hoffmann)
+
+      Note that this changes the exception types of the `cause` attribute of
+      musicbrainzngs.musicbrainz.WebServiceError and its subclasses to instances
+      of requests.exceptions.RequestException and its subclasses.
+
 0.7.1 (2020-01-11):
     * include README file in pypi
 

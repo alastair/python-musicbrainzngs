@@ -3,6 +3,8 @@
 import unittest
 import os
 import musicbrainzngs
+import requests_mock
+from re import compile
 from test import _common
 
 
@@ -10,28 +12,29 @@ class UrlTest(unittest.TestCase):
     """ Test that the correct URL is generated when a search query is made """
 
     def setUp(self):
-        self.opener = _common.FakeOpener("<response/>")
-        musicbrainzngs.compat.build_opener = lambda *args: self.opener
-
         musicbrainzngs.set_useragent("test", "1")
         musicbrainzngs.set_rate_limit(False)
 
     def tearDown(self):
         musicbrainzngs.set_rate_limit(True)
 
-    def testGetDiscId(self):
+    @requests_mock.Mocker()
+    def testGetDiscId(self, m):
+        m.get(compile("musicbrainz.org/ws/2/discid"), text="<response/>")
+
         musicbrainzngs.get_releases_by_discid("xp5tz6rE4OHrBafj0bLfDRMGK48-")
-        self.assertEqual("https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-",
+                         m.request_history.pop().url)
 
         # one include
         musicbrainzngs.get_releases_by_discid("xp5tz6rE4OHrBafj0bLfDRMGK48-",
                 includes=["recordings"])
-        self.assertEqual("https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=recordings", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=recordings", m.request_history.pop().url)
 
         # more than one include
         musicbrainzngs.get_releases_by_discid("xp5tz6rE4OHrBafj0bLfDRMGK48-", includes=["artists", "recordings", "artist-credits"])
         expected = "https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=artists+recordings+artist-credits"
-        self.assertEqual(expected, self.opener.get_url())
+        self.assertEqual(expected, m.request_history.pop().url)
 
 
 class GetDiscIdTest(unittest.TestCase):

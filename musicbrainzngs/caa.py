@@ -10,6 +10,7 @@ __all__ = [
     ]
 
 import json
+import requests
 
 from musicbrainzngs import compat
 from musicbrainzngs import musicbrainz
@@ -63,32 +64,23 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
     ))
     musicbrainz._log.debug("GET request for %s" % (url, ))
 
-    # Set up HTTP request handler and URL opener.
-    httpHandler = compat.HTTPHandler(debuglevel=0)
-    handlers = [httpHandler]
-
-    opener = compat.build_opener(*handlers)
-
-    # Make request.
-    req = musicbrainz._MusicbrainzHttpRequest("GET", url, None)
-    # Useragent isn't needed for CAA, but we'll add it if it exists
+    headers = {}
     if musicbrainz._useragent != "":
-        req.add_header('User-Agent', musicbrainz._useragent)
+        headers['User-Agent'] = musicbrainz._useragent
         musicbrainz._log.debug("requesting with UA %s" % musicbrainz._useragent)
 
-    resp = musicbrainz._safe_read(opener, req, None)
+    # Make request.
+    req = requests.Request("GET", url, headers=headers)
+    # Useragent isn't needed for CAA, but we'll add it if it exists
 
-    # TODO: The content type declared by the CAA for JSON files is
-    # 'applicaiton/octet-stream'. This is not useful to detect whether the
-    # content is JSON, so default to decoding JSON if no imageid was supplied.
-    # http://tickets.musicbrainz.org/browse/CAA-75
+    resp = musicbrainz._safe_read(req)
+
     if imageid:
         # If we asked for an image, return the image
-        return resp
+        return resp.content
     else:
         # Otherwise it's json
-        data = _unicode(resp)
-        return json.loads(data)
+        return resp.json()
 
 
 def get_image_list(releaseid):

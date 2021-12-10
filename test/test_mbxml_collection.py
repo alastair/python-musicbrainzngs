@@ -4,39 +4,41 @@ import unittest
 import os
 import musicbrainzngs
 from test import _common
+from re import compile
 
 
-class UrlTest(unittest.TestCase):
+class UrlTest(_common.RequestsMockingTestCase):
     """ Test that the correct URL is generated when a query is made """
 
     def setUp(self):
-        self.opener = _common.FakeOpener("<response/>")
-        musicbrainzngs.compat.build_opener = lambda *args: self.opener
+        super(UrlTest, self).setUp()
 
         musicbrainzngs.set_useragent("test", "1")
         musicbrainzngs.set_rate_limit(False)
+
+        self.m.get(compile("ws/2/.*/.*"), text="<response/>")
 
     def tearDown(self):
         musicbrainzngs.set_rate_limit(True)
 
     def testGetCollection(self):
         musicbrainzngs.get_releases_in_collection("0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac")
-        self.assertEqual("https://musicbrainz.org/ws/2/collection/0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac/releases", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/0b15c97c-8eb8-4b4f-81c3-0eb24266a2ac/releases", self.last_url)
 
         musicbrainzngs.get_works_in_collection("898676a6-bc79-4fe2-98ae-79c5940fe1a2")
-        self.assertEqual("https://musicbrainz.org/ws/2/collection/898676a6-bc79-4fe2-98ae-79c5940fe1a2/works", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/898676a6-bc79-4fe2-98ae-79c5940fe1a2/works", self.last_url)
 
         musicbrainzngs.get_events_in_collection("65cb5dda-44aa-44a8-9c0d-4f99a14ab944")
-        self.assertEqual("https://musicbrainz.org/ws/2/collection/65cb5dda-44aa-44a8-9c0d-4f99a14ab944/events", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/65cb5dda-44aa-44a8-9c0d-4f99a14ab944/events", self.last_url)
 
         musicbrainzngs.get_places_in_collection("9dde4c3c-520a-4bfd-9aae-446c3a04ce0c")
-        self.assertEqual("https://musicbrainz.org/ws/2/collection/9dde4c3c-520a-4bfd-9aae-446c3a04ce0c/places", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/9dde4c3c-520a-4bfd-9aae-446c3a04ce0c/places", self.last_url)
 
         musicbrainzngs.get_recordings_in_collection("42bc6dd9-8deb-4bd7-83eb-5dacdb218b38")
-        self.assertEqual("https://musicbrainz.org/ws/2/collection/42bc6dd9-8deb-4bd7-83eb-5dacdb218b38/recordings", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/42bc6dd9-8deb-4bd7-83eb-5dacdb218b38/recordings", self.last_url)
 
         musicbrainzngs.get_artists_in_collection("7e582256-b3ce-421f-82ba-451b0ab080eb")
-        self.assertEqual("https://musicbrainz.org/ws/2/collection/7e582256-b3ce-421f-82ba-451b0ab080eb/artists", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/7e582256-b3ce-421f-82ba-451b0ab080eb/artists", self.last_url)
 
 
 class GetCollectionTest(unittest.TestCase):
