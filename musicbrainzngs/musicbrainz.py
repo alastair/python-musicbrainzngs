@@ -83,6 +83,7 @@ VALID_INCLUDES = {
 }
 VALID_BROWSE_INCLUDES = {
     'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'collection': [],
     'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'recording': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
@@ -92,6 +93,11 @@ VALID_BROWSE_INCLUDES = {
     'release-group': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
     'work': ["aliases", "annotation"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+}
+
+VALID_BROWSE_LINK_ENTITIES = {
+    'collection': ["area", "artist", "editor", "event", "label", "place", "recording", "release", "release-group",
+                   "work"]
 }
 
 #: These can be used to filter whenever releases are includes or browsed
@@ -283,6 +289,10 @@ def _docstring_get(entity):
 def _docstring_browse(entity):
     includes = list(VALID_BROWSE_INCLUDES.get(entity, []))
     return _docstring_impl("includes", includes)
+
+def _docstring_browse_links(entity):
+    includes = list(VALID_BROWSE_LINK_ENTITIES.get(entity, []))
+    return _docstring_impl("link_entities", includes)
 
 def _docstring_search(entity):
     search_fields = list(VALID_SEARCH_FIELDS.get(entity, []))
@@ -710,7 +720,7 @@ def _get_auth_type(entity, id, includes):
         return AUTH_NO
 
 
-def _do_mb_query(entity, id, includes=[], params={}):
+def _do_mb_query(entity, id, includes=[], params={}, auth_type=None):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
 	string indicated the type of object to be retrieved. The id may be
 	empty, in which case the query is a search. `includes` is a list
@@ -722,7 +732,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
 	if not isinstance(includes, list):
 		includes = [includes]
 	_check_includes(entity, includes)
-	auth_required = _get_auth_type(entity, id, includes)
+	auth_required = auth_type or _get_auth_type(entity, id, includes)
 	args = dict(params)
 	if len(includes) > 0:
 		inc = " ".join(includes)
@@ -1064,7 +1074,7 @@ def get_works_by_iswc(iswc, includes=[]):
     return _do_mb_query("iswc", iswc, includes)
 
 
-def _browse_impl(entity, includes, limit, offset, params, release_status=[], release_type=[]):
+def _browse_impl(entity, includes, limit, offset, params, release_status=[], release_type=[], auth_type=None):
     includes = includes if isinstance(includes, list) else [includes]
     valid_includes = VALID_BROWSE_INCLUDES[entity]
     _check_includes_impl(includes, valid_includes)
@@ -1078,7 +1088,7 @@ def _browse_impl(entity, includes, limit, offset, params, release_status=[], rel
     if offset: p["offset"] = offset
     filterp = _check_filter_and_make_params(entity, includes, release_status, release_type)
     p.update(filterp)
-    return _do_mb_query(entity, "", includes, p)
+    return _do_mb_query(entity, "", includes, p, auth_type=auth_type)
 
 # Browse methods
 # Browse include are a subset of regular get includes, so we check them here
@@ -1095,6 +1105,20 @@ def browse_artists(recording=None, release=None, release_group=None,
               "release-group": release_group,
               "work": work}
     return _browse_impl("artist", includes, limit, offset, params)
+
+@_docstring_browse_links("collection")
+def browse_collections(entity_type, entity_mbid, includes=None, limit=None, offset=None):
+    """Get all collections linked to a given entity.
+    You need to give one MusicBrainz ID.
+
+    *Available entity_types*: {link_entities}"""
+    includes = includes or []
+    valid_linked_entities = VALID_BROWSE_LINK_ENTITIES["collection"]
+    if entity_type not in valid_linked_entities:
+        raise ValueError("Not a valid linked entity type", valid_linked_entities)
+
+    params = dict([(entity_type, entity_mbid)])
+    return _browse_impl("collection", includes, limit, offset, params, auth_type=AUTH_IFSET)
 
 @_docstring_browse("event")
 def browse_events(area=None, artist=None, place=None,

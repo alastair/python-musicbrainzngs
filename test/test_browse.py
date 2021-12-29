@@ -59,6 +59,13 @@ class BrowseTest(unittest.TestCase):
         musicbrainzngs.browse_artists(work=work)
         self.assertEqual("https://musicbrainz.org/ws/2/artist/?work=deb27b88-cf41-4f7c-b3aa-bc3268bc3c02", self.opener.get_url())
 
+    def test_browse_collection(self):
+        musicbrainzngs.browse_collections("release", "5fa83c79-ef7d-42ad-8a09-30a1d4c35f63")
+        self.assertEqual("https://musicbrainz.org/ws/2/collection/?release=5fa83c79-ef7d-42ad-8a09-30a1d4c35f63", self.opener.get_url())
+
+        with self.assertRaises(ValueError):
+            musicbrainzngs.browse_collections("I don't exist", "just whatever")
+
     def test_browse_event(self):
         area = "f03d09b3-39dc-4083-afd6-159e3f0d462f"
         musicbrainzngs.browse_events(area=area)
