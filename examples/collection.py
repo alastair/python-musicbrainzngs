@@ -163,17 +163,25 @@ if __name__ == '__main__':
     musicbrainzngs.auth(username, password)
 
     if args:
-        # Actions for a specific collction.
+        # Actions for a specific collection.
         collection_id = args[0]
         if options.add:
-            if option.type == "release":
+            if options.type == "recording":
+                musicbrainzngs.add_recordings_to_collection(
+                    collection_id, [options.add]
+                )
+            elif options.type == "release":
                 musicbrainzngs.add_releases_to_collection(
                     collection_id, [options.add]
                 )
             else:
                 sys.exit("only release collections can be modified ATM")
         elif options.remove:
-            if option.type == "release":
+            if options.type == "recording":
+                musicbrainzngs.remove_recordings_from_collection(
+                    collection_id, [options.remove]
+                )
+            elif options.type == "release":
                 musicbrainzngs.remove_releases_from_collection(
                     collection_id, [options.remove]
                 )

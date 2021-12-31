@@ -1315,3 +1315,29 @@ def remove_releases_from_collection(collection, releases=[]):
     """
     releaselist = ";".join(releases)
     return _do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
+
+def add_recordings_to_collection(collection_mbid, recordings):
+    """
+    :param collection_mbid: Musicbrainz ID of the collection
+    :param recordings: Musicbrainz IDs of the recordings to add
+    """
+
+    # XXX: Maximum URI length of 16kb means we should only allow ~400 recordings
+    recording_list = ";".join(recordings)
+    return _do_mb_put(
+        "collection/%s/recordings/%s" % (collection_mbid, recording_list)
+    )
+
+
+def remove_recordings_from_collection(collection_mbid, recordings):
+    """
+    :param collection_mbid: Musicbrainz ID of the collection
+    :param recordings: Musicbrainz IDs of the recordings to remove
+    """
+
+    # XXX: Maximum URI length of 16kb means we should only allow ~400 recordings
+    recording_list = ";".join(recordings)
+    return _do_mb_delete(
+        "collection/%s/recordings/%s" % (collection_mbid, recording_list)
+    )
+
