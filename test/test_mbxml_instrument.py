@@ -49,7 +49,7 @@ class GetInstrumentTest(unittest.TestCase):
         self.assertEqual(len(rels), 3)
         self.assertEqual(rels[0]["type"], "information page")
         self.assertEqual(rels[0]["type-id"], "0e62afec-12f3-3d0f-b122-956207839854")
-        self.assertTrue(rels[0]["target"].startswith("http://en.wikisource"))
+        self.assertTrue(rels[0]["target"].startswith("en.wikisource"))
 
     def testAnnotations(self):
         res = _common.open_and_parse_test_data(self.datadir, "d00cec5f-f9bc-4235-a54f-6639a02d4e4c-annotation.xml")
