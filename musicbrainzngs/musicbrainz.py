@@ -22,6 +22,7 @@ from musicbrainzngs import compat
 
 _version = "0.7.1"
 _log = logging.getLogger("musicbrainzngs")
+_max_retries = 8
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
@@ -85,7 +86,7 @@ VALID_BROWSE_INCLUDES = {
     'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'recording': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'recording': ["artist-credits", "isrcs", "work-level-rels"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': ["artist-credits", "labels", "recordings", "isrcs",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
     'place': ["aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
@@ -481,7 +482,7 @@ class _MusicbrainzHttpRequest(compat.Request):
 
 # Core (internal) functions for calling the MB API.
 
-def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
+def _safe_read(opener, req, body=None, max_retries=_max_retries, retry_delay_delta=2.0):
 	"""Open an HTTP request with a given URL opener and (optionally) a
 	request body. Transient errors lead to retries.  Permanent errors
 	and repeated errors are translated into a small set of handleable

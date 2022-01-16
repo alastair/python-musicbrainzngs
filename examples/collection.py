@@ -163,7 +163,7 @@ if __name__ == '__main__':
     musicbrainzngs.auth(username, password)
 
     if args:
-        # Actions for a specific collction.
+        # Actions for a specific collection.
         collection_id = args[0]
         if options.add:
             if option.type == "release":
