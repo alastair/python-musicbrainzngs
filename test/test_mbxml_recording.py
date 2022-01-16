@@ -26,3 +26,15 @@ class GetRecordingTest(unittest.TestCase):
         attributes = rels[2]["attributes"]
         expected = {"attribute": "piano", "credited-as": "Yamaha and Steinway pianos"}
         self.assertEqual(expected, attributes[0])
+
+    def testTagsAndGenres(self):
+        res = _common.open_and_parse_test_data(self.datadir, "58169b2c-e31a-4a46-8741-71c672a089ac-tags-genres.xml")
+        recording = res["recording"]
+
+        tags = recording["tag-list"]
+        self.assertEqual(len(tags), 7)
+        self.assertEqual(tags[0], {"name": "classic pop", "count": "1"})
+
+        genres = recording["genre-list"]
+        self.assertEqual(len(genres), 5)
+        self.assertEqual(genres[0], {"name": "classic rock", "count": "2", "id": "93244085-20e5-4f16-9067-1d19143b3810"})
