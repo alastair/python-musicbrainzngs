@@ -213,7 +213,7 @@ def parse_area_list(al):
 
 def parse_area(area):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "sort-name", "disambiguation"]
     inner_els = {"life-span": parse_lifespan,
                  "alias-list": parse_alias_list,
@@ -233,7 +233,7 @@ def parse_artist_list(al):
 
 def parse_artist(artist):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "sort-name", "country", "user-rating",
                 "disambiguation", "gender", "ipi"]
     inner_els = {"area": parse_area,
@@ -266,7 +266,7 @@ def parse_place_list(pl):
 
 def parse_place(place):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "address",
                 "ipi", "disambiguation"]
     inner_els = {"area": parse_area,
@@ -288,7 +288,7 @@ def parse_event_list(el):
 
 def parse_event(event):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "time", "setlist", "cancelled", "disambiguation", "user-rating"]
     inner_els = {"life-span": parse_lifespan,
                  "relation-list": parse_relation_list,
@@ -304,7 +304,7 @@ def parse_event(event):
 
 def parse_instrument(instrument):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "description", "disambiguation"]
     inner_els = {"relation-list": parse_relation_list,
                  "tag-list": parse_tag_list,
@@ -320,7 +320,7 @@ def parse_label_list(ll):
 
 def parse_label(label):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "sort-name", "country", "label-code", "user-rating",
                 "ipi", "disambiguation"]
     inner_els = {"area": parse_area,
@@ -473,7 +473,7 @@ def parse_text_representation(textr):
 
 def parse_release_group(rg):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["title", "user-rating", "first-release-date", "primary-type",
                 "disambiguation"]
     inner_els = {"artist-credit": parse_artist_credit,
@@ -517,7 +517,7 @@ def parse_series_list(sl):
 
 def parse_series(series):
     result = {}
-    attribs = ["id", "type", "ext:score"]
+    attribs = ["id", "type", "type-id", "ext:score"]
     elements = ["name", "disambiguation"]
     inner_els = {"alias-list": parse_alias_list,
                  "relation-list": parse_relation_list,
@@ -539,7 +539,7 @@ def parse_work_list(wl):
 
 def parse_work(work):
     result = {}
-    attribs = ["id", "ext:score", "type"]
+    attribs = ["id", "ext:score", "type", "type-id"]
     elements = ["title", "user-rating", "language", "iswc", "disambiguation"]
     inner_els = {"tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
@@ -560,12 +560,18 @@ def parse_work_attribute_list(wal):
     return [parse_work_attribute(wa) for wa in wal]
 
 def parse_work_attribute(wa):
-    attribs = ["type"]
+    attribs = ["type", "type-id", "value-id"]
     typeinfo = parse_attributes(attribs, wa)
+    print(typeinfo)
     result = {}
     if typeinfo:
         result = {"attribute": typeinfo["type"],
+                  "type": typeinfo["type"],
                   "value": wa.text}
+        if "value-id" in typeinfo:
+            result["value-id"] = typeinfo["value-id"]
+        if "type-id" in typeinfo:
+            result["type-id"] = typeinfo["type-id"]
 
     return result
 
@@ -734,7 +740,7 @@ def parse_alias_list(al):
 
 def parse_alias(alias):
     result = {}
-    attribs = ["locale", "sort-name", "type", "primary",
+    attribs = ["locale", "sort-name", "type", "type-id", "primary",
                "begin-date", "end-date"]
 
     result.update(parse_attributes(attribs, alias))
