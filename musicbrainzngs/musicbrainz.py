@@ -50,8 +50,8 @@ VALID_INCLUDES = {
         "discids", "media",
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
-    'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
-    'event' : ["aliases"] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
+    'place': ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
+    'event': ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits", "isrcs",
@@ -83,16 +83,17 @@ VALID_INCLUDES = {
     'collection': ['releases'],
 }
 VALID_BROWSE_INCLUDES = {
-    'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'recording': ["artist-credits", "isrcs", "work-level-rels"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'release': ["artist-credits", "labels", "recordings", "isrcs",
+    'artist': ["annotation", "aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'event': ["annotation", "aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'label': ["annotation", "aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'recording': ["annotation", "artist-credits", "isrcs",
+                  "work-level-rels"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'release': ["annotation", "artist-credits", "labels", "recordings", "isrcs",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
-    'place': ["aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
-    'release-group': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'place': ["annotation", "aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
+    'release-group': ["annotation", "artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
-    'work': ["aliases", "annotation"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'work': ["annotation", "aliases", "annotation"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
 }
 
 #: These can be used to filter whenever releases are includes or browsed
