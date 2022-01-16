@@ -31,3 +31,7 @@ class GetArtistTest(unittest.TestCase):
         res = _common.open_and_parse_test_data(self.datadir, "b3785a55-2cf6-497d-b8e3-cfa21a36f997-artist-rels.xml")
         self.assertTrue('target-credit' in res['artist']['artist-relation-list'][0])
         self.assertEqual(res['artist']['artist-relation-list'][0]["target-credit"], "TAO")
+
+    def testArtistAnnotation(self):
+        res = _common.open_and_parse_test_data(self.datadir, "0383dadf-2a4e-4d10-a46a-e9e041da8eb3-annotation.xml")
+        self.assertTrue('Please add any 2011 Remaster releases' in res['artist']['annotation']['text'])

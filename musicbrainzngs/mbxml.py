@@ -295,7 +295,8 @@ def parse_event(event):
                  "alias-list": parse_alias_list,
                  "tag-list": parse_tag_list,
                  "user-tag-list": parse_tag_list,
-                 "rating": parse_rating}
+                 "rating": parse_rating,
+                 "annotation": parse_annotation}
 
     result.update(parse_attributes(attribs, event))
     result.update(parse_elements(elements, inner_els, event))
