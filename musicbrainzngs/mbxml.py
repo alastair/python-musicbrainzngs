@@ -495,7 +495,7 @@ def parse_release_group(rg):
 def parse_recording(recording):
     result = {}
     attribs = ["id", "ext:score"]
-    elements = ["title", "length", "user-rating", "disambiguation", "video"]
+    elements = ["title", "length", "user-rating", "disambiguation", "video", "first-release-date"]
     inner_els = {"artist-credit": parse_artist_credit,
                  "release-list": parse_release_list,
                  "tag-list": parse_tag_list,
