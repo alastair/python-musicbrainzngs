@@ -85,7 +85,7 @@ VALID_BROWSE_INCLUDES = {
     'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'recording': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'recording': ["artist-credits", "isrcs", "work-level-rels"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': ["artist-credits", "labels", "recordings", "isrcs",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
     'place': ["aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
