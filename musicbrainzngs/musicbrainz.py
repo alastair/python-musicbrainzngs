@@ -50,8 +50,8 @@ VALID_INCLUDES = {
         "discids", "media",
         "aliases", "annotation"
     ] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
-    'place' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
-    'event' : ["aliases"] + RELATION_INCLUDES + TAG_INCLUDES + RATING_INCLUDES,
+    'place': ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
+    'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'recording': [
         "artists", "releases", # Subqueries
         "discids", "media", "artist-credits", "isrcs",
@@ -61,7 +61,7 @@ VALID_INCLUDES = {
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
-    ] + TAG_INCLUDES + RELATION_INCLUDES,
+    ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release-group': [
         "artists", "releases", "discids", "media",
         "artist-credits", "annotation", "aliases"
@@ -73,11 +73,11 @@ VALID_INCLUDES = {
         "aliases", "annotation"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
-    'discid': [ # Discid should be the same as release
+    'discid': [ # Discid should be the same as release, no ratings
         "artists", "labels", "recordings", "release-groups", "media",
         "artist-credits", "discids", "isrcs",
         "recording-level-rels", "work-level-rels", "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+    ] + TAG_INCLUDES + RELATION_INCLUDES,
     'isrc': ["artists", "releases", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
@@ -88,7 +88,7 @@ VALID_BROWSE_INCLUDES = {
     'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'recording': ["artist-credits", "isrcs", "work-level-rels"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': ["artist-credits", "labels", "recordings", "isrcs",
-                "release-groups", "media", "discids"] + RELATION_INCLUDES,
+                "release-groups", "media", "discids"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'place': ["aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
     'release-group': ["artist-credits"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'url': RELATION_INCLUDES,
