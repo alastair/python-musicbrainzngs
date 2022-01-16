@@ -23,7 +23,6 @@ class GetWorkTest(unittest.TestCase):
         self.assertEqual(a1["alias"], 'Symphony No. 3, Op. 55 "Eroica"')
         self.assertEqual(a1["sort-name"], 'Symphony No. 3, Op. 55 "Eroica"')
 
-
         res = _common.open_and_parse_test_data(self.datadir, "3d7c7cd2-da79-37f4-98b8-ccfb1a4ac6c4-aliases.xml")
         aliases = res["work"]["alias-list"]
         self.assertEqual(len(aliases), 10)
@@ -65,5 +64,13 @@ class GetWorkTest(unittest.TestCase):
 
         # New attribute dict format
         attributes = rels[0]["attributes"]
-        expected = {"attribute": "number", "value": "BuxWV 1"}
+        expected = {"attribute": "number",
+                    "value": "BuxWV 1",
+                    "type-id": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"}
         self.assertEqual(expected, attributes[0])
+
+    def testWorkLanguage(self):
+        res = _common.open_and_parse_test_data(self.datadir, "72c9aad2-3c95-4e3e-8a01-3974f8fef8eb-series-rels.xml")
+        work = res["work"]
+        self.assertEqual(work["language"], "lat")
+        self.assertEqual(work["language-list"], ["lat"])

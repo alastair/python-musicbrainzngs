@@ -548,7 +548,8 @@ def parse_work(work):
                  "iswc-list": parse_element_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_response_message,
-                 "attribute-list": parse_work_attribute_list
+                 "attribute-list": parse_work_attribute_list,
+                 "language-list": parse_element_list,
     }
 
     result.update(parse_attributes(attribs, work))
