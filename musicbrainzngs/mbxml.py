@@ -495,7 +495,7 @@ def parse_release_group(rg):
 def parse_recording(recording):
     result = {}
     attribs = ["id", "ext:score"]
-    elements = ["title", "length", "user-rating", "disambiguation", "video"]
+    elements = ["title", "length", "user-rating", "disambiguation", "video", "first-release-date"]
     inner_els = {"artist-credit": parse_artist_credit,
                  "release-list": parse_release_list,
                  "tag-list": parse_tag_list,
@@ -548,7 +548,8 @@ def parse_work(work):
                  "iswc-list": parse_element_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_response_message,
-                 "attribute-list": parse_work_attribute_list
+                 "attribute-list": parse_work_attribute_list,
+                 "language-list": parse_element_list,
     }
 
     result.update(parse_attributes(attribs, work))
