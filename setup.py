@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 
 from setuptools import setup
-
-from musicbrainzngs import musicbrainz
+import os
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
+# `_version` comes into namespace from here
+with open(os.path.join("musicbrainzngs", "version.py")) as version_file:
+    exec(version_file.read())
+
 setup(
     name="musicbrainzngs",
-    version=musicbrainz._version,
+    version=_version,
     description="Python bindings for the MusicBrainz NGS and"
     " the Cover Art Archive webservices",
     long_description=long_description,
