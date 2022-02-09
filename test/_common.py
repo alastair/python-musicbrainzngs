@@ -25,6 +25,7 @@ class FakeOpener(OpenerDirector):
         self.headers = None
         self.response = response
         self.exception = exception
+        self.handlers = []
 
     def open(self, request, body=None):
         self.myurl = request.get_full_url()
@@ -41,6 +42,10 @@ class FakeOpener(OpenerDirector):
 
     def get_url(self):
         return self.myurl
+
+    def add_handlers_and_return(self, handlers=[]):
+        self.handlers.extend(handlers)
+        return self
 
 
 # Mock timing.

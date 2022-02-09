@@ -16,18 +16,21 @@ class UrlTest(unittest.TestCase):
         musicbrainzngs.set_useragent("test", "1")
         musicbrainzngs.set_rate_limit(False)
 
+    def tearDown(self):
+        musicbrainzngs.set_rate_limit(True)
+
     def testGetDiscId(self):
         musicbrainzngs.get_releases_by_discid("xp5tz6rE4OHrBafj0bLfDRMGK48-")
-        self.assertEqual("http://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-", self.opener.get_url())
 
         # one include
         musicbrainzngs.get_releases_by_discid("xp5tz6rE4OHrBafj0bLfDRMGK48-",
                 includes=["recordings"])
-        self.assertEqual("http://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=recordings", self.opener.get_url())
+        self.assertEqual("https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=recordings", self.opener.get_url())
 
         # more than one include
         musicbrainzngs.get_releases_by_discid("xp5tz6rE4OHrBafj0bLfDRMGK48-", includes=["artists", "recordings", "artist-credits"])
-        expected = "http://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=artists+recordings+artist-credits"
+        expected = "https://musicbrainz.org/ws/2/discid/xp5tz6rE4OHrBafj0bLfDRMGK48-?inc=artists+recordings+artist-credits"
         self.assertEqual(expected, self.opener.get_url())
 
 

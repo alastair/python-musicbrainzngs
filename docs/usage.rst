@@ -40,7 +40,7 @@ itself. The affected functions state this requirement in their documentation.
 The user and password used for authentication are the same as for the
 MusicBrainz website itself and can be set with the :meth:`musicbrainzngs.auth`
 method. After calling this function, the credentials will be saved and
-automaticall used by all functions requiring them.
+automatically used by all functions requiring them.
 
 If a method requiring authentication is called without authenticating, a
 :exc:`musicbrainzngs.UsageError` will be raised.
@@ -207,7 +207,7 @@ An example using :func:`musicbrainzngs.submit_barcodes` looks like this::
   }
   musicbrainzngs.submit_barcodes(barcodes)
 
-See :ref:`api_submitting` in the API for other possibilites.
+See :ref:`api_submitting` in the API for other possibilities.
 
 More Examples
 -------------

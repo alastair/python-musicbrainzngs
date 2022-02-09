@@ -20,8 +20,9 @@ from musicbrainzngs import mbxml
 from musicbrainzngs import util
 from musicbrainzngs import compat
 
-_version = "0.7dev"
+_version = "0.7.1"
 _log = logging.getLogger("musicbrainzngs")
+_max_retries = 8
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
@@ -29,11 +30,11 @@ LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
 RELATABLE_TYPES = ['area', 'artist', 'label', 'place', 'event', 'recording', 'release', 'release-group', 'series', 'url', 'work', 'instrument']
 RELATION_INCLUDES = [entity + '-rels' for entity in RELATABLE_TYPES]
-TAG_INCLUDES = ["tags", "user-tags"]
+TAG_INCLUDES = ["tags", "user-tags", "genres", "user-genres"]
 RATING_INCLUDES = ["ratings", "user-ratings"]
 
 VALID_INCLUDES = {
-    'area' : ["aliases", "annotation"] + RELATION_INCLUDES,
+    'area' : ["aliases", "annotation"] + RELATION_INCLUDES + TAG_INCLUDES,
     'artist': [
         "recordings", "releases", "release-groups", "works", # Subqueries
         "various-artists", "discids", "media", "isrcs",
@@ -67,7 +68,7 @@ VALID_INCLUDES = {
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'series': [
         "annotation", "aliases"
-    ] + RELATION_INCLUDES,
+    ] + RELATION_INCLUDES + TAG_INCLUDES,
     'work': [
         "aliases", "annotation"
     ] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
@@ -85,7 +86,7 @@ VALID_BROWSE_INCLUDES = {
     'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'event': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'label': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
-    'recording': ["artist-credits", "isrcs"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
+    'recording': ["artist-credits", "isrcs", "work-level-rels"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
     'release': ["artist-credits", "labels", "recordings", "isrcs",
                 "release-groups", "media", "discids"] + RELATION_INCLUDES,
     'place': ["aliases"] + TAG_INCLUDES + RELATION_INCLUDES,
@@ -99,7 +100,7 @@ VALID_RELEASE_TYPES = [
     "nat",
     "album", "single", "ep", "broadcast", "other", # primary types
     "compilation", "soundtrack", "spokenword", "interview", "audiobook",
-    "live", "remix", "dj-mix", "mixtape/street", # secondary types
+    "live", "remix", "dj-mix", "mixtape/street", "audio drama" # secondary types
 ]
 #: These can be used to filter whenever releases or release-groups are involved
 VALID_RELEASE_STATUSES = ["official", "promotion", "bootleg", "pseudo-release"]
@@ -166,6 +167,9 @@ VALID_SEARCH_FIELDS = {
 class AUTH_YES: pass
 class AUTH_NO: pass
 class AUTH_IFSET: pass
+
+
+AUTH_REQUIRED_INCLUDES = ["user-tags", "user-ratings", "user-genres"]
 
 
 # Exceptions.
@@ -300,6 +304,7 @@ def _docstring_impl(name, values):
 
 user = password = ""
 hostname = "musicbrainz.org"
+https = True
 _client = ""
 _useragent = ""
 
@@ -324,12 +329,21 @@ def set_useragent(app, version, contact=None):
     _client = "%s-%s" % (app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
-def set_hostname(new_hostname):
+
+def set_hostname(new_hostname, use_https=False):
     """Set the hostname for MusicBrainz webservice requests.
-    Defaults to 'musicbrainz.org'.
-    You can also include a port: 'localhost:8000'."""
+    Defaults to 'musicbrainz.org', accessing over https.
+    For backwards compatibility, `use_https` is False by default.
+
+    :param str new_hostname: The hostname (and port) of the MusicBrainz server to connect to
+    :param bool use_https: `True` if the host should be accessed using https. Default is `False`
+
+    Specify a non-standard port by adding it to the hostname,
+    for example 'localhost:8000'."""
     global hostname
+    global https
     hostname = new_hostname
+    https = use_https
 
 # Rate limiting.
 
@@ -468,7 +482,7 @@ class _MusicbrainzHttpRequest(compat.Request):
 
 # Core (internal) functions for calling the MB API.
 
-def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
+def _safe_read(opener, req, body=None, max_retries=_max_retries, retry_delay_delta=2.0):
 	"""Open an HTTP request with a given URL opener and (optionally) a
 	request body. Transient errors lead to retries.  Permanent errors
 	and repeated errors are translated into a small set of handleable
@@ -633,7 +647,7 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     # Construct the full URL for the request, including hostname and
     # query string.
     url = compat.urlunparse((
-        'http',
+        'https' if https else 'http',
         hostname,
         '/ws/2/%s' % path,
         '',
@@ -681,11 +695,12 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
 
     return parser_fun(resp)
 
+
 def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
-    True if a call does, False otherwise
+    a constant (Yes, No, IfSet) for the auth status of the call.
     """
-    if "user-tags" in includes or "user-ratings" in includes:
+    if "user-tags" in includes or "user-ratings" in includes or "user-genres" in includes:
         return AUTH_YES
     elif entity.startswith("collection"):
         if not id:
@@ -694,6 +709,7 @@ def _get_auth_type(entity, id, includes):
             return AUTH_IFSET
     else:
         return AUTH_NO
+
 
 def _do_mb_query(entity, id, includes=[], params={}):
 	"""Make a single GET call to the MusicBrainz XML API. `entity` is a
