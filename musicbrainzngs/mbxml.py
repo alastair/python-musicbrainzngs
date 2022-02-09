@@ -777,6 +777,9 @@ def make_tag_request(**kwargs):
                 taglist = ET.SubElement(e_xml, "{%s}user-tag-list" % NS)
                 if isinstance(tags, dict):
                     for tag, vote in tags.items():
+                        if vote not in ('upvote', 'downvote', 'withdraw'):
+                            raise ValueError("invalid vote: %s" % vote)
+
                         usertag_xml = ET.SubElement(taglist, "{%s}user-tag" % NS)
                         usertag_xml.set('vote', vote)
                         name_xml = ET.SubElement(usertag_xml, "{%s}name" % NS)
