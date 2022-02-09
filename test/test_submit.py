@@ -31,6 +31,17 @@ class SubmitTest(unittest.TestCase):
         musicbrainz.submit_tags(artist_tags={"mbid": ["one", "two"]})
         musicbrainz.mbxml.make_tag_request = oldmake_tag_request
 
+    def test_submit_tags_with_votes(self):
+        self.opener = _common.FakeOpener("<response/>")
+        musicbrainzngs.compat.build_opener = lambda *args: self.opener
+        def make_xml(**kwargs):
+            self.assertEqual({'artist_tags': {'mbid': {"one": "upvote", "two": "downvote", "three": "withdraw"}}}, kwargs)
+        oldmake_tag_request = musicbrainz.mbxml.make_tag_request
+        musicbrainz.mbxml.make_tag_request = make_xml
+
+        musicbrainz.submit_tags(artist_tags={"mbid": {"one": "upvote", "two": "downvote", "three": "withdraw"}})
+        musicbrainz.mbxml.make_tag_request = oldmake_tag_request
+
     def test_submit_single_tag(self):
         self.opener = _common.FakeOpener("<response/>")
         musicbrainzngs.compat.build_opener = lambda *args: self.opener
