@@ -1276,10 +1276,14 @@ def submit_tags(**kwargs):
     Takes parameters named e.g. 'artist_tags', 'recording_tags', etc.,
     and of the form:
     {entity_id1: {tag1: vote, ...}, ...}
-    If you don't want to vote, you can use a list of tags instead:
+
+    The value of _vote_ can be "upvote", "downvote", or "withdraw".
+
+    If you only want to set the tags, you can use a list:
     {entity_id1: [tag1, ...], ...}
-    If you only have one tag for an entity, you can use a string instead
-    of a list.
+
+    If you only want to submit one tag, you can use a string:
+    {entity_id1: tag, ...}
 
     The user's tags for each entity will be set to that list, adding or
     removing tags as necessary. Submitting an empty list for an entity
