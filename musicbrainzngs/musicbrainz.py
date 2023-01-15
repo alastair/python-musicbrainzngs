@@ -81,6 +81,7 @@ VALID_INCLUDES = {
     'isrc': ["artists", "releases", "isrcs"],
     'iswc': ["artists"],
     'collection': ['releases'],
+    'userinfo': [],
 }
 VALID_BROWSE_INCLUDES = {
     'artist': ["aliases"] + TAG_INCLUDES + RATING_INCLUDES + RELATION_INCLUDES,
@@ -700,6 +701,8 @@ def _get_auth_type(entity, id, includes):
     """ Some calls require authentication. This returns
     a constant (Yes, No, IfSet) for the auth status of the call.
     """
+    if entity == "userinfo":
+        return AUTH_YES
     if "user-tags" in includes or "user-ratings" in includes or "user-genres" in includes:
         return AUTH_YES
     elif entity.startswith("collection"):
