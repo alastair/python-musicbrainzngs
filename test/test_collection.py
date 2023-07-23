@@ -1,10 +1,8 @@
 import unittest
 import musicbrainzngs
-from musicbrainzngs import compat
 from test import _common
 import requests_mock
-from re import compile
-
+import re
 
 class CollectionTest(unittest.TestCase):
     """ Test that requesting collections works properly """
@@ -80,7 +78,7 @@ class CollectionTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_no_collection(self, m):
         """ If a collection doesn't exist, you get a 404 """
-        m.get(compile("ws/2/collection/17905fdb-102d-40f0-91d3-eabcabc64f44"),
+        m.get(re.compile("ws/2/collection/17905fdb-102d-40f0-91d3-eabcabc64f44"),
               status_code=404)
 
         try:
@@ -93,7 +91,7 @@ class CollectionTest(unittest.TestCase):
     def test_private_collection(self, m):
         """ If you ask for a collection that is private, you should
         get a 401"""
-        m.get(compile("ws/2/collection/17905fdb-102d-40f0-91d3-eabcabc64fd3"),
+        m.get(re.compile("ws/2/collection/17905fdb-102d-40f0-91d3-eabcabc64fd3"),
               status_code=401)
 
         try:

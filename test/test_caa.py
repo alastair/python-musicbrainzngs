@@ -1,12 +1,11 @@
 import unittest
 
 from musicbrainzngs import caa
-from musicbrainzngs import compat
 from musicbrainzngs.musicbrainz import _version
 import musicbrainzngs
 from test import _common
 import requests_mock
-from re import compile
+import re
 
 @requests_mock.Mocker()
 class CaaTest(unittest.TestCase):
@@ -17,7 +16,7 @@ class CaaTest(unittest.TestCase):
     def test_get_list(self, m):
         # check the url and response for a listing
         resp = '{"images":[]}'
-        m.get(compile("coverartarchive.org/"), text=resp)
+        m.get(re.compile("coverartarchive.org/"), text=resp)
         res = caa.get_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
         self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214", m.request_history.pop().url)
         self.assertEqual(1, len(res))
@@ -26,7 +25,7 @@ class CaaTest(unittest.TestCase):
     def test_get_release_group_list(self, m):
         # check the url and response for a listing
         resp = '{"images":[], "release": "foo"}'
-        m.get(compile("coverartarchive.org/"), text=resp)
+        m.get(re.compile("coverartarchive.org/"), text=resp)
         res = caa.get_release_group_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
         self.assertEqual("https://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214", m.request_history.pop().url)
         self.assertEqual(2, len(res))
@@ -35,7 +34,7 @@ class CaaTest(unittest.TestCase):
 
     def test_list_none(self, m):
         """ When CAA gives a 404 error, pass it through."""
-        m.get(compile("coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-19644XXXXXX"),
+        m.get(re.compile("coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-19644XXXXXX"),
               status_code=404)
 
         try:
@@ -45,7 +44,7 @@ class CaaTest(unittest.TestCase):
             self.assertEqual(e.cause.response.status_code, 404)
 
     def test_list_baduuid(self, m):
-        m.get(compile("coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-19644XXXXXX"),
+        m.get(re.compile("coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-19644XXXXXX"),
               status_code=400)
         try:
             res = caa.get_image_list("8ec178f4-a8e8-4f22-bcba-19644XXXXXX")
@@ -58,7 +57,7 @@ class CaaTest(unittest.TestCase):
         musicbrainzngs.set_useragent("caa-test", "0.1")
 
         resp = '{"images":[]}'
-        m.get(compile("coverartarchive.org/"), text=resp)
+        m.get(re.compile("coverartarchive.org/"), text=resp)
         res = caa.get_image_list("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         headers = dict(m.request_history.pop().headers)
@@ -68,7 +67,7 @@ class CaaTest(unittest.TestCase):
 
     def test_coverid(self, m):
         resp = b'some_image'
-        m.get(compile("coverartarchive.org/"), content=resp)
+        m.get(re.compile("coverartarchive.org/"), content=resp)
         res = caa.get_image("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234")
 
         self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234", m.request_history.pop().url)
@@ -76,7 +75,7 @@ class CaaTest(unittest.TestCase):
 
     def test_get_size(self, m):
         resp = b'some_image'
-        m.get(compile("coverartarchive.org/"), content=resp)
+        m.get(re.compile("coverartarchive.org/"), content=resp)
         res = caa.get_image("8ec178f4-a8e8-4f22-bcba-1964466ef214", "1234", 250)
 
         self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/1234-250", m.request_history.pop().url)
@@ -84,7 +83,7 @@ class CaaTest(unittest.TestCase):
 
     def test_front(self, m):
         resp = b'front_image'
-        m.get(compile("coverartarchive.org/"), content=resp)
+        m.get(re.compile("coverartarchive.org/"), content=resp)
         res = caa.get_image_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", m.request_history.pop().url)
@@ -92,7 +91,7 @@ class CaaTest(unittest.TestCase):
 
     def test_release_group_front(self, m):
         resp = b'front_image'
-        m.get(compile("coverartarchive.org/"), content=resp)
+        m.get(re.compile("coverartarchive.org/"), content=resp)
         res = caa.get_release_group_image_front("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         self.assertEqual("https://coverartarchive.org/release-group/8ec178f4-a8e8-4f22-bcba-1964466ef214/front", m.request_history.pop().url)
@@ -100,7 +99,7 @@ class CaaTest(unittest.TestCase):
 
     def test_back(self, m):
         resp = b'back_image'
-        m.get(compile("coverartarchive.org/"), content=resp)
+        m.get(re.compile("coverartarchive.org/"), content=resp)
         res = caa.get_image_back("8ec178f4-a8e8-4f22-bcba-1964466ef214")
 
         self.assertEqual("https://coverartarchive.org/release/8ec178f4-a8e8-4f22-bcba-1964466ef214/back", m.request_history.pop().url)

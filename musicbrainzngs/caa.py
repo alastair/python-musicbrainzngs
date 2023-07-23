@@ -10,9 +10,10 @@ __all__ = [
     ]
 
 import json
+import urllib.parse
+
 import requests
 
-from musicbrainzngs import compat
 from musicbrainzngs import musicbrainz
 from musicbrainzngs.util import _unicode
 
@@ -54,7 +55,7 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
         path.append("%s-%s" % (imageid, size))
     elif imageid:
         path.append(imageid)
-    url = compat.urlunparse((
+    url = urllib.parse.urlunparse((
         'https' if https else 'http',
         hostname,
         '/%s' % '/'.join(path),

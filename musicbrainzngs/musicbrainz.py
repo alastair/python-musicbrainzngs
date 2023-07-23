@@ -8,6 +8,7 @@ import re
 import threading
 import time
 import logging
+import urllib.parse
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 from warnings import warn
@@ -18,7 +19,6 @@ from requests.packages.urllib3.util.retry import Retry
 
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
-from musicbrainzngs import compat
 from musicbrainzngs.version import version as _version
 
 _log = logging.getLogger("musicbrainzngs")
@@ -255,9 +255,9 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
     the filters can be used with the given includes. Return a params
     dict that can be passed to _do_mb_query.
     """
-    if isinstance(release_status, compat.basestring):
+    if isinstance(release_status, (str, bytes)):
         release_status = [release_status]
-    if isinstance(release_type, compat.basestring):
+    if isinstance(release_type, (str, bytes)):
         release_type = [release_type]
     _check_filter(release_status, VALID_RELEASE_STATUSES)
     _check_filter(release_type, VALID_RELEASE_TYPES)
@@ -561,12 +561,12 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
 
     # Construct the full URL for the request, including hostname and
     # query string.
-    url = compat.urlunparse((
+    url = urllib.parse.urlunparse((
         'https' if https else 'http',
         hostname,
         '/ws/2/%s' % path,
         '',
-        compat.urlencode(newargs),
+        urllib.parse.urlencode(newargs),
         ''
     ))
 
