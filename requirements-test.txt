@@ -1,3 +1,4 @@
+pytest-cov
 requests-mock
 tox
 tox-gh-actions

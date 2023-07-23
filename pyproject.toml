@@ -25,6 +25,21 @@ content-type = "text/x-rst"
 [project.urls]
 Homepage = "https://python-musicbrainzngs.readthedocs.io/"
 
+[tool.coverage.run]
+relative_files = true
+source = ["musicbrainzngs"]
+
+[tool.coverage.report]
+ignore_errors = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests-qt", "tests"]
+addopts = [
+  "--cov=musicbrainzngs",
+  "--cov-report=html",
+  "-ra",
+]
+
 [tool.setuptools]
 packages=['musicbrainzngs']
 include-package-data = false
