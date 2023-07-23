@@ -142,4 +142,7 @@ class BrowseTest(_common.RequestsMockingTestCase):
            VALID_INCLUDES"""
         for entity, includes in musicbrainzngs.VALID_BROWSE_INCLUDES.items():
             for i in includes:
-                self.assertTrue(i in musicbrainzngs.VALID_INCLUDES[entity], "entity %s, %s in BROWSE_INCLUDES but not VALID_INCLUDES" % (entity, i))
+                self.assertTrue(
+                    i in musicbrainzngs.VALID_INCLUDES[entity],
+                    f"entity {entity}, {i} in BROWSE_INCLUDES but not VALID_INCLUDES",
+                )

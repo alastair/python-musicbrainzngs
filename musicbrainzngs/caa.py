@@ -52,23 +52,25 @@ def _caa_request(mbid, imageid=None, size=None, entitytype="release"):
     # query string.
     path = [entitytype, mbid]
     if imageid and size:
-        path.append("%s-%s" % (imageid, size))
+        path.append(f"{imageid}-{size}")
     elif imageid:
         path.append(imageid)
-    url = urllib.parse.urlunparse((
-        'https' if https else 'http',
-        hostname,
-        '/%s' % '/'.join(path),
-        '',
-        '',
-        ''
-    ))
-    musicbrainz._log.debug("GET request for %s" % (url, ))
+    url = urllib.parse.urlunparse(
+        (
+            'https' if https else 'http',
+            hostname,
+            f"/{'/'.join(path)}",
+            '',
+            '',
+            '',
+        )
+    )
+    musicbrainz._log.debug(f"GET request for {url}")
 
     headers = {}
     if musicbrainz._useragent != "":
         headers['User-Agent'] = musicbrainz._useragent
-        musicbrainz._log.debug("requesting with UA %s" % musicbrainz._useragent)
+        musicbrainz._log.debug(f"requesting with UA {musicbrainz._useragent}")
 
     # Make request.
     req = requests.Request("GET", url, headers=headers)

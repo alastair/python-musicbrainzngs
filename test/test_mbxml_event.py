@@ -12,12 +12,16 @@ class EventTest(unittest.TestCase):
 
     def testCorrectId(self):
         event_id = "770fb0b4-0ad8-4774-9275-099b66627355"
-        res = _common.open_and_parse_test_data(self.datadir, "%s-place-rels.xml" % event_id)
+        res = _common.open_and_parse_test_data(
+            self.datadir, f"{event_id}-place-rels.xml"
+        )
         self.assertEqual(event_id, res["event"]["id"])
 
     def testPlace(self):
         event_id = "770fb0b4-0ad8-4774-9275-099b66627355"
-        res = _common.open_and_parse_test_data(self.datadir, "%s-place-rels.xml" % event_id)
+        res = _common.open_and_parse_test_data(
+            self.datadir, f"{event_id}-place-rels.xml"
+        )
         place = res["event"]["place-relation-list"][0]["place"]
         self.assertEqual("7643f13a-dcda-4db4-8196-3ffcc1b99ab7", place["id"])
         self.assertEqual("50.33556", place["coordinates"]["latitude"])
@@ -25,7 +29,9 @@ class EventTest(unittest.TestCase):
 
     def testType(self):
         event_id = "770fb0b4-0ad8-4774-9275-099b66627355"
-        res = _common.open_and_parse_test_data(self.datadir, "%s-place-rels.xml" % event_id)
+        res = _common.open_and_parse_test_data(
+            self.datadir, f"{event_id}-place-rels.xml"
+        )
         self.assertEqual("Concert", res["event"]["type"])
 
     def testEventElements(self):
@@ -34,4 +40,4 @@ class EventTest(unittest.TestCase):
         e = res["event"]
         keys = ["name", "life-span", "time", "setlist", "artist-relation-list", "tag-list"]
         for k in keys:
-            self.assertTrue(k in e, "key %s in dict" % (k, ))
+            self.assertTrue(k in e, f"key {k} in dict")

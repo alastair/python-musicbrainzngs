@@ -99,17 +99,17 @@ def show_collection(collection_id, ctype):
     print('')
     # release count is only available starting with musicbrainzngs 0.5
     if "release-count" in collection:
-        print('{} releases'.format(collection['release-count']))
+        print(f"{collection['release-count']} releases")
     if "artist-count" in collection:
-        print('{} artists'.format(collection['artist-count']))
+        print(f"{collection['artist-count']} artists")
     if "event-count" in collection:
-        print('{} events'.format(collection['release-count']))
+        print(f"{collection['release-count']} events")
     if "place-count" in collection:
-        print('{} places'.format(collection['place-count']))
+        print(f"{collection['place-count']} places")
     if "recording-count" in collection:
-        print('{} recordings'.format(collection['recording-count']))
+        print(f"{collection['recording-count']} recordings")
     if "work-count" in collection:
-        print('{} works'.format(collection['work-count']))
+        print(f"{collection['work-count']} works")
     print('')
 
     if "release-list" in collection:
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     username = args.pop(0)
 
     # Input the password.
-    password = getpass.getpass('Password for {}: '.format(username))
+    password = getpass.getpass(f'Password for {username}: ')
 
     # Call musicbrainzngs.auth() before making any API calls that
     # require authentication.

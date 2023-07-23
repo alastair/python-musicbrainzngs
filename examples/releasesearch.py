@@ -24,15 +24,15 @@ def show_release_details(rel):
     # "artist-credit-phrase" is a flat string of the credited artists
     # joined with " + " or whatever is given by the server.
     # You can also work with the "artist-credit" list manually.
-    print("{}, by {}".format(rel['title'], rel["artist-credit-phrase"]))
+    print(f"""{rel['title']}, by {rel["artist-credit-phrase"]}""")
     if 'date' in rel:
-        print("Released {} ({})".format(rel['date'], rel['status']))
-    print("MusicBrainz ID: {}".format(rel['id']))
+        print(f"Released {rel['date']} ({rel['status']})")
+    print(f"MusicBrainz ID: {rel['id']}")
 
 if __name__ == '__main__':
     args = sys.argv[1:]
     if len(args) != 2:
-        sys.exit("usage: {} ARTIST ALBUM".format(sys.argv[0]))
+        sys.exit(f"usage: {sys.argv[0]} ARTIST ALBUM")
     artist, album = args
 
     # Keyword arguments to the "search_*" functions limit keywords to
@@ -46,6 +46,6 @@ if __name__ == '__main__':
     if not result['release-list']:
         sys.exit("no release found")
     for (idx, release) in enumerate(result['release-list']):
-        print("match #{}:".format(idx+1))
+        print(f"match #{idx + 1}:")
         show_release_details(release)
         print()
