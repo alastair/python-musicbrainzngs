@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "musicbrainzngs"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+license = {text = "BSD 2-clause"}
+description = "Python bindings for the MusicBrainz NGS and the Cover Art Archive webservices"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: BSD License",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Homepage = "https://python-musicbrainzngs.readthedocs.io/"
+
+[tool.setuptools]
+packages=['musicbrainzngs']
+include-package-data = false
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements-run.txt"] }
+optional-dependencies = { test = { file = [
+  "requirements-test.txt"
+] } }
+version = { attr = "musicbrainzngs.version.version" }

@@ -19,8 +19,8 @@ from warnings import warn
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
 from musicbrainzngs import compat
+from musicbrainzngs.version import version as _version
 
-_version = "0.7.1"
 _log = logging.getLogger("musicbrainzngs")
 _max_retries = 8
 
