@@ -245,8 +245,10 @@ def parse_artist(artist):
                  "release-list": parse_release_list,
                  "release-group-list": parse_release_group_list,
                  "work-list": parse_work_list,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
+                 "genre-list": parse_tag_and_genre_list,
+                 "user-genre-list": parse_tag_and_genre_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
                  "isni-list": parse_element_list,
@@ -272,8 +274,8 @@ def parse_place(place):
     inner_els = {"area": parse_area,
                  "coordinates": parse_coordinates,
                  "life-span": parse_lifespan,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
                  "alias-list": parse_alias_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_annotation}
@@ -293,8 +295,8 @@ def parse_event(event):
     inner_els = {"life-span": parse_lifespan,
                  "relation-list": parse_relation_list,
                  "alias-list": parse_alias_list,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
                  "rating": parse_rating}
 
     result.update(parse_attributes(attribs, event))
@@ -307,7 +309,7 @@ def parse_instrument(instrument):
     attribs = ["id", "type", "ext:score"]
     elements = ["name", "description", "disambiguation"]
     inner_els = {"relation-list": parse_relation_list,
-                 "tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
                  "alias-list": parse_alias_list,
                  "annotation": parse_annotation}
     result.update(parse_attributes(attribs, instrument))
@@ -326,8 +328,8 @@ def parse_label(label):
     inner_els = {"area": parse_area,
                  "life-span": parse_lifespan,
                  "release-list": parse_release_list,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
                  "rating": parse_rating,
                  "ipi-list": parse_element_list,
                  "alias-list": parse_alias_list,
@@ -410,8 +412,10 @@ def parse_release(release):
                  "label-info-list": parse_label_info_list,
                  "medium-list": parse_medium_list,
                  "release-group": parse_release_group,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
+                 "genre-list": parse_tag_and_genre_list,
+                 "user-genre-list": parse_tag_and_genre_list,
                  "relation-list": parse_relation_list,
                  "annotation": parse_annotation,
                  "cover-art-archive": parse_caa,
@@ -478,8 +482,10 @@ def parse_release_group(rg):
                 "disambiguation"]
     inner_els = {"artist-credit": parse_artist_credit,
                  "release-list": parse_release_list,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
+                 "genre-list": parse_tag_and_genre_list,
+                 "user-genre-list": parse_tag_and_genre_list,
                  "secondary-type-list": parse_element_list,
                  "relation-list": parse_relation_list,
                  "rating": parse_rating,
@@ -498,8 +504,10 @@ def parse_recording(recording):
     elements = ["title", "length", "user-rating", "disambiguation", "video"]
     inner_els = {"artist-credit": parse_artist_credit,
                  "release-list": parse_release_list,
-                 "tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+                 "tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
+                 "genre-list": parse_tag_and_genre_list,
+                 "user-genre-list": parse_tag_and_genre_list,
                  "rating": parse_rating,
                  "isrc-list": parse_external_id_list,
                  "relation-list": parse_relation_list,
@@ -541,8 +549,10 @@ def parse_work(work):
     result = {}
     attribs = ["id", "ext:score", "type"]
     elements = ["title", "user-rating", "language", "iswc", "disambiguation"]
-    inner_els = {"tag-list": parse_tag_list,
-                 "user-tag-list": parse_tag_list,
+    inner_els = {"tag-list": parse_tag_and_genre_list,
+                 "user-tag-list": parse_tag_and_genre_list,
+                 "genre-list": parse_tag_and_genre_list,
+                 "user-genre-list": parse_tag_and_genre_list,
                  "rating": parse_rating,
                  "alias-list": parse_alias_list,
                  "iswc-list": parse_element_list,
@@ -707,12 +717,14 @@ def parse_track(track):
         result["track_or_recording_length"] = track_or_recording
     return result
 
-def parse_tag_list(tl):
-    return [parse_tag(t) for t in tl]
 
-def parse_tag(tag):
+def parse_tag_and_genre_list(tl):
+    return [parse_tag_and_genre(t) for t in tl]
+
+
+def parse_tag_and_genre(tag):
     result = {}
-    attribs = ["count"]
+    attribs = ["count", "id"]
     elements = ["name"]
 
     result.update(parse_attributes(attribs, tag))
