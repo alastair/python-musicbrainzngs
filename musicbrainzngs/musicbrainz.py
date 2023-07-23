@@ -24,6 +24,7 @@ from musicbrainzngs.version import version as _version
 _log = logging.getLogger("musicbrainzngs")
 _max_retries = 8
 
+_timeout = 60
 _retry = Retry(total=8, backoff_factor=2, status_forcelist=[500, 502, 503])
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
@@ -433,7 +434,7 @@ def _safe_read(request):
 		session.mount('http://', adapter)
 		session.mount('https://', adapter)
 		try:
-			resp = session.send(request.prepare(), allow_redirects=True)
+			resp = session.send(request.prepare(), allow_redirects=True, timeout=_timeout)
 			resp.raise_for_status()
 			return resp
 		except requests.HTTPError as exc:
