@@ -3,18 +3,18 @@
 # This file is distributed under a BSD-2-Clause type license.
 # See the COPYING file for more information.
 
+import json
 import re
 import threading
 import time
 import logging
-import socket
-import hashlib
-import locale
-import sys
-import json
 import xml.etree.ElementTree as etree
 from xml.parsers import expat
 from warnings import warn
+
+import requests
+from requests.auth import HTTPDigestAuth
+from requests.packages.urllib3.util.retry import Retry
 
 from musicbrainzngs import mbxml
 from musicbrainzngs import util
@@ -23,6 +23,8 @@ from musicbrainzngs.version import version as _version
 
 _log = logging.getLogger("musicbrainzngs")
 _max_retries = 8
+
+_retry = Retry(total=8, backoff_factor=2, status_forcelist=[500, 502, 503])
 
 LUCENE_SPECIAL = r'([+\-&|!(){}\[\]\^"~*?:\\\/])'
 
@@ -420,125 +422,27 @@ class _rate_limit(object):
                 self.remaining_requests -= 1.0
             return self.fun(*args, **kwargs)
 
-# From pymb2
-class _RedirectPasswordMgr(compat.HTTPPasswordMgr):
-	def __init__(self):
-		self._realms = { }
-
-	def find_user_password(self, realm, uri):
-		# ignoring the uri parameter intentionally
-		try:
-			return self._realms[realm]
-		except KeyError:
-			return (None, None)
-
-	def add_password(self, realm, uri, username, password):
-		# ignoring the uri parameter intentionally
-		self._realms[realm] = (username, password)
-
-class _DigestAuthHandler(compat.HTTPDigestAuthHandler):
-    def get_authorization (self, req, chal):
-        qop = chal.get ('qop', None)
-        if qop and ',' in qop and 'auth' in qop.split (','):
-            chal['qop'] = 'auth'
-
-        return compat.HTTPDigestAuthHandler.get_authorization (self, req, chal)
-
-    def _encode_utf8(self, msg):
-        """The MusicBrainz server also accepts UTF-8 encoded passwords."""
-        encoding = sys.stdin.encoding or locale.getpreferredencoding()
-        try:
-            # This works on Python 2 (msg in bytes)
-            msg = msg.decode(encoding)
-        except AttributeError:
-            # on Python 3 (msg is already in unicode)
-            pass
-        return msg.encode("utf-8")
-
-    def get_algorithm_impls(self, algorithm):
-        # algorithm should be case-insensitive according to RFC2617
-        algorithm = algorithm.upper()
-        # lambdas assume digest modules are imported at the top level
-        if algorithm == 'MD5':
-            H = lambda x: hashlib.md5(self._encode_utf8(x)).hexdigest()
-        elif algorithm == 'SHA':
-            H = lambda x: hashlib.sha1(self._encode_utf8(x)).hexdigest()
-        # XXX MD5-sess
-        KD = lambda s, d: H("%s:%s" % (s, d))
-        return H, KD
-
-class _MusicbrainzHttpRequest(compat.Request):
-	""" A custom request handler that allows DELETE and PUT"""
-	def __init__(self, method, url, data=None):
-		compat.Request.__init__(self, url, data)
-		allowed_m = ["GET", "POST", "DELETE", "PUT"]
-		if method not in allowed_m:
-			raise ValueError("invalid method: %s" % method)
-		self.method = method
-
-	def get_method(self):
-		return self.method
-
-
 # Core (internal) functions for calling the MB API.
 
-def _safe_read(opener, req, body=None, max_retries=_max_retries, retry_delay_delta=2.0):
-	"""Open an HTTP request with a given URL opener and (optionally) a
-	request body. Transient errors lead to retries.  Permanent errors
-	and repeated errors are translated into a small set of handleable
-	exceptions. Return a bytestring.
-	"""
-	last_exc = None
-	for retry_num in range(max_retries):
-		if retry_num: # Not the first try: delay an increasing amount.
-			_log.info("retrying after delay (#%i)" % retry_num)
-			time.sleep(retry_num * retry_delay_delta)
-
-		try:
-			if body:
-				f = opener.open(req, body)
-			else:
-				f = opener.open(req)
-			return f.read()
-
-		except compat.HTTPError as exc:
-			if exc.code in (400, 404, 411):
-				# Bad request, not found, etc.
-				raise ResponseError(cause=exc)
-			elif exc.code in (503, 502, 500):
-				# Rate limiting, internal overloading...
-				_log.info("HTTP error %i" % exc.code)
-			elif exc.code in (401, ):
-				raise AuthenticationError(cause=exc)
-			else:
-				# Other, unknown error. Should handle more cases, but
-				# retrying for now.
-				_log.info("unknown HTTP error %i" % exc.code)
-			last_exc = exc
-		except compat.BadStatusLine as exc:
-			_log.info("bad status line")
-			last_exc = exc
-		except compat.HTTPException as exc:
-			_log.info("miscellaneous HTTP exception: %s" % str(exc))
-			last_exc = exc
-		except compat.URLError as exc:
-			if isinstance(exc.reason, socket.error):
-				code = exc.reason.errno
-				if code == 104: # "Connection reset by peer."
-					continue
-			raise NetworkError(cause=exc)
-		except socket.timeout as exc:
-			_log.info("socket timeout")
-			last_exc = exc
-		except socket.error as exc:
-			if exc.errno == 104:
-				continue
-			raise NetworkError(cause=exc)
-		except IOError as exc:
-			raise NetworkError(cause=exc)
-
-	# Out of retries!
-	raise NetworkError("retried %i times" % max_retries, last_exc)
+def _safe_read(request):
+    """
+    :param request:
+    """
+    # Make request (with retries).
+    with requests.Session() as session:
+        adapter = requests.adapters.HTTPAdapter(max_retries=_retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        try:
+            resp = session.send(request.prepare(), allow_redirects=True)
+            resp.raise_for_status()
+            return resp
+        except requests.HTTPError as exc:
+            if exc.response.status_code == 401:
+                raise AuthenticationError(cause=exc)
+            raise ResponseError(cause=exc)
+        except requests.RequestException as exc:
+            raise NetworkError(cause=exc)
 
 # Get the XML parsing exceptions to catch. The behavior chnaged with Python 2.7
 # and ElementTree 1.3.
@@ -634,13 +538,24 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
     if ws_format != "xml":
         args["fmt"] = ws_format
 
+    headers = {
+        "User-Agent": _useragent
+    }
+
+    if body:
+        headers['Content-Type'] = 'application/xml; charset=UTF-8'
+    else:
+        # Explicitly indicate zero content length if no request data
+        # will be sent (avoids HTTP 411 error).
+        headers['Content-Length'] = '0'
+
     # Convert args from a dictionary to a list of tuples
     # so that the ordering of elements is stable for easy
     # testing (in this case we order alphabetically)
     # Encode Unicode arguments using UTF-8.
     newargs = []
     for key, value in sorted(args.items()):
-        if isinstance(value, compat.unicode):
+        if isinstance(value, str):
             value = value.encode('utf8')
         newargs.append((key, value))
 
@@ -654,11 +569,6 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
         compat.urlencode(newargs),
         ''
     ))
-    _log.debug("%s request for %s" % (method, url))
-
-    # Set up HTTP request handler and URL opener.
-    httpHandler = compat.HTTPHandler(debuglevel=0)
-    handlers = [httpHandler]
 
     # Add credentials if required.
     add_auth = False
@@ -674,26 +584,25 @@ def _mb_request(path, method='GET', auth_required=AUTH_NO,
         add_auth = True
 
     if add_auth:
-        passwordMgr = _RedirectPasswordMgr()
-        authHandler = _DigestAuthHandler(passwordMgr)
-        authHandler.add_password("musicbrainz.org", (), user, password)
-        handlers.append(authHandler)
+        auth_handler = HTTPDigestAuth(user, password)
+    else:
+        auth_handler = None
 
-    opener = compat.build_opener(*handlers)
+    allowed_m = ["GET", "POST", "DELETE", "PUT"]
+    if method not in allowed_m:
+        raise ValueError("invalid method: %s" % method)
 
-    # Make request.
-    req = _MusicbrainzHttpRequest(method, url, data)
-    req.add_header('User-Agent', _useragent)
-    _log.debug("requesting with UA %s" % _useragent)
-    if body:
-        req.add_header('Content-Type', 'application/xml; charset=UTF-8')
-    elif not data and not req.has_header('Content-Length'):
-        # Explicitly indicate zero content length if no request data
-        # will be sent (avoids HTTP 411 error).
-        req.add_header('Content-Length', '0')
-    resp = _safe_read(opener, req, body)
+    req = requests.Request(
+        method,
+        url,
+        auth=auth_handler,
+        headers=headers,
+        data=body,
+    )
 
-    return parser_fun(resp)
+    resp = _safe_read(req)
+
+    return parser_fun(resp.content)
 
 
 def _get_auth_type(entity, id, includes):
