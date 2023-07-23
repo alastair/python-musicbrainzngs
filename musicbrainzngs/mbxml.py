@@ -42,9 +42,7 @@ def get_error_message(error):
         root = tree.getroot()
         errors = []
         if root.tag == "error":
-            for ch in root:
-                if ch.tag == "text":
-                    errors.append(ch.text)
+            errors.extend(ch.text for ch in root if ch.tag == "text")
         return errors
     except ET.ParseError:
         return None
@@ -571,13 +569,10 @@ def parse_work_attribute_list(wal):
 
 def parse_work_attribute(wa):
     attribs = ["type"]
-    typeinfo = parse_attributes(attribs, wa)
-    result = {}
-    if typeinfo:
-        result = {"attribute": typeinfo["type"],
-                  "value": wa.text}
-
-    return result
+    if typeinfo := parse_attributes(attribs, wa):
+        return {"attribute": typeinfo["type"], "value": wa.text}
+    else:
+        return {}
 
 
 def parse_url_list(ul):
@@ -622,16 +617,13 @@ def parse_offset_list(ol):
     return [int(o.text) for o in ol]
 
 def parse_instrument_list(rl):
-    result = [parse_instrument(r) for r in rl]
-    return result
+    return [parse_instrument(r) for r in rl]
 
 def parse_release_list(rl):
-    result = [parse_release(r) for r in rl]
-    return result
+    return [parse_release(r) for r in rl]
 
 def parse_release_group_list(rgl):
-    result = [parse_release_group(rg) for rg in rgl]
-    return result
+    return [parse_release_group(rg) for rg in rgl]
 
 def parse_isrc(isrc):
     result = {}
@@ -644,8 +636,7 @@ def parse_isrc(isrc):
     return result
 
 def parse_recording_list(recs):
-    result = [parse_recording(r) for r in recs]
-    return result
+    return [parse_recording(r) for r in recs]
 
 def parse_artist_credit(ac):
     result = []
@@ -666,8 +657,7 @@ def parse_name_credit(nc):
     return result
 
 def parse_label_info_list(lil):
-    result = [parse_label_info(li) for li in lil]
-    return result
+    return [parse_label_info(li) for li in lil]
 
 def parse_label_info(li):
     result = {}
@@ -678,8 +668,7 @@ def parse_label_info(li):
     return result
 
 def parse_track_list(tl):
-    result = [parse_track(t) for t in tl]
-    return result
+    return [parse_track(t) for t in tl]
 
 def parse_track(track):
     result = {}
