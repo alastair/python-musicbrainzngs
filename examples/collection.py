@@ -114,8 +114,6 @@ def show_collection(collection_id, ctype):
 
     if "release-list" in collection:
         show_releases(collection)
-    else:
-        pass # TODO
 
 def show_releases(collection):
     result = musicbrainzngs.get_releases_in_collection(collection_id, limit=25)

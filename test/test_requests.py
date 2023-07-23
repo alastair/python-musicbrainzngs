@@ -64,7 +64,7 @@ class ArgumentTest(_common.RequestsMockingTestCase):
         musicbrainz.auth("", "")
         # if no user and password, auth is not set for AUTH_IFSET
         req = musicbrainz._mb_request(path="foo", auth_required=musicbrainz.AUTH_IFSET)
-        assert (self.m.request_history[-1]._request.hooks['response'], [])
+        assert not self.m.request_history[-1]._request.hooks['response']
 
 
 class MethodTest(_common.RequestsMockingTestCase):

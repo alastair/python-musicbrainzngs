@@ -33,7 +33,6 @@ source = ["musicbrainzngs"]
 ignore_errors = true
 
 [tool.pytest.ini_options]
-testpaths = ["tests-qt", "tests"]
 addopts = [
   "--cov=musicbrainzngs",
   "--cov-report=html",

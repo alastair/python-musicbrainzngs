@@ -1,0 +1,6 @@
+---
+refactor:
+  skip:
+    - assign-if-exp
+ignore:
+  - htmlcov

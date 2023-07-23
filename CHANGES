@@ -1,7 +1,9 @@
 0.x.x (Unreleased):
+    * Massive code cleanup:
     * Dropped support for Python < 3.9
     * Enabled dependabot
     * Enabled tests up to Python 3.11
+    * Enabled coverage reports with pytest
     * Use requests to make HTTP requests (Adrian Sampson & Wieland Hoffmann)
 
       Note that this changes the exception types of the `cause` attribute of

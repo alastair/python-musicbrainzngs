@@ -36,7 +36,7 @@ def show_release_details(rel):
 def show_offsets(offset_list):
     offsets = None
     for offset in offset_list:
-        if offsets == None:
+        if offsets is None:
             offsets = str(offset)
         else:
             offsets += f" {str(offset)}"
