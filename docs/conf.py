@@ -90,7 +90,7 @@ pygments_style = 'sphinx'
 #modindex_common_prefix = []
 
 extlinks = {
-    'musicbrainz': ('https://musicbrainz.org/doc/%s', ''),
+    'musicbrainz': ('https://musicbrainz.org/doc/%s', '%s'),
 }
 
 intersphinx_mapping = {
